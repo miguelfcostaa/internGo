@@ -24,7 +24,9 @@ function registoEstagiario(){
                     <label>Confirmar palvra-passe
                         <input type="text" placeholder=""></input>
                     </label>
+                    <button type="submit">Criar Conta</button>
                 </form>
+                <p>ja tens uma conta? <a href="/login">Faz o Login</a></p>
             </div>
         </div>
     )
