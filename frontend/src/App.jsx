@@ -4,18 +4,18 @@ import HomePage from './pages/Home.jsx';
 import Login from './pages/Login';
 import SelecionarUtilizador from './pages/SelecionarUtilizador.jsx';
 import ProfilePage from './pages/ProfilePage.jsx';
+import WelcomePage from './pages/WelcomePage.jsx';
 
 function App() {
   return (
     <div className="App">
       <Router>
-        
-
         <Routes>
-          <Route path='/HomePage' element={<HomePage />}></Route>
-          <Route path='/login' element={<Login />}></Route>
-          <Route path='/SelecionarUtilizador' element={<SelecionarUtilizador />}></Route>
-          <Route path='/ProfilePage' element={<ProfilePage />}></Route>
+          <Route path='/' element={<WelcomePage />}></Route>  {/*  Rota da Welcome Page */}
+          <Route path='/home' element={<HomePage />}></Route>  {/*  Rota da Home Page */}
+          <Route path='/login' element={<Login />}></Route>  {/*  Rota da Login Page */}
+          <Route path='/selectuser' element={<SelecionarUtilizador />}></Route>  {/* Rota para selecionar se é Estagiario ou Empresa */}
+          <Route path='/profile' element={<ProfilePage />}></Route>  {/*  Rota da Profile Page (Estagiario) */}
         </Routes>
       </Router>
     </div>
