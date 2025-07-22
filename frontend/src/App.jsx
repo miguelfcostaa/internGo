@@ -22,7 +22,6 @@ function App() {
           <Route path='/select-user' element={<SelectUser />}></Route>  {/* Rota para selecionar se é Estagiario ou Empresa */}
           <Route path='/profile-user' element={<ProfileUser />}></Route>  {/*  Rota da Profile Page (Estagiario) */}
           <Route path='/profile-company' element={<ProfileCompany />}></Route>  {/*  Rota da Profile Page (Empresa) */}
-
         </Routes>
       </Router>
     </div>
