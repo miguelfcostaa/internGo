@@ -1,8 +1,8 @@
 import './App.css';
-import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import HomePage from './pages/Home.jsx';
 import Login from './pages/Login';
-import SelecionarUtilizador from './pages/SelecionarUtilizador.jsx';
+import SelectUser from './pages/SelectUser.jsx';
 import ProfileUser from './pages/ProfileUser.jsx';
 import ProfileCompany from './pages/ProfileCompany.jsx';
 import WelcomePage from './pages/WelcomePage.jsx';
@@ -19,10 +19,9 @@ function App() {
           <Route path='/login' element={<Login />}></Route>  {/*  Rota da Login Page */}
           <Route path='/register' element={<Register />}></Route>  {/*  Rota da Register Page */}
           <Route path='/forgot-password' element={<ForgotPassword />}></Route>  {/*  Rota da Forgot Password Page */}
-          <Route path='/select-user' element={<SelecionarUtilizador />}></Route>  {/* Rota para selecionar se é Estagiario ou Empresa */}
+          <Route path='/select-user' element={<SelectUser />}></Route>  {/* Rota para selecionar se é Estagiario ou Empresa */}
           <Route path='/profile-user' element={<ProfileUser />}></Route>  {/*  Rota da Profile Page (Estagiario) */}
           <Route path='/profile-company' element={<ProfileCompany />}></Route>  {/*  Rota da Profile Page (Empresa) */}
-
         </Routes>
       </Router>
     </div>

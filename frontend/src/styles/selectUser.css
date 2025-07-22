@@ -1,0 +1,18 @@
+body {
+    background-color: #273F4F;
+    background-image: url('../assets/background.jpg');
+    background-size: cover;
+}
+
+.main-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+
+}
+
+.user-option {
+    display: flex;
+    flex-direction: row;
+}
