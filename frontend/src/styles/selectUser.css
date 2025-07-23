@@ -9,10 +9,33 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-
+    width: 50%;
+    margin: 0 auto;
 }
 
 .user-option {
-    display: flex;
+    flex: 1;
     flex-direction: row;
+    align-items: center;
+    margin-top: 100px;
+}
+
+.user-option:hover {
+    box-shadow: black;
+    transition: 0.3s;
+    transform: scale(1.05);
+    cursor: pointer;
+
+}
+
+.label {
+    font-size: 1.5em;
+    font-weight: 600;
+    margin-top: 1em;
+}
+
+.title {
+    font-size: 2em;
+    font-weight: bold;
+    margin-top: 40px;
 }
