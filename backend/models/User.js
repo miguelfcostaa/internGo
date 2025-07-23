@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const passportLocalMongoose = require('passport-local-mongoose');
 
 // Schema para usuário
 const userSchema = new mongoose.Schema({
@@ -29,6 +28,7 @@ const userSchema = new mongoose.Schema({
   },
   telefone: {
     type: String,
+    required: [true, 'Número de telemóvel é obrigatório'],
     trim: true,
     unique: true,
     validate: {
@@ -39,27 +39,17 @@ const userSchema = new mongoose.Schema({
       message: 'Número de telemóvel deve ter formato válido (9xxxxxxxx ou +351xxxxxxxxx)'
     }
   },
+  password: {
+    type: String,
+    required: [true, 'Palavra-passe é obrigatória'],
+    minlength: [6, 'Palavra-passe deve ter pelo menos 6 caracteres']
+  },
   active: {
     type: Boolean,
     default: true
   }
 }, {
   timestamps: true // Adiciona createdAt e updatedAt automaticamente
-});
-
-// Adiciona automaticamente username, hash, salt
-userSchema.plugin(passportLocalMongoose, {
-  usernameField: 'email', // Usar email como username
-  errorMessages: {
-    MissingPasswordError: 'Palavra-passe é obrigatória',
-    AttemptTooSoonError: 'Muitas tentativas, tente novamente mais tarde',
-    TooManyAttemptsError: 'Conta bloqueada devido a muitas tentativas incorretas',
-    NoSaltValueStoredError: 'Erro de autenticação',
-    IncorrectPasswordError: 'Palavra-passe incorreta',
-    IncorrectUsernameError: 'Email não encontrado',
-    MissingUsernameError: 'Email é obrigatório',
-    UserExistsError: 'Usuário já existe'
-  }
 });
 
 // Exportar o modelo
