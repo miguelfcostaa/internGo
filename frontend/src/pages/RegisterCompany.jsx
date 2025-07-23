@@ -31,16 +31,14 @@ function RegisterCompany(){
                     <label>Email da empresa
                         <input type="text" placeholder="" name="email"></input>
                     </label>
-                    <div class="input-group mb-3">
-                        <button class="btn btn-white bg-primary
-                         dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"></button>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item">+351</a></li>
-                            <li><a class="dropdown-item">+55</a></li>
-                            <li><a class="dropdown-item">+1</a></li>
-                            <li><a class="dropdown-item">+58</a></li>
-                        </ul>
-                        <input type="text" class="form-control" aria-label="Text input with dropdown button" />
+                    <div className="input-group m-3">
+                        <select className="btn btn-secondary dropdown-toggle ">
+                            <option value={+351}>+351</option>
+                            <option value={+55}>+55</option>
+                            <option value={+1}>+1</option>
+                            <option value={+58}>+58</option>
+                        </select>
+                        <input type="text" className="form-control" aria-label="Text input with dropdown button" />
                     </div>
                     <label>Palavra-passe
                         <input type="password" placeholder="" name="password"></input>
