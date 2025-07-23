@@ -6,6 +6,7 @@ const companySchema = new Schema({
     name: {
         type: String,
         required: true,
+        unique: true,
         validate: {
             validator: validations.validateName,
             message: 'Nome da empresa deve ter entre 3 e 50 caracteres.'
@@ -21,7 +22,6 @@ const companySchema = new Schema({
         }
     },
     password: {
-        type: String,
         required: true,
         validate: {
             validator: validations.validatePassword,
