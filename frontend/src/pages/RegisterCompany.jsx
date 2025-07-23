@@ -1,35 +1,35 @@
 import React from "react";
 
-function registoEstagiario(){
+function RegisterCompany(){
     return(
         <div>
             <div>
-                <h1>Registo-Estagiário</h1>
+                <h1>Registo-Entidade</h1>
                 <form>
-                    <label>Nome completo
+                    <label>Nome da empresa
                         <input type="text" placeholder=""></input>
                     </label>
-                    <label>número do BI(CC)
+                    <label>Número do NIF
                         <input type="text" placeholder=""></input>
                     </label>
-                    <label>Email
+                    <label>Email da empresa
                         <input type="text" placeholder=""></input>
                     </label>
-                    <label>Número de telemovel
+                    <label>Número de telefone
                         <input type="text" placeholder=""></input>
                     </label>
                     <label>Palavra-passe
-                        <input type="text" placeholder=""></input>
+                        <input type="password" placeholder=""></input>
                     </label>
-                    <label>Confirmar palvra-passe
-                        <input type="text" placeholder=""></input>
+                    <label>Confirmar palavra-passe
+                        <input type="password" placeholder=""></input>
                     </label>
                     <button type="submit">Criar Conta</button>
                 </form>
-                <p>ja tens uma conta? <a href="/login">Faz o Login</a></p>
+                <p>Já tens uma conta? <a href="/login">Faz o Login</a></p>
             </div>
         </div>
     )
 }
 
-export default registoEstagiario;
+export default RegisterCompany;

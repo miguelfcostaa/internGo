@@ -6,7 +6,8 @@ import SelectUser from './pages/SelectUser.jsx';
 import ProfileUser from './pages/ProfileUser.jsx';
 import ProfileCompany from './pages/ProfileCompany.jsx';
 import WelcomePage from './pages/WelcomePage.jsx';
-import Register from './pages/Register.jsx';
+import RegisterUser from './pages/RegisterUser.jsx';
+import RegisterCompany from './pages/RegisterCompany.jsx';
 import ForgotPassword from './pages/ForgotPassword.jsx';
 
 function App() {
@@ -17,7 +18,8 @@ function App() {
           <Route path='/' element={<WelcomePage />}></Route>  {/*  Rota da Welcome Page */}
           <Route path='/home' element={<HomePage />}></Route>  {/*  Rota da Home Page */}
           <Route path='/login' element={<Login />}></Route>  {/*  Rota da Login Page */}
-          <Route path='/register' element={<Register />}></Route>  {/*  Rota da Register Page */}
+          <Route path='/register-company' element={<RegisterCompany />}></Route>  {/*  Rota da Register Company Page */}
+          <Route path='/register-user' element={<RegisterUser />}></Route>  {/*  Rota da Register User Page */}
           <Route path='/forgot-password' element={<ForgotPassword />}></Route>  {/*  Rota da Forgot Password Page */}
           <Route path='/select-user' element={<SelectUser />}></Route>  {/* Rota para selecionar se é Estagiario ou Empresa */}
           <Route path='/profile-user' element={<ProfileUser />}></Route>  {/*  Rota da Profile Page (Estagiario) */}
