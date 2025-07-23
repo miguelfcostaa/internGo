@@ -1,0 +1,9 @@
+.login-container {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.login-form {
+  background-color: rgba(200, 200, 200, 0.5); /* Opcional: para mejor contraste con fondo */
+  }
