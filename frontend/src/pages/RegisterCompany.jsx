@@ -1,32 +1,35 @@
-import React from 'react';
+import React from "react";
 
-function Register() {
-    return (
+function RegisterCompany(){
+    return(
         <div>
-            <h1>Register</h1>
-            <form>
-                <div>
-                    <label>
-                        Username:
-                        <input type="text" name="username" />
+            <div>
+                <h1>Registo-Entidade</h1>
+                <form>
+                    <label>Nome da empresa
+                        <input type="text" placeholder=""></input>
                     </label>
-                </div>
-                <div>
-                    <label>
-                        Email:
-                        <input type="email" name="email" />
+                    <label>Número do NIF
+                        <input type="text" placeholder=""></input>
                     </label>
-                </div>
-                <div>
-                    <label>
-                        Password:
-                        <input type="password" name="password" />
+                    <label>Email da empresa
+                        <input type="text" placeholder=""></input>
                     </label>
-                </div>
-                <button type="submit">Register</button>
-            </form>
+                    <label>Número de telefone
+                        <input type="text" placeholder=""></input>
+                    </label>
+                    <label>Palavra-passe
+                        <input type="password" placeholder=""></input>
+                    </label>
+                    <label>Confirmar palavra-passe
+                        <input type="password" placeholder=""></input>
+                    </label>
+                    <button type="submit">Criar Conta</button>
+                </form>
+                <p>Já tens uma conta? <a href="/login">Faz o Login</a></p>
+            </div>
         </div>
-    );
+    )
 }
 
-export default Register;
+export default RegisterCompany;

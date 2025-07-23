@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const passportLocalMongoose = require('passport-local-mongoose');
 
 // Schema para usuário
 const userSchema = new mongoose.Schema({
@@ -14,15 +15,29 @@ const userSchema = new mongoose.Schema({
     lowercase: true,
     trim: true
   },
-  age: {
-    type: Number,
-    min: 16,
-    max: 100
-  },
-  position: {
+  cc: {
     type: String,
-    enum: ['intern', 'employee', 'manager', 'admin'],
-    default: 'intern'
+    required: [true, 'Número do cartão de cidadão é obrigatório'],
+    unique: true,
+    trim: true,
+    validate: {
+      validator: function(v) {
+        return /^\d{8}$/.test(v); 
+      },
+      message: 'Número do cartão de cidadão deve ter exatamente 8 dígitos'
+    }
+  },
+  telefone: {
+    type: String,
+    trim: true,
+    unique: true,
+    validate: {
+      validator: function(v) {
+        // Aceita formatos: 9xxxxxxxx ou +351xxxxxxxxx
+        return /^(\+351)?9\d{8}$/.test(v);
+      },
+      message: 'Número de telemóvel deve ter formato válido (9xxxxxxxx ou +351xxxxxxxxx)'
+    }
   },
   active: {
     type: Boolean,
@@ -30,6 +45,21 @@ const userSchema = new mongoose.Schema({
   }
 }, {
   timestamps: true // Adiciona createdAt e updatedAt automaticamente
+});
+
+// Adiciona automaticamente username, hash, salt
+userSchema.plugin(passportLocalMongoose, {
+  usernameField: 'email', // Usar email como username
+  errorMessages: {
+    MissingPasswordError: 'Palavra-passe é obrigatória',
+    AttemptTooSoonError: 'Muitas tentativas, tente novamente mais tarde',
+    TooManyAttemptsError: 'Conta bloqueada devido a muitas tentativas incorretas',
+    NoSaltValueStoredError: 'Erro de autenticação',
+    IncorrectPasswordError: 'Palavra-passe incorreta',
+    IncorrectUsernameError: 'Email não encontrado',
+    MissingUsernameError: 'Email é obrigatório',
+    UserExistsError: 'Usuário já existe'
+  }
 });
 
 // Exportar o modelo
