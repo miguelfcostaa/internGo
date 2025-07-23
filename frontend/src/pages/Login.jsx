@@ -1,62 +1,41 @@
 import React from "react";
- 
-function login () {
+import { Link } from "react-router-dom";
+import "../styles/Login.css"; 
+
+function Login() {
   return (
-    <div className="w-screen h-screen flex items-center justify-center bg-gradient-to-b from-orange-200 to-blue-600 relative overflow-hidden">
-      <div
-        className="absolute inset-0 bg-cover bg-center opacity-30 z-0"
-        src={{ backgroundImage: `url('/assets/logo.jpg')` }}
-      ></div>
- 
-    <div className="relative z-10 bg-white p-10 rounded-lg shadow-lg max-w-md w-full">
-      <h1 className="text-3xl font-bold mb-2">Entrar</h1>
-      <p className="text-sm mb-6">
-        És novo aqui?{' '}
-        <a href="#" className="text-blue-500 hover:underline">
-          Cria uma conta
-        </a>
-      </p>
-      <form className="space-y-4">
-          <div>
-            <label className="block text-sm font-semibold mb-1">Email</label>
-            <input
-              type="email"
-              className="w-full border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
-              required
-            />
+    <div className="login-container d-flex align-items-center justify-content-center vh-100">
+      <div className="login-form bg-white p-4 rounded shadow" style={{ maxWidth: "400px", width: "100%" }}>
+        <h2 className="text-center mb-3">Entrar</h2>
+        <p className="text-center">
+          És novo aqui? <Link to="/select-user">Cria uma conta</Link>
+        </p>
+
+        <form>
+          <div className="mb-3">
+            <label htmlFor="email">Email</label>
+            <input type="email" className="form-control" id="email" placeholder="Digite seu email" />
           </div>
-          <div>
-            <label className="block text-sm font-semibold mb-1">Palavra-passe</label>
-            <input
-              type="password"
-              className="w-full border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
-              required
-            />
+
+          <div className="mb-3">
+            <label htmlFor="password">Palavra-passe</label>
+            <input type="password" className="form-control" id="password" placeholder="Digite sua palavra-passe" />
           </div>
- 
-          <div className="flex items-center">
-            <input type="checkbox" id="remember" className="mr-2" />
-            <label htmlFor="remember" className="text-sm font-medium">
-              Mantêm-me logado
-            </label>
+
+          <div className="form-check mb-3">
+            <input type="checkbox" className="form-check-input" id="remember" />
+            <label className="form-check-label" htmlFor="remember">Mantêm-me logado</label>
           </div>
- 
-          <button
-            type="submit"
-            className="w-full bg-gray-800 text-white py-2 rounded hover:bg-gray-900"
-          >
-            Entrar
-          </button>
+
+          <button type="submit" className="btn btn-primary w-100">Entrar</button>
         </form>
- 
-        <div className="mt-4 text-center">
-          <a href="#" className="text-xs text-blue-500 hover:underline">
-            Esqueceu a palavra-passe?
-          </a>
+
+        <div className="text-center mt-3">
+          <Link to="/forgot-password">Esqueceu a palavra-passe?</Link>
         </div>
       </div>
     </div>
   );
-};
- 
-export default login;
+}
+
+export default Login;
