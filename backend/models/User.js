@@ -29,7 +29,6 @@ const userSchema = new mongoose.Schema({
   },
   telefone: {
     type: String,
-    required: [true, 'Número de telemóvel é obrigatório'],
     trim: true,
     unique: true,
     validate: {
