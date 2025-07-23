@@ -39,7 +39,7 @@ const ProfilePage = () => {
                     </div>
                 </div>
                 <div>
-                    <table>{/*Adicionar Mostrar todos a tabela*/}
+                    <table>
                         <thead>Candidaturas Efetuadas</thead>
                         <tbody>
                             <tr>
@@ -55,6 +55,9 @@ const ProfilePage = () => {
                                 <td>Julho</td>
                                 <td>1 mês</td>
                                 <td><a href=""></a></td>
+                            </tr>
+                            <tr>
+                                <button>Mostrar todos</button>
                             </tr>
                         </tbody>
                     </table>
