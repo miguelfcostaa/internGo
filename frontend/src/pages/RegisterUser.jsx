@@ -1,6 +1,6 @@
 import React from "react";
 
-function RegistoEstagiario(){
+function RegisterUser(){
     return(
         <div>
             <div>
@@ -32,4 +32,4 @@ function RegistoEstagiario(){
     )
 }
 
-export default RegistoEstagiario;
+export default RegisterUser;
