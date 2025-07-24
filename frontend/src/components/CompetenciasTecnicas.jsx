@@ -1,5 +1,5 @@
 import React from "react";
-import array
+//import array 
 {(/*Falta importar a lista de competências técnicas */)}
 
 function CompetenciasTecnicas() {

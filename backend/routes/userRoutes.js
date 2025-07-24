@@ -9,9 +9,10 @@ const router = express.Router();
 // POST /api/users/register - Registar novo usuário
 router.post('/register', async (req, res) => {
   try {
+    // RQEUIRED: name, email, cc, telefone, password
     const { name, email, cc, telefone, password } = req.body;
 
-    // Verificar se todos os campos obrigatórios estão presentes
+    // Verifica se todos os campos obrigatórios estão presentes
     if (!name || !email || !cc || !telefone || !password) {
       return res.status(400).json({
         success: false,
@@ -23,15 +24,20 @@ router.post('/register', async (req, res) => {
     // Verificar se o usuário já existe
     const existingUser = await User.findOne({ 
       // Procura atraves do email ou cartão de cidadão
-      $or: [{ email }, { cc }] 
+      $or: [{ email }, { cc }, {telefone} ] 
     });
     
     // Se ja houver um estagiario com aquele email ou cc aparece a msg de erro
     if (existingUser) {
-      return res.status(400).json({
-        success: false,
-        message: existingUser.email === email ? 'Email já registado' : 'Cartão de cidadão já registado'
-      });
+      
+      if (existingUser.email === email || existingUser.cc === cc || existingUser.telefone === telefone) {
+        return res.status(400).json({
+          success: false,
+          message: 'Já existe uma conta com este email, cartão de cidadão ou telefone',
+          suggestion: 'Se já tens uma conta, faz login.',
+          action: 'login'
+        });
+      } 
     }
 
     // Hash da senha com bcrypt
@@ -56,7 +62,7 @@ router.post('/register', async (req, res) => {
         email: savedUser.email 
       },
       process.env.JWT_SECRET,
-      { expiresIn: '7d' }
+      { expiresIn: '3d' }
     );
 
     res.status(201).json({
@@ -155,7 +161,7 @@ router.post('/login', async (req, res) => {
     });
   }
 });
-
+/*
 // GET /api/users/profile - Obter perfil do usuário logado
 router.get('/profile', verifyToken, (req, res) => {
   res.json({
@@ -170,8 +176,8 @@ router.get('/profile', verifyToken, (req, res) => {
       updatedAt: req.user.updatedAt
     }
   });
-});
-
+});*/
+/*
 // PUT /api/users/profile - Atualizar perfil do usuário
 router.put('/profile', verifyToken, async (req, res) => {
   try {
@@ -207,8 +213,8 @@ router.put('/profile', verifyToken, async (req, res) => {
       message: error.message || 'Erro ao atualizar perfil'
     });
   }
-});
-
+});*/
+/** 
 // POST /api/users/change-password - Alterar senha
 router.post('/change-password', verifyToken, async (req, res) => {
   try {
@@ -254,6 +260,6 @@ router.post('/change-password', verifyToken, async (req, res) => {
       message: 'Erro interno do servidor'
     });
   }
-});
+});*/
 
 module.exports = router;

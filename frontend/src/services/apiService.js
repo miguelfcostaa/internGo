@@ -23,10 +23,11 @@ export const signupUser = async (name, email, cc, telefone, password) => {
     if (!res.ok) {
       // Melhor tratamento de erro com mais detalhes
       const errorMessage = data.message || 'Erro ao registrar usuário';
+      const suggestion = data.suggestion ? `\n\n ${data.suggestion}` : '';
       const errorDetails = data.errors ? ` - ${data.errors.join(', ')}` : '';
       const requiredFields = data.required ? ` - Campos obrigatórios: ${data.required.join(', ')}` : '';
       
-      throw new Error(errorMessage + errorDetails + requiredFields);
+      throw new Error(errorMessage + suggestion + errorDetails + requiredFields);
     }
     
     return data;
