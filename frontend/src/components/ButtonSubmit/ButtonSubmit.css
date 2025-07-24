@@ -1,0 +1,35 @@
+.button-Submiting {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
+
+.w100h40 {
+  width: 300px;
+  height: 40px;
+  padding: 0 15px;
+}
+
+.primary {
+  background-color: #273F4F; 
+  color: white;
+}
+
+.primary:hover {
+  background-color: #aaa9aa; 
+}
+
+
+.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.disabled:hover {
+  opacity: 0.6;
+}

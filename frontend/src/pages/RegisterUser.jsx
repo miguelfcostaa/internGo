@@ -1,128 +1,186 @@
 import React, { useState } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
-import { Link } from "react-router-dom";
+import { signupUser } from "../services/apiService";
+//import ButtonSubmit from "../components/ButtonSubmit/ButtonSubmit";
+import { validateForm } from "../utils/registerUserUtils"; // Importar a função de validação
 
 function RegisterUser() {
   const [formData, setFormData] = useState({
-    nome: "",
-    bi: "",
+    name: "",
+    cc: "",
     email: "",
     telefone: "",
-    senha: "",
-    confirmarSenha: "",
+    password: "",
+    confirmPassword: "",
   });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
   const handleChange = (e) => {
-    const { id, value } = e.target;
-    setFormData({ ...formData, [id]: value });
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+    // Limpar mensagens de erro/sucesso quando o usuário começa a digitar
+    if (error) setError("");
+    if (success) setSuccess("");
   };
 
-  const handleSubmit = (e) => {
+  
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setError("");
+    setSuccess("");
 
-    if (
-      !formData.nome ||
-      !formData.bi ||
-      !formData.email ||
-      !formData.telefone ||
-      !formData.senha ||
-      !formData.confirmarSenha
-    ) {
-      alert("Por favor, completa todos los campos.");
+    // Executar validações
+    const validationError = validateForm(formData);
+    if (validationError) {
+      setError(validationError);
+      setLoading(false);
       return;
     }
 
-    if (formData.senha !== formData.confirmarSenha) {
-      alert("Las contraseñas no coinciden.");
-      return;
-    }
+    try {
+      const response = await signupUser(
+        formData.name,
+        formData.email,
+        formData.cc,
+        formData.telefone,
+        formData.password
+      );
 
-    console.log("Datos enviados:", formData);
+      setSuccess("Conta criada com sucesso! Pode agora fazer login.");
+      // Limpar o formulário
+      setFormData({
+        name: "",
+        cc: "",
+        email: "",
+        telefone: "",
+        password: "",
+        confirmPassword: "",
+      });
+    } catch (err) {
+      const errorData = err.message || "Erro ao criar conta. Tente novamente.";
+
+      // Verificar se é um erro de dados já existentes
+      if (errorData.includes("Já existe uma conta")) {
+        setError(errorData);
+      } else {
+        setError(errorData);
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div className="container d-flex align-items-center justify-content-center vh-100">
-      <div className="col-md-6 bg-white p-5 rounded shadow">
-        <h2 className="text-center mb-4">Registo - Estagiário</h2>
+    <div>
+      <div>
+        <h1>Registo-Estagiário</h1>
+
+        {error && (
+          <div
+            style={{
+              color: "red",
+              marginBottom: "10px",
+              padding: "10px",
+              border: "1px solid red",
+              borderRadius: "4px",
+            }}
+          >
+            {error}
+          </div>
+        )}
+
+        {success && (
+          <div
+            style={{
+              color: "green",
+              marginBottom: "10px",
+              padding: "10px",
+              border: "1px solid green",
+              borderRadius: "4px",
+            }}
+          >
+            {success}
+          </div>
+        )}
 
         <form onSubmit={handleSubmit}>
-          <div className="mb-3">
-            <label htmlFor="nome" className="form-label">Nome completo</label>
+          <label>
+            Nome completo
             <input
               type="text"
-              className="form-control"
-              id="nome"
-              placeholder="Digite seu nome"
-              value={formData.nome}
+              name="name"
+              value={formData.name}
               onChange={handleChange}
+              placeholder="Insira o seu nome completo"
             />
-          </div>
-
-          <div className="mb-3">
-            <label htmlFor="bi" className="form-label">Número do BI (CC)</label>
+          </label>
+          <label>
+            Número do BI(CC)
             <input
               type="text"
-              className="form-control"
-              id="bi"
-              placeholder="Digite o número do BI"
-              value={formData.bi}
+              name="cc"
+              value={formData.cc}
               onChange={handleChange}
+              placeholder="8 dígitos (ex: 12345678)"
+              maxLength="8"
             />
-          </div>
-
-          <div className="mb-3">
-            <label htmlFor="email" className="form-label">Email</label>
+          </label>
+          <label>
+            Email
             <input
               type="email"
-              className="form-control"
-              id="email"
-              placeholder="Digite seu email"
+              name="email"
               value={formData.email}
               onChange={handleChange}
+              placeholder="exemplo@email.com"
             />
-          </div>
-
-          <div className="mb-3">
-            <label htmlFor="telefone" className="form-label">Número de telemóvel</label>
+          </label>
+          <label>
+            Número de telemóvel
             <input
-              type="text"
-              className="form-control"
-              id="telefone"
-              placeholder="Digite o número"
+              type="tel"
+              name="telefone"
               value={formData.telefone}
               onChange={handleChange}
+              placeholder="9xxxxxxxx (ex: 912345678)"
             />
-          </div>
-
-          <div className="mb-3">
-            <label htmlFor="senha" className="form-label">Palavra-passe</label>
+          </label>
+          <label>
+            Palavra-passe
             <input
               type="password"
-              className="form-control"
-              id="senha"
-              placeholder="Digite a palavra-passe"
-              value={formData.senha}
+              name="password"
+              value={formData.password}
               onChange={handleChange}
+              placeholder="Insira a palavra-passe"
             />
-          </div>
-
-          <div className="mb-4">
-            <label htmlFor="confirmarSenha" className="form-label">Confirmar palavra-passe</label>
+          </label>
+          <label>
+            Confirmar palavra-passe
             <input
               type="password"
-              className="form-control"
-              id="confirmarSenha"
+              name="confirmPassword"
+              value={formData.confirmPassword}
+              onChange={handleChange}
               placeholder="Confirme a palavra-passe"
-              value={formData.confirmarSenha}
-              onChange={handleChange}
             />
-          </div>
-
-          <button type="submit" className="btn btn-primary w-100">Criar Conta</button>
+          </label>
+          <ButtonSubmit
+            text="Criar Conta" 
+            isSubmitting={loading} 
+            loadingText = "Criar Conta..."
+            type="submit"
+            variant="primary"
+          />
         </form>
-
-        <p className="text-center mt-3">
-          Já tens uma conta? <Link to="/login">Faz o Login</Link>
+        <p>
+          Já tens uma conta? <a href="/login">Faz o Login</a>
         </p>
       </div>
     </div>

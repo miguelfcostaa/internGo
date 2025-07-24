@@ -1,14 +1,13 @@
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
-const passport = require('passport');
-const session = require('express-session');
 const User = require('./models/User');
 const userRoutes = require('./routes/routeUser');
 const companyRoutes = require('./routes/routeCompany');
 require('dotenv').config();
 
 const app = express();
+//Porta do Backend
 const PORT = process.env.PORT || 5000;
 
 // Middleware
@@ -41,11 +40,13 @@ mongoose.connect(process.env.MONGODB_URI)
 .then(() => console.log('🍃 Conectado ao MongoDB'))
 .catch(err => console.error('❌ Erro ao conectar ao MongoDB:', err));
 
-// Rotas básicas
+
+// Rota de teste para verificar se o servidor está funcionando
 app.get('/', (req, res) => {
   res.json({ message: 'InternGO Backend API está funcionando!' });
 });
 
+// Rota de teste para verificar conexão
 app.get('/api/test', (req, res) => {
   res.json({ 
     message: 'Conexão com o backend estabelecida com sucesso!',
@@ -53,6 +54,10 @@ app.get('/api/test', (req, res) => {
     mongodb: mongoose.connection.readyState === 1 ? 'Conectado' : 'Desconectado'
   });
 });
+
+// Rotas de usuários
+app.use('/api/users', userRoutes);
+
 
 // Inicializar servidor
 app.listen(PORT, () => {
