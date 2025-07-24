@@ -1,6 +1,7 @@
-import { Schema, model } from 'mongoose';
-import validations from '../utils/validations.js';
-import { validate } from './User';
+const { Schema, model } = require('mongoose');
+const validations = require('../utils/validations'); 
+const { modelName } = require('./User');
+
 
 const companySchema = new Schema({
     name: {
@@ -22,6 +23,7 @@ const companySchema = new Schema({
         }
     },
     password: {
+        type: String,
         required: true,
         validate: {
             validator: validations.validatePassword,
@@ -31,6 +33,7 @@ const companySchema = new Schema({
     phone: {
         type: String,
         required: true,
+        unique: true,
         validate: {
             validator: validations.validatePhoneNumber, 
             message: 'Número de telefone deve ter formato válido (9xxxxxxxx ou +351xxxxxxxxx).'
@@ -47,10 +50,8 @@ const companySchema = new Schema({
     },
     image: {
         type: String,
-        required: false,
     }
 });
 
 const Company = model('Company', companySchema);
-export default Company;
-    
+module.exports = Company;

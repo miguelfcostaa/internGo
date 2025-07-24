@@ -5,6 +5,7 @@ const passport = require('passport');
 const session = require('express-session');
 const User = require('./models/User');
 const userRoutes = require('./routes/routeUser');
+const companyRoutes = require('./routes/routeCompany');
 require('dotenv').config();
 
 const app = express();
@@ -33,6 +34,7 @@ passport.deserializeUser(User.deserializeUser());
 
 // Rotas de usuários
 app.use('/api/users', userRoutes);
+app.use('/api/companies', companyRoutes);
 
 // Conectar ao MongoDB
 mongoose.connect(process.env.MONGODB_URI)
