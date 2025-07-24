@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import '../styles/RegisterCompany.css'; 
 
 function RegisterCompany(){
 
+    const [done, setDone] = useState(false);
     const [fieldErrors, setFieldErrors] = useState({});
     const navigate = useNavigate();
 
@@ -32,6 +34,9 @@ function RegisterCompany(){
 
         if (response.ok) 
         {
+            setDone(true);
+            setFieldErrors({});
+            alert("Empresa registada com sucesso!");
             navigate("/home");
             console.log("Registration successful:", result);
         } 
@@ -56,41 +61,49 @@ function RegisterCompany(){
 
     return(
         <div>
-            <div className="container">
-                <h1>Registo - Empresa</h1>
+            <div className="container bg-white">
+                <p className="title">Registo - Empresa</p>
                 <form method="POST" onSubmit={handleSubmit} className="form">
-                    <label id="name">Nome da Empresa
-                        <input type="text" placeholder="" name="name"></input>
-                    </label>
-                    <label>Número do NIF
-                        <input type="text" placeholder="" name="nif"></input>
-                    </label>
-                    <label>Email da empresa
-                        <input type="text" placeholder="" name="email"></input>
-                    </label>
-                    <div className="input-group m-3">
-                        <select className="btn btn-secondary dropdown-toggle ">
-                            <option value={+351}>+351</option>
-                            <option value={+55}>+55</option>
-                            <option value={+1}>+1</option>
-                            <option value={+58}>+58</option>
-                        </select>
-                        <input type="text" className="form-control" name="phone"/>
+                    <div className="container-main">
+                        <div className="container-flex">
+                            <label className="label">Nome da Empresa </label>
+                            <input type="text" placeholder="" name="name" className="input-group-text" />
+                            
+                            <label className="label">Email da empresa</label>
+                            <input type="text" placeholder="" name="email" className="input-group-text" />
+                            
+                            <label className="label">Palavra-passe</label>
+                            <input type="password" placeholder="" name="password" className="input-group-text" />
+                        </div>
+                        <div className="container-flex">
+                            <label className="label"> Número do NIF </label>
+                            <input type="text" placeholder="" name="nif" className="input-group-text" />
+                            
+                            <label className="label">Telefone</label>
+                            <div className="input-group">
+                                <select className="btn btn-secondary dropdown-toggle" name="phone">
+                                    <option value={+351}>+351</option>
+                                    <option value={+55}>+55</option>
+                                    <option value={+1}>+1</option>
+                                    <option value={+58}>+58</option>
+                                </select>
+                                <input type="text" className="input-group-text" name="phone"/>
+                            </div>
+
+                            <label className="label">Confirmar palavra-passe</label>
+                            <input type="password" placeholder="" name="confirmPassword" className="input-group-text" />
+                        </div>
                     </div>
-                    <label>Palavra-passe
-                        <input type="password" placeholder="" name="password"></input>
-                    </label>
-                    <label>Confirmar palavra-passe
-                        <input type="password" placeholder="" name="confirmPassword"></input>
-                    </label>
+
+                    
                     <button type="submit" className="btn btn-primary">Criar Conta</button>
                 </form>
                 <p>Já tens uma conta? <a href="/login">Faz o Login</a></p>
-                {Object.keys(fieldErrors).length === 0 ? (
+                {done ? (
                     <div className="alert alert-success text-success"> 
                         Registo efetuado com sucesso! 
                     </div>
-                ) : (
+                ) : Object.values(fieldErrors).length != 0 ? (
                     <div className="alert alert-danger">
                         {Object.values(fieldErrors).map((error, index) => (
                             <ul key={index}>
@@ -98,7 +111,7 @@ function RegisterCompany(){
                             </ul>
                         ))}
                     </div>
-                )}
+                ) : null}
             </div>
         </div>
     )

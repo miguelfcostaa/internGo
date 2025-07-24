@@ -1,6 +1,6 @@
 import React from "react";
 import HomePageEstagio from "../components/Estagio";
-import NavBar from "../components/NavBar/NavBar";
+import NavBar from "../components/NavBar";
 
 function HomePage() {
     return (

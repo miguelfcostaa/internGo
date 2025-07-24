@@ -1,10 +1,11 @@
 import React from "react";
-import BarraSuperior from "../components/BarraSuperior";
+import ButtonVoltar from "../components/ButtonVoltar";
+import NavBar from "../components/NavBar";
 
 function CandidaturasFeitas() {
   return (
     <div>
-      <BarraSuperior />
+      <NavBar />
         <div>
             <h1>Candidaturas Feitas</h1>
             <ButtonVoltar />
