@@ -3,8 +3,8 @@ import React from "react";
 /*Falta importar a lista de Candidaturas Efetuadas */
 
 function CandidaturasFeitas() {
-    temp=[];
-    array.forEach(element => {
+    const temp = [];
+    Array.forEach(element => {
         temp.push(
             <tr key={element.id}>
                 <td>{element.estagio}</td>

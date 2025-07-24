@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function RegisterCompany(){
 
-    const [fieldErrors, setFieldErrors] = React.useState({});
-    
+    const [fieldErrors, setFieldErrors] = useState({});
+    const navigate = useNavigate();
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         setFieldErrors({}); 
@@ -18,14 +20,6 @@ function RegisterCompany(){
             confirmPassword: formData.get("confirmPassword")
         };
 
-        if (data.password !== data.confirmPassword) {
-            setFieldErrors({ 
-                confirmPassword: "As palavras-passe não coincidem.", 
-                password: "As palavras-passe não coincidem." 
-            });
-            return;
-        }
-
         const response = await fetch("http://localhost:5000/api/companies/register", {
             method: "POST",
             headers: {
@@ -38,6 +32,7 @@ function RegisterCompany(){
 
         if (response.ok) 
         {
+            navigate("/home");
             console.log("Registration successful:", result);
         } 
         else 
@@ -66,15 +61,12 @@ function RegisterCompany(){
                 <form method="POST" onSubmit={handleSubmit} className="form">
                     <label id="name">Nome da Empresa
                         <input type="text" placeholder="" name="name"></input>
-                        {fieldErrors.name && <div className="text-danger">{fieldErrors.name}</div>}
                     </label>
                     <label>Número do NIF
                         <input type="text" placeholder="" name="nif"></input>
-                        {fieldErrors.nif && <div className="text-danger">{fieldErrors.nif}</div>}
                     </label>
                     <label>Email da empresa
                         <input type="text" placeholder="" name="email"></input>
-                        {fieldErrors.email && <div className="text-danger">{fieldErrors.email}</div>}
                     </label>
                     <div className="input-group m-3">
                         <select className="btn btn-secondary dropdown-toggle ">
@@ -84,19 +76,29 @@ function RegisterCompany(){
                             <option value={+58}>+58</option>
                         </select>
                         <input type="text" className="form-control" name="phone"/>
-                        {fieldErrors.phone && <div className="text-danger">{fieldErrors.phone}</div>}
                     </div>
                     <label>Palavra-passe
                         <input type="password" placeholder="" name="password"></input>
-                        {fieldErrors.password && <div className="text-danger">{fieldErrors.password}</div>}
                     </label>
                     <label>Confirmar palavra-passe
                         <input type="password" placeholder="" name="confirmPassword"></input>
-                        {fieldErrors.confirmPassword && <div className="text-danger">{fieldErrors.confirmPassword}</div>}
                     </label>
                     <button type="submit" className="btn btn-primary">Criar Conta</button>
                 </form>
                 <p>Já tens uma conta? <a href="/login">Faz o Login</a></p>
+                {Object.keys(fieldErrors).length === 0 ? (
+                    <div className="alert alert-success text-success"> 
+                        Registo efetuado com sucesso! 
+                    </div>
+                ) : (
+                    <div className="alert alert-danger">
+                        {Object.values(fieldErrors).map((error, index) => (
+                            <ul key={index}>
+                                <li>{error}</li>
+                            </ul>
+                        ))}
+                    </div>
+                )}
             </div>
         </div>
     )

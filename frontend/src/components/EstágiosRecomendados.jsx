@@ -3,8 +3,8 @@ import React from "react";
 /*Falta importar a lista de Estágios Recomendados e adicionar o logo*/
 
 function EstagiosRecomendados() {
-    temp=[];
-    array.forEach(element => {
+    const temp = [];
+    Array.forEach(element => {
         temp.push(
             <tr key={element.id}>
                 <td>{element.estagio}</td>
@@ -17,7 +17,7 @@ function EstagiosRecomendados() {
     });
     return (
         <>
-            {temp};
+            {temp}
         </>
     );
 }

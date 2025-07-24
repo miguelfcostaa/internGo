@@ -4,7 +4,7 @@ import React from "react";
 
 function CompetenciasTecnicas() {
     let temp = [];
-    {array.forEach(element => {
+    {Array.forEach(element => {
             temp.push(<li>{element}</li>);
         })}
     return (

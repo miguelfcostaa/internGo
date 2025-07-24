@@ -1,10 +1,11 @@
 import React from "react";
+import Logo from "../components/Logo";
 
 function HomePage() {
     return (
         <div>
             <div>{/*barra superior*/}
-                <div>Logo</div>
+                <Logo />
                 <span>
                     <form>
                         <input type="text"></input>{/*falta acrescentar a lupa*/}
@@ -54,7 +55,6 @@ function HomePage() {
                     </details>
                 </div>
             </div>
-            <HomePageEstagio/>{/*Cria automaticamente a caixa com o estágio*/}
         </div>
     )
 }

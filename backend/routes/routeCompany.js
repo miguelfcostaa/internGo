@@ -3,6 +3,7 @@ const router = express.Router();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const Company = require('../models/Company');
+const validateCompanyInput = require('../utils/validateCompanyInput');
 
 
 router.get('/all', async (req, res) => {
@@ -24,34 +25,22 @@ router.get('/login', (req, res) => {
 });
 
 router.post('/register', async (req, res) => {
-    try {
-        if (req.body.email) {
-            const existingCompany = await Company.findOne({ email: req.body.email });
-            if (existingCompany) {
-                return res.status(400).json({ message: 'Email já está em uso.' });
-            }
-        }
-        if (req.body.password != req.body.confirmPassword) {
-            return res.status(400).json({ message: 'Passwords não coincidem.' });
-        }
+    const errors = await validateCompanyInput(req.body);
 
-        if (req.body.password) { // Hash the password before saving
-            const salt = await bcrypt.genSalt(10);
-            req.body.password = await bcrypt.hash(req.body.password, salt);
-        }
+    if (Object.keys(errors).length > 0) {
+        return res.status(400).json({ message: errors });
+    }
+
+    try {
+        const salt = await bcrypt.genSalt(10);
+        req.body.password = await bcrypt.hash(req.body.password, salt);
 
         const company = new Company(req.body);
         await company.save();
-        res.status(201).json(company);
+
+        return res.status(201).json(company);
     } catch (error) {
-        if (error.name === 'ValidationError') {
-            const messages = {};
-            for (const field in error.errors) {
-                messages[field] = error.errors[field].message;
-            }
-            return res.status(400).json({ message: messages });
-        }
-        res.status(400).json({ message: 'Error creating company', error: error.message });
+        return res.status(500).json({ message: 'Erro interno no servidor.', error: error.message });
     }
 });
 

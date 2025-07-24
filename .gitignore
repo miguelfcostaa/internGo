@@ -8,9 +8,3 @@
 .pnp.js
 /backend/.env
 *.log
-frontend/node_modules/.cache/.eslintcache
-frontend/node_modules/.cache/default-development/0.pack
-frontend/node_modules/.cache/default-development/1.pack
-frontend/node_modules/.cache/default-development/3.pack
-frontend/node_modules/.cache/default-development/index.pack
-frontend/node_modules/.cache/default-development/index.pack.old

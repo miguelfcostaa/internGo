@@ -1,10 +1,13 @@
 import React from "react";
+import logo from "../assets/logo.png"; 
+import { NomeEmpresa, NomeEstagio, TotalVagas, Ativas, Area, Inicio, TipoEstagio, Duracao, Localizacao } from "../data/estagioData";
+import Logo from "../components/Logo";
 
 function HomePageEstagio() {
     return (
         <div>
             <div>
-                <div>{logo}</div>
+                <Logo width="100" height="100" />
                 <div>{NomeEmpresa}</div>
             </div>
             <h1>{NomeEstagio}</h1>
