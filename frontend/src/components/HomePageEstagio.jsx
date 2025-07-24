@@ -1,36 +1,36 @@
 import React from "react";
 import logo from "../assets/logo.png"; 
-import { NomeEmpresa, NomeEstagio, TotalVagas, Ativas, Area, Inicio, TipoEstagio, Duracao, Localizacao } from "../data/estagioData";
 import Logo from "../components/Logo";
 
-function HomePageEstagio() {
+function HomePageEstagio({ NomeEmpresa, NomeEstagio, TotalVagas, Ativas, Area, Inicio, TipoEstagio, Duracao, Localizacao }) {
     return (
-        <div>
-            <div>
-                <Logo width="100" height="100" />
+        <div className="container bg-white p-4 rounded shadow mt-5" style={{ display: "flex", flexDirection: "row", gap: "100px" }}>
+            <div style={{ display: "flex", flexDirection: "column"}}>
+                <Logo width="50" height="50" />
                 <div>{NomeEmpresa}</div>
             </div>
-            <h1>{NomeEstagio}</h1>
             <div>
-                <table>
-                    <tr>
-                        <td>{TotalVagas}</td>
-                        <td>{Ativas}</td>
-                    </tr>
-                    <tr>
-                        <td>{Area}</td>
-                        <td>{Inicio}</td>
-                    </tr>   
-                    <tr>
-                        <td>{TipoEstagio}</td>
-                        <td>{Duracao}</td>
-                    </tr>
-                </table>
+                <h4>{NomeEstagio}</h4>
                 <div>
-                    <p>{Localizacao}</p>
-                    <button onClick={() => {/*Adicionar funcao que permita levar para pagina de candidatura(ainda nao criada)*/}}>Candidatar-me</button>
+                    <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
+                        <div><span style={{fontWeight: "bold" }}>Vagas Total: </span> {TotalVagas}</div>
+                        <div><span style={{fontWeight: "bold" }}>Ativas: </span> {Ativas}</div>
+                    </div>
+                    <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
+                        <div><span style={{fontWeight: "bold" }}>Area: </span> {Area}</div>
+                        <div><span style={{fontWeight: "bold" }}>Inicio: </span> {Inicio}</div>
+                    </div>
+                    <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
+                        <div><span style={{fontWeight: "bold" }}>Tipo de Estágio: </span> {TipoEstagio}</div>
+                        <div><span style={{fontWeight: "bold" }}>Duração: </span> {Duracao}</div>
+                    </div>
                 </div>
             </div>
+            <div>
+                <p>{Localizacao}</p>
+                <button className="btn btn-primary">Candidatar-me</button>
+            </div>
+            
         </div>
     )
 }
