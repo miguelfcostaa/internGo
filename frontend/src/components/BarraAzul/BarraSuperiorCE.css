@@ -1,0 +1,10 @@
+.BarraAzul{
+    display: 'flex'; 
+    flex-direction: "row";
+    gap: "50px";
+    background-color: "blue";
+    justify-content: space-between;
+}
+.Componentes{
+    color: "white";
+}

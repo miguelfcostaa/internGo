@@ -1,8 +1,8 @@
 import React from "react";
 
-/*Falta importar a lista de Candidaturas Efetuadas */
+/*Falta importar a lista de Estágios Recomendados e adicionar o logo*/
 
-function CandidaturasFeitas() {
+function EstagiosRecomendados() {
     const temp = [];
     Array.forEach(element => {
         temp.push(
@@ -17,9 +17,9 @@ function CandidaturasFeitas() {
     });
     return (
         <>
-            {temp};
+            {temp}
         </>
     );
 }
 
-export default CandidaturasFeitas;
+export default EstagiosRecomendados;

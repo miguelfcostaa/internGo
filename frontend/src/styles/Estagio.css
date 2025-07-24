@@ -1,0 +1,30 @@
+.title {
+    font-size: 2.2rem;
+    font-weight: bold;
+}
+
+.text {
+    font-size: 1.2rem;
+}
+
+.logo-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.estagio-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.estagio-info {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.estagio-info-label {
+    font-weight: bold;
+}

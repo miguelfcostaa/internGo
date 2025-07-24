@@ -1,5 +1,3 @@
-import React from 'react';
-
 function validateName(name) {
     return name.length >= 3 && name.length <= 50; // Nome deve ter entre 3 e 50 caracteres
 }
