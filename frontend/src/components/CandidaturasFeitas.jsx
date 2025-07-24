@@ -1,6 +1,6 @@
 import React from "react";
 
-{(/*Falta importar a lista de Candidaturas Efetuadas */)}
+/*Falta importar a lista de Candidaturas Efetuadas */
 
 function CandidaturasFeitas() {
     temp=[];

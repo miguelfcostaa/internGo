@@ -1,6 +1,6 @@
 import React from "react";
 
-{(/*Falta importar a lista de Estágios Recomendados e adicionar o logo*/)}
+/*Falta importar a lista de Estágios Recomendados e adicionar o logo*/
 
 function EstagiosRecomendados() {
     temp=[];

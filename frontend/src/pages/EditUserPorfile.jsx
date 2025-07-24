@@ -37,7 +37,7 @@ function EditUserProfile() {
                     </ul>
                 </div>
                 <div>
-                    <h1>CCompetências Técnicas</h1>
+                    <h1>Competências Técnicas</h1>
                     <ul>
                         <CompetenciasTecnicas/>{/*Cria a lista automaticamente*/}
                     </ul>

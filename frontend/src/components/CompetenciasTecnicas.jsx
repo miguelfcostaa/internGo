@@ -1,6 +1,6 @@
 import React from "react";
 
-{(/*Falta importar a lista de competências técnicas */)}
+/*Falta importar a lista de competências técnicas */
 
 function CompetenciasTecnicas() {
     let temp = [];

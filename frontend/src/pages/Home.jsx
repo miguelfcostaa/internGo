@@ -54,33 +54,7 @@ function HomePage() {
                     </details>
                 </div>
             </div>
-            <div>{/*caixa dos estagios*/}
-                <div>
-                    <div>Logo da empresa</div>
-                    <div>Nome da empresa</div>
-                </div>
-                <div>
-                    <h6>Nome do Estágio</h6>
-                    <table>
-                    <tr>
-                        <td>Total de Vagas:</td>
-                        <td>Ativas</td>
-                    </tr>
-                    <tr>
-                        <td>Area</td>
-                        <td>Início</td>
-                    </tr>   
-                    <tr>
-                        <td>Tipo de Estágio</td>
-                        <td>Duração</td>
-                    </tr>
-                    </table>
-                </div>
-                <div>
-                    <p>Lisboa,Portugal</p>
-                    <button>Candidatar-me</button>
-                </div>
-            </div>
+            <HomePageEstagio/>{/*Cria automaticamente a caixa com o estágio*/}
         </div>
     )
 }

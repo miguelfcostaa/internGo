@@ -1,6 +1,8 @@
 import React from 'react';
 import NavBar from '../components/NavBar';
 import logo from '../assets/logo.jpg';
+import EstagiosRecomendados from '../components/EstágiosRecomendados';
+
 
 const ProfilePage = () => {
     return (
@@ -24,7 +26,7 @@ const ProfilePage = () => {
                         <div>Foto de perfil</div>
                         <span>Kayne west</span>
                         <span>kaynewest@mail.com</span>
-                        <button>Ver mais detalhes</button>
+                        <ButtonMaisDetalhes onclick={() => {ToEditPorfile}}/>{/*Botão para ver mais detalhes do perfil, adicionar funçao para riderecionar para a pagina EditUserPorfile*/}
                     </div>
                     <div>{/*Informações do estágio ativo*/}
                         <div>
@@ -42,20 +44,7 @@ const ProfilePage = () => {
                     <table>
                         <thead>Candidaturas Efetuadas</thead>
                         <tbody>
-                            <tr>
-                                <td>Estágio</td>
-                                <td>Empresa</td>
-                                <td>Mês de Início</td>
-                                <td>Duração</td>
-                                <td><a href=""></a></td>
-                            </tr>
-                            <tr>
-                                <td>Estágio de WebDeveloper</td>
-                                <td>Acin</td>
-                                <td>Julho</td>
-                                <td>1 mês</td>
-                                <td><a href=""></a></td>
-                            </tr>
+                            <CandidaturasFeitas/>{/*Cria a lista automaticamente*/}
                             <tr>
                                 <button>Mostrar todos</button>
                             </tr>
@@ -66,13 +55,7 @@ const ProfilePage = () => {
                     <table>
                         <thead>Estágios Recomendados</thead>
                         <tbody>
-                            <tr>
-                                <td>Estágio frontend Developer</td>
-                                <td>Acin</td>
-                                <td>Julho</td>
-                                <td>1 mês</td>
-                                <td><a href=""></a></td>
-                            </tr>
+                            <EstagiosRecomendados/>{/*Cria a lista automaticamente*/}
                         </tbody>
                     </table>
                 </div>

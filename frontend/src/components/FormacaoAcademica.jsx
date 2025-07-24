@@ -1,6 +1,6 @@
 import React from "react";
 
-{(/*Falta importar a lista de formações académicas e ajustar a funcao conforme o tipo de dados importados*/)}
+/*Falta importar a lista de formações académicas e ajustar a funcao conforme o tipo de dados importados*/
 
 function FormacaoAcademica() {
     let temp = [];
