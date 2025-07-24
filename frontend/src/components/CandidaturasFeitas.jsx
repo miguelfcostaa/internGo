@@ -1,5 +1,5 @@
 import React from "react";
-import array
+
 {(/*Falta importar a lista de Candidaturas Efetuadas */)}
 
 function CandidaturasFeitas() {

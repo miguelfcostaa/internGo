@@ -1,5 +1,5 @@
 import React from "react";
-import array
+
 {(/*Falta importar a lista de formações académicas e ajustar a funcao conforme o tipo de dados importados*/)}
 
 function FormacaoAcademica() {

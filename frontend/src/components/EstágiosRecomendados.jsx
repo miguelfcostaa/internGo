@@ -1,5 +1,5 @@
 import React from "react";
-import array 
+
 {(/*Falta importar a lista de Estágios Recomendados e adicionar o logo*/)}
 
 function EstagiosRecomendados() {
