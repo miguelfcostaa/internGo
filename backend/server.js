@@ -1,8 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
-const User = require('./models/User');
-const userRoutes = require('./routes/routeUser');
+const userRoutes = require('./routes/userRoutes');
 const companyRoutes = require('./routes/routeCompany');
 require('dotenv').config();
 
@@ -13,23 +12,6 @@ const PORT = process.env.PORT || 5000;
 // Middleware
 app.use(cors());
 app.use(express.json());
-
-// Configuração de sessão
-app.use(session({
-  secret: process.env.SESSION_SECRET || 'sua-chave-secreta-aqui',
-  resave: false,
-  saveUninitialized: false,
-  cookie: { 
-    maxAge: 24 * 60 * 60 * 1000 // 24 horas
-  }
-}));
-
-// Configuração do Passport
-app.use(passport.initialize());
-app.use(passport.session());
-passport.use(User.createStrategy());
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
 
 // Rotas de usuários
 app.use('/api/users', userRoutes);
@@ -54,10 +36,6 @@ app.get('/api/test', (req, res) => {
     mongodb: mongoose.connection.readyState === 1 ? 'Conectado' : 'Desconectado'
   });
 });
-
-// Rotas de usuários
-app.use('/api/users', userRoutes);
-
 
 // Inicializar servidor
 app.listen(PORT, () => {
