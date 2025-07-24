@@ -1,33 +1,41 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import welcomeImage from "../assets/background.jpg";
+import Welcomepage from "../assets/Welcomepage.jpg";
 import logo from "../assets/logo.png";
-import "bootstrap/dist/css/bootstrap.min.css";
+import "../styles/WelcomePage.css";
 
 function WelcomePage() {
   const navigate = useNavigate();
 
   return (
     <div className="container-fluid vh-100 d-flex flex-column flex-md-row p-0">
-      {/* Lado izquierdo con imagen */}
       <div className="col-md-6 d-none d-md-block p-0">
         <img
-          src={welcomeImage}
+          src={Welcomepage}
           alt="Imagem de boas-vindas"
           style={{ width: "100%", height: "100%", objectFit: "cover" }}
         />
       </div>
-
-      {/* Lado direito com conteúdo */}
-      <div className="col-md-6 d-flex align-items-center justify-content-center bg-white">
+      <div className="d-block d-md-none">
+        <img
+          src={Welcomepage}
+          alt="Imagem mobile"
+          className="mobile-welcome-image"
+        />
+      </div>
+      <div className="col-md-6 d-flex align-items-center justify-content-center welcome-content">
         <div className="text-center px-4">
-          <img src={logo} alt="Logo InterGo" className="mb-4" style={{ width: "100px" }} />
-          <h1 className="fw-bold">Bem-vindo!</h1>
-          <p className="mb-4">
-            Bem-vindo à plataforma que liga estudantes a empresas: descobre e
-            oferece oportunidades de estágio de verão que fazem a diferença.
+          <img src={logo} alt="Logo InterGo" className="mb-4 welcome-logo" />
+          <h1 className="welcome-title">Bem-vindo!</h1>
+          <p className="welcome-text">
+            Bem-vindo à plataforma que liga estudantes a empresas:
+            descobre e oferece oportunidades de estágio de verão que
+            fazem a diferença.
           </p>
-          <button className="btn btn-warning fw-bold px-4" onClick={() => navigate("/select-user")}>
+          <button
+            className="welcome-button"
+            onClick={() => navigate("/select-user")}
+          >
             Vamos a isso!
           </button>
         </div>

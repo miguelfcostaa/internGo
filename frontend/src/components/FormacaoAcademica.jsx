@@ -5,13 +5,7 @@ import React from "react";
 function FormacaoAcademica() {
     let temp = [];
     {Array.forEach(element => {
-            temp.push(<li>{element.InstituicaodeEnsino}<li>{element.Curso}</li></li>);
-        })}
-    return (
-        <>
-            {temp}
-        </>
-    );
-}
+            temp.push(<li>{element.InstituicaodeEnsino}<li>{element.Curso}</li></li>);    
+    })}}
 
 export default FormacaoAcademica;
