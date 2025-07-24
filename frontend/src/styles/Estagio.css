@@ -1,11 +1,3 @@
-.title {
-    font-size: 2.2rem;
-    font-weight: bold;
-}
-
-.text {
-    font-size: 1.2rem;
-}
 
 .logo-container {
     display: flex;
@@ -13,10 +5,10 @@
     justify-content: center;
 }
 
-.estagio-details {
+.estagio-container {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-around;
 }
 
 .estagio-info {
@@ -25,6 +17,25 @@
     justify-content: space-between;
 }
 
+.estagio-info-left {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.estagio-info-right {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
 .estagio-info-label {
     font-weight: bold;
+    font-size: 1rem;
+}
+
+.apply-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
 }

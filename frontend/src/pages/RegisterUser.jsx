@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { signupUser } from "../services/apiService";
-//import ButtonSubmit from "../components/ButtonSubmit/ButtonSubmit";
+import ButtonSubmit from "../components/ButtonSubmit/ButtonSubmit";
 import { validateForm } from "../utils/registerUserUtils"; // Importar a função de validação
 
 function RegisterUser() {
