@@ -9,6 +9,7 @@ import WelcomePage from './pages/WelcomePage.jsx';
 import RegisterUser from './pages/RegisterUser.jsx';
 import RegisterCompany from './pages/RegisterCompany.jsx';
 import ForgotPassword from './pages/ForgotPassword.jsx';
+import Footer from './components/Footer.jsx';
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
           <Route path='/profile-company' element={<ProfileCompany />}></Route>  {/*  Rota da Profile Page (Empresa) */}
         </Routes>
       </Router>
+      <Footer />
     </div>
   );
 }

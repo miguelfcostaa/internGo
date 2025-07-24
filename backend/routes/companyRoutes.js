@@ -47,26 +47,36 @@ router.post('/register', async (req, res) => {
 
 router.post('/login', async (req, res) => {
     const { email, password } = req.body;
+    const errors = {};
+
+    if (!email || !password) {
+        errors.general = 'Email e password são obrigatórios.';
+    }
+
     try {
         const company = await Company.findOne({ email });
         if (!company) {
             return res.status(404).json({ message: 'Email ou password incorretos.' });
+        } else {
+            const isMatch = await bcrypt.compare(password, company.password);
+            if (!isMatch) {
+                errors.general = 'Email ou Password incorretos.';
+            }
         }
-        const isMatch = await bcrypt.compare(password, company.password);
-        if (!isMatch) {
-            return res.status(401).json({ message: 'Email ou password incorretos.' });
+
+        if (Object.keys(errors).length > 0) {
+            return res.status(400).json({ message: errors });
         }
-        const token = jwt.sign({ id: company._id }, process.env.JWT_SECRET, { expiresIn: '3d' });
+
+        const token = jwt.sign(
+            { id: company._id, role: 'company' },
+            process.env.JWT_SECRET,
+            { expiresIn: '3d' }
+        );
         res.status(200).json({ token });
     } catch (error) {
-        if (error.name === 'ValidationError') {
-            const messages = {};
-            for (const field in error.errors) {
-                messages[field] = error.errors[field].message;
-            }
-            return res.status(400).json({ message: messages });
-        }
-        return res.status(400).json({ message: 'Error finding company', error: error.message });
+        console.error('Login error:', error);
+        res.status(500).json({ message: 'Erro interno no servidor.', error: error.message });
     }
 });
 

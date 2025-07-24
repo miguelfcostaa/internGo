@@ -1,0 +1,22 @@
+.background {
+    background-color: #F2F2F2;
+    padding-left: 15%;
+    padding-right: 15%;
+    padding-bottom: 100px;
+}
+
+.flex {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;    
+}
+
+.estagios-container {
+    display: flex;
+    flex-direction: column;
+    max-height: 100vh;
+    overflow-y: auto;
+    margin-top: 3rem;
+    padding-right: 1rem;
+    gap: 2rem;
+}

@@ -5,11 +5,12 @@ import "../styles/Estagio.css";
 function HomePageEstagio({ NomeEmpresa, NomeEstagio, TotalVagas, Ativas, Area, Inicio, TipoEstagio, Duracao, Localizacao }) {
     return (
         <div 
-            className="container bg-white p-4 rounded shadow mt-5 gap-5" 
+            className="container bg-white p-4 rounded shadow" 
             style={{ 
                 display: "flex", 
                 flexDirection: "row", 
                 justifyContent: "space-between",
+                gap: "7rem",
             }}
         >
             <div className="logo-container">
