@@ -1,5 +1,5 @@
 import React from 'react';
-import './ButtonSubmit.css';
+import '../styles//ButtonSubmit.css';
 
 //Componente de um botao de submiting (tbm de loading)
 const ButtonSubmit = ({ 

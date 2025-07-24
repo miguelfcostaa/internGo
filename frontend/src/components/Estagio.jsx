@@ -5,7 +5,7 @@ import "../styles/Estagio.css";
 function HomePageEstagio({ NomeEmpresa, NomeEstagio, TotalVagas, Ativas, Area, Inicio, TipoEstagio, Duracao, Localizacao }) {
     return (
         <div 
-            className="container bg-white p-4 rounded shadow mt-5 w-30" 
+            className="container bg-white p-4 rounded shadow mt-5 gap-5" 
             style={{ 
                 display: "flex", 
                 flexDirection: "row", 

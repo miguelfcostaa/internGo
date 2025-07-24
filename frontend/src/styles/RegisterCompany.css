@@ -1,0 +1,23 @@
+.title {
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: left;
+}
+
+.container-main {
+    display: flex;
+    flex-direction: row;
+    gap: 200px;
+}
+
+.container-flex {
+    display: flex;
+    flex-direction: column;
+}
+
+.label {
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    text-align: left;
+}
