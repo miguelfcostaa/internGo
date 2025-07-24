@@ -1,7 +1,7 @@
 import React from 'react';
 import NavBar from '../components/NavBar';
 import logo from '../assets/logo.jpg';
-import EstagiosRecomendados from '../components/EstágiosRecomendados';
+import EstagiosRecomendados from '../components/EstagiosRecomendados/EstágiosRecomendados';
 
 
 const ProfilePage = () => {
