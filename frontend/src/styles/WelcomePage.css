@@ -1,0 +1,105 @@
+.welcome-content {
+  background: linear-gradient(to bottom right, #ffffff, #F2F2F2);
+  box-shadow: -2px 0 12px rgba(0, 0, 0, 0.05);
+  animation: fadeInUp 0.8s ease-in-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.welcome-logo {
+  width: 120px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+  transition: transform 0.3s ease;
+}
+
+.welcome-logo:hover {
+  transform: scale(1.05);
+}
+
+.welcome-title {
+  font-size: 2.4rem;
+  font-weight: bold;
+  color: #273F4F; 
+  margin-bottom: 1rem;
+}
+
+.welcome-text {
+  font-size: 1.45rem; 
+  color: #273F4F;
+  margin-bottom: 2rem;
+  line-height: 1.7;
+  font-weight: 500;
+}
+
+.welcome-button {
+  background-color: #FE8928; 
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  padding: 12px 28px;
+  border-radius: 6px;
+  font-size: 1.05rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.welcome-button:hover {
+  background-color: #e37620; 
+  transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+  .welcome-title {
+    font-size: 2rem;
+  }
+
+  .welcome-text {
+    font-size: 1.05rem;
+  }
+}
+
+.welcome-image-overlay {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.welcome-image-overlay img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  animation: fadeInLeft 1s ease forwards;
+}
+
+.welcome-image-overlay::after {
+  content: "";
+  position: absolute;
+  top: 0; 
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(39, 63, 79, 0.2); /* Azul oscuro transparente */
+  pointer-events: none;
+}
+
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
