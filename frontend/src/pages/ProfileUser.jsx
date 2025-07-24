@@ -1,7 +1,6 @@
 import React from 'react';
-import NavBar from '../components/NavBar';
+import NavBar from '../components/NavBar/NavBar';
 import logo from '../assets/logo.jpg';
-import EstagiosRecomendados from '../components/EstagiosRecomendados/EstágiosRecomendados';
 
 
 const ProfilePage = () => {
@@ -26,7 +25,7 @@ const ProfilePage = () => {
                         <div>Foto de perfil</div>
                         <span>Kayne west</span>
                         <span>kaynewest@mail.com</span>
-                        <ButtonMaisDetalhes onclick={() => {ToEditPorfile}}/>{/*Botão para ver mais detalhes do perfil, adicionar funçao para riderecionar para a pagina EditUserPorfile*/}
+                        {/*<ButtonMaisDetalhes onclick={() => {ToEditProfile}}/>Botão para ver mais detalhes do perfil, adicionar funçao para riderecionar para a pagina EditUserPorfile*/}
                     </div>
                     <div>{/*Informações do estágio ativo*/}
                         <div>
@@ -44,7 +43,7 @@ const ProfilePage = () => {
                     <table>
                         <thead>Candidaturas Efetuadas</thead>
                         <tbody>
-                            <CandidaturasFeitas/>{/*Cria a lista automaticamente*/}
+                            {/*<CandidaturasFeitas/> Cria a lista automaticamente*/}
                             <tr>
                                 <button>Mostrar todos</button>
                             </tr>
@@ -55,7 +54,7 @@ const ProfilePage = () => {
                     <table>
                         <thead>Estágios Recomendados</thead>
                         <tbody>
-                            <EstagiosRecomendados/>{/*Cria a lista automaticamente*/}
+                            {/*<EstagiosRecomendados/>Cria a lista automaticamente*/}
                         </tbody>
                     </table>
                 </div>

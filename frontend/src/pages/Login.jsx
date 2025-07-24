@@ -22,7 +22,7 @@ function Login() {
                     És novo aqui? <Link to="/select-user">Cria uma conta</Link>
                   </p>
 
-                  <form>
+                  <form method="POST" onSubmit={handleLogin}>
                     <div className="mb-3">
                       <label htmlFor="email">Email</label>
                           <input type="email" className="form-control" id="email" placeholder="Digite seu email" />
