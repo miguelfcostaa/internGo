@@ -8,8 +8,7 @@ import "../styles/RegisterUser.css";
 
 function RegisterUser() {
   const navigate = useNavigate();
-  
-  // Estados
+
   const [formData, setFormData] = useState({
     name: "",
     cc: "",
@@ -18,6 +17,7 @@ function RegisterUser() {
     password: "",
     confirmPassword: "",
   });
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -32,8 +32,7 @@ function RegisterUser() {
       ...prev,
       [name]: value,
     }));
-    
-    // Limpar mensagens quando o usuário começar a digitar
+
     if (error) setError("");
     if (success) setSuccess("");
   };
@@ -44,7 +43,6 @@ function RegisterUser() {
     setError("");
     setSuccess("");
 
-    // Validar formulário
     const validationError = validateForm(formData);
     if (validationError) {
       setError(validationError);
@@ -62,8 +60,6 @@ function RegisterUser() {
       );
 
       setSuccess("Conta criada com sucesso! Redirecionando para o login...");
-      
-      // Limpar formulário
       setFormData({
         name: "",
         cc: "",
@@ -73,13 +69,10 @@ function RegisterUser() {
         confirmPassword: "",
       });
 
-      // Redirecionar para login após 2 segundos
       setTimeout(() => {
         navigate("/login");
       }, 2000);
-      
     } catch (err) {
-      console.error("Erro no registro:", err);
       handleError(err);
     } finally {
       setLoading(false);
@@ -97,14 +90,11 @@ function RegisterUser() {
       } else {
         setError("Erro ao criar conta. Tente novamente.");
       }
-    } else if (err.message) {
-      setError(err.message);
     } else {
       setError("Erro ao criar conta. Verifique sua conexão e tente novamente.");
     }
   };
 
-  // Componentes de renderização
   const renderAlert = (type, message, icon) => (
     <div className={`alert alert-${type} d-flex align-items-center`} role="alert">
       <i className={`bi ${icon} me-2`}></i>
@@ -128,24 +118,23 @@ function RegisterUser() {
     </div>
   );
 
-  // Renderizar campo de password com critérios
   const renderPasswordField = (label, name, placeholder) => (
     <div className="col-md-6 mb-3">
       <label className="form-label d-flex align-items-center">
         {label}
         {name === "password" && (
-          <div 
-            className="info-icon ms-2" 
+          <div
+            className="info-icon ms-2"
             onClick={() => setShowPasswordCriteria(!showPasswordCriteria)}
-            style={{ 
-              cursor: 'pointer', 
+            style={{
+              cursor: 'pointer',
               fontSize: '16px',
               color: '#007bff',
               position: 'relative'
             }}
           >
             ⓘ
-            <PasswordCriteriaTooltip 
+            <PasswordCriteriaTooltip
               password={formData.password}
               isVisible={showPasswordCriteria}
               isPasswordCriterionMet={isPasswordCriterionMet}
@@ -168,15 +157,12 @@ function RegisterUser() {
   return (
     <div className="container py-5">
       <div className="row justify-content-center">
-        <div className="col-md-8">
-          {/* Título */}
+        <div className="col-md-10 col-lg-9 register-container-user">
           <h2 className="text-center mb-4 title-dark">Registo - Estagiário</h2>
 
-          {/* Alertas */}
           {error && renderAlert("danger", error, "bi-exclamation-triangle-fill")}
           {success && renderAlert("success", success, "bi-check-circle-fill")}
 
-          {/* Formulário */}
           <form onSubmit={handleSubmit}>
             <div className="row gx-4">
               {/* Nome completo e Número do BI (CC) */}
@@ -188,10 +174,10 @@ function RegisterUser() {
               )}
               
               {renderFormFieldCol(
-                "Número do BI (CC)",
+                "Número de identificação Civil (CC)",
                 "cc",
                 "text",
-                "8 dígitos (ex: 12345678)",
+                "Insira o seu número de identificação Civil",
                 { maxLength: "8" }
               )}
 
@@ -224,7 +210,6 @@ function RegisterUser() {
               )}
             </div>
 
-            {/* Botão Submit */}
             <ButtonSubmit
               text="Criar Conta"
               isSubmitting={loading}
@@ -235,13 +220,12 @@ function RegisterUser() {
             />
           </form>
 
-          {/* Link para Login */}
           <div className="text-center mt-4">
             <p className="mb-0">
               Já tens uma conta?{" "}
               <Link
                 to="/login"
-                className="text-decoration-none text-primary fw-semibold"
+                className="login-link"
               >
                 Faz o Login
               </Link>

@@ -15,8 +15,8 @@ function LogOut() {
                     <p style={{ textAlign: "center"}}>Fique mais um pouco e descubra-as.</p>
                 </div>
                 <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
-                    <ButtonGeral Name={"Continuar a explorar"} className={"BotaoLogout"} /> {/* onClick={() => navigate("/Home")} Adicionar funcao para levar para a pagina de candidatura*/}
-                    <ButtonGeral Name={"Sair mesmo assim"} className={"BotaoLogout"} /> {/*} Adicionar funcao para dar logout e levar para a welcomepage*/}
+                    <ButtonGeral Name={"Continuar a explorar"} className={"BotaoLogout"} /> {/* Adicionar funcao para levar para a pagina de candidatura*/}
+                    <ButtonGeral Name={"Sair mesmo assim"} className={"BotaoLogout"} /> {/* Adicionar funcao para dar logout e levar para a welcomepage*/}
                 </div>
             </div>
         </div>
