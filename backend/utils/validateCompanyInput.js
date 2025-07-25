@@ -63,4 +63,5 @@ async function validateCompanyInput(data) {
     return errors;
 }
 
+
 module.exports = validateCompanyInput;

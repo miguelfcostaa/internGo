@@ -1,0 +1,98 @@
+/* Fondo general */
+body {
+  background-color: #f2f2f2;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.register-container {
+  max-width: 500px;
+  margin: 50px auto;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 0 18px rgba(0, 0, 0, 0.05);
+  padding: 30px;
+  animation: fadeIn 0.6s ease-in-out;
+  text-align: left; /* fuerza alineación izquierda */
+}
+
+/* Título */
+.register-container h2 {
+  color: #273F4F;
+  font-weight: 700;
+  margin-bottom: 25px;
+  text-align: left;
+}
+
+/* Etiquetas del formulario */
+label.form-label {
+  color: #273F4F;
+  font-weight: 600;
+  display: block;
+  text-align: left;
+}
+
+/* Inputs */
+.form-control {
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 10px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.form-control:focus {
+  border-color: #447D9B;
+  box-shadow: 0 0 0 0.2rem rgba(68, 125, 155, 0.25);
+}
+
+/* Botón */
+.btn-primary,
+.btn-primary:disabled {
+  background-color: #FE8928;
+  border-color: #FE8928;
+  font-weight: 600;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: #e9781f;
+  transform: scale(1.02);
+}
+
+/* Alertas */
+.alert {
+  font-size: 0.95rem;
+  padding: 12px;
+  border-radius: 6px;
+  text-align: left;
+}
+
+/* Texto abaixo */
+.register-container p {
+  margin-top: 20px;
+  color: #273F4F;
+  text-align: left;
+}
+
+/* Link de login */
+.register-container a {
+  color: #447D9B;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.register-container a:hover {
+  text-decoration: underline;
+}
+
+/* Animación de entrada */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

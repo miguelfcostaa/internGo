@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { signupUser } from "../services/apiService";
 import ButtonSubmit from "../components/ButtonSubmit";
 import { validateForm } from "../utils/registerUserUtils"; // Importar a função de validação
+import "../styles/RegisterUser.css"; // Importar o CSS para estilização
 
 function RegisterUser() {
   const [formData, setFormData] = useState({
@@ -22,12 +23,9 @@ function RegisterUser() {
       ...prev,
       [name]: value,
     }));
-    // Limpar mensagens de erro/sucesso quando o usuário começa a digitar
     if (error) setError("");
     if (success) setSuccess("");
   };
-
-  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -35,7 +33,6 @@ function RegisterUser() {
     setError("");
     setSuccess("");
 
-    // Executar validações
     const validationError = validateForm(formData);
     if (validationError) {
       setError(validationError);
@@ -44,7 +41,7 @@ function RegisterUser() {
     }
 
     try {
-      const response = await signupUser(
+      await signupUser(
         formData.name,
         formData.email,
         formData.cc,
@@ -53,7 +50,6 @@ function RegisterUser() {
       );
 
       setSuccess("Conta criada com sucesso! Pode agora fazer login.");
-      // Limpar o formulário
       setFormData({
         name: "",
         cc: "",
@@ -64,124 +60,122 @@ function RegisterUser() {
       });
     } catch (err) {
       const errorData = err.message || "Erro ao criar conta. Tente novamente.";
-
-      // Verificar se é um erro de dados já existentes
-      if (errorData.includes("Já existe uma conta")) {
-        setError(errorData);
-      } else {
-        setError(errorData);
-      }
+      setError(errorData);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div>
-      <div>
-        <h1>Registo-Estagiário</h1>
+    <div className="container py-5">
+      <div className="row justify-content-center">
+        <div className="col-md-6">
+          <h2 className="text-center mb-4 text-primary fw-bold">
+            Registo - Estagiário
+          </h2>
 
-        {error && (
-          <div
-            style={{
-              color: "red",
-              marginBottom: "10px",
-              padding: "10px",
-              border: "1px solid red",
-              borderRadius: "4px",
-            }}
-          >
-            {error}
-          </div>
-        )}
+          {error && (
+            <div className="alert alert-danger" role="alert">
+              {error}
+            </div>
+          )}
 
-        {success && (
-          <div
-            style={{
-              color: "green",
-              marginBottom: "10px",
-              padding: "10px",
-              border: "1px solid green",
-              borderRadius: "4px",
-            }}
-          >
-            {success}
-          </div>
-        )}
+          {success && (
+            <div className="alert alert-success" role="alert">
+              {success}
+            </div>
+          )}
 
-        <form onSubmit={handleSubmit}>
-          <label>
-            Nome completo
-            <input
-              type="text"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              placeholder="Insira o seu nome completo"
+          <form onSubmit={handleSubmit}>
+            <div className="mb-3">
+              <label className="form-label">Nome completo</label>
+              <input
+                type="text"
+                name="name"
+                className="form-control"
+                value={formData.name}
+                onChange={handleChange}
+                placeholder="Insira o seu nome completo"
+              />
+            </div>
+
+            <div className="mb-3">
+              <label className="form-label">Número do BI (CC)</label>
+              <input
+                type="text"
+                name="cc"
+                className="form-control"
+                value={formData.cc}
+                onChange={handleChange}
+                placeholder="8 dígitos (ex: 12345678)"
+                maxLength="8"
+              />
+            </div>
+
+            <div className="mb-3">
+              <label className="form-label">Email</label>
+              <input
+                type="email"
+                name="email"
+                className="form-control"
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="exemplo@email.com"
+              />
+            </div>
+
+            <div className="mb-3">
+              <label className="form-label">Número de telemóvel</label>
+              <input
+                type="tel"
+                name="telefone"
+                className="form-control"
+                value={formData.telefone}
+                onChange={handleChange}
+                placeholder="9xxxxxxxx (ex: 912345678)"
+              />
+            </div>
+
+            <div className="mb-3">
+              <label className="form-label">Palavra-passe</label>
+              <input
+                type="password"
+                name="password"
+                className="form-control"
+                value={formData.password}
+                onChange={handleChange}
+                placeholder="Insira a palavra-passe"
+              />
+            </div>
+
+            <div className="mb-4">
+              <label className="form-label">Confirmar palavra-passe</label>
+              <input
+                type="password"
+                name="confirmPassword"
+                className="form-control"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                placeholder="Confirme a palavra-passe"
+              />
+            </div>
+
+            <ButtonSubmit
+              text="Criar Conta"
+              isSubmitting={loading}
+              loadingText="Criar Conta..."
+              type="submit"
+              variant="primary"
             />
-          </label>
-          <label>
-            Número do BI(CC)
-            <input
-              type="text"
-              name="cc"
-              value={formData.cc}
-              onChange={handleChange}
-              placeholder="8 dígitos (ex: 12345678)"
-              maxLength="8"
-            />
-          </label>
-          <label>
-            Email
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              placeholder="exemplo@email.com"
-            />
-          </label>
-          <label>
-            Número de telemóvel
-            <input
-              type="tel"
-              name="telefone"
-              value={formData.telefone}
-              onChange={handleChange}
-              placeholder="9xxxxxxxx (ex: 912345678)"
-            />
-          </label>
-          <label>
-            Palavra-passe
-            <input
-              type="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              placeholder="Insira a palavra-passe"
-            />
-          </label>
-          <label>
-            Confirmar palavra-passe
-            <input
-              type="password"
-              name="confirmPassword"
-              value={formData.confirmPassword}
-              onChange={handleChange}
-              placeholder="Confirme a palavra-passe"
-            />
-          </label>
-          <ButtonSubmit
-            text="Criar Conta" 
-            isSubmitting={loading} 
-            loadingText = "Criar Conta..."
-            type="submit"
-            variant="primary"
-          />
-        </form>
-        <p>
-          Já tens uma conta? <a href="/login">Faz o Login</a>
-        </p>
+          </form>
+
+          <p className="mt-3 text-center">
+            Já tens uma conta?{" "}
+            <a href="/login" className="text-decoration-none text-info fw-semibold">
+              Faz o Login
+            </a>
+          </p>
+        </div>
       </div>
     </div>
   );

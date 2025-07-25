@@ -1,87 +1,43 @@
-body {
-  background-color: #273F4F; 
-  background-image: url('../assets/background.jpg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  margin: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: #F2F2F2; 
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+ body {
+    background-color: #273F4F;
+    background-image: url('../assets/background.jpg');
+    background-size: cover;
 }
 
 .main-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 90%;
-  max-width: 900px;
-  gap: 40px;
-  padding: 30px;
-  background: rgba(39, 63, 79, 0.85); 
-  border-radius: 12px;
-  box-shadow: 0 8px 16px rgba(0,0,0,0.3);
-  flex-wrap: wrap;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 50%;
+    margin: 0 auto;
 }
 
 .user-option {
-  background: #447D9B; 
-  flex: 1 1 40%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 40px 20px;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  cursor: pointer;
-  color: #F2F2F2;
-  text-align: center;
-  min-width: 250px;
+    flex: 1;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 100px;
 }
 
 .user-option:hover {
-  transform: scale(1.08);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.35);
-  background-color: #FE8928; 
+    box-shadow: #273F4F;
+    transition: 0.3s;
+    transform: scale(1.05);
+    cursor: pointer;
+
 }
 
 .label {
-  font-size: 1.8rem;
-  font-weight: 700;
-  margin-top: 1.2em;
-  color: #F2F2F2;
-  text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+    font-size: 1.5em;
+    font-weight: 600;
+    margin-top: 1em;
 }
 
 .title {
-  width: 100%;
-  font-size: 2.8rem;
-  font-weight: 900;
-  margin-bottom: 50px;
-  color: #FE8928; 
-  text-align: center;
-  text-shadow: 0 2px 5px rgba(0,0,0,0.6);
+    font-size: 2em;
+    font-weight: bold;
+    margin-top: 40px;
 }
 
-@media (max-width: 768px) {
-  .main-container {
-    flex-direction: column;
-    width: 90%;
-    padding: 20px;
-  }
 
-  .user-option {
-    flex: 1 1 100%;
-    margin-bottom: 20px;
-    padding: 30px 15px;
-  }
-
-  .title {
-    font-size: 2.2rem;
-    margin-bottom: 30px;
-  }
-}
