@@ -1,50 +1,31 @@
-/* Footer.css */
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+#root {
+  flex: 1 0 auto; /* que el contenido crezca */
+}
+
+.main-content {
+  flex: 1 0 auto; /* el contenido principal debe crecer para empujar footer */
+}
 
 .footer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background-color: #F2F2F2;
-    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-    padding: 15px 0;
-    text-align: center;
-    color: #273F4F;
-    font-size: 0.9rem;
-    border-top: 1px solid #ddd;
+  flex-shrink: 0; /* que el footer no se reduzca */
+  background-color: #F2F2F2;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+  padding: 15px 0;
+  text-align: center;
+  color: #273F4F;
+  font-size: 0.9rem;
+  border-top: 1px solid #ddd;
+  width: 100%;
 }
-
-.footer-content {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column; 
-    align-items: center;
-}
-
-.footer-content p {
-    margin: 0;
-    padding-bottom: 10px; 
-}
-
-.footer-links {
-    display: flex; 
-    gap: 30px; 
-    flex-wrap: wrap;
-    justify-content: center;
-}
-
-.footer-links a {
-    color: #273F4F;
-    text-decoration: none;
-    font-weight: 500;
-    transition: color 0.3s ease;
-    white-space: nowrap; 
-}
-
-.footer-links a:hover {
-    color: #447D9B;
-    text-decoration: underline;
-}
-
