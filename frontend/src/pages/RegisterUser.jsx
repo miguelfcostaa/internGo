@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { signupUser } from "../services/apiService";
 import ButtonSubmit from "../components/ButtonSubmit";
-import { validateForm } from "../utils/registerUserUtils";
+import { validateForm, isPasswordCriterionMet } from "../utils/registerUserUtils";
 import PasswordCriteriaTooltip from "../components/PasswordCriteria";
 import "../styles/RegisterUser.css";
 
@@ -23,25 +23,7 @@ function RegisterUser() {
   const [success, setSuccess] = useState("");
   const [showPasswordCriteria, setShowPasswordCriteria] = useState(false);
 
-  // Função para verificar se o critério da password foi atendido
-  const isPasswordCriterionMet = (criterion, password) => {
-    if (!password) return false;
-
-    switch (criterion) {
-      case "length":
-        return password.length >= 6;
-      case "uppercase":
-        return /[A-Z]/.test(password);
-      case "lowercase":
-        return /[a-z]/.test(password);
-      case "number":
-        return /[0-9]/.test(password);
-      case "symbol":
-        return /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password);
-      default:
-        return false;
-    }
-  };
+  
 
   // Handlers
   const handleChange = (e) => {
