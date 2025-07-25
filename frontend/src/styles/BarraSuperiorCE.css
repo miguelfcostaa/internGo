@@ -1,10 +1,21 @@
-.BarraAzul{
-    display: 'flex'; 
-    flex-direction: "row";
-    gap: "50px";
-    background-color: "blue";
-    justify-content: space-between;
+.Barra-azul {
+    background-color: blue;
+    display: flex; 
+    flex-direction: row;
 }
-.Componentes{
-    color: "white";
+.Alinhar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 20px;
+}
+.Componente {
+    color: white;
+}
+.direita{
+    display: flex;
+    flex-direction: row;
+    position: absolute;
+    right: 20px;
+    gap: 20px;
 }
