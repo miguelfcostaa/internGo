@@ -2,14 +2,13 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { signupUser } from "../services/apiService";
 import ButtonSubmit from "../components/ButtonSubmit";
-import { validateForm } from "../utils/registerUserUtils";
+import { validateForm, isPasswordCriterionMet } from "../utils/registerUserUtils";
 import PasswordCriteriaTooltip from "../components/PasswordCriteria";
 import "../styles/RegisterUser.css";
 
 function RegisterUser() {
   const navigate = useNavigate();
-  
-  // Estados
+
   const [formData, setFormData] = useState({
     name: "",
     cc: "",
@@ -18,40 +17,19 @@ function RegisterUser() {
     password: "",
     confirmPassword: "",
   });
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [showPasswordCriteria, setShowPasswordCriteria] = useState(false);
 
-  // Função para verificar se o critério da password foi atendido
-  const isPasswordCriterionMet = (criterion, password) => {
-    if (!password) return false;
-
-    switch (criterion) {
-      case "length":
-        return password.length >= 6;
-      case "uppercase":
-        return /[A-Z]/.test(password);
-      case "lowercase":
-        return /[a-z]/.test(password);
-      case "number":
-        return /[0-9]/.test(password);
-      case "symbol":
-        return /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password);
-      default:
-        return false;
-    }
-  };
-
-  // Handlers
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
-    
-    // Limpar mensagens quando o usuário começar a digitar
+
     if (error) setError("");
     if (success) setSuccess("");
   };
@@ -62,7 +40,6 @@ function RegisterUser() {
     setError("");
     setSuccess("");
 
-    // Validar formulário
     const validationError = validateForm(formData);
     if (validationError) {
       setError(validationError);
@@ -80,8 +57,6 @@ function RegisterUser() {
       );
 
       setSuccess("Conta criada com sucesso! Redirecionando para o login...");
-      
-      // Limpar formulário
       setFormData({
         name: "",
         cc: "",
@@ -91,13 +66,10 @@ function RegisterUser() {
         confirmPassword: "",
       });
 
-      // Redirecionar para login após 2 segundos
       setTimeout(() => {
         navigate("/login");
       }, 2000);
-      
     } catch (err) {
-      console.error("Erro no registro:", err);
       handleError(err);
     } finally {
       setLoading(false);
@@ -115,14 +87,11 @@ function RegisterUser() {
       } else {
         setError("Erro ao criar conta. Tente novamente.");
       }
-    } else if (err.message) {
-      setError(err.message);
     } else {
       setError("Erro ao criar conta. Verifique sua conexão e tente novamente.");
     }
   };
 
-  // Componentes de renderização
   const renderAlert = (type, message, icon) => (
     <div className={`alert alert-${type} d-flex align-items-center`} role="alert">
       <i className={`bi ${icon} me-2`}></i>
@@ -146,24 +115,23 @@ function RegisterUser() {
     </div>
   );
 
-  // Renderizar campo de password com critérios
   const renderPasswordField = (label, name, placeholder) => (
     <div className="col-md-6 mb-3">
       <label className="form-label d-flex align-items-center">
         {label}
         {name === "password" && (
-          <div 
-            className="info-icon ms-2" 
+          <div
+            className="info-icon ms-2"
             onClick={() => setShowPasswordCriteria(!showPasswordCriteria)}
-            style={{ 
-              cursor: 'pointer', 
+            style={{
+              cursor: 'pointer',
               fontSize: '16px',
               color: '#007bff',
               position: 'relative'
             }}
           >
             ⓘ
-            <PasswordCriteriaTooltip 
+            <PasswordCriteriaTooltip
               password={formData.password}
               isVisible={showPasswordCriteria}
               isPasswordCriterionMet={isPasswordCriterionMet}
@@ -186,63 +154,22 @@ function RegisterUser() {
   return (
     <div className="container py-5">
       <div className="row justify-content-center">
-        <div className="col-md-8">
-          {/* Título */}
+        <div className="col-md-10 col-lg-9 register-container">
           <h2 className="text-center mb-4 title-dark">Registo - Estagiário</h2>
 
-          {/* Alertas */}
           {error && renderAlert("danger", error, "bi-exclamation-triangle-fill")}
           {success && renderAlert("success", success, "bi-check-circle-fill")}
 
-          {/* Formulário */}
           <form onSubmit={handleSubmit}>
             <div className="row gx-4">
-              {/* Nome completo e Número do BI (CC) */}
-              {renderFormFieldCol(
-                "Nome completo",
-                "name",
-                "text",
-                "Insira o seu nome completo"
-              )}
-              
-              {renderFormFieldCol(
-                "Número do BI (CC)",
-                "cc",
-                "text",
-                "8 dígitos (ex: 12345678)",
-                { maxLength: "8" }
-              )}
-
-              {/* Email e Número de telemóvel */}
-              {renderFormFieldCol(
-                "Email",
-                "email",
-                "email",
-                "exemplo@email.com"
-              )}
-
-              {renderFormFieldCol(
-                "Número de telemóvel",
-                "telefone",
-                "tel",
-                "9xxxxxxxx"
-              )}
-
-              {/* Palavra-passe com critérios e Confirmar palavra-passe */}
-              {renderPasswordField(
-                "Palavra-passe",
-                "password",
-                "Insira a palavra-passe"
-              )}
-
-              {renderPasswordField(
-                "Confirmar palavra-passe",
-                "confirmPassword",
-                "Confirme a palavra-passe"
-              )}
+              {renderFormFieldCol("Nome completo", "name", "text", "Insira o seu nome completo")}
+              {renderFormFieldCol("Número do BI (CC)", "cc", "text", "8 dígitos (ex: 12345678)", { maxLength: "8" })}
+              {renderFormFieldCol("Email", "email", "email", "exemplo@email.com")}
+              {renderFormFieldCol("Número de telemóvel", "telefone", "tel", "9xxxxxxxx")}
+              {renderPasswordField("Palavra-passe", "password", "Insira a palavra-passe")}
+              {renderPasswordField("Confirmar palavra-passe", "confirmPassword", "Confirme a palavra-passe")}
             </div>
 
-            {/* Botão Submit */}
             <ButtonSubmit
               text="Criar Conta"
               isSubmitting={loading}
@@ -253,14 +180,10 @@ function RegisterUser() {
             />
           </form>
 
-          {/* Link para Login */}
           <div className="text-center mt-4">
             <p className="mb-0">
               Já tens uma conta?{" "}
-              <Link
-                to="/login"
-                className="text-decoration-none text-primary fw-semibold"
-              >
+              <Link to="/login" className="text-decoration-none text-primary fw-semibold">
                 Faz o Login
               </Link>
             </p>
