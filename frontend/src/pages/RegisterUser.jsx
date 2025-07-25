@@ -23,6 +23,9 @@ function RegisterUser() {
   const [success, setSuccess] = useState("");
   const [showPasswordCriteria, setShowPasswordCriteria] = useState(false);
 
+  
+
+  // Handlers
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
