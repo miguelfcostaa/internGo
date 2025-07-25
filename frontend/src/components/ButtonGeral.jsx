@@ -1,9 +1,9 @@
 import React from "react";
 
-function ButtonGeral({ Name, onclick , className }) {
+function ButtonGeral({ Name, className, }) {
     return (
-        <button onClick={onclick} className={className}>{Name}</button>
+        <button  className={className} >{Name}</button>
     );
 }
-
+           {/* onClick={() => navigate("/select-user")} */}
 export default ButtonGeral;
