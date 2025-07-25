@@ -115,9 +115,9 @@ function RegisterCompany() {
             </div>
           </div>
 
-          <button type="submit" className="Button-Submiting">
-            Criar Conta
-          </button>
+          <button type="submit" className="btn btn-primary">
+             Criar conta
+            </button>
         </form>
 
         <p className="mt-3 text-center">
