@@ -184,11 +184,8 @@ function RegisterUser() {
           </form>
 
           <div className="text-center mt-4">
-            <p className="mb-0">
-              Já tens uma conta?{" "}
-              <Link to="/login" className="text-decoration-none text-primary fw-semibold">
-                Faz o Login
-              </Link>
+            <p className="mt-3 text-center">
+          Já tens uma conta? <a href="/login">Faz o Login</a>
             </p>
           </div>
         </div>
