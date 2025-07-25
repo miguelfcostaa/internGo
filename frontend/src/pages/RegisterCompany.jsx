@@ -8,6 +8,7 @@ import PasswordCriteriaTooltip from "../components/PasswordCriteria";
 function RegisterCompany() {
   const [done, setDone] = useState(false);
   const [fieldErrors, setFieldErrors] = useState({});
+  
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [showPasswordCriteria, setShowPasswordCriteria] = useState(false);
@@ -36,6 +37,9 @@ function RegisterCompany() {
     setFieldErrors({});
     setLoading(true);
 
+    // Validar passwords aquí si quieres (opcional)
+
+    // Armar data para enviar
     const data = {
       name: formData.name,
       nif: formData.nif,
