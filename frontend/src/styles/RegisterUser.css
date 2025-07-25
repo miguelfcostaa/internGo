@@ -4,39 +4,70 @@ body {
   font-family: 'Segoe UI', sans-serif;
 }
 
+/* Contenedor principal centrado verticalmente */
+.container.py-5 {
+  padding-top: 8vh !important;
+  padding-bottom: 5vh !important;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+}
+
+/* Caja blanca del formulario */
 .register-container {
-  max-width: 500px;
-  margin: 50px auto;
-  background-color: #ffffff;
+  background-color: #fff;
   border-radius: 12px;
-  box-shadow: 0 0 18px rgba(0, 0, 0, 0.05);
-  padding: 30px;
+  box-shadow: 0 0 18px rgba(39, 63, 79, 0.05);
+  padding: 40px 30px 60px;
   animation: fadeIn 0.6s ease-in-out;
-  text-align: left; /* fuerza alineación izquierda */
+  width: 100%;
 }
 
-/* Título */
-.register-container h2 {
-  color: #273F4F;
+/* Título centrado y azul oscuro */
+.register-container h2,
+.title-dark {
+  color: #001f3f !important;
+  text-align: center;
   font-weight: 700;
-  margin-bottom: 25px;
-  text-align: left;
+  margin-bottom: 30px;
 }
 
-/* Etiquetas del formulario */
+/* Estilo de columnas */
+.form-columns {
+  display: flex;
+  flex-direction: column; /* por defecto: 1 columna */
+  gap: 2rem;
+  margin-bottom: 20px;
+}
+
+/* Columna individual */
+.form-column {
+  width: 100%;
+}
+
+/* En pantallas medianas en adelante, mostrar 2 columnas */
+@media (min-width: 768px) {
+  .form-columns {
+    flex-direction: row;
+  }
+
+  .form-column {
+    width: 50%;
+  }
+}
+
+/* Etiquetas */
 label.form-label {
   color: #273F4F;
   font-weight: 600;
-  display: block;
   text-align: left;
+  display: block;
+  margin-bottom: 5px;
 }
 
 /* Inputs */
 .form-control {
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  padding: 10px;
-  font-size: 1rem;
+  border-radius: 6px !important;
   transition: border-color 0.3s ease;
 }
 
@@ -48,44 +79,42 @@ label.form-label {
 /* Botón */
 .btn-primary,
 .btn-primary:disabled {
-  background-color: #FE8928;
-  border-color: #FE8928;
+  background-color: #FE8928 !important;
+  border-color: #FE8928 !important;
   font-weight: 600;
   transition: background-color 0.3s ease, transform 0.2s ease;
+  color: #fff;
 }
 
 .btn-primary:hover:not(:disabled) {
-  background-color: #e9781f;
+  background-color: #e9781f !important;
   transform: scale(1.02);
 }
 
 /* Alertas */
 .alert {
+  text-align: left;
   font-size: 0.95rem;
-  padding: 12px;
-  border-radius: 6px;
-  text-align: left;
 }
 
-/* Texto abaixo */
+/* Párrafo y enlaces */
 .register-container p {
-  margin-top: 20px;
   color: #273F4F;
-  text-align: left;
+  text-align: center; /* mejor alineación para UX */
 }
 
-/* Link de login */
 .register-container a {
-  color: #447D9B;
-  text-decoration: none;
+  color: #273F4F;
   font-weight: 600;
-}
-
-.register-container a:hover {
   text-decoration: underline;
 }
 
-/* Animación de entrada */
+.register-container a:hover {
+  color: #001f3f;
+  text-decoration: none;
+}
+
+/* Animación */
 @keyframes fadeIn {
   from {
     opacity: 0;
