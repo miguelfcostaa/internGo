@@ -5,7 +5,7 @@ function SelecionarUtilizador() {
     return (
         <div className="main-container">
             <div className="container bg-white" style={{ minHeight: "500px", borderRadius: '10px' }}>
-                <h1 className="title">Para continuar, selecione o perfil que se adequa.</h1>
+                <h1 className="title">Para continuar, selecione o perfil que se adequa :</h1>
                 <div style={{ display: "flex" }}>
                     <div className="user-option" onClick={() => window.location.href = "/register-company"}>
                         <svg xmlns="http://www.w3.org/2000/svg" width="140" height="140" fill="currentColor" className="bi bi-buildings-fill" viewBox="0 0 16 16">
