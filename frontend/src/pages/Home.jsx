@@ -3,7 +3,6 @@ import HomePageEstagio from "../components/Estagio";
 import NavBar from "../components/NavBar";
 import "../styles/Home.css";
 import Filters from "../components/Filters";
-import Footer from "../components/Footer";
 
 function HomePage() {
     return (
