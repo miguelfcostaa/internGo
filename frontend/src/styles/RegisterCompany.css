@@ -1,23 +1,210 @@
-.title {
-    font-size: 2rem;
-    font-weight: bold;
-    text-align: left;
+/* Fondo general de la página */
+body {
+    background-color: #f2f2f2;
+    font-family: 'Segoe UI', sans-serif;
+    min-height: 100vh; /* Asegura que el body ocupe al menos toda la altura de la ventana */
+    display: flex; /* Para flexbox, empuja el footer hacia abajo */
+    flex-direction: column; /* Apila el contenido y el footer */
 }
 
-.container-main {
-    display: flex;
-    flex-direction: row;
-    gap: 200px;
-}
-
-.container-flex {
+/* Contenedor principal para toda la aplicación (si usas un .app-wrapper en App.js) */
+/* Esto ayuda a que el contenido se estire y empuje el footer hacia el final */
+.app-wrapper {
     display: flex;
     flex-direction: column;
+    min-height: 100vh; /* Asegura que la aplicación ocupe al menos toda la altura */
 }
 
-.label {
-    font-size: 1rem;
-    font-weight: bold;
-    margin-bottom: 0.5rem;
+/* Área de contenido de la página (para las rutas) */
+.content-area {
+    flex-grow: 1; /* Permite que el área de contenido crezca y empuje el footer */
+    /* Añade un padding-bottom igual o mayor a la altura de tu footer para evitar que el contenido quede oculto */
+    padding-bottom: 80px; /* Ajusta este valor según la altura real de tu footer */
+}
+
+
+/* Contenedor principal del formulario (la "caja blanca" centrada) */
+/* Clases de Bootstrap .container .py-5 y .col-md-8 ya manejan parte del layout */
+/* Solo necesitarás aplicar .register-container al div que contiene tu formulario */
+.register-container {
+    max-width: 1000px; /* Puedes ajustar este max-width si quieres que la caja sea más ancha o estrecha */
+    margin: 50px auto; /* Centra el contenedor horizontalmente y le da margen superior/inferior */
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 0 18px rgba(39, 63, 79, 0.05); /* rgba(0, 0, 0, 0.05) si prefieres una sombra negra */
+    padding: 40px 30px 60px; /* Padding interno de la caja */
+    animation: fadeIn 0.6s ease-in-out;
+    text-align: left; /* Alineación de texto por defecto dentro del contenedor */
+}
+
+/* Centrado vertical del contenedor principal (si lo deseas para una única página) */
+/* Esta regla es más específica y podría anular el margin-top/bottom de .register-container */
+/* Úsala si tu RegisterUser.js tiene un .container.py-5 que quieres centrar verticalmente,
+   pero si ya usas .register-container con margin: auto, podría ser redundante o generar conflictos.
+   Prefiero la solución con .app-wrapper y .content-area para un footer fijo global. */
+/* .container.py-5 {
+    padding-top: 8vh !important;
+    padding-bottom: 5vh !important;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+} */
+
+
+/* Título del formulario */
+.register-container h2,
+.title-dark { /* La clase .title-dark también se aplica al h2 */
+    color: #273F4F; /* Azul oscuro */
+    font-weight: 700;
+    margin-bottom: 30px; /* Espacio debajo del título */
+    text-align: center;
+}
+
+/* Estilo para las columnas del formulario */
+.form-columns {
+    display: flex;
+    flex-direction: column; /* Por defecto: una sola columna en pantallas pequeñas */
+    gap: 3rem; /* Espacio entre las columnas cuando están en fila (ajusta según necesidad, ej. 2rem, 3rem, 4rem) */
+    flex-wrap: wrap; /* Permite que las columnas se envuelvan a la siguiente línea */
+    margin-bottom: 20px;
+}
+
+/* Estilo para cada columna individual */
+.form-column {
+    flex: 1 1 280px; /* Flex-grow, flex-shrink, base width. Ajusta 280px si quieres que sean más anchas */
+    min-width: 250px; /* Mínimo ancho antes de que se envuelvan */
+}
+
+/* Media query para pantallas medianas y grandes: mostrar 2 columnas */
+@media (min-width: 768px) {
+    .form-columns {
+        flex-direction: row; /* En fila en pantallas más grandes */
+        justify-content: space-around; /* O space-between si quieres que los bordes toquen los extremos del contenedor */
+    }
+
+    /* En este caso, no necesitamos width: 50% ya que flex: 1 1 auto; con gap ya distribuye bien */
+    /* .form-column {
+        width: 50%;
+    } */
+}
+
+/* Estilo para las etiquetas de los campos del formulario */
+label.form-label {
+    color: #273F4F;
+    font-weight: 600;
+    display: block; /* Asegura que cada etiqueta esté en su propia línea */
     text-align: left;
+    margin-bottom: 5px; /* Espacio debajo de la etiqueta y antes del input */
+}
+
+/* Estilo para los inputs de texto, email, password, etc. */
+.form-control {
+    border: 1px solid #ccc;
+    border-radius: 6px !important; /* !important para anular posibles estilos de Bootstrap */
+    padding: 10px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+    width: 100%; /* Asegura que el input ocupe el ancho completo de su columna */
+}
+
+.form-control:focus {
+    border-color: #447D9B; /* Color del borde al enfocar */
+    box-shadow: 0 0 0 0.2rem rgba(68, 125, 155, 0.25); /* Sombra al enfocar */
+}
+
+/* Estilos para el grupo de entrada de teléfono (select + input) */
+.input-group {
+    display: flex; /* Permite que el select y el input estén en línea */
+    width: 100%;
+}
+
+.input-group .form-select {
+    flex-grow: 0;
+    flex-shrink: 0;
+    width: auto; /* El ancho del select se ajustará a su contenido */
+    max-width: 100px; /* Límite de ancho para el select */
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+    border-right: none; /* Elimina el borde visual entre el select y el input */
+}
+
+.input-group .form-control {
+    flex-grow: 1; /* Permite que el input ocupe el espacio restante */
+    border-top-left-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+}
+
+/* Estilos para el select dentro del input-group (para que coincida con .form-control) */
+.form-select {
+    height: calc(1.5em + .75rem + 2px); /* Altura estándar de Bootstrap para inputs */
+    padding: .375rem .75rem; /* Padding estándar de Bootstrap */
+    font-size: 1rem;
+    line-height: 1.5;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    color: #273F4F; /* Color de texto consistente */
+    background-color: #fff;
+}
+.form-select:focus {
+    border-color: #447D9B;
+    box-shadow: 0 0 0 0.2rem rgba(68, 125, 155, 0.25);
+}
+
+
+/* Estilo para el botón de enviar */
+.btn-primary,
+.btn-primary:disabled {
+    background-color: #FE8928 !important; /* Naranja */
+    border-color: #FE8928 !important;
+    font-weight: 600;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    color: #fff; /* Texto blanco en el botón */
+    width: 100%; /* Botón ocupa el ancho completo */
+    padding: 10px 15px; /* Padding del botón */
+    border-radius: 6px; /* Bordes redondeados */
+    font-size: 1.1rem; /* Tamaño de fuente del botón */
+}
+
+.btn-primary:hover:not(:disabled) {
+    background-color: #e9781f !important; /* Naranja más oscuro al pasar el ratón */
+    transform: scale(1.02); /* Pequeño efecto de escala al pasar el ratón */
+}
+
+/* Estilo para las alertas (éxito/error) */
+.alert {
+    font-size: 0.95rem;
+    padding: 12px;
+    border-radius: 6px;
+    text-align: left;
+    margin-bottom: 20px; /* Espacio debajo de la alerta */
+}
+.alert-danger {
+    color: #721c24; /* Rojo oscuro */
+    background-color: #f8d7da; /* Fondo rojo claro */
+    border-color: #f5c6cb; /* Borde rojo */
+}
+.alert-success {
+    color: #155724; /* Verde oscuro */
+    background-color: #d4edda; /* Fondo verde claro */
+    border-color: #c3e6cb; /* Borde verde */
+}
+
+/* Estilo para el párrafo debajo del formulario y sus enlaces */
+.register-container p {
+    margin-top: 20px;
+    color: #273F4F; /* Texto gris oscuro */
+    text-align: center; /* Centra el texto */
+}
+
+.register-container a,
+.login-link { /* La clase .login-link también se aplica al enlace */
+    color: #273F4F; /* Azul oscuro para mejor contraste */
+    text-decoration: underline;
+    font-weight: 600;
+}
+
+.register-container a:hover,
+.login-link:hover {
+    color: #001f3f; /* Azul más oscuro al pasar el ratón */
+    text-decoration: none;
 }
