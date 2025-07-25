@@ -23,7 +23,16 @@ function Login() {
             return;
         }
 
-        const response = await fetch("http://localhost:5000/api/companies/login", {
+        try {
+            await sentResponses(data);
+        } catch (error) {
+            console.error("Login error:", error);
+            setFieldErrors({ general: "Erro ao efetuar login." });
+        }
+    }
+
+    const sentResponses = async (data) => {
+        const response1 = await fetch("http://localhost:5000/api/companies/login", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -31,34 +40,53 @@ function Login() {
             body: JSON.stringify(data)
         });
 
-        const result = await response.json();
+        const response2 = await fetch("http://localhost:5000/api/users/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        });
 
-        if (response.ok) 
-        {
+        const result1 = await response1.json();
+        const result2 = await response2.json();
+
+        if (response1.ok) {
             setDone(true);
             setFieldErrors({});
-            localStorage.setItem("token", result.token);
-            alert("Login efetuado com sucesso!");
+            if (response1.ok) {
+                localStorage.setItem('token', result1.token);
+            }
             navigate("/home");
-            console.log("Login successful:", result);
-        }
-        else 
-        {
-            console.error("Login failed:", result);
-            if (result.message && typeof result.message === 'object') 
-            {
-                setFieldErrors(result.message);
-            } 
-            else if (typeof result.message === 'string') 
-            {
-                setFieldErrors({ general: result.message });
-            } 
-            else 
-            {
+        } else {
+            console.error("Login failed:", result1);
+            if (result1.message && typeof result1.message === 'object') {
+                setFieldErrors(result1.message);
+            } else if (typeof result1.message === 'string') {
+                setFieldErrors({ general: result1.message });
+            } else {
                 setFieldErrors({ general: "Erro desconhecido ao logar." });
             }
         }
-        
+
+        if (response2.ok) {
+            setDone(true);
+            setFieldErrors({});
+            if (response2.ok) {
+                localStorage.setItem('token', result2.token);
+            }
+            navigate("/home");
+        } else {
+            console.error("Login failed:", result2);
+            if (result2.message && typeof result2.message === 'object') {
+                setFieldErrors(result2.message);
+            } else if (typeof result2.message === 'string') {
+                setFieldErrors({ general: result2.message });
+            } else {
+                setFieldErrors({ general: "Erro desconhecido ao logar." });
+            }
+        }
+
     }
 
 
