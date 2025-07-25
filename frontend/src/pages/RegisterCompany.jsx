@@ -103,7 +103,7 @@ function RegisterCompany(){
                     <div className="alert alert-success text-success"> 
                         Registo efetuado com sucesso! 
                     </div>
-                ) : Object.values(fieldErrors).length != 0 ? (
+                ) : Object.values(fieldErrors).length !== 0 ? (
                     <div className="alert alert-danger">
                         {Object.values(fieldErrors).map((error, index) => (
                             <ul key={index}>
