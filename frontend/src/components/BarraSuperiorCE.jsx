@@ -1,19 +1,19 @@
 import React from "react";
-import "./BarraSuperiorCE.css";
-{/*Barra azul na criação de estágios*/}
+import "../styles/BarraSuperiorCE.css";
+
 function BarraSuperiorCE() {
     return (
-        <div className="BarraAzul">
-            <div>
-                <div className="Componente">Criar Estágio</div>
-                <div className="Componente">Gestão de Estágios</div>
-                <div className="Componente">Gestão de candidatos</div>
-                <div className="Componente">Perfil</div>
-                <div className="Componente">Mensagens</div>
+        <div style={{  backgroundColor: "blue", display: "flex", flexDirection: "row"}}>
+            <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", gap: "20px" }}>
+                <div style={{ color: "white"}}>Criar Estágio</div>
+                <div style={{ color: "white"}}>Gestão de Estágios</div>
+                <div style={{ color: "white"}}>Gestão de candidatos</div>
+                <div style={{ color: "white"}}>Perfil</div>
+                <div style={{ color: "white"}}>Mensagens</div>
             </div>
-            <div>
-                <div className="Componente">Sair</div>
-                <div className="Componente">Ajuda</div>
+            <div style={{ display: "flex", flexDirection: "row", position: "absolute", right: "20px", gap: "20px"}}>
+                <div style={{ color: "white"}}>Sair</div>
+                <div style={{ color: "white"}}>Ajuda</div>
             </div>
         </div>
     );
