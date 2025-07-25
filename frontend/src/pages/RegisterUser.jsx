@@ -2,11 +2,14 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { signupUser } from "../services/apiService";
 import ButtonSubmit from "../components/ButtonSubmit";
-import { validateForm } from "../utils/registerUserUtils";
+import { validateForm, isPasswordCriterionMet } from "../utils/registerUserUtils";
+import PasswordCriteriaTooltip from "../components/PasswordCriteria";
 import "../styles/RegisterUser.css";
 
 function RegisterUser() {
   const navigate = useNavigate();
+  
+  // Estados
   const [formData, setFormData] = useState({
     name: "",
     cc: "",
@@ -18,14 +21,19 @@ function RegisterUser() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [showPasswordCriteria, setShowPasswordCriteria] = useState(false);
 
+  
+
+  // Handlers
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
-    // Limpar erros quando o usuário começar a digitar
+    
+    // Limpar mensagens quando o usuário começar a digitar
     if (error) setError("");
     if (success) setSuccess("");
   };
@@ -54,7 +62,7 @@ function RegisterUser() {
       );
 
       setSuccess("Conta criada com sucesso! Redirecionando para o login...");
-
+      
       // Limpar formulário
       setFormData({
         name: "",
@@ -69,6 +77,7 @@ function RegisterUser() {
       setTimeout(() => {
         navigate("/login");
       }, 2000);
+      
     } catch (err) {
       console.error("Erro no registro:", err);
       handleError(err);
@@ -119,6 +128,43 @@ function RegisterUser() {
     </div>
   );
 
+  // Renderizar campo de password com critérios
+  const renderPasswordField = (label, name, placeholder) => (
+    <div className="col-md-6 mb-3">
+      <label className="form-label d-flex align-items-center">
+        {label}
+        {name === "password" && (
+          <div 
+            className="info-icon ms-2" 
+            onClick={() => setShowPasswordCriteria(!showPasswordCriteria)}
+            style={{ 
+              cursor: 'pointer', 
+              fontSize: '16px',
+              color: '#007bff',
+              position: 'relative'
+            }}
+          >
+            ⓘ
+            <PasswordCriteriaTooltip 
+              password={formData.password}
+              isVisible={showPasswordCriteria}
+              isPasswordCriterionMet={isPasswordCriterionMet}
+            />
+          </div>
+        )}
+      </label>
+      <input
+        type="password"
+        name={name}
+        className="form-control"
+        value={formData[name]}
+        onChange={handleChange}
+        placeholder={placeholder}
+        disabled={loading}
+      />
+    </div>
+  );
+
   return (
     <div className="container py-5">
       <div className="row justify-content-center">
@@ -164,18 +210,16 @@ function RegisterUser() {
                 "9xxxxxxxx"
               )}
 
-              {/* Palavra-passe e Confirmar palavra-passe */}
-              {renderFormFieldCol(
+              {/* Palavra-passe com critérios e Confirmar palavra-passe */}
+              {renderPasswordField(
                 "Palavra-passe",
-                "password",
                 "password",
                 "Insira a palavra-passe"
               )}
 
-              {renderFormFieldCol(
+              {renderPasswordField(
                 "Confirmar palavra-passe",
                 "confirmPassword",
-                "password",
                 "Confirme a palavra-passe"
               )}
             </div>
