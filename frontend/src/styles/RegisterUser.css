@@ -110,3 +110,8 @@ label.form-label {
   text-decoration: none;
 }
 
+.login-link {
+  color: #001f3f;
+  font-weight: 600;
+  text-decoration: underline;
+}

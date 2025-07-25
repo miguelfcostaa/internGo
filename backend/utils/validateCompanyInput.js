@@ -1,7 +1,6 @@
 const Company = require('../models/Company');
 const validations = require('../utils/validations');
 
-
 async function validateCompanyInput(data) {
     const errors = {};
 
@@ -50,18 +49,18 @@ async function validateCompanyInput(data) {
         }
     }
 
-    // 5. Valida password (tamanho)
-    if (!validations.validatePassword(data.password)) {
-        errors.password = 'Password deve ter pelo menos 8 caracteres.';
+    // 5. Valida password usando a função importada do validations.js
+    const passwordError = validations.validatePassword(data.password);
+    if (passwordError) {
+        errors.password = passwordError;
     }
 
     // 6. Confirma password
     if (data.password !== data.confirmPassword) {
-        errors.password = 'Passwords não coincidem.';
+        errors.confirmPassword = 'As palavras-passe não coincidem.';
     }
 
     return errors;
 }
-
 
 module.exports = validateCompanyInput;

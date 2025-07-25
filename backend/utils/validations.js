@@ -15,7 +15,33 @@ function validateNIF(nif) {
 }
 
 function validatePassword(password) {
-    return password.length >= 8; // Senha deve ter pelo menos 8 caracteres
+  if (!password || password.trim() === "") {
+    return "A palavra-passe é obrigatória";
+  }
+  
+  let errors = [];
+  
+  if (password.length < 6) {
+    errors.push("pelo menos 6 caracteres");
+  }
+  if (!/[A-Z]/.test(password)) {
+    errors.push("pelo menos uma letra maiúscula");
+  }
+  if (!/[a-z]/.test(password)) {
+    errors.push("pelo menos uma letra minúscula");
+  }
+  if (!/[0-9]/.test(password)) {
+    errors.push("pelo menos um número");
+  }
+  if (!/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password)) {
+    errors.push("pelo menos um símbolo");
+  }
+  
+  if (errors.length > 0) {
+    return `A palavra-passe deve ter: ${errors.join(", ")}`;
+  }
+  
+  return null;
 }
 
 module.exports = {

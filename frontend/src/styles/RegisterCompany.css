@@ -187,3 +187,8 @@ label.form-label {
     transform: translateY(0);
   }
 }
+login-link {
+  color: #001f3f;
+  font-weight: 600;
+  text-decoration: underline;
+}

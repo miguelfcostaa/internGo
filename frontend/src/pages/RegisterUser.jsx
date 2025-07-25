@@ -188,10 +188,10 @@ function RegisterUser() {
               )}
               
               {renderFormFieldCol(
-                "Número do BI (CC)",
+                "Número de identificação Civil (CC)",
                 "cc",
                 "text",
-                "8 dígitos (ex: 12345678)",
+                "Insira o seu número de identificação Civil",
                 { maxLength: "8" }
               )}
 
@@ -241,7 +241,7 @@ function RegisterUser() {
               Já tens uma conta?{" "}
               <Link
                 to="/login"
-                className="text-decoration-none text-primary fw-semibold"
+                className="login-link"
               >
                 Faz o Login
               </Link>
