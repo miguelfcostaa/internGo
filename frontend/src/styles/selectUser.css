@@ -14,12 +14,13 @@
 }
 
 .user-option {
-    flex: 1;
-    flex-direction: row;
-    align-items: center;
+    flex: 1.5;
+    display: flex;
+    flex-direction: column; 
+    align-items: center;     
+    justify-content: center;
     margin-top: 100px;
 }
-
 .user-option:hover {
     box-shadow: #273F4F;
     transition: 0.3s;
@@ -28,16 +29,19 @@
 
 }
 
+
 .label {
     font-size: 1.5em;
     font-weight: 600;
     margin-top: 1em;
+    color: #273F4F;              
+    text-align: center;          
 }
-
 .title {
-    font-size: 2em;
-    font-weight: bold;
+    font-size: 1.3em;            
+    font-weight: 600;
     margin-top: 40px;
+    color: #273F4F;            
+    text-align: center;          
 }
-
 

@@ -1,8 +1,8 @@
 import React from "react";
 
-function ButtonVoltar() {
+function ButtonVoltar({ className }) {
     return (
-        <button onClick={() => window.history.back()} className="">
+        <button onClick={() => window.history.back()} className={className}>
             Voltar
         </button>
     );
