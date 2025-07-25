@@ -18,5 +18,7 @@
     overflow-y: auto;
     margin-top: 3rem;
     padding-right: 1rem;
+    padding-left: 1rem;
+    padding-top: 1rem;
     gap: 2rem;
 }
