@@ -23,8 +23,8 @@ function App() {
           <Route path='/register-user' element={<RegisterUser />}></Route>  {/*  Rota da Register User Page */}
           <Route path='/forgot-password' element={<ForgotPassword />}></Route>  {/*  Rota da Forgot Password Page */}
           <Route path='/select-user' element={<SelectUser />}></Route>  {/* Rota para selecionar se é Estagiario ou Empresa */}
-          <Route path='/profile-user' element={<ProfileUser />}></Route>  {/*  Rota da Profile Page (Estagiario) */}
-          <Route path='/profile-company' element={<ProfileCompany />}></Route>  {/*  Rota da Profile Page (Empresa) */}
+          <Route path='/profile-user/:id' element={<ProfileUser />}></Route>  {/*  Rota da Profile Page (Estagiario) */}
+          <Route path='/profile-company:id' element={<ProfileCompany />}></Route>  {/*  Rota da Profile Page (Empresa) */}
         </Routes>
       </Router>
       <Footer />

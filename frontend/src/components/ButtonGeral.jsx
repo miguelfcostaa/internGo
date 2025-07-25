@@ -1,9 +1,9 @@
 import React from "react";
+import '../styles/ButtonGeral.css';
 
-function ButtonGeral({ Name, className, }) {
+function ButtonGeral({ Name }) {
     return (
-        <button  className={className} >{Name}</button>
+        <button className="botao-geral">{Name}</button>
     );
 }
-           {/* onClick={() => navigate("/select-user")} */}
 export default ButtonGeral;
