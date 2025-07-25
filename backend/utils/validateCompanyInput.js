@@ -14,6 +14,12 @@ async function validateCompanyInput(data) {
     // 1. Valida nome
     if (!validations.validateName(data.name)) {
         errors.name = 'Nome da empresa deve ter entre 3 e 50 caracteres.';
+    } else {
+        // Verifica se nome já existe (await)
+        const existingCompany = await Company.findOne({ name: data.name });
+        if (existingCompany) {
+            errors.name = 'Nome da empresa já está em uso.';
+        }
     }
 
     // 2. Valida email (formato)
