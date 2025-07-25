@@ -177,7 +177,11 @@ label.form-label {
   text-decoration: none;
 }
 
-@keyframes fadeSlideIn {
+.login-link {
+  color: #001f3f;
+  font-weight: 600;
+  text-decoration: underline;
+}@keyframes fadeSlideIn {
   0% {
     opacity: 0;
     transform: translateY(40px);
@@ -186,9 +190,4 @@ label.form-label {
     opacity: 1;
     transform: translateY(0);
   }
-}
-login-link {
-  color: #001f3f;
-  font-weight: 600;
-  text-decoration: underline;
 }

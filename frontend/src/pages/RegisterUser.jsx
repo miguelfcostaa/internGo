@@ -157,7 +157,7 @@ function RegisterUser() {
   return (
     <div className="container py-5">
       <div className="row justify-content-center">
-        <div className="col-md-10 col-lg-9 register-container">
+        <div className="col-md-10 col-lg-9 register-container-user">
           <h2 className="text-center mb-4 title-dark">Registo - Estagiário</h2>
 
           {error && renderAlert("danger", error, "bi-exclamation-triangle-fill")}
