@@ -6,10 +6,13 @@ const Company = require('../models/Company');
 const validateCompanyInput = require('../utils/validateCompanyInput');
 
 
-router.get('/all', async (req, res) => {
+router.get('/:id', async (req, res) => {
     try {
-        const companies = await Company.find();
-        res.json(companies);
+        const company = await Company.findById(req.params.id);
+        if (!company) {
+            return res.status(404).json({ message: 'Company not found' });
+        }
+        res.json(company);
     } catch (error) {
         res.status(500).json({ message: 'Error fetching companies', error });
     }
