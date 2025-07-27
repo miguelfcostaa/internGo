@@ -3,7 +3,8 @@ import NavBar from '../components/NavBar';
 import { getUserRoleFromToken } from '../utils/jwtUtils';
 import ButtonGeral from '../components/ButtonGeral';
 import profilePhoto from '../assets/profile-icon.png';
-import '../styles/ProfileUser.css';
+import '../styles/Profile.css';
+import logo from '../assets/logo.jpg';
 
 
 const ProfilePage = () => {
@@ -86,10 +87,10 @@ const ProfilePage = () => {
                 </div>
 
                 <div className='mt-5'>
-                    <h2 style={{ color: '#273F4F', textAlign: 'left', marginBottom: '20px' }}>
+                    <h2 className='titulo'>
                         Candidaturas Feitas
                     </h2>
-                    <table class="table table-hover shadow ">
+                    <table className="table table-hover shadow">
                         <thead>
                             <tr>
                                 <th style={{ backgroundColor: '#273F4F', color: 'white', textAlign: 'left', paddingLeft: "2rem" }} scope="col">Estágios</th>
@@ -97,7 +98,7 @@ const ProfilePage = () => {
                                 <th style={{ backgroundColor: '#273F4F', color: 'white' }} scope="col">Mês de Inicio</th>
                                 <th style={{ backgroundColor: '#273F4F', color: 'white' }} scope="col">Duração</th>
                                 <th style={{ backgroundColor: '#273F4F', color: 'white' }} scope="col">Tipo de Estágio</th>
-                                <th style={{ backgroundColor: '#273F4F', color: 'white' }} scope="col">#</th>
+                                <th style={{ backgroundColor: '#273F4F', color: 'white', paddingRight: "2rem" }} scope="col">#</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -107,7 +108,7 @@ const ProfilePage = () => {
                                 <td>Julho</td>
                                 <td>1 Mês</td>
                                 <td>Hybrido</td>
-                                <td className="link-icon">
+                                <td className="link-icon" style={{ paddingRight: "2rem" }}>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#447D9B" class="bi bi-link" viewBox="0 0 16 16">
                                         <path d="M6.354 5.5H4a3 3 0 0 0 0 6h3a3 3 0 0 0 2.83-4H9q-.13 0-.25.031A2 2 0 0 1 7 10.5H4a2 2 0 1 1 0-4h1.535c.218-.376.495-.714.82-1z"/>
                                         <path d="M9 5.5a3 3 0 0 0-2.83 4h1.098A2 2 0 0 1 9 6.5h3a2 2 0 1 1 0 4h-1.535a4 4 0 0 1-.82 1H12a3 3 0 1 0 0-6z"/>
@@ -120,7 +121,7 @@ const ProfilePage = () => {
                                 <td>Agosto</td>
                                 <td>1 Mês</td>
                                 <td>Remoto</td>
-                                <td className="link-icon">
+                                <td className="link-icon" style={{ paddingRight: "2rem" }}>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#447D9B" class="bi bi-link" viewBox="0 0 16 16">
                                         <path d="M6.354 5.5H4a3 3 0 0 0 0 6h3a3 3 0 0 0 2.83-4H9q-.13 0-.25.031A2 2 0 0 1 7 10.5H4a2 2 0 1 1 0-4h1.535c.218-.376.495-.714.82-1z"/>
                                         <path d="M9 5.5a3 3 0 0 0-2.83 4h1.098A2 2 0 0 1 9 6.5h3a2 2 0 1 1 0 4h-1.535a4 4 0 0 1-.82 1H12a3 3 0 1 0 0-6z"/>
@@ -133,7 +134,7 @@ const ProfilePage = () => {
                                 <td>Julho</td>
                                 <td>3 Meses</td>
                                 <td>Presencial</td>
-                                <td className="link-icon">
+                                <td className="link-icon" style={{ paddingRight: "2rem" }}>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#447D9B" class="bi bi-link" viewBox="0 0 16 16">
                                         <path d="M6.354 5.5H4a3 3 0 0 0 0 6h3a3 3 0 0 0 2.83-4H9q-.13 0-.25.031A2 2 0 0 1 7 10.5H4a2 2 0 1 1 0-4h1.535c.218-.376.495-.714.82-1z"/>
                                         <path d="M9 5.5a3 3 0 0 0-2.83 4h1.098A2 2 0 0 1 9 6.5h3a2 2 0 1 1 0 4h-1.535a4 4 0 0 1-.82 1H12a3 3 0 1 0 0-6z"/>
@@ -143,11 +144,40 @@ const ProfilePage = () => {
                         </tbody>
                     </table>
                 </div>
-                <div>
-                    <table>
-                        <thead>Estágios Recomendados</thead>
+                <div className='mt-5'>
+                    <h2 className='titulo'>
+                        Candidaturas Feitas
+                    </h2>
+                    <table className="table table-hover shadow align-middle" >
                         <tbody>
-                            {/*<EstagiosRecomendados/>Cria a lista automaticamente*/}
+                            <tr>
+                                <td><img src={logo} alt="Company" width={50} height={50}/></td>
+                                <td style={{ textAlign: 'left', paddingLeft: "4rem" }}>Estagio de Tecnico</td>
+                                <td style={{ paddingRight: "4rem" }}>Acin</td>
+                                <td style={{ paddingRight: "4rem" }}>Julho</td>
+                                <td style={{ paddingRight: "4rem" }}>1 Mês</td>
+                                <td style={{ paddingRight: "4rem" }}>Hybrido</td>
+                                <td className="link-icon" style={{ paddingRight: "2rem" }}>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#447D9B" class="bi bi-link" viewBox="0 0 16 16">
+                                        <path d="M6.354 5.5H4a3 3 0 0 0 0 6h3a3 3 0 0 0 2.83-4H9q-.13 0-.25.031A2 2 0 0 1 7 10.5H4a2 2 0 1 1 0-4h1.535c.218-.376.495-.714.82-1z"/>
+                                        <path d="M9 5.5a3 3 0 0 0-2.83 4h1.098A2 2 0 0 1 9 6.5h3a2 2 0 1 1 0 4h-1.535a4 4 0 0 1-.82 1H12a3 3 0 1 0 0-6z"/>
+                                    </svg>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><img src={logo} alt="Company" width={50} height={50}/></td>
+                                <td style={{ textAlign: 'left', paddingLeft: "4rem" }}>Estágio Web Development</td>
+                                <td style={{ paddingRight: "4rem" }}>Sky</td>
+                                <td style={{ paddingRight: "4rem" }}>Agosto</td>
+                                <td style={{ paddingRight: "4rem" }}>1 Mês</td>
+                                <td style={{ paddingRight: "4rem" }}>Remoto</td>
+                                <td className="link-icon" style={{ paddingRight: "2rem" }}>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#447D9B" class="bi bi-link" viewBox="0 0 16 16">
+                                        <path d="M6.354 5.5H4a3 3 0 0 0 0 6h3a3 3 0 0 0 2.83-4H9q-.13 0-.25.031A2 2 0 0 1 7 10.5H4a2 2 0 1 1 0-4h1.535c.218-.376.495-.714.82-1z"/>
+                                        <path d="M9 5.5a3 3 0 0 0-2.83 4h1.098A2 2 0 0 1 9 6.5h3a2 2 0 1 1 0 4h-1.535a4 4 0 0 1-.82 1H12a3 3 0 1 0 0-6z"/>
+                                    </svg>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>

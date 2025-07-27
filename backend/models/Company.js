@@ -33,5 +33,4 @@ const companySchema = new Schema({
     }
 });
 
-const Company = model('Company', companySchema);
-module.exports = Company;
+module.exports = model('Company', companySchema);

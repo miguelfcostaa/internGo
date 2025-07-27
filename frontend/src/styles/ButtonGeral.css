@@ -4,8 +4,9 @@
     border: none;
     align-items: center;
     justify-content: center;
-    padding: 5px 40px;
+    padding: 7px 20px;
     border-radius: 5px;
     cursor: pointer;
     font-size: 0.8rem;
+    width: 100%;
 }

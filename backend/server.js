@@ -1,12 +1,16 @@
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
-const userRoutes = require('./routes/userRoutes');
-const companyRoutes = require('./routes/companyRoutes');
-const Company = require('./models/Company');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+
+const userRoutes = require('./routes/userRoutes');
+const estagioRoutes = require('./routes/estagioRoutes');
+const companyRoutes = require('./routes/companyRoutes');
+
+const Company = require('./models/Company');
 const User = require('./models/User');
+const Estagio = require('./models/Estagio');
 
 require('dotenv').config();
 
@@ -21,6 +25,7 @@ app.use(express.json());
 // Rotas de usuários
 app.use('/api/users', userRoutes);
 app.use('/api/companies', companyRoutes);
+app.use('/api/estagios', estagioRoutes);
 
 // Conectar ao MongoDB
 mongoose.connect(process.env.MONGODB_URI)

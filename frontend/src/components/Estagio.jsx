@@ -2,7 +2,7 @@ import React from "react";
 import Logo from "./Logo";
 import "../styles/Estagio.css";
 
-function HomePageEstagio({ NomeEmpresa, NomeEstagio, TotalVagas, Ativas, Area, Inicio, TipoEstagio, Duracao, Localizacao }) {
+function Estagio({ NomeEmpresa, NomeEstagio, TotalVagas, Ativas, Area, Inicio, TipoEstagio, Duracao, Localizacao }) {
     return (
         <div 
             className="container bg-white p-4 rounded shadow" 
@@ -46,4 +46,4 @@ function HomePageEstagio({ NomeEmpresa, NomeEstagio, TotalVagas, Ativas, Area, I
         </div>
     )
 }
-export default HomePageEstagio;
+export default Estagio;

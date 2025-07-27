@@ -74,3 +74,9 @@
 .link-icon {
     cursor: pointer;
 }
+
+.titulo {
+    color: #273F4F;
+    text-align: left;
+    margin-bottom: 20px;
+}

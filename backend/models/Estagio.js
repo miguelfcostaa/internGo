@@ -2,19 +2,19 @@ const { Schema, model } = require('mongoose');
 const validations = require('../utils/validations');
 
 const estagioSchema = new Schema({
-    title: {
+    title: { // Título do estágio
         type: String,
         required: true,
     },
-    area: {
+    area: { // Área do estágio
         type: String,
         required: true,
     },
-    dataInicio: {
+    dataInicio: { // Data de início do estágio
         type: String,
         required: true,
     },
-    tipoEstagio: {
+    tipoEstagio: { // Presencial, Remoto, Híbrido
         type: String,
         required: true,
     },
@@ -22,47 +22,47 @@ const estagioSchema = new Schema({
         type: Number,
         required: true,
     },
-    numeroVagas: {
+    numeroVagas: { // Número total de vagas disponíveis
         type: Number,
         required: true,
     },
-    localizacao:{
+    localizacao:{ // Localização do estágio
         type: String,
         required: true,
     },
-    prazoCandidatura: {
+    prazoCandidatura: { // Prazo para candidaturas
         type: Date,
         required: true,
     },
-    descricao: {
+    descricao: { // Descrição do estágio
         type: String,
         required: true,
     },
-    oportunidades: {
+    oportunidades: { // Oportunidades de desenvolvimento
         type: String,
         required: true,
     },
-    beneficios:{
+    beneficios:{ // Benefícios oferecidos
         type: String,
         required: true,
     },
-    habilitacoesMinimas: {
+    habilitacoesMinimas: { // Habilitações mínimas exigidas
         type: String,
         required: true,
     },
-    cursosPreferenciais: {
+    cursosPreferenciais: { // Cursos preferenciais para o estágio
         type: String,
     },
-    competenciasEssenciais: {
+    competenciasEssenciais: {   // Competências essenciais para o estágio
         type: String,
     },
-    competenciasPessoais: {
+    competenciasPessoais: { // Competências pessoais valorizadas
         type: String,
     },
-    idiomas: {
+    idiomas: {  // Idiomas exigidos ou valorizados
         type: String,
     },
-    observacoes: {
+    observacoes: { // Observações adicionais sobre o estágio
         type: String,
     },
 });
