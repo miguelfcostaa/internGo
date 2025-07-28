@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import '../styles/RegisterCompany.css';
+import styles from '../styles/RegisterCompany.module.css';
 import ButtonSubmit from "../components/ButtonSubmit";
 import PasswordCriteriaTooltip from "../components/PasswordCriteria";  
-import { isPasswordCriterionMet } from "../utils/registerUserUtils";  
+import { isPasswordCriterionMet } from "../utils/registerUserUtils"; 
+import '../styles/global.css'; 
 
 function RegisterCompany() {
   const [done, setDone] = useState(false);
@@ -96,18 +97,18 @@ function RegisterCompany() {
   };
 
   return (
-    <div className="container py-5">
-  <div className="register-container">
-    <h2 className="text-center mb-4 title-dark">Registo - Empresa</h2>
+    <div className="container-fluid" style={{ height: '100vh', position: 'relative' }}>
+  <div className={styles.registerContainer}>
+    <h2 className={`text-center mb-3 ${styles.titleDark}`}>Registo - Empresa</h2>
 
     {done && (
-      <div className="alert alert-success text-success">
+      <div className={`alert ${styles.alertSuccess} text-success`}>
         Empresa registada com sucesso! Redirecionando...
       </div>
     )}
 
     {Object.keys(fieldErrors).length > 0 && (
-      <div className="alert alert-danger">
+      <div className={`alert ${styles.alertDanger}`}>
         <ul className="mb-0">
           {Object.values(fieldErrors).map((error, index) => (
             <li key={index}>{error}</li>
@@ -121,11 +122,11 @@ function RegisterCompany() {
         {/* Columna Izquierda */}
         <div className="col-md-6">
           <div className="mb-3">
-            <label className="form-label">Nome da Empresa</label>
+            <label className={`form-label ${styles.formLabel}`}>Nome da Empresa</label>
             <input
               type="text"
               name="name"
-              className="form-control"
+              className={`form-control ${styles.formControl}`}
               placeholder="Insira o nome da empresa"
               value={formData.name}
               onChange={handleChange}
@@ -134,11 +135,11 @@ function RegisterCompany() {
           </div>
 
           <div className="mb-3">
-            <label className="form-label">Email da empresa</label>
+            <label className={`form-label ${styles.formLabel}`}>Email da empresa</label>
             <input
               type="email"
               name="email"
-              className="form-control"
+              className={`form-control ${styles.formControl}`}
               placeholder="exemplo@empresa.com"
               value={formData.email}
               onChange={handleChange}
@@ -147,10 +148,10 @@ function RegisterCompany() {
           </div>
 
           <div className="mb-3">
-            <label className="form-label d-flex align-items-center">
+            <label className={`form-label d-flex align-items-center ${styles.formLabel}`}>
               Palavra-passe
               <div
-                className="info-icon ms-2"
+                className={`${styles.infoIcon} ms-2`}
                 onClick={() => setShowPasswordCriteria(!showPasswordCriteria)}
                 style={{
                   cursor: 'pointer',
@@ -170,7 +171,7 @@ function RegisterCompany() {
             <input
               type="password"
               name="password"
-              className="form-control"
+              className={`form-control ${styles.formControl}`}
               placeholder="Insira a palavra-passe"
               value={formData.password}
               onChange={handleChange}
@@ -182,11 +183,11 @@ function RegisterCompany() {
         {/* Columna Derecha */}
         <div className="col-md-6">
           <div className="mb-3">
-            <label className="form-label">Número do NIF</label>
+            <label className={`form-label ${styles.formLabel}`}>Número do NIF</label>
             <input
               type="text"
               name="nif"
-              className="form-control"
+              className={`form-control ${styles.formControl}`}
               placeholder="Número de Identificação Fiscal"
               value={formData.nif}
               onChange={handleChange}
@@ -195,9 +196,9 @@ function RegisterCompany() {
           </div>
 
           <div className="mb-3">
-            <label className="form-label">Telefone</label>
-            <div className="input-group">
-              <select className="form-select" name="prefix" disabled={loading}>
+            <label className={`form-label ${styles.formLabel}`}>Telefone</label>
+            <div className={`input-group ${styles.inputGroup}`}>
+              <select className={`form-select ${styles.formSelect}`} name="prefix" disabled={loading}>
                 <option value="+351">+351</option>
                 <option value="+55">+55</option>
                 <option value="+1">+1</option>
@@ -206,7 +207,7 @@ function RegisterCompany() {
               <input
                 type="text"
                 name="phone"
-                className="form-control"
+                className={`form-control ${styles.formControl}`}
                 placeholder="9 dígitos (ex: 123456789)"
                 maxLength="9"
                 value={formData.phone}
@@ -217,11 +218,11 @@ function RegisterCompany() {
           </div>
 
           <div className="mb-3">
-            <label className="form-label">Confirmar palavra-passe</label>
+            <label className={`form-label ${styles.formLabel}`}>Confirmar palavra-passe</label>
             <input
               type="password"
               name="confirmPassword"
-              className="form-control"
+              className={`form-control ${styles.formControl}`}
               placeholder="Confirme a palavra-passe"
               value={formData.confirmPassword}
               onChange={handleChange}
@@ -237,15 +238,14 @@ function RegisterCompany() {
         loadingText="Criando Conta..."
         type="submit"
         variant="primary"
-        className="w-100"
       />
     </form>
 
     {/* Link para Login */}
-    <div className="text-center mt-4">
+    <div className="text-center mt-3">
       <p className="mb-0">
         Já tens uma conta?{' '}
-        <Link to="/login" className="login-link">
+        <Link to="/login" className={styles.loginLink}>
           Faz o Login
         </Link>
       </p>

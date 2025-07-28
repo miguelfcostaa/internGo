@@ -4,7 +4,7 @@ import PasswordCriteriaTooltip from "../components/PasswordCriteria"; // asegúr
 import ButtonSubmit from "../components/ButtonSubmit"; // botón personalizado, si no tienes puedes usar uno normal
 import { isPasswordCriterionMet } from "../utils/registerUserUtils"; // función para validar contraseña
 import "bootstrap/dist/css/bootstrap.min.css";
-import "../styles/RegisterUser.css"; // tu css personalizado
+import styles from "../styles/RegisterUser.module.css"; // CSS Module
 
 function RegisterUser() {
   const navigate = useNavigate();
@@ -86,8 +86,8 @@ function RegisterUser() {
 
   return (
     <div className="app-wrapper container py-5">
-      <div className="register-container">
-        <h2 className="title-dark mb-4">Registo - Estagiário</h2>
+      <div className={styles.registerContainer}>
+        <h2 className={`${styles.titleDark} mb-3`}>Registo - Estagiário</h2>
 
         {error && renderAlert("danger", error, "bi-exclamation-triangle-fill")}
         {success && renderAlert("success", success, "bi-check-circle-fill")}
@@ -97,11 +97,11 @@ function RegisterUser() {
             {/* Columna izquierda */}
             <div className="col-md-6">
               <div className="mb-3">
-                <label className="form-label">Nome completo</label>
+                <label className={`form-label ${styles.formLabel}`}>Nome completo</label>
                 <input
                   type="text"
                   name="name"
-                  className="form-control"
+                  className={`form-control ${styles.formControl}`}
                   placeholder="Insira o seu nome completo"
                   value={formData.name}
                   onChange={handleChange}
@@ -111,11 +111,11 @@ function RegisterUser() {
               </div>
 
               <div className="mb-3">
-                <label className="form-label">Email</label>
+                <label className={`form-label ${styles.formLabel}`}>Email</label>
                 <input
                   type="email"
                   name="email"
-                  className="form-control"
+                  className={`form-control ${styles.formControl}`}
                   placeholder="exemplo@email.com"
                   value={formData.email}
                   onChange={handleChange}
@@ -124,10 +124,10 @@ function RegisterUser() {
               </div>
 
               <div className="mb-3">
-                <label className="form-label d-flex align-items-center">
+                <label className={`form-label d-flex align-items-center ${styles.formLabel}`}>
                   Palavra-passe
                   <div
-                    className="info-icon ms-2"
+                    className={`${styles.infoIcon} ms-2`}
                     onClick={() => setShowPasswordCriteria(!showPasswordCriteria)}
                     style={{ cursor: "pointer", fontSize: "16px", color: "#007bff", position: "relative" }}
                   >
@@ -142,7 +142,7 @@ function RegisterUser() {
                 <input
                   type="password"
                   name="password"
-                  className="form-control"
+                  className={`form-control ${styles.formControl}`}
                   placeholder="Insira a palavra-passe"
                   value={formData.password}
                   onChange={handleChange}
@@ -154,11 +154,11 @@ function RegisterUser() {
             {/* Columna derecha */}
             <div className="col-md-6">
               <div className="mb-3">
-                <label className="form-label">Número de identificação Civil (CC)</label>
+                <label className={`form-label ${styles.formLabel}`}>Número de identificação Civil (CC)</label>
                 <input
                   type="text"
                   name="cc"
-                  className="form-control"
+                  className={`form-control ${styles.formControl}`}
                   placeholder="Insira o seu número de identificação Civil"
                   value={formData.cc}
                   onChange={handleChange}
@@ -168,11 +168,11 @@ function RegisterUser() {
               </div>
 
               <div className="mb-3">
-                <label className="form-label">Número de telemóvel</label>
+                <label className={`form-label ${styles.formLabel}`}>Número de telemóvel</label>
                 <input
                   type="tel"
                   name="telefone"
-                  className="form-control"
+                  className={`form-control ${styles.formControl}`}
                   placeholder="9xxxxxxxx"
                   value={formData.telefone}
                   onChange={handleChange}
@@ -182,11 +182,11 @@ function RegisterUser() {
               </div>
 
               <div className="mb-3">
-                <label className="form-label">Confirmar palavra-passe</label>
+                <label className={`form-label ${styles.formLabel}`}>Confirmar palavra-passe</label>
                 <input
                   type="password"
                   name="confirmPassword"
-                  className="form-control"
+                  className={`form-control ${styles.formControl}`}
                   placeholder="Confirme a palavra-passe"
                   value={formData.confirmPassword}
                   onChange={handleChange}
@@ -202,13 +202,12 @@ function RegisterUser() {
             loadingText="Criando Conta..."
             type="submit"
             variant="primary"
-            className="w-100 mt-3"
           />
         </form>
 
         <p className="mt-3 text-center">
           Já tens uma conta?{" "}
-          <Link to="/login" className="login-link">
+          <Link to="/login" className={styles.loginLink}>
             Faz o Login
           </Link>
         </p>

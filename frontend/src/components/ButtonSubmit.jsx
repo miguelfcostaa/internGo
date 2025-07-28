@@ -1,5 +1,5 @@
 import React from 'react';
-import '../styles//ButtonSubmit.css';
+import styles from '../styles/ButtonSubmitComponent.module.css';
 
 //Componente de um botao de submiting (tbm de loading)
 const ButtonSubmit = ({ 
@@ -9,10 +9,19 @@ const ButtonSubmit = ({
   size = 'w100h40', 
   disabled = false, 
   isSubmitting = false,
-  type = 'button'
+  type = 'button',
+  loadingText = 'Submiting...',
+  className = ''
 }) => {
   const getClassName = () => {
-    return `button-Submiting ${variant} ${size} ${disabled || isSubmitting ? 'disabled' : ''}`;
+    let classNames = [styles.buttonSubmiting];
+    
+    if (variant && styles[variant]) classNames.push(styles[variant]);
+    if (size && styles[size]) classNames.push(styles[size]);
+    if (disabled || isSubmitting) classNames.push(styles.disabled);
+    if (className) classNames.push(className);
+    
+    return classNames.join(' ');
   };
 
   return (
@@ -22,7 +31,7 @@ const ButtonSubmit = ({
       onClick={onClick}
       disabled={disabled || isSubmitting}
     >
-      {isSubmitting ? "Submiting..." : text}
+      {isSubmitting ? loadingText : text}
     </button>
   );
 };
