@@ -157,7 +157,7 @@ function RegisterUser() {
   return (
     <div className="container py-5">
       <div className="row justify-content-center">
-        <div className="col-md-10 col-lg-9 register-container">
+        <div className="col-md-10 col-lg-9 register-container-user">
           <h2 className="text-center mb-4 title-dark">Registo - Estagiário</h2>
 
           {error && renderAlert("danger", error, "bi-exclamation-triangle-fill")}
@@ -165,12 +165,49 @@ function RegisterUser() {
 
           <form onSubmit={handleSubmit}>
             <div className="row gx-4">
-              {renderFormFieldCol("Nome completo", "name", "text", "Insira o seu nome completo")}
-              {renderFormFieldCol("Número do BI (CC)", "cc", "text", "8 dígitos (ex: 12345678)", { maxLength: "8" })}
-              {renderFormFieldCol("Email", "email", "email", "exemplo@email.com")}
-              {renderFormFieldCol("Número de telemóvel", "telefone", "tel", "9xxxxxxxx")}
-              {renderPasswordField("Palavra-passe", "password", "Insira a palavra-passe")}
-              {renderPasswordField("Confirmar palavra-passe", "confirmPassword", "Confirme a palavra-passe")}
+              {/* Nome completo e Número do BI (CC) */}
+              {renderFormFieldCol(
+                "Nome completo",
+                "name",
+                "text",
+                "Insira o seu nome completo"
+              )}
+              
+              {renderFormFieldCol(
+                "Número de identificação Civil (CC)",
+                "cc",
+                "text",
+                "Insira o seu número de identificação Civil",
+                { maxLength: "8" }
+              )}
+
+              {/* Email e Número de telemóvel */}
+              {renderFormFieldCol(
+                "Email",
+                "email",
+                "email",
+                "exemplo@email.com"
+              )}
+
+              {renderFormFieldCol(
+                "Número de telemóvel",
+                "telefone",
+                "tel",
+                "9xxxxxxxx"
+              )}
+
+              {/* Palavra-passe com critérios e Confirmar palavra-passe */}
+              {renderPasswordField(
+                "Palavra-passe",
+                "password",
+                "Insira a palavra-passe"
+              )}
+
+              {renderPasswordField(
+                "Confirmar palavra-passe",
+                "confirmPassword",
+                "Confirme a palavra-passe"
+              )}
             </div>
 
             <ButtonSubmit
@@ -184,8 +221,14 @@ function RegisterUser() {
           </form>
 
           <div className="text-center mt-4">
-            <p className="mt-3 text-center">
-          Já tens uma conta? <a href="/login">Faz o Login</a>
+            <p className="mb-0">
+              Já tens uma conta?{" "}
+              <Link
+                to="/login"
+                className="login-link"
+              >
+                Faz o Login
+              </Link>
             </p>
           </div>
         </div>

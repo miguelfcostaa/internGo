@@ -1,0 +1,12 @@
+.botao-geral {
+    background-color: #273F4F;
+    color: #ffffff;
+    border: none;
+    align-items: center;
+    justify-content: center;
+    padding: 7px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    width: 100%;
+}
