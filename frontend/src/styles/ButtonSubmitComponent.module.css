@@ -1,0 +1,47 @@
+/* ButtonSubmit.module.css - Estilo específico para o componente ButtonSubmit */
+
+/* Botão personalizado */
+.buttonSubmiting {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  background-color: #273F4F; 
+  color: white;
+}
+
+.buttonSubmiting:hover:not(.disabled) {
+  background-color: #aaa9aa; 
+}
+
+.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.disabled:hover {
+  opacity: 0.6;
+  background-color: #273F4F !important;
+}
+
+/* Variantes do botão */
+.primary {
+  background-color: #273F4F;
+}
+
+.secondary {
+  background-color: #6c757d;
+}
+
+.success {
+  background-color: #28a745;
+}
+
+.danger {
+  background-color: #dc3545;
+}
+

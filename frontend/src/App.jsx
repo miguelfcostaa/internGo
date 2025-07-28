@@ -9,20 +9,21 @@ import RegisterUser from './pages/RegisterUser.jsx';
 import RegisterCompany from './pages/RegisterCompany.jsx';
 import ForgotPassword from './pages/ForgotPassword.jsx';
 import Footer from '../src/components/Footer.jsx';
+import EstagiosAtivos from './pages/EstagiosAtivos.jsx';
 
 function App() {
   return (
     <Router>
       <div className="App" style={{ minHeight: '100vh', position: 'relative', paddingBottom: '70px' }}>
         <Routes>
-          <Route path='/' element={<WelcomePage />} />
-          <Route path='/home' element={<HomePage />} />
-          <Route path='/login' element={<Login />} />
-          <Route path='/register-company' element={<RegisterCompany />} />
-          <Route path='/register-user' element={<RegisterUser />} />
-          <Route path='/forgot-password' element={<ForgotPassword />} />
-          <Route path='/select-user' element={<SelectUser />} />
-          <Route path='/profile/:id' element={<Profile />} />
+          <Route path='/' element={<WelcomePage />}></Route>  {/*  Rota da Welcome Page */}
+          <Route path='/home' element={<HomePage />}></Route>  {/*  Rota da Home Page */}
+          <Route path='/login' element={<Login />}></Route>  {/*  Rota da Login Page */}
+          <Route path='/register-company' element={<RegisterCompany />}></Route>  {/*  Rota da Register Company Page */}
+          <Route path='/register-user' element={<RegisterUser />}></Route>  {/*  Rota da Register User Page */}
+          <Route path='/forgot-password' element={<ForgotPassword />}></Route>  {/*  Rota da Forgot Password Page */}
+          <Route path='/select-user' element={<SelectUser />}></Route>  {/* Rota para selecionar se é Estagiario ou Empresa */}
+          <Route path='/profile/:id' element={<Profile />}></Route>  {/*  Rota da Profile Page (Estagiario) */}
         </Routes>
 
         <Footer />

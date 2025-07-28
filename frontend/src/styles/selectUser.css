@@ -1,8 +1,4 @@
- body {
-    background-color: #273F4F;
-    background-image: url('../assets/background.jpg');
-    background-size: cover;
-}
+
 
 .main-container {
     display: flex;
