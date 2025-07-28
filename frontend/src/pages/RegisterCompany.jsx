@@ -97,162 +97,163 @@ function RegisterCompany() {
 
   return (
     <div className="container py-5">
-      <div className="register-container">
-        <h2 className="text-center mb-4 title-dark">Registo - Empresa</h2>
+  <div className="register-container">
+    <h2 className="text-center mb-4 title-dark">Registo - Empresa</h2>
 
-        {done && (
-          <div className="alert alert-success text-success">
-            Empresa registada com sucesso! Redirecionando...
-          </div>
-        )}
-
-        {Object.keys(fieldErrors).length > 0 && (
-          <div className="alert alert-danger">
-            <ul className="mb-0">
-              {Object.values(fieldErrors).map((error, index) => (
-                <li key={index}>{error}</li>
-              ))}
-            </ul>
-          </div>
-        )}
-
-        <form onSubmit={handleSubmit}>
-          <div className="form-columns">
-            <div className="form-column">
-              <div className="mb-3">
-                <label className="form-label">Nome da Empresa</label>
-                <input 
-                  type="text" 
-                  name="name" 
-                  className="form-control" 
-                  placeholder="Insira o nome da empresa"
-                  value={formData.name}
-                  onChange={handleChange}
-                  disabled={loading}
-                />
-              </div>
-
-              <div className="mb-3">
-                <label className="form-label">Email da empresa</label>
-                <input 
-                  type="email" 
-                  name="email" 
-                  className="form-control" 
-                  placeholder="exemplo@empresa.com"
-                  value={formData.email}
-                  onChange={handleChange}
-                  disabled={loading}
-                />
-              </div>
-
-              <div className="mb-3">
-                <label className="form-label d-flex align-items-center">
-                  Palavra-passe
-                  <div 
-                    className="info-icon ms-2" 
-                    onClick={() => setShowPasswordCriteria(!showPasswordCriteria)}
-                    style={{ 
-                      cursor: 'pointer', 
-                      fontSize: '16px',
-                      color: '#007bff',
-                      position: 'relative'
-                    }}
-                  >
-                    ⓘ
-                    <PasswordCriteriaTooltip 
-                      password={formData.password}
-                      isVisible={showPasswordCriteria}
-                      isPasswordCriterionMet={isPasswordCriterionMet}
-                    />
-                  </div>
-                </label>
-                <input 
-                  type="password" 
-                  name="password" 
-                  className="form-control" 
-                  placeholder="Insira a palavra-passe"
-                  value={formData.password}
-                  onChange={handleChange}
-                  disabled={loading}
-                />
-              </div>
-            </div>
-
-            <div className="form-column">
-              <div className="mb-3">
-                <label className="form-label">Número do NIF</label>
-                <input 
-                  type="text" 
-                  name="nif" 
-                  className="form-control"  
-                  placeholder="Número de Identificação Fiscal"
-                  value={formData.nif}
-                  onChange={handleChange}
-                  disabled={loading}
-                />
-              </div>
-
-              <div className="mb-3">
-                <label className="form-label">Telefone</label>
-                <div className="input-group">
-                  <select className="form-select" name="prefix" disabled={loading}>
-                    <option value="+351">+351</option>
-                    <option value="+55">+55</option>
-                    <option value="+1">+1</option>
-                    <option value="+58">+58</option>
-                  </select>
-                  <input 
-                    type="text" 
-                    name="phone" 
-                    className="form-control" 
-                    placeholder="9 dígitos (ex: 123456789)" 
-                    maxLength="9"
-                    value={formData.phone}
-                    onChange={handleChange}
-                    disabled={loading}
-                  />
-                </div>
-              </div>
-
-              <div className="mb-3">
-                <label className="form-label">Confirmar palavra-passe</label>
-                <input 
-                  type="password" 
-                  name="confirmPassword" 
-                  className="form-control" 
-                  placeholder="Confirme a palavra-passe"
-                  value={formData.confirmPassword}
-                  onChange={handleChange}
-                  disabled={loading}
-                />
-              </div>
-            </div>
-          </div>
-
-          <ButtonSubmit
-            text="Criar Conta"
-            isSubmitting={loading}
-            loadingText="Criando Conta..."
-            type="submit"
-            variant="primary"
-            className="w-100"
-          />
-        </form>
-        {/* Link para Login */}
-          <div className="text-center mt-4">
-            <p className="mb-0">
-              Já tens uma conta?{" "}
-              <Link
-                to="/login"
-                className="login-link"
-              >
-                Faz o Login
-              </Link>
-            </p>
-          </div>
-        
+    {done && (
+      <div className="alert alert-success text-success">
+        Empresa registada com sucesso! Redirecionando...
       </div>
+    )}
+
+    {Object.keys(fieldErrors).length > 0 && (
+      <div className="alert alert-danger">
+        <ul className="mb-0">
+          {Object.values(fieldErrors).map((error, index) => (
+            <li key={index}>{error}</li>
+          ))}
+        </ul>
+      </div>
+    )}
+
+    <form onSubmit={handleSubmit}>
+      <div className="row">
+        {/* Columna Izquierda */}
+        <div className="col-md-6">
+          <div className="mb-3">
+            <label className="form-label">Nome da Empresa</label>
+            <input
+              type="text"
+              name="name"
+              className="form-control"
+              placeholder="Insira o nome da empresa"
+              value={formData.name}
+              onChange={handleChange}
+              disabled={loading}
+            />
+          </div>
+
+          <div className="mb-3">
+            <label className="form-label">Email da empresa</label>
+            <input
+              type="email"
+              name="email"
+              className="form-control"
+              placeholder="exemplo@empresa.com"
+              value={formData.email}
+              onChange={handleChange}
+              disabled={loading}
+            />
+          </div>
+
+          <div className="mb-3">
+            <label className="form-label d-flex align-items-center">
+              Palavra-passe
+              <div
+                className="info-icon ms-2"
+                onClick={() => setShowPasswordCriteria(!showPasswordCriteria)}
+                style={{
+                  cursor: 'pointer',
+                  fontSize: '16px',
+                  color: '#007bff',
+                  position: 'relative'
+                }}
+              >
+                ⓘ
+                <PasswordCriteriaTooltip
+                  password={formData.password}
+                  isVisible={showPasswordCriteria}
+                  isPasswordCriterionMet={isPasswordCriterionMet}
+                />
+              </div>
+            </label>
+            <input
+              type="password"
+              name="password"
+              className="form-control"
+              placeholder="Insira a palavra-passe"
+              value={formData.password}
+              onChange={handleChange}
+              disabled={loading}
+            />
+          </div>
+        </div>
+
+        {/* Columna Derecha */}
+        <div className="col-md-6">
+          <div className="mb-3">
+            <label className="form-label">Número do NIF</label>
+            <input
+              type="text"
+              name="nif"
+              className="form-control"
+              placeholder="Número de Identificação Fiscal"
+              value={formData.nif}
+              onChange={handleChange}
+              disabled={loading}
+            />
+          </div>
+
+          <div className="mb-3">
+            <label className="form-label">Telefone</label>
+            <div className="input-group">
+              <select className="form-select" name="prefix" disabled={loading}>
+                <option value="+351">+351</option>
+                <option value="+55">+55</option>
+                <option value="+1">+1</option>
+                <option value="+58">+58</option>
+              </select>
+              <input
+                type="text"
+                name="phone"
+                className="form-control"
+                placeholder="9 dígitos (ex: 123456789)"
+                maxLength="9"
+                value={formData.phone}
+                onChange={handleChange}
+                disabled={loading}
+              />
+            </div>
+          </div>
+
+          <div className="mb-3">
+            <label className="form-label">Confirmar palavra-passe</label>
+            <input
+              type="password"
+              name="confirmPassword"
+              className="form-control"
+              placeholder="Confirme a palavra-passe"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              disabled={loading}
+            />
+          </div>
+        </div>
+      </div>
+
+      <ButtonSubmit
+        text="Criar Conta"
+        isSubmitting={loading}
+        loadingText="Criando Conta..."
+        type="submit"
+        variant="primary"
+        className="w-100"
+      />
+    </form>
+
+    {/* Link para Login */}
+    <div className="text-center mt-4">
+      <p className="mb-0">
+        Já tens uma conta?{' '}
+        <Link to="/login" className="login-link">
+          Faz o Login
+        </Link>
+      </p>
     </div>
+  </div>
+</div>
+
+   
   );
 }
 
