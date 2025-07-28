@@ -9,6 +9,7 @@ import RegisterUser from './pages/RegisterUser.jsx';
 import RegisterCompany from './pages/RegisterCompany.jsx';
 import ForgotPassword from './pages/ForgotPassword.jsx';
 import Footer from './components/Footer.jsx';
+import EstagiosAtivos from './pages/EstagiosAtivos.jsx';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route path='/forgot-password' element={<ForgotPassword />}></Route>  {/*  Rota da Forgot Password Page */}
           <Route path='/select-user' element={<SelectUser />}></Route>  {/* Rota para selecionar se é Estagiario ou Empresa */}
           <Route path='/profile/:id' element={<Profile />}></Route>  {/*  Rota da Profile Page (Estagiario) */}
+          <Route path='/estagios-ativos' element={<EstagiosAtivos />}></Route>  {/*  Rota da Profile Page (Estagiario) */}
         </Routes>
       </Router>
       <Footer />
