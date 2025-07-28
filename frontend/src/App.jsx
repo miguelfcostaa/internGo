@@ -10,11 +10,12 @@ import RegisterCompany from './pages/RegisterCompany.jsx';
 import ForgotPassword from './pages/ForgotPassword.jsx';
 import Footer from './components/Footer.jsx';
 import NotFound from './pages/NotFound404.jsx'; // Importando a página 404
+import EstagiosAtivos from './pages/EstagiosAtivos.jsx';
 
 function App() {
   return (
-    <div className="App">
-      <Router>
+    <Router>
+      <div className="App" style={{ minHeight: '100vh', position: 'relative', paddingBottom: '70px' }}>
         <Routes>
           <Route path='/' element={<WelcomePage />}></Route>  {/*  Rota da Welcome Page */}
           <Route path='/home' element={<HomePage />}></Route>  {/*  Rota da Home Page */}
@@ -26,9 +27,10 @@ function App() {
           <Route path='/profile/:id' element={<Profile />}></Route>  {/*  Rota da Profile Page (Estagiario) */}
           <Route path='*' element={<NotFound />}></Route>  {/*  Rota para página 404 */}
         </Routes>
-      </Router>
-      <Footer />
-    </div>
+
+        <Footer />
+      </div>
+    </Router>
   );
 }
 

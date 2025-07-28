@@ -1,0 +1,207 @@
+/* RegisterCompany.module.css */
+
+.body {
+  background-color: #f2f2f2;
+  font-family: 'Segoe UI', sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.appWrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.contentArea {
+  flex-grow: 1;
+  padding-bottom: 80px;
+}
+
+/* CONTENEDOR PRINCIPAL */
+.registerContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 0 18px rgba(39, 63, 79, 0.05);
+  padding: 30px 50px 40px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* TÍTULO */
+.registerContainer h2,
+.titleDark {
+  color: #273F4F;
+  font-weight: 700;
+  margin-bottom: 25px;
+  text-align: center;
+  font-size: 1.8rem;
+}
+
+/* COLUMNAS DEL FORMULARIO */
+.formColumns {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 15px;
+}
+
+.formColumn {
+  flex: 1 1 280px;
+  min-width: 250px;
+}
+
+/* LABELS */
+.formLabel {
+    width: 900px;
+    font-size:medium;
+    font-weight: 650;
+  color: #273F4F;
+  display: block;
+  text-align: left;
+  margin-bottom: 8px;
+}
+
+/* INPUTS */
+.formControl {
+  border: 1px solid #ccc;
+  border-radius: 6px !important;
+  padding: 12px 15px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+  width: 100%;
+}
+
+.formControl:focus {
+  border-color: #447D9B;
+  box-shadow: 0 0 0 0.2rem rgba(68, 125, 155, 0.25);
+}
+
+/* INPUT GROUP (TELEFONE) */
+.inputGroup {
+  display: flex;
+  width: 100%;
+}
+
+.inputGroup .formSelect {
+  flex-grow: 0;
+  flex-shrink: 0;
+  width: 90px;
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+  border-right: none;
+}
+
+.inputGroup .formControl {
+  flex-grow: 1;
+  border-top-left-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+}
+
+/* SELECT */
+.formSelect {
+  height: 50px;
+  padding: .5rem .75rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  color: #273F4F;
+  background-color: #fff;
+}
+
+.formSelect:focus {
+  border-color: #447D9B;
+  box-shadow: 0 0 0 0.2rem rgba(68, 125, 155, 0.25);
+}
+
+/* BOTÓN */
+.btnPrimary,
+.btnPrimary:disabled {
+  background-color: #273F4F !important;
+  border-color: #273F4F!important;
+  font-weight: 600;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  color: #fff;
+  width: 100%;
+  padding: 12px 20px;
+  border-radius: 6px;
+  font-size: 1.1rem;
+}
+
+.btnPrimary:hover:not(:disabled) {
+  background-color: #7B7B7B !important;
+  transform: scale(1.02);
+}
+
+/* ALERTAS */
+.alert {
+  font-size: 0.9rem;
+  padding: 10px;
+  border-radius: 6px;
+  text-align: left;
+  margin-bottom: 15px;
+}
+
+.alertDanger {
+  color: #721c24;
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+}
+
+.alertSuccess {
+  color: #155724;
+  background-color: #d4edda;
+  border-color: #c3e6cb;
+}
+
+/* LINKS */
+.registerContainer p {
+  margin-top: 15px;
+  color: #273F4F;
+  text-align: center;
+}
+
+.registerContainer a,
+.loginLink {
+  color: #273F4F;
+  text-decoration: underline;
+  font-weight: 600;
+}
+
+.registerContainer a:hover,
+.loginLink:hover {
+  color: #001f3f;
+  text-decoration: none;
+}
+
+.loginLink {
+  color: #001f3f;
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+/* ICONO INFO PARA PASSWORD */
+.infoIcon {
+  font-weight: 700;
+  user-select: none;
+}
+
+/* ANIMACIÓN */
+@keyframes fadeSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+

@@ -1,33 +1,38 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import "../styles/ForgotPassword.css";
 
 const PasswordReset = () => {
-  // Variável de estado 'email' com valor inicial vazio
-  // 'setEmail' é a função usada para atualizar esse valor
-  const [email, setEmail] = useState('');
-   // Esta função é executada quando o formulário é submetido
+  const [email, setEmail] = useState("");
+
   const handleSubmit = (e) => {
-    e.preventDefault(); // Evita que a página recarregue ao submeter o formulário
-    console.log('Email enviado para:', email);
+    e.preventDefault();
+    console.log("Email enviado para:", email);
   };
-   return (
-    <div>
-      <h2>Envie o seu email</h2>
-      <p>Por favor insire o email associado com a tua conta para poderes recuperar a palavra-passe.</p>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="email">Email</label>
-        <br />
-        <input
-          type="email"          
-          id="email"           
-          name="email"         
-          value={email}         
-          onChange={(e) => setEmail(e.target.value)} 
-        />
-        <br />
-        <button type="submit">Enviar email</button>
-      </form>
-      <a href="login.jsx">Voltar para o inicio de sessão</a>
+
+  return (
+    <div className="app-wrapper">
+      <div className="forgot-container">
+        <h2>Envie o seu email</h2>
+        <p>
+          Por favor insira o email associado com a tua conta para poderes
+          recuperar a palavra-passe.
+        </p>
+        <form onSubmit={handleSubmit}>
+          <label htmlFor="email">Email</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <button type="submit">Enviar email</button>
+        </form>
+        <a href="/login">Voltar para o início de sessão</a>
+      </div>
     </div>
   );
 };
+
 export default PasswordReset;
