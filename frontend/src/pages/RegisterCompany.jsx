@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import '../styles/RegisterCompany.css';
 import ButtonSubmit from "../components/ButtonSubmit";
-import PasswordCriteriaTooltip from "../components/PasswordCriteria";  // Asegúrate que exista
-import { isPasswordCriterionMet } from "../utils/registerUserUtils";   // Reutilizar función si tienes
+import PasswordCriteriaTooltip from "../components/PasswordCriteria";  
+import { isPasswordCriterionMet } from "../utils/registerUserUtils";  
 
 function RegisterCompany() {
   const [done, setDone] = useState(false);
