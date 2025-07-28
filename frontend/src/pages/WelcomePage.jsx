@@ -35,7 +35,7 @@ function WelcomePage() {
             fazem a diferença.
           </p>
           <button
-            className="welcome-button"
+            className={styles.button}
             onClick={() => navigate("/home")}
           >
             Vamos a isso!
