@@ -4,7 +4,6 @@ import styles from '../styles/RegisterCompany.module.css';
 import ButtonSubmit from "../components/ButtonSubmit";
 import PasswordCriteriaTooltip from "../components/PasswordCriteria";  
 import { isPasswordCriterionMet } from "../utils/registerUserUtils"; 
-import '../styles/global.css'; 
 
 function RegisterCompany() {
   const [done, setDone] = useState(false);
