@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styles from '../styles/Login.module.css';
 import ButtonSubmit from "../components/ButtonSubmit";
+import ResetPassword from "./ResetPassword.jsx";
 
 function Login() {
 
@@ -137,7 +138,7 @@ function Login() {
                     ) : null}
                 </div>
                     
-                <Link to="/forgot-password" className={styles.forgotPasswordLink}>
+                <Link to="/password-reset" className={styles.resetpasswordLink}>
                     Esqueceu a palavra-passe?
                 </Link>
             </div>

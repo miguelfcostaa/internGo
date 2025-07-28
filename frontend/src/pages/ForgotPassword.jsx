@@ -24,6 +24,7 @@ const PasswordReset = () => {
             id="email"
             name="email"
             value={email}
+            placeholder="Digite seu email"
             onChange={(e) => setEmail(e.target.value)}
             required
           />
