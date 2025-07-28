@@ -48,58 +48,53 @@ app.get('/api/test', (req, res) => {
 });
 
 app.post('/api/login', async (req, res) => {
-    const { email, password } = req.body;
-    const errors = {};
+  const { email, password } = req.body;
 
-    if (!email || !password) {
-        errors.general = 'Email e password são obrigatórios.';
+  if (!email || !password) {
+    return res.status(400).json({ message: 'Email e password são obrigatórios.' });
+  }
+
+  try {
+    const company = await Company.findOne({ email });
+    const user = await User.findOne({ email });
+
+    if (company) {
+      const isMatch = await bcrypt.compare(password, company.password);
+      if (!isMatch) {
+        return res.status(401).json({ message: 'Password incorreta.' });
+      }
+
+      const token = jwt.sign(
+        { id: company._id, role: 'company' },
+        process.env.JWT_SECRET,
+        { expiresIn: '3d' }
+      );
+
+      return res.status(200).json({ role: 'company', token });
     }
 
-    try {
-        const company = await Company.findOne({ email });
-        const user = await User.findOne({ email });
-        if (!company) {
-          if (!user) {
-              return res.status(404).json({ message: 'Email ou password incorretos.' });
-          } else {
-              const isMatch = await bcrypt.compare(password, user.password);
-              if (!isMatch) {
-                  errors.general = 'Email ou Password incorretos.';
-              } else {
-                const token = jwt.sign(
-                    { id: user._id, role: 'user' },
-                    process.env.JWT_SECRET,
-                    { expiresIn: '3d' }
-                );
-                return res.status(200).json({ role: 'user', token });
-              }
-          }
-        } else {
-            const isMatch = await bcrypt.compare(password, company.password);
-            if (!isMatch) {
-                errors.general = 'Password incorretos.';
-            } else {
-              const token = jwt.sign(
-                  { id: company._id, role: 'company' },
-                  process.env.JWT_SECRET,
-                  { expiresIn: '3d' }
-              );
-              return res.status(200).json({ role: 'company', token });
-            }
-        }
+    if (user) {
+      const isMatch = await bcrypt.compare(password, user.password);
+      if (!isMatch) {
+        return res.status(401).json({ message: 'Password incorreta.' });
+      }
 
-        
-        
+      const token = jwt.sign(
+        { id: user._id, role: 'user' },
+        process.env.JWT_SECRET,
+        { expiresIn: '3d' }
+      );
 
-        if (Object.keys(errors).length > 0) {
-            return res.status(400).json({ message: errors });
-        }
-
-        
-    } catch (error) {
-        console.error('Login error:', error);
-        res.status(500).json({ message: 'Erro interno no servidor.', error: error.message });
+      return res.status(200).json({ role: 'user', token });
     }
+
+    // Se nenhum dos dois foi encontrado
+    return res.status(404).json({ message: 'Email ou password incorretos.' });
+
+  } catch (error) {
+    console.error('Login error:', error);
+    res.status(500).json({ message: 'Erro interno no servidor.', error: error.message });
+  }
 });
 
 // Inicializar servidor

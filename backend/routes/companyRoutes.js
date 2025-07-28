@@ -28,7 +28,7 @@ router.get('/login', (req, res) => {
 });
 
 router.post('/register', async (req, res) => {
-    const errors = await validations.validateCompanyInput(req.body);
+    const errors = await validations.validateCompanyInput(Company, req.body);
 
     if (Object.keys(errors).length > 0) {
         return res.status(400).json({ message: errors });

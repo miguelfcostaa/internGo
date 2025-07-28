@@ -4,16 +4,16 @@
     padding-right: 17%;
     padding-bottom: 100px;
     padding-top: 3rem;
+    min-height: 100vh;
 }
 
-.flex-row {
+.flexRow {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    gap: 10rem;    
+    gap: 3rem;  
 }
 
-.user-info {
+.userInfo {
     display: flex;
     flex-direction: row;
     gap: 3rem;
@@ -24,7 +24,7 @@
     padding: 20px;
 }
 
-.user-info-left {
+.userInfoLeft {
     display: flex;
     flex-direction: column;
     width: 40%;
@@ -32,16 +32,16 @@
     align-items: center;
 }
 
-.user-info-right {
+.userInfoRight {
     display: flex;
     flex-direction: column;
     justify-content: center;
     text-align: left;
-    width: 40%;
+    width: 50%;
     padding-right: 1rem;
 }
 
-.estagio-ativo {
+.estagioAtivo {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -49,11 +49,11 @@
     background-color: #ffffff;
     border: 1px solid #E0E0E0;
     border-radius: 8px;
-    width: 100%;
     padding: 20px;
+    width: fit-content;
 }
 
-.estagio-ativo-info {
+.estagioAtivoInfo {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -62,7 +62,7 @@
     padding-top: 0.5rem;
 }
 
-.estagio-ativo-detalhes {
+.estagioAtivoDetalhes {
     display: flex;
     color: #447D9B;
     text-decoration: underline;
@@ -71,7 +71,7 @@
     padding-top: 0.5rem;
 }
 
-.link-icon {
+.linkIcon {
     cursor: pointer;
 }
 
@@ -79,4 +79,24 @@
     color: #273F4F;
     text-align: left;
     margin-bottom: 20px;
+    height: 10%;
+}
+
+.candidaturasRecebidas {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    background-color: #ffffff;
+    border: 1px solid #E0E0E0;
+    border-radius: 8px;
+    padding: 30px;
+    width: 100%;
+    height: 85%;
+    text-align: left;
+}
+
+.verCandidatura {
+    color: #447D9B;
+    text-decoration: underline;
+    cursor: pointer;
 }

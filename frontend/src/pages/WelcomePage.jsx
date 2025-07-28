@@ -34,7 +34,7 @@ function WelcomePage() {
           </p>
           <button
             className="welcome-button"
-            onClick={() => navigate("/select-user")}
+            onClick={() => navigate("/home")}
           >
             Vamos a isso!
           </button>
