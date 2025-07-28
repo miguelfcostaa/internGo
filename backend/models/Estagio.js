@@ -30,7 +30,7 @@ const estagioSchema = new Schema({
         type: String,
         required: true,
     },
-    prazoCandidatura: { // Prazo para candidaturas
+    prazoCandidatura: { // Prazo para candidaturas 2025-00-00
         type: Date,
         required: true,
     },
@@ -64,6 +64,10 @@ const estagioSchema = new Schema({
     },
     observacoes: { // Observações adicionais sobre o estágio
         type: String,
+    },
+    company: { // Referência à empresa que oferece o estágio
+        type: Schema.Types.ObjectId,
+        ref: 'Company',
     },
 });
 

@@ -71,7 +71,6 @@ const NavBar = ({ atProfile }) => {
             const data = await request.json();
             if (request.ok) {
                 setUserInfo(data);
-                console.log("Company info:", data);
             } else {
                 console.error("Error fetching company info:", data.message);
             }
@@ -112,9 +111,7 @@ const NavBar = ({ atProfile }) => {
             return (
                 <nav className="navbar" style={{ backgroundColor: "#D7D7D7"}}>
                     <div className="container">
-                        <a className="navbar-brand" href="/">
-                            <Logo width="80" height="80" />
-                        </a>
+                        <Logo className="navbar-brand" width="80" height="80" />
                         <form className="d-flex" role="search">
                             <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
                             <button className="btn btn-outline-success" type="submit">Search</button>
@@ -133,7 +130,7 @@ const NavBar = ({ atProfile }) => {
                                 width="16" 
                                 height="16" 
                                 fill="currentColor" 
-                                class="bi bi-caret-down-fill" 
+                                className="bi bi-caret-down-fill" 
                                 viewBox="0 0 16 16"
                             >
                                 <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>

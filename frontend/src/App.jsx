@@ -8,7 +8,8 @@ import WelcomePage from './pages/WelcomePage.jsx';
 import RegisterUser from './pages/RegisterUser.jsx';
 import RegisterCompany from './pages/RegisterCompany.jsx';
 import ForgotPassword from './pages/ForgotPassword.jsx';
-import Footer from '../src/components/Footer.jsx';
+import Footer from './components/Footer.jsx';
+import NotFound from './pages/NotFound404.jsx'; // Importando a página 404
 import EstagiosAtivos from './pages/EstagiosAtivos.jsx';
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
           <Route path='/forgot-password' element={<ForgotPassword />}></Route>  {/*  Rota da Forgot Password Page */}
           <Route path='/select-user' element={<SelectUser />}></Route>  {/* Rota para selecionar se é Estagiario ou Empresa */}
           <Route path='/profile/:id' element={<Profile />}></Route>  {/*  Rota da Profile Page (Estagiario) */}
+          <Route path='*' element={<NotFound />}></Route>  {/*  Rota para página 404 */}
         </Routes>
 
         <Footer />

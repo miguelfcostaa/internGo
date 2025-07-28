@@ -45,7 +45,7 @@ function validatePassword(password) {
 }
   
 
-async function validateCompanyInput(data) {
+async function validateCompanyInput(Company ,data) {
     const errors = {};
 
     // 0. Verifica se todos os campos estão preenchidos
