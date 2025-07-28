@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import "../styles/ForgotPassword.css";
-import Footer from "../components/Footer";
 
 const PasswordReset = () => {
   const [email, setEmail] = useState("");
@@ -11,7 +10,7 @@ const PasswordReset = () => {
   };
 
   return (
-    <>
+    <div className="app-wrapper">
       <div className="forgot-container">
         <h2>Envie o seu email</h2>
         <p>
@@ -32,8 +31,7 @@ const PasswordReset = () => {
         </form>
         <a href="/login">Voltar para o início de sessão</a>
       </div>
-      <Footer />
-    </>
+    </div>
   );
 };
 

@@ -1,23 +1,23 @@
 import React, { useEffect, useState } from "react";
 import "../styles/Footer.css";
-
+ 
 const Footer = () => {
   const [showFooter, setShowFooter] = useState(false);
-
+ 
   useEffect(() => {
     const handleScroll = () => {
       // Muestra footer si se hizo scroll más de 100px
-      if (window.scrollY > 100) {
+      if (window.scrollY > 50) {
         setShowFooter(true);
       } else {
         setShowFooter(false);
       }
     };
-
+ 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
+ 
   return (
     <>
       {showFooter && (
@@ -35,5 +35,5 @@ const Footer = () => {
     </>
   );
 };
-
+ 
 export default Footer;
