@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import NavBar from "../components/NavBar.jsx";
-import BarraSuperior from "../components/BarraSuperiorCE";
 import style from "../styles/CriarEstagio.module.css";
 import { Form, Row, Col, Button } from "react-bootstrap";
 
 function CriacaoEstagio() {
-  const [step, setStep] = useState(1); // Estado para controlar el paso actual
+  const [step, setStep] = useState(1);
 
   const handleNext = () => {
     if (step < 4) setStep(step + 1);
@@ -139,9 +138,13 @@ function CriacaoEstagio() {
             </Row>
 
             <div className={`${style.dFlex} ${style.justifyContentBetween} ${style.mt4}`}>
-              <Button variant="secondary" className={style.btnSecondary}>Guarde Rascunho</Button>
+              <Button variant="secondary" className={style.btnSecondary}>
+                Guarde Rascunho
+              </Button>
               <div>
-                <Button variant="secondary" className={`${style.btnSecondary} ${style.me2}`}>Cancelar</Button>
+                <Button variant="secondary" className={`${style.btnSecondary} ${style.me2}`}>
+                  Cancelar
+                </Button>
                 <Button variant="primary" className={style.btnPrimary} onClick={handleNext}>
                   Próximo passo
                 </Button>
@@ -150,21 +153,61 @@ function CriacaoEstagio() {
           </Form>
         )}
 
+      
         {/* Paso 2: Detalhes do Estágio */}
         {step === 2 && (
-          <div>
-            <p>Conteúdo de "Detalhes do Estágio" (a definir)</p>
-            <div className={`${style.dFlex} ${style.justifyContentBetween} ${style.mt4}`}>
-              <Button variant="secondary" className={style.btnSecondary} onClick={handleBack}>
-                Voltar
-              </Button>
-              <Button variant="primary" className={style.btnPrimary} onClick={handleNext}>
-                Próximo passo
-              </Button>
-            </div>
-          </div>
-        )}
+        <Form>
+        <Row className={style.mb3}>
+        <Col md={12}>
+        <Form.Group className={style.mb3}>
+          <Form.Label className={style.formLabel}>
+            Descrição do Estágio <span className={style.textDanger}>*</span>
+          </Form.Label>
+          <Form.Control
+            as="textarea"
+            rows={4}
+            className={style.formControl}
+            placeholder="Descreva brevemente as atividades do estágio"
+            required
+          />
+        </Form.Group>
 
+        <Form.Group className={style.mb3}>
+          <Form.Label className={style.formLabel}>
+            Benefícios Oferecidos <span className={style.textDanger}>*</span>
+          </Form.Label>
+          <Form.Control
+            className={style.formControl}
+            type="text"
+            placeholder="Ex: Bolsa, Vale-transporte"
+            required
+          />
+        </Form.Group>
+
+        <Form.Group className={style.mb3}>
+          <Form.Label className={style.formLabel}>
+            Horário do Estágio <span className={style.textDanger}>*</span>
+          </Form.Label>
+          <Form.Control
+            className={style.formControl}
+            type="text"
+            placeholder="Ex: 9h às 15h"
+            required
+          />
+        </Form.Group>
+      </Col>
+    </Row>
+
+    <div className={`${style.dFlex} ${style.justifyContentBetween} ${style.mt4}`}>
+      <Button variant="secondary" className={style.btnSecondary} onClick={handleBack}>
+        Voltar
+      </Button>
+      <Button variant="primary" className={style.btnPrimary} onClick={handleNext}>
+        Próximo passo
+      </Button>
+    </div>
+  </Form>
+)}
         {/* Paso 3: Requisitos */}
         {step === 3 && (
           <div>
