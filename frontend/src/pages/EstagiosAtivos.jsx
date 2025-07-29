@@ -154,7 +154,7 @@ function EstagiosAtivos (){
                     </div>
                 </div>
                 <div style={{marginTop:"50px"}}>
-                    <ButtonGeral Name="Criar novo estágio"/>
+                    <ButtonGeral Name="Criar novo estágio" link={`/criar-estagio`} />
                 </div>
             </div>
         </>

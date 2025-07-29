@@ -135,7 +135,7 @@ const ProfilePage = () => {
                                     <td>1 Mês</td>
                                     <td>Hybrido</td>
                                     <td className={styles.linkIcon} style={{ paddingRight: "2rem" }}>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#447D9B" class="bi bi-link" viewBox="0 0 16 16">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#447D9B" className="bi bi-link" viewBox="0 0 16 16">
                                             <path d="M6.354 5.5H4a3 3 0 0 0 0 6h3a3 3 0 0 0 2.83-4H9q-.13 0-.25.031A2 2 0 0 1 7 10.5H4a2 2 0 1 1 0-4h1.535c.218-.376.495-.714.82-1z"/>
                                             <path d="M9 5.5a3 3 0 0 0-2.83 4h1.098A2 2 0 0 1 9 6.5h3a2 2 0 1 1 0 4h-1.535a4 4 0 0 1-.82 1H12a3 3 0 1 0 0-6z"/>
                                         </svg>
@@ -148,7 +148,7 @@ const ProfilePage = () => {
                                     <td>1 Mês</td>
                                     <td>Remoto</td>
                                     <td className={styles.linkIcon} style={{ paddingRight: "2rem" }}>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#447D9B" class="bi bi-link" viewBox="0 0 16 16">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#447D9B" className="bi bi-link" viewBox="0 0 16 16">
                                             <path d="M6.354 5.5H4a3 3 0 0 0 0 6h3a3 3 0 0 0 2.83-4H9q-.13 0-.25.031A2 2 0 0 1 7 10.5H4a2 2 0 1 1 0-4h1.535c.218-.376.495-.714.82-1z"/>
                                             <path d="M9 5.5a3 3 0 0 0-2.83 4h1.098A2 2 0 0 1 9 6.5h3a2 2 0 1 1 0 4h-1.535a4 4 0 0 1-.82 1H12a3 3 0 1 0 0-6z"/>
                                         </svg>
@@ -161,7 +161,7 @@ const ProfilePage = () => {
                                     <td>3 Meses</td>
                                     <td>Presencial</td>
                                     <td className={styles.linkIcon} style={{ paddingRight: "2rem" }}>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#447D9B" class="bi bi-link" viewBox="0 0 16 16">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#447D9B" className="bi bi-link" viewBox="0 0 16 16">
                                             <path d="M6.354 5.5H4a3 3 0 0 0 0 6h3a3 3 0 0 0 2.83-4H9q-.13 0-.25.031A2 2 0 0 1 7 10.5H4a2 2 0 1 1 0-4h1.535c.218-.376.495-.714.82-1z"/>
                                             <path d="M9 5.5a3 3 0 0 0-2.83 4h1.098A2 2 0 0 1 9 6.5h3a2 2 0 1 1 0 4h-1.535a4 4 0 0 1-.82 1H12a3 3 0 1 0 0-6z"/>
                                         </svg>
@@ -184,7 +184,7 @@ const ProfilePage = () => {
                                     <td style={{ paddingRight: "4rem" }}>1 Mês</td>
                                     <td style={{ paddingRight: "4rem" }}>Hybrido</td>
                                     <td className={styles.linkIcon} style={{ paddingRight: "2rem" }}>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#447D9B" class="bi bi-link" viewBox="0 0 16 16">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#447D9B" className="bi bi-link" viewBox="0 0 16 16">
                                             <path d="M6.354 5.5H4a3 3 0 0 0 0 6h3a3 3 0 0 0 2.83-4H9q-.13 0-.25.031A2 2 0 0 1 7 10.5H4a2 2 0 1 1 0-4h1.535c.218-.376.495-.714.82-1z"/>
                                             <path d="M9 5.5a3 3 0 0 0-2.83 4h1.098A2 2 0 0 1 9 6.5h3a2 2 0 1 1 0 4h-1.535a4 4 0 0 1-.82 1H12a3 3 0 1 0 0-6z"/>
                                         </svg>
@@ -198,7 +198,7 @@ const ProfilePage = () => {
                                     <td style={{ paddingRight: "4rem" }}>1 Mês</td>
                                     <td style={{ paddingRight: "4rem" }}>Remoto</td>
                                     <td className={styles.linkIcon} style={{ paddingRight: "2rem" }}>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#447D9B" class="bi bi-link" viewBox="0 0 16 16">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#447D9B" className="bi bi-link" viewBox="0 0 16 16">
                                             <path d="M6.354 5.5H4a3 3 0 0 0 0 6h3a3 3 0 0 0 2.83-4H9q-.13 0-.25.031A2 2 0 0 1 7 10.5H4a2 2 0 1 1 0-4h1.535c.218-.376.495-.714.82-1z"/>
                                             <path d="M9 5.5a3 3 0 0 0-2.83 4h1.098A2 2 0 0 1 9 6.5h3a2 2 0 1 1 0 4h-1.535a4 4 0 0 1-.82 1H12a3 3 0 1 0 0-6z"/>
                                         </svg>
@@ -214,8 +214,9 @@ const ProfilePage = () => {
                         <div className={styles.userInfo + ' shadow'}>
                             <div className={styles.userInfoLeft}>
                                 <img src={profilePhoto} alt="Foto de perfil" width={180} height={180} />
-                                <ButtonGeral Name="Ver Mais Detalhes" link={`/profile/${userInfo.id}/`} />
+                                <ButtonGeral Name="Ver Detalhes" link={`/profile/${userInfo.id}/`} />
                             </div>
+
                             <div className={styles.userInfoRight}>
                                 <p style={{ fontSize: '1.5rem' }}>{userInfo.name}</p>
                                 <p style={{ fontSize: '1.2rem' }}>{userInfo.email}</p>
@@ -246,9 +247,13 @@ const ProfilePage = () => {
                     </div>
 
                     <div className='mt-5'>
+                        <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                         <h2 className={styles.titulo}>
-                            Estágios Criados
+                                Estágios Criados
                         </h2>
+                        <ButtonGeral Name="Criar Estágio" link={`/criar-estagio`} />
+                        </div>
+
                         <table className="table table-hover shadow">
                             <thead>
                                 <tr>
@@ -271,7 +276,7 @@ const ProfilePage = () => {
                                         <td>{estagio.duracao}</td>
                                         <td>{estagio.tipoEstagio}</td>
                                         <td className={styles.linkIcon} style={{ paddingRight: "2rem" }}>
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#000" class="bi bi-pen" viewBox="0 0 16 16">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#000" className="bi bi-pen" viewBox="0 0 16 16">
                                                 <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001m-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708z"/>
                                             </svg>
                                         </td>

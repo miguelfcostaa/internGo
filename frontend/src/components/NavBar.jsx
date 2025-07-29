@@ -2,8 +2,23 @@ import React, { useEffect, useState, useRef } from 'react';
 import Logo from './Logo';
 import '../styles/NavBar.css'; 
 import { getUserRoleFromToken } from '../utils/jwtUtils';
+import { useSearch } from '../contexts/SearchContext';
+import { useNavigate } from 'react-router-dom';
 
 const NavBar = ({ atProfile }) => {
+
+    const { setQuery } = useSearch();
+    const [searchInput, setSearchInput] = useState('');
+    const navigate = useNavigate();
+
+    const handleSearch = (e) => {
+        e.preventDefault();
+        navigate('/home'); 
+        setQuery(searchInput);
+        setSearchInput('');
+    };
+
+
     const role = getUserRoleFromToken();
     const [showLogoutModal, setShowLogoutModal] = useState(false);
     const [userInfo, setUserInfo] = useState({});
@@ -112,9 +127,16 @@ const NavBar = ({ atProfile }) => {
                 <nav className="navbar" style={{ backgroundColor: "#D7D7D7"}}>
                     <div className="container">
                         <Logo className="navbar-brand" width="80" height="80" />
-                        <form className="d-flex" role="search">
-                            <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-                            <button className="btn btn-outline-success" type="submit">Search</button>
+                        <form className="d-flex" role="search" onSubmit={handleSearch}>
+                            <input
+                                className="form-control me-2"
+                                type="search"
+                                placeholder="Search"
+                                aria-label="Search"
+                                value={searchInput}
+                                onChange={(e) => setSearchInput(e.target.value)}
+                            />
+                            <button className="btn btn-outline-success" type='submit'>Search</button>
                         </form>
                         <div className="navbar-brand" ref={dropdownRef} style={{ position: 'relative' }}>
                         <div
@@ -154,7 +176,8 @@ const NavBar = ({ atProfile }) => {
                                         padding: '10px 15px',
                                         textDecoration: 'none',
                                         color: '#000',
-                                        whiteSpace: 'nowrap'
+                                        whiteSpace: 'nowrap',
+                                        textAlign: 'right',
                                     }}
                                     onClick={() => setShowDropdown(false)}
                                 >
@@ -169,7 +192,8 @@ const NavBar = ({ atProfile }) => {
                                         padding: '10px 15px',
                                         cursor: 'pointer',
                                         color: '#000',
-                                        whiteSpace: 'nowrap'
+                                        whiteSpace: 'nowrap',
+                                        textAlign: 'right',
                                     }}
                                 >
                                     Logout

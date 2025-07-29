@@ -13,8 +13,10 @@ function BarraSuperiorCE() {
     return (
         <div className="Barra-azul">
             <div className="Alinhar">
-                <div className="Componente">Criar Estágio</div>
-                <div className="Componente" onClick={AbreEstagiosAtivos}>Gestão de Estágios</div>
+                  <Link to= '/pagina-criacao_estagio' className="Componente">
+                    Criar Estágio
+                  </Link>
+                <div className="Componente">Gestão de Estágios</div>
                 <div className="Componente">Gestão de candidatos</div>
                 <div className="Componente" onClick={PerfilCompany}>Perfil</div>
                 <div className="Componente">Mensagens</div>
