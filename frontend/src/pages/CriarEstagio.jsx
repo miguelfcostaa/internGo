@@ -18,7 +18,6 @@ function CriacaoEstagio() {
   return (
     <div style={{ backgroundColor: "#fff", minHeight: "100vh" }}>
       <NavBar />
-      <BarraSuperior />
       <h6 className={style.titulo}> Publicar Novo Estágio na sua Empresa</h6>
 
       <div className={`${style.container} ${style.mt4}`}>

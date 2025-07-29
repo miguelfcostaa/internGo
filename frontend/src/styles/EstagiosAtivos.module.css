@@ -1,34 +1,27 @@
-body {
+.background {
   background-color: #f2f2f2;
+  height: 100vh;
 }
-td {
-  padding: 12px;
-  border-bottom: 1px solid #eee;
-}
-th {
+.th{
   text-align: center;
   padding: 12px;
   border-bottom: 2px solid #ccc;
-}
-thead{
-  background-color: #273F4F;
   font-weight: bold;
-  font-size: ;
 }
-table {
+.thead{
+  background-color: #007BFF;
+}
+.table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 1rem;
   font-family: 'Segoe UI', sans-serif;
   font-size: 14px;
 }
-a {
+.a {
   color: #007BFF;
   text-decoration: none;
   margin-right: 8px;
-}
-tr:nth-child(even) {
-  background-color: #f9f9f9;
 }
 .link{
   color: #007BFF;
@@ -37,5 +30,9 @@ tr:nth-child(even) {
 }
 .link:hover {
   text-decoration: underline;
+}
+.botao{
+  background-color: #007BFF;
+  border: 2px solid black;
 }
  

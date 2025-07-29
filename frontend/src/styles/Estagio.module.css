@@ -1,44 +1,40 @@
-
-.logo-container {
+.logoContainer {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    width: 15%;
 }
 
-.estagio-container {
+.estagioContainer {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    width: 50%;
 }
 
-.apply-container {
+.applyContainer {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    width: 20%;
 }
 
-.estagio-info {
+.estagioInfo {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
 }
 
-.estagio-info-left {
+.estagioInfoLeft {
     display: flex;
     flex-direction: column;
     text-align: left;
 }
 
-.estagio-info-right {
+.estagioInfoRight {
     display: flex;
     flex-direction: column;
     text-align: left;
 }
 
-.estagio-info-label {
+.estagioInfoLabel {
     font-weight: bold;
     font-size: 1rem;
 }
