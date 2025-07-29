@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import NavBar from '../components/NavBar';
 import { getUserRoleFromToken } from '../utils/jwtUtils';
 import ButtonGeral from '../components/ButtonGeral';
@@ -9,6 +10,9 @@ import NotFound from './NotFound404';
 import useEstagiosByCompany from '../hooks/useEstagiosByCompany';
 
 const ProfilePage = () => {
+
+    const navigate = useNavigate();
+
     const role = getUserRoleFromToken();
     const [userInfo, setUserInfo] = useState({});
     const [nEstagios, setNEstagios] = useState(0);
@@ -213,7 +217,7 @@ const ProfilePage = () => {
                         <div className={styles.userInfo + ' shadow'}>
                             <div className={styles.userInfoLeft}>
                                 <img src={profilePhoto} alt="Foto de perfil" width={180} height={180} />
-                                <ButtonGeral Name="Ver Mais Detalhes" />
+                                <ButtonGeral Name="Ver Mais Detalhes" link={`/profile/${userInfo.id}/`} />
                             </div>
                             <div className={styles.userInfoRight}>
                                 <p style={{ fontSize: '1.5rem' }}>{userInfo.name}</p>
@@ -246,7 +250,7 @@ const ProfilePage = () => {
 
                     <div className='mt-5'>
                         <h2 className={styles.titulo}>
-                            Estágios Criadas
+                            Estágios Criados
                         </h2>
                         <table className="table table-hover shadow">
                             <thead>
@@ -277,7 +281,7 @@ const ProfilePage = () => {
                                     </tr>
                                 ))}
                                 <tr>
-                                    <td colSpan={7} style={{ textAlign: 'center', verticalAlign: 'middle', cursor: 'pointer', fontWeight: '600' }}>Mostrar todos ({nEstagios})</td>
+                                    <td colSpan={7} style={{ textAlign: 'center', verticalAlign: 'middle', cursor: 'pointer', fontWeight: '600' }} onClick={navigate("/profile/:id/estagios")}>Mostrar todos ({nEstagios})</td>
                                 </tr>
                             </tbody>
                         </table>

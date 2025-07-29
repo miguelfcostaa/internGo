@@ -33,8 +33,13 @@ function Estagio({ NomeEmpresa, NomeEstagio, TotalVagas, Ativas, Area, Inicio, T
             </div>
             <div className="estagio-container">
                 <div style={{ 
-                    fontSize: "1.6rem", 
+                    fontSize: "1.4rem", 
                     fontWeight: "700", 
+                    textAlign: "left",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                    maxWidth: "25rem",
                     }}
                 >
                     {NomeEstagio}

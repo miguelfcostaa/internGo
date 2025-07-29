@@ -5,15 +5,18 @@ import { Link, useNavigate } from "react-router-dom";
 function BarraSuperiorCE() {
     const navigate = useNavigate();
     function AbreEstagiosAtivos(){
-        navigate("/estagios-ativos")
-    }    
+        navigate('/profile/:id/estagios')
+    }
+    function PerfilCompany(){
+        navigate('/profile/:id')
+    }     
     return (
         <div className="Barra-azul">
             <div className="Alinhar">
                 <div className="Componente">Criar Estágio</div>
                 <div className="Componente" onClick={AbreEstagiosAtivos}>Gestão de Estágios</div>
                 <div className="Componente">Gestão de candidatos</div>
-                <div className="Componente">Perfil</div>
+                <div className="Componente" onClick={PerfilCompany}>Perfil</div>
                 <div className="Componente">Mensagens</div>
             </div>
             <div className="direita">

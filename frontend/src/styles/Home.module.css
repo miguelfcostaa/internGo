@@ -8,10 +8,9 @@
 .flex {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;    
 }
 
-.estagios-container {
+.estagiosContainer {
     display: flex;
     flex-direction: column;
     max-height: 100vh;
@@ -21,4 +20,9 @@
     padding-left: 1rem;
     padding-top: 1rem;
     gap: 2rem;
+}
+
+.noEstagios {
+    text-align: left;
+    height: 100%;
 }
