@@ -8,7 +8,7 @@ function WelcomePage() {
   const navigate = useNavigate();
 
   return (
-    <div className={styles.container}>
+    <div className={`${styles.container} page-with-background`}>
       <div className={styles.imageSection}>
         <div className={styles.imageContainer}>
           <img

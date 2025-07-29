@@ -75,7 +75,11 @@ function EstagiosAtivos (){
         temp.push(i+1)
     }
     return(
-        <>
+        <div style={{
+            backgroundColor: "white", 
+            minHeight: "100vh",
+            backgroundImage: "none"
+        }}>
             <NavBar/>
             <BarraSuperiorCE/>
             <div>
@@ -137,7 +141,7 @@ function EstagiosAtivos (){
                     </div>
                 </div>
             </div>
-        </>
+        </div>
     )
 }
 
