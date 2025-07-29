@@ -1,5 +1,4 @@
 import React, {useState} from "react";
-import BarraSuperiorCE from "../components/BarraSuperiorCE";
 import NavBar from "../components/NavBar";
 import ButtonGeral from "../components/ButtonGeral";
 import styles from "../styles/EstagiosAtivos.module.css";
@@ -84,18 +83,17 @@ function EstagiosAtivos (){
 
     {/*quando o utlizador clicar em pausar é suposto o status do estagio mudar para pausado, a funçao abaixo nao esta a funcionar*/}
     function PausarEstagio(key){
-            const updateData = data.map((elemento,index)=>{
+            const updateData = data.map((elemento,index) => {
                 if(index===key){
                     elemento.status="pausado";
                 }
+                return elemento;
             });
             setData(updateData);
     }
     return(
         <div className={styles.background}>
             <NavBar/>
-            <BarraSuperiorCE/>
-            <div></div>
             <div>
                 <div style={{display:"flex", marginTop:"300px", justifyContent:"center", alignItems:"center", marginBottom:"50px"}}>
                     <input  type="text" placeholder="Procurar"></input>
