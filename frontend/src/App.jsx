@@ -10,6 +10,7 @@ import RegisterCompany from './pages/RegisterCompany.jsx';
 import ForgotPassword from './pages/ForgotPassword.jsx';
 import ResetPassword from './pages/ResetPassword.jsx';
 import Footer from './components/Footer.jsx';
+import EstagiosAtivos from './pages/EstagiosAtivos.jsx';
 import NotFound from './pages/NotFound404.jsx'; // Importando a página 404
 
 function App() {
