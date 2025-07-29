@@ -138,7 +138,7 @@ function Login() {
                     ) : null}
                 </div>
                     
-                <Link to="/password-reset" className={styles.resetpasswordLink}>
+                <Link to="/forget-password" className={styles.resetpasswordLink}>
                     Esqueceu a palavra-passe?
                 </Link>
             </div>

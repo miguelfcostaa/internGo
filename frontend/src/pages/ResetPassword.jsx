@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styles from "../styles/ResetPassword.module.css";
 
+function ResetPassword() {
 const PasswordReset = () => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -49,5 +50,6 @@ const PasswordReset = () => {
     </div>
   );
 };
+}
 
-export default PasswordReset;
+export default ResetPassword;
