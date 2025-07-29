@@ -214,8 +214,9 @@ const ProfilePage = () => {
                         <div className={styles.userInfo + ' shadow'}>
                             <div className={styles.userInfoLeft}>
                                 <img src={profilePhoto} alt="Foto de perfil" width={180} height={180} />
-                                <ButtonGeral Name="Ver Mais Detalhes" link={`/profile/${userInfo.id}/`} />
+                                <ButtonGeral Name="Ver Detalhes" link={`/profile/${userInfo.id}/`} />
                             </div>
+
                             <div className={styles.userInfoRight}>
                                 <p style={{ fontSize: '1.5rem' }}>{userInfo.name}</p>
                                 <p style={{ fontSize: '1.2rem' }}>{userInfo.email}</p>
@@ -246,9 +247,13 @@ const ProfilePage = () => {
                     </div>
 
                     <div className='mt-5'>
+                        <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                         <h2 className={styles.titulo}>
                                 Estágios Criados
                         </h2>
+                        <ButtonGeral Name="Criar Estágio" link={`/criar-estagio`} />
+                        </div>
+
                         <table className="table table-hover shadow">
                             <thead>
                                 <tr>

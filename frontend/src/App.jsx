@@ -55,9 +55,9 @@ function App() {
                 <Route path="*" element={<NotFound />}></Route>{" "} {/* Rota 404 para páginas não encontradas */}
             
               <Route path='/estagios-ativos' element={<EstagiosAtivos />}></Route>  {/*  Rota da Estagios Ativos Page */}
-            <Route path='/reset-password' element={<ResetPassword />}></Route>  {/*  Rota da Reset Password Page */}
-            <Route path='/criar-estagio' element={<CriarEstagio />}></Route>  {/*  Rota da Criar Estágio Page */}
-        </Routes>
+              <Route path='/reset-password' element={<ResetPassword />}></Route>  {/*  Rota da Reset Password Page */}
+              <Route path='/criar-estagio' element={<CriarEstagio />}></Route>  {/*  Rota da Criar Estágio Page */}
+          </Routes>
 
             <Footer />
         </div>
