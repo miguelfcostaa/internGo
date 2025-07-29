@@ -7,6 +7,8 @@ const bcrypt = require('bcrypt');
 const userRoutes = require('./routes/userRoutes');
 const estagioRoutes = require('./routes/estagioRoutes');
 const companyRoutes = require('./routes/companyRoutes');
+const authRoutes = require('./routes/authRoutes');
+const { testEmailConnection } = require('./utils/emailService');
 
 const Company = require('./models/Company');
 const User = require('./models/User');
@@ -26,10 +28,15 @@ app.use(express.json());
 app.use('/api/users', userRoutes);
 app.use('/api/companies', companyRoutes);
 app.use('/api/estagios', estagioRoutes);
+app.use('/api/auth', authRoutes);
 
 // Conectar ao MongoDB
 mongoose.connect(process.env.MONGODB_URI)
-.then(() => console.log('🍃 Conectado ao MongoDB'))
+.then(() => {
+  console.log('🍃 Conectado ao MongoDB');
+  // Testar conexão de email
+  testEmailConnection();
+})
 .catch(err => console.error('❌ Erro ao conectar ao MongoDB:', err));
 
 

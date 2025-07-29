@@ -12,7 +12,6 @@ import ResetPassword from './pages/ResetPassword.jsx';
 import Footer from './components/Footer.jsx';
 import EstagiosAtivos from './pages/EstagiosAtivos.jsx';
 import NotFound from './pages/NotFound404.jsx'; // Importando a página 404
-import EstagiosAtivos from './pages/EstagiosAtivos.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
 
 function App() {
@@ -26,7 +25,7 @@ function App() {
           <Route path='/register-company' element={<RegisterCompany />}></Route>  {/*  Rota da Register Company Page */}
           <Route path='/register-user' element={<RegisterUser />}></Route>  {/*  Rota da Register User Page */}
           <Route path='/forgot-password' element={<ForgotPassword />}></Route>  {/*  Rota da Forgot Password Page */}
-          <Route path='/reset-password-test' element={<ResetPassword />}></Route>  {/* Rota de teste para Reset Password */}
+          <Route path='/reset-password' element={<ResetPassword />}></Route>  {/* Rota para Reset Password */}
           <Route path='/select-user' element={<SelectUser />}></Route>  {/* Rota para selecionar se é Estagiario ou Empresa */}
           
           {/* Rotas protegidas - requerem autenticação */}

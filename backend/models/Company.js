@@ -30,7 +30,17 @@ const companySchema = new Schema({
     },
     image: {
         type: String,
+    },
+    resetPasswordToken: {
+        type: String,
+        default: null
+    },
+    resetPasswordExpires: {
+        type: Date,
+        default: null
     }
+}, {
+    timestamps: true // Adiciona createdAt e updatedAt automaticamente
 });
 
 module.exports = model('Company', companySchema);
