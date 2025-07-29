@@ -7,7 +7,7 @@ import "../styles/TabelaEstagiosAtivos.css";
 
 function EstagiosAtivos (){ 
     {/*Elementos da tabela*/}
-    const array=[
+    let array=[
         {
             estagio: "Engenheiro de Software",
             status:"Ativo",
@@ -58,21 +58,33 @@ function EstagiosAtivos (){
         },
     ]
     const [ paginaAtual, setpaginaAtual ]= useState(1);
+    const [ data, setData ] = useState(array);
+
     const linhasPorPagina=2;
     const totalPaginas=Math.ceil(array.length/linhasPorPagina);
-    console.log(totalPaginas)
+
     function mudarpagina(paginaAtual){
         paginaAtual=paginaAtual<1?1: paginaAtual;
         paginaAtual=paginaAtual>totalPaginas?totalPaginas:paginaAtual;
         setpaginaAtual(paginaAtual);
     }
+
     const startIndex=(paginaAtual-1)*linhasPorPagina
-    console.log(array);
     let tabelaAtual = array.slice(startIndex, startIndex + linhasPorPagina);
-    console.log(tabelaAtual);
+
     const temp=[];
     for(let i=0; i<totalPaginas; i++){
         temp.push(i+1)
+    }
+
+    {/*quando o utlizador clicar em pausar é suposto o status do estagio mudar para pausado, a funçao abaixo nao esta a funcionar*/}
+    function PausarEstagio(key){
+            const updateData = data.map((elemento,index)=>{
+                if(index===key){
+                    elemento.status="pausado";
+                }
+            });
+            setData(updateData);
     }
     return(
         <>
@@ -88,16 +100,16 @@ function EstagiosAtivos (){
                 </div>
                 <div>
                     <div style={{display:"flex", justifyContent:"center"}}>
-                    <table>
+                    <table >
                         <thead>
                             <tr>
                                 <td>Título de Estágio</td>
                                 <td>Status</td>
-                                <td class="status-ativo">Tipo</td>
+                                <td>Tipo</td>
                                 <td>Candidaturas</td>
                                 <td>Lozalização</td>
                                 <td>Publicado em</td>
-                                <td class="actions">Ações</td>
+                                <td>Ações</td>
                             </tr>
                         </thead>
                         <tbody>
@@ -112,7 +124,7 @@ function EstagiosAtivos (){
                                     <td>
                                         <a href="">[Ver Candidaturas]</a>
                                         <a href="">[Editar]</a>
-                                        <a href="">[Pausar]</a>
+                                        <button onClick={()=>PausarEstagio(index)}>[Pausar]</button>
                                         <a href="">[Fechar]</a>
                                     </td>
                                 </tr>
@@ -120,7 +132,7 @@ function EstagiosAtivos (){
                         </tbody>
                     </table>
                     </div>
-                    <div style={{display:"flex", position:""}}>
+                    <div style={{display:"flex"}}>
                         <button onClick={()=>mudarpagina(paginaAtual-1)} disabled={paginaAtual===1}>Anterior</button>
                         {temp.map(element=>(
                             <button
