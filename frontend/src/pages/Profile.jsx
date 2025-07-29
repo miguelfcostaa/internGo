@@ -217,7 +217,7 @@ const ProfilePage = () => {
                         <div className={styles.userInfo + ' shadow'}>
                             <div className={styles.userInfoLeft}>
                                 <img src={profilePhoto} alt="Foto de perfil" width={180} height={180} />
-                                <ButtonGeral Name="Ver Mais Detalhes" />
+                                <ButtonGeral Name="Ver Mais Detalhes" link={`/profile/${userInfo.id}/`} />
                             </div>
                             <div className={styles.userInfoRight}>
                                 <p style={{ fontSize: '1.5rem' }}>{userInfo.name}</p>
@@ -250,7 +250,7 @@ const ProfilePage = () => {
 
                     <div className='mt-5'>
                         <h2 className={styles.titulo}>
-                            Estágios Criadas
+                            Estágios Criados
                         </h2>
                         <table className="table table-hover shadow">
                             <thead>

@@ -2,7 +2,7 @@ import React from "react";
 import Logo from "./Logo";
 import "../styles/Estagio.css";
 
-function Estagio({ NomeEmpresa, NomeEstagio, TotalVagas, Ativas, Area, Inicio, TipoEstagio, Duracao, Localizacao }) {
+function Estagio({ NomeEmpresa, NomeEstagio, TotalVagas, Area, Inicio, TipoEstagio, Duracao, Localizacao }) {
     return (
         <div 
             className="container bg-white p-4 rounded shadow" 
@@ -19,8 +19,13 @@ function Estagio({ NomeEmpresa, NomeEstagio, TotalVagas, Ativas, Area, Inicio, T
             </div>
             <div className="estagio-container">
                 <div style={{ 
-                    fontSize: "1.6rem", 
+                    fontSize: "1.4rem", 
                     fontWeight: "700", 
+                    textAlign: "left",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                    maxWidth: "25rem",
                     }}
                 >
                     {NomeEstagio}
@@ -39,7 +44,7 @@ function Estagio({ NomeEmpresa, NomeEstagio, TotalVagas, Ativas, Area, Inicio, T
             </div>
             <div className="apply-container">
                 <p>{Localizacao}</p>
-                <button className="btn btn-primary">Candidatar-me</button>
+                <button style={{ minWidth: "150px", maxWidth: "150px" }} className="btn btn-primary">Candidatar-me</button>
             </div>
             
         </div>

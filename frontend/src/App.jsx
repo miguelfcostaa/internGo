@@ -11,7 +11,6 @@ import ForgotPassword from './pages/ForgotPassword.jsx';
 import ResetPassword from './pages/ResetPassword.jsx';
 import Footer from './components/Footer.jsx';
 import NotFound from './pages/NotFound404.jsx'; // Importando a página 404
-import EstagiosAtivos from './pages/EstagiosAtivos.jsx';
 
 function App() {
   return (
