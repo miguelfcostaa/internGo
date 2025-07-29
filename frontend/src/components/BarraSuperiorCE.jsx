@@ -1,11 +1,15 @@
 import React from "react";
 import "../styles/BarraSuperiorCE.css";
+import { Link } from 'react-router-dom';
+
 
 function BarraSuperiorCE() {
     return (
         <div className="Barra-azul">
             <div className="Alinhar">
-                <div className="Componente">Criar Estágio</div>
+                  <Link to= '/pagina-criacao_estagio' className="Componente">
+                    Criar Estágio
+                  </Link>
                 <div className="Componente">Gestão de Estágios</div>
                 <div className="Componente">Gestão de candidatos</div>
                 <div className="Componente">Perfil</div>

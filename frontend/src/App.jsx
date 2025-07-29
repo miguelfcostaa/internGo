@@ -1,4 +1,5 @@
 import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import HomePage from './pages/Home.jsx';
 import Login from './pages/Login';
@@ -12,6 +13,9 @@ import Footer from './components/Footer.jsx';
 import NotFound from './pages/NotFound404.jsx'; // Importando a página 404
 import EstagiosAtivos from './pages/EstagiosAtivos.jsx';
 import ResetPassword from './pages/ResetPassword.jsx';
+import CriarEstagio from './pages/CriarEstagio.jsx'; // Importando a página de criação de estágio
+
+
 
 function App() {
   return (
@@ -26,6 +30,9 @@ function App() {
           <Route path='/forgot-password' element={<ForgotPassword />}></Route>  {/*  Rota da Forgot Password Page */}
           <Route path='/select-user' element={<SelectUser />}></Route>  {/* Rota para selecionar se é Estagiario ou Empresa */}
           <Route path='/profile/:id' element={<Profile />}></Route>  {/*  Rota da Profile Page (Estagiario) */}
+          <Route path='/estagios-ativos' element={<EstagiosAtivos />}></Route>  {/*  Rota da Estagios Ativos Page */}
+          <Route path='/reset-password' element={<ResetPassword />}></Route>  {/*  Rota da Reset Password Page */}
+          <Route path='/criar-estagio' element={<CriarEstagio />}></Route>  {/*  Rota da Criar Estágio Page */}
         </Routes>
 
         <Footer />
