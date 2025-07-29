@@ -68,7 +68,7 @@ function Login() {
 
 
     return (
-        <div className={styles.loginContainer}>
+        <div className={`${styles.loginContainer} page-with-background`}>
             <div className={styles.loginForm}>
                 <h2 className={styles.loginTitle}>Entrar</h2>
                 <p className={styles.loginSubtitle}>
@@ -137,7 +137,7 @@ function Login() {
                     ) : null}
                 </div>
                     
-                <Link to="/forgot-password" className={styles.forgotPasswordLink}>
+                <Link to="/reset-password-test" className={styles.forgetPasswordLink}>
                     Esqueceu a palavra-passe?
                 </Link>
             </div>

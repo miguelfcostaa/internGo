@@ -96,7 +96,7 @@ function RegisterCompany() {
   };
 
   return (
-    <div className="container-fluid" style={{ height: '100vh', position: 'relative' }}>
+    <div className="container-fluid page-with-background" style={{ height: '100vh', position: 'relative' }}>
   <div className={styles.registerContainer}>
     <h2 className={`text-center mb-3 ${styles.titleDark}`}>Registo - Empresa</h2>
 

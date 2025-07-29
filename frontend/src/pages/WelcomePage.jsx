@@ -8,7 +8,7 @@ function WelcomePage() {
   const navigate = useNavigate();
 
   return (
-    <div className={styles.container}>
+    <div className={`${styles.container} page-with-background`}>
       <div className={styles.imageSection}>
         <div className={styles.imageContainer}>
           <img
@@ -36,7 +36,7 @@ function WelcomePage() {
           </p>
           <button
             className={styles.button}
-            onClick={() => navigate("/home")}
+            onClick={() => navigate("/select-user")}
           >
             Vamos a isso!
           </button>
