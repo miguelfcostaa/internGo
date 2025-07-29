@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import NavBar from '../components/NavBar';
 import { getUserRoleFromToken } from '../utils/jwtUtils';
 import ButtonGeral from '../components/ButtonGeral';
@@ -10,8 +9,6 @@ import NotFound from './NotFound404';
 import useEstagiosByCompany from '../hooks/useEstagiosByCompany';
 
 const ProfilePage = () => {
-
-    const navigate = useNavigate();
 
     const role = getUserRoleFromToken();
     const [userInfo, setUserInfo] = useState({});
@@ -282,7 +279,7 @@ const ProfilePage = () => {
                                 ))}
                                 <tr>
                                     <td colSpan={7} style={{ textAlign: 'center', verticalAlign: 'middle', cursor: 'pointer', fontWeight: '600' }} >
-                                        <a href={`/profile/estagios/${userInfo._id}`} style={{ textDecoration: 'none', color: '#000' }}> Mostrar todos ({nEstagios}) </a>
+                                        <a href={`/estagios-ativos/${userInfo._id}`} style={{ textDecoration: 'none', color: '#000' }}> Mostrar todos ({nEstagios}) </a>
                                     </td>
                                 </tr>
                             </tbody>

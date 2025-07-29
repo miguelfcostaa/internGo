@@ -10,6 +10,7 @@ import RegisterCompany from './pages/RegisterCompany.jsx';
 import ForgotPassword from './pages/ForgotPassword.jsx';
 import ResetPassword from './pages/ResetPassword.jsx';
 import Footer from './components/Footer.jsx';
+import EstagiosAtivos from './pages/EstagiosAtivos.jsx';
 import NotFound from './pages/NotFound404.jsx'; // Importando a página 404
 import EstagiosAtivos from './pages/EstagiosAtivos.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
@@ -35,7 +36,7 @@ function App() {
             </ProtectedRoute>
           }></Route>  {/*  Rota da Profile Page (protegida) */}
           
-          <Route path='/estagios-ativos' element={
+          <Route path='/estagios-ativos/:id' element={
             <ProtectedRoute requiredRole="company">
               <EstagiosAtivos />
             </ProtectedRoute>
