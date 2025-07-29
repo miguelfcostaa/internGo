@@ -15,6 +15,8 @@
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
+    margin-top: 1rem;
+    margin-bottom: 0.22rem;
 }
 
 .tag {
@@ -26,8 +28,7 @@
     font-size: 0.85rem;
     display: flex;
     align-items: center;
-    margin-top: 0.5rem;
-    margin-bottom: 0.5rem;
+
 }
 
 .tag button {
