@@ -92,7 +92,7 @@ function EstagiosAtivos (){
             setData(updateData);
     }
     return(
-        <>
+        <div className={styles.background}>
             <NavBar/>
             <BarraSuperiorCE/>
             <div></div>
@@ -105,7 +105,7 @@ function EstagiosAtivos (){
                         <thead>
                             <tr>
                                 <th>Título de Estágio</th>
-                                <td>Status</td>
+                                <td className={styles.td}>Status</td>
                                 <td>Tipo</td>
                                 <td>Candidaturas</td>
                                 <td>Vagas</td>
@@ -157,7 +157,7 @@ function EstagiosAtivos (){
                     <ButtonGeral Name="Criar novo estágio" link={`/criar-estagio`} />
                 </div>
             </div>
-        </>
+        </div>
     )
 }
 
