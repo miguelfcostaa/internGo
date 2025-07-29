@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styles from '../styles/Login.module.css';
 import ButtonSubmit from "../components/ButtonSubmit";
-import ResetPassword from "./ResetPassword.jsx";
 
 function Login() {
 
@@ -69,7 +68,7 @@ function Login() {
 
 
     return (
-        <div className={styles.loginContainer}>
+        <div className={`${styles.loginContainer} page-with-background`}>
             <div className={styles.loginForm}>
                 <h2 className={styles.loginTitle}>Entrar</h2>
                 <p className={styles.loginSubtitle}>
@@ -138,7 +137,7 @@ function Login() {
                     ) : null}
                 </div>
                     
-                <Link to="/forget-password" className={styles.resetpasswordLink}>
+                <Link to="/reset-password-test" className={styles.forgetPasswordLink}>
                     Esqueceu a palavra-passe?
                 </Link>
             </div>

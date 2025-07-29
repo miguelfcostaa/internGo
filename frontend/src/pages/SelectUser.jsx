@@ -3,8 +3,9 @@ import "../styles/selectUser.css";
 
 function SelecionarUtilizador() {
     return (
-        <div className="main-container">
-            <div className="container bg-white" style={{ minHeight: "500px", borderRadius: '10px' }}>
+        <div className="page-with-background" style={{ height: '100vh', position: 'relative' }}>
+            <div className="main-container">
+                <div className="container bg-white" style={{ minHeight: "500px", borderRadius: '10px' }}>
                 <h1 className="title">Para continuar, selecione o perfil que se adequa :</h1>
                 <div style={{ display: "flex" }}>
                     <div className="user-option" onClick={() => window.location.href = "/register-company"}>
@@ -23,6 +24,7 @@ function SelecionarUtilizador() {
                     </div>
                 </div>
             </div>
+        </div>
         </div>
     );
 }

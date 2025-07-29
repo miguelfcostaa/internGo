@@ -5,6 +5,16 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Background padrão para páginas específicas */
+.page-with-background {
+  background-color: #273F4F !important;
+  background-image: url('./assets/background.jpg') !important;
+  background-size: cover !important;
+  background-attachment: fixed !important;
+  background-position: center !important;
+  min-height: 100vh;
+}
+
 code {
   font-family: 'Open Sans';
 }

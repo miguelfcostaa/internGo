@@ -85,7 +85,7 @@ function RegisterUser() {
   );
 
   return (
-    <div className="app-wrapper container py-5">
+    <div className="container-fluid page-with-background" style={{ height: '100vh', position: 'relative' }}>
       <div className={styles.registerContainer}>
         <h2 className={`${styles.titleDark} mb-3`}>Registo - Estagiário</h2>
 
