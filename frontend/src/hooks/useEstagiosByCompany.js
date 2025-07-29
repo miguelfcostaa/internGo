@@ -32,7 +32,6 @@ export default function useEstagiosByCompany(companyId) {
                     })
                 );
                 setEstagios(estagiosComEmpresa);
-                console.log("Estágios fetched successfully:", estagiosComEmpresa);
             } else {
                 console.error("Error fetching estagios:", response.statusText);
             }

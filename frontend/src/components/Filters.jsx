@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../styles/Filters.css';
+import useEstagios from '../hooks/useEstagios';
 
 const filterDefinitions = [
     {
-        key: 'areas',
+        key: 'area',
         label: 'Área',
-        options: ['Informática', 'Eletrónica', 'Saúde', 'Engenharia', 'Gestão', 'Marketing', 'Recursos Humanos', 'Logística']
+        options: ['Informatica', 'Eletronica', 'Saude', 'Engenharia', 'Gestao', 'Marketing', 'Recursos Humanos', 'Logistica']
     },
     {
         key: 'localizacao',
@@ -13,31 +14,32 @@ const filterDefinitions = [
         options: ['Funchal', 'Lisboa', 'Porto']
     },
     {
-        key: 'duracoes',
+        key: 'duracao',
         label: 'Duração',
         options: ['1', '3', '12'],
         format: (value) => `${value} mês(es)`
     },
     {
-        key: 'tipos',
+        key: 'tipoEstagio',
         label: 'Tipo de estágio',
-        options: ['Presencial', 'Remoto', 'Híbrido']
+        options: ['Presencial', 'Remoto', 'Hibrido']
     }
 ];
 
-const Filters = () => {
+const Filters = ({ setEstagios, searchTag, setSearchTag, onRemoveSearchTag }) => {
+
     const [selected, setSelected] = useState({
-        areas: [],
+        area: [],
         localizacao: [],
-        duracoes: [],
-        tipos: []
+        duracao: [],
+        tipoEstagio: []
     });
 
     const [isOpen, setIsOpen] = useState({
-        areas: true,
+        area: true,
         localizacao: false,
-        duracoes: false,
-        tipos: true
+        duracao: false,
+        tipoEstagio: true
     });
 
     const toggleDropdown = (key) => {
@@ -62,6 +64,41 @@ const Filters = () => {
 
     const totalSelected = Object.values(selected).flat().length;
 
+
+    const getEstagios = async () => {
+        try {
+            const query = new URLSearchParams();
+            Object.entries(selected).forEach(([key, values]) => {
+                if (values.length > 0) {
+                    query.append(key, values.join(','));
+                }
+            });
+
+            const response = await fetch(`http://localhost:5000/api/estagios?${query}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                }
+            });
+            console.log(response.url);
+            const data = await response.json();
+            console.log(data);
+
+            if (response.ok) {
+                setEstagios(data);
+                console.log("Estágios filtrados:", data);
+            }
+        } catch (error) {
+            console.error("Error fetching estagios:", error);
+        }
+    };
+
+    useEffect(() => {
+        getEstagios();
+    }, [selected]);
+
+
+
     return (
         <div className="filtros-container">
             <div className="filtros-tags">
@@ -81,8 +118,17 @@ const Filters = () => {
                             </span>
                         ))
                     )}
-                    {totalSelected === 0 && (
-                        <span className="mt-2 mb-2">Nenhum filtro selecionado.</span>
+                    {searchTag ? (
+                        <span className="tag">
+                            {searchTag}
+                            <button onClick={onRemoveSearchTag}>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                                    <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+                                </svg>
+                            </button>
+                        </span>
+                    ) : totalSelected === 0 && (
+                        <span style={{ marginBottom: "0.25rem" }}>Nenhum filtro selecionado.</span>
                     )}
                 </div>
             </div>
@@ -107,9 +153,11 @@ const Filters = () => {
                                 <label key={i} className="filtro-opcao">
                                     <input
                                         type="checkbox"
+                                        name={label}
                                         style={{ transform: 'scale(1.3)', marginRight: '8px' }}
                                         checked={selected[key].includes(option)}
-                                        onChange={() => toggleValue(key, option)}
+                                        onChange={() => toggleValue(key, option)
+                                        }
                                     />
                                     {format ? format(option) : option}
                                 </label>

@@ -3,6 +3,20 @@ import Logo from "./Logo";
 import "../styles/Estagio.css";
 
 function Estagio({ NomeEmpresa, NomeEstagio, TotalVagas, Ativas, Area, Inicio, TipoEstagio, Duracao, Localizacao }) {
+    
+    const handleCandidatarClick = () => {
+        const token = localStorage.getItem('token');
+        
+        if (!token) {
+            // Se não estiver logado, redireciona para login
+            window.location.href = '/login';
+        } else {
+            // Se estiver logado, implementar lógica de candidatura
+            // Por agora, pode mostrar um alert ou navegar para página de candidatura
+            alert('Funcionalidade de candidatura será implementada aqui!');
+        }
+    };
+
     return (
         <div 
             className="container bg-white p-4 rounded shadow" 
@@ -19,8 +33,13 @@ function Estagio({ NomeEmpresa, NomeEstagio, TotalVagas, Ativas, Area, Inicio, T
             </div>
             <div className="estagio-container">
                 <div style={{ 
-                    fontSize: "1.6rem", 
+                    fontSize: "1.4rem", 
                     fontWeight: "700", 
+                    textAlign: "left",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                    maxWidth: "25rem",
                     }}
                 >
                     {NomeEstagio}
@@ -39,7 +58,9 @@ function Estagio({ NomeEmpresa, NomeEstagio, TotalVagas, Ativas, Area, Inicio, T
             </div>
             <div className="apply-container">
                 <p>{Localizacao}</p>
-                <button className="btn btn-primary">Candidatar-me</button>
+                <button className="btn btn-primary" onClick={handleCandidatarClick}>
+                    Candidatar-me
+                </button>
             </div>
             
         </div>

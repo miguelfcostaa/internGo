@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styles from '../styles/Login.module.css';
 import ButtonSubmit from "../components/ButtonSubmit";
-import ResetPassword from "./ResetPassword.jsx";
 
 function Login() {
 
@@ -15,6 +14,9 @@ function Login() {
         event.preventDefault();
         setFieldErrors({});
         setLoading(true);
+
+        // Limpar token anterior antes de fazer novo login
+        localStorage.removeItem("token");
 
         const formData = new FormData(event.target);
         const data = {
@@ -69,7 +71,7 @@ function Login() {
 
 
     return (
-        <div className={styles.loginContainer}>
+        <div className={`${styles.loginContainer} page-with-background`}>
             <div className={styles.loginForm}>
                 <h2 className={styles.loginTitle}>Entrar</h2>
                 <p className={styles.loginSubtitle}>
@@ -138,7 +140,8 @@ function Login() {
                     ) : null}
                 </div>
                     
-                <Link to="/password-reset" className={styles.resetpasswordLink}>
+                <Link to="/forgot-password" className={styles.forgotPasswordLink}>
+                
                     Esqueceu a palavra-passe?
                 </Link>
             </div>

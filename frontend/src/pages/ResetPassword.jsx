@@ -15,7 +15,7 @@ const PasswordReset = () => {
   };
 
   return (
-    <div className={styles.appWrapper}>
+    <div className={`${styles.appWrapper} page-with-background`}>
       <div className={styles.resetContainer}>
         <h2>Altere a palavra-passe</h2>
         <form onSubmit={handleSubmit}>
@@ -28,7 +28,6 @@ const PasswordReset = () => {
             value={newPassword}
             placeholder="Digite a nova palavra passe"
             onChange={(e) => setNewPassword(e.target.value)}
-            required
           />
 
           <label htmlFor="confirmPassword">Confirmar palavra passe</label>
@@ -40,7 +39,6 @@ const PasswordReset = () => {
             value={confirmPassword}
             placeholder="Confirme a nova palavra passe"
             onChange={(e) => setConfirmPassword(e.target.value)}
-            required
           />
 
           <button type="submit" className={styles.button}>Confirmar</button>
@@ -49,5 +47,6 @@ const PasswordReset = () => {
     </div>
   );
 };
+
 
 export default PasswordReset;

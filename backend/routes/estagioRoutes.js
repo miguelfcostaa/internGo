@@ -6,7 +6,22 @@ const router = express.Router();
 
 router.get('/', async (req, res) => {
     try {
-        const estagios = await Estagio.find();
+        const filtros = {};
+
+        if (req.query.area) {
+            filtros.area = { $in: Array.isArray(req.query.area) ? req.query.area : [req.query.area] };
+        }
+        if (req.query.localizacao) {
+            filtros.localizacao = { $in: Array.isArray(req.query.localizacao) ? req.query.localizacao : [req.query.localizacao] };
+        }
+        if (req.query.duracao) {
+            filtros.duracao = { $in: Array.isArray(req.query.duracao) ? req.query.duracao : [req.query.duracao] };
+        }
+        if (req.query.tipoEstagio) {
+            filtros.tipoEstagio = { $in: Array.isArray(req.query.tipoEstagio) ? req.query.tipoEstagio : [req.query.tipoEstagio] };
+        }
+
+        const estagios = await Estagio.find(filtros).populate('company', 'name');
         res.json(estagios);
     } catch (error) {
         res.status(500).json({ message: 'Erro ao buscar estágios', error });
