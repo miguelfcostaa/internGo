@@ -92,7 +92,7 @@ function EstagiosAtivos (){
             setData(updateData);
     }
     return(
-        <>
+        <div className={styles.background}>
             <NavBar/>
             <BarraSuperiorCE/>
             <div></div>
@@ -102,10 +102,10 @@ function EstagiosAtivos (){
                 </div>
                 <div style={{ maxWidth:"80%", backgroundColor:"white", marginLeft:"10%", marginRight:"10%"}}>
                     <table className={`table table-hover ${styles.border}`} style={{ maxWidth:"100%", maxHeight:"100%"}}>
-                        <thead >
+                        <thead>
                             <tr>
                                 <th>Título de Estágio</th>
-                                <td>Status</td>
+                                <td className={styles.td}>Status</td>
                                 <td>Tipo</td>
                                 <td>Candidaturas</td>
                                 <td>Vagas</td>
@@ -125,10 +125,10 @@ function EstagiosAtivos (){
                                     <td>{element.localização}</td>
                                     <td>{element.publicado}</td>
                                     <td>
-                                        <a href="">[Ver Candidaturas]</a>
-                                        <a href="">[Editar]</a>
-                                        <a style={{color:"#007BFF"}} onClick={()=>PausarEstagio(index)}>[Pausar]</a>
-                                        <a href="">[Fechar]</a>
+                                        <a className="link">[Ver Candidaturas]</a>
+                                        <a className="link">[Editar]</a>
+                                        <a className="link" onClick={()=>PausarEstagio(index)}>[Pausar]</a>
+                                        <a className="link">[Fechar]</a>
                                     </td>
                                 </tr>
                             ))}
@@ -157,7 +157,7 @@ function EstagiosAtivos (){
                     <ButtonGeral Name="Criar novo estágio" link={`/criar-estagio`} />
                 </div>
             </div>
-        </>
+        </div>
     )
 }
 
