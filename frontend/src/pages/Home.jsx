@@ -4,17 +4,45 @@ import NavBar from "../components/NavBar";
 import styles from "../styles/Home.module.css";
 import Filters from "../components/Filters";
 import useEstagios from "../hooks/useEstagios";
+import { useSearch } from "../contexts/SearchContext";
 
 function Home() {
+    const allEstagios = useEstagios();
+    const [estagios, setEstagios] = useState(allEstagios);
+    const { query, setQuery } = useSearch();
+    const [searchTag, setSearchTag] = useState(null);
 
-    const [estagios, setEstagios] = useState(useEstagios());
+
+    useEffect(() => {
+        if (query) {
+            const filteredEstagios = allEstagios.filter(estagio =>
+                estagio.title.toLowerCase().includes(query.toLowerCase()) ||
+                estagio.company.name.toLowerCase().includes(query.toLowerCase())
+            );
+            setEstagios(filteredEstagios);
+            setSearchTag(query);
+        }
+
+    }, [query, allEstagios]);
+
+    const handleRemoveSearchTag = () => {
+        setSearchTag(null);
+        setEstagios(allEstagios);
+        setQuery('');
+    };
+
 
     return (
         <>  
             <NavBar />
             <div className={styles.background}>
                 <div className={styles.flex}>
-                    <Filters setEstagios={setEstagios} />
+                    <Filters 
+                        setEstagios={setEstagios} 
+                        searchTag={searchTag} 
+                        setSearchTag={setSearchTag} 
+                        onRemoveSearchTag={handleRemoveSearchTag}
+                    />
                     <div className={styles.estagiosContainer}>
                         {estagios.length > 0 ? (
                             estagios.map((estagio, index) => (
