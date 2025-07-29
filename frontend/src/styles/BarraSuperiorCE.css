@@ -1,5 +1,6 @@
 .Barra-azul {
-    background-color: blue;
+    background-color: rgb(16, 16, 71);
+    height: 30px;
     display: flex; 
     flex-direction: row;
 }
