@@ -281,7 +281,9 @@ const ProfilePage = () => {
                                     </tr>
                                 ))}
                                 <tr>
-                                    <td colSpan={7} style={{ textAlign: 'center', verticalAlign: 'middle', cursor: 'pointer', fontWeight: '600' }} onClick={navigate("/profile/:id/estagios")}>Mostrar todos ({nEstagios})</td>
+                                    <td colSpan={7} style={{ textAlign: 'center', verticalAlign: 'middle', cursor: 'pointer', fontWeight: '600' }} >
+                                        <a href={`/profile/estagios/${userInfo._id}`} style={{ textDecoration: 'none', color: '#000' }}> Mostrar todos ({nEstagios}) </a>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
