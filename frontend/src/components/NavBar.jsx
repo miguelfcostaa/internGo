@@ -186,9 +186,7 @@ const NavBar = ({ atProfile }) => {
             return (
                 <nav className="navbar" style={{ backgroundColor: "#D7D7D7"}}>
                     <div className="container">
-                        <a className="navbar-brand" href="/">
-                            <Logo width="80" height="80" />
-                        </a>
+                        <Logo width="80" height="80" />
                         <form className="d-flex" role="search">
                             <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
                             <button className="btn btn-outline-success" type="submit">Search</button>
