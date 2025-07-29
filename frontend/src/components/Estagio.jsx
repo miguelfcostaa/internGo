@@ -1,6 +1,6 @@
 import React from "react";
 import Logo from "./Logo";
-import "../styles/Estagio.css";
+import styles from "../styles/Estagio.module.css";
 
 function Estagio({ NomeEmpresa, NomeEstagio, TotalVagas, Ativas, Area, Inicio, TipoEstagio, Duracao, Localizacao }) {
     
@@ -27,11 +27,11 @@ function Estagio({ NomeEmpresa, NomeEstagio, TotalVagas, Ativas, Area, Inicio, T
                 gap: "7rem",
             }}
         >
-            <div className="logo-container">
+            <div className={styles.logoContainer}>
                 <Logo width="120" height="120" />
                 <div style={{ fontSize: "1.4rem", fontWeight: "500" }}>{NomeEmpresa}</div>
             </div>
-            <div className="estagio-container">
+            <div className={styles.estagioContainer}>
                 <div style={{ 
                     fontSize: "1.4rem", 
                     fontWeight: "700", 
@@ -44,19 +44,19 @@ function Estagio({ NomeEmpresa, NomeEstagio, TotalVagas, Ativas, Area, Inicio, T
                 >
                     {NomeEstagio}
                 </div>
-                <div className="estagio-info">
-                    <div className="estagio-info-left">
-                        <div><span className="estagio-info-label">Vagas Total: </span> {TotalVagas}</div>
-                        <div><span className="estagio-info-label">Area: </span> {Area}</div>
-                        <div><span className="estagio-info-label">Tipo de Estágio: </span> {TipoEstagio}</div>
+                <div className={styles.estagioInfo}>
+                    <div className={styles.estagioInfoLeft}>
+                        <div><span className={styles.estagioInfoLabel}>Vagas Total: </span> {TotalVagas}</div>
+                        <div><span className={styles.estagioInfoLabel}>Area: </span> {Area}</div>
+                        <div><span className={styles.estagioInfoLabel}>Tipo de Estágio: </span> {TipoEstagio}</div>
                     </div>
-                    <div className="estagio-info-right">
-                        <div><span className="estagio-info-label">Inicio: </span> {Inicio}</div>
-                        <div><span className="estagio-info-label">Duração: </span> {Duracao} mês</div>
+                    <div className={styles.estagioInfoRight}>
+                        <div><span className={styles.estagioInfoLabel}>Inicio: </span> {Inicio}</div>
+                        <div><span className={styles.estagioInfoLabel}>Duração: </span> {Duracao} mês</div>
                     </div>
                 </div>
             </div>
-            <div className="apply-container">
+            <div className={styles.applyContainer}>
                 <p>{Localizacao}</p>
                 <button className="btn btn-primary" onClick={handleCandidatarClick}>
                     Candidatar-me

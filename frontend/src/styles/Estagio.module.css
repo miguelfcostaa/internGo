@@ -1,0 +1,41 @@
+.logoContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.estagioContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.applyContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.estagioInfo {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.estagioInfoLeft {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.estagioInfoRight {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.estagioInfoLabel {
+    font-weight: bold;
+    font-size: 1rem;
+}
+
