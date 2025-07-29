@@ -27,7 +27,9 @@ function App() {
           <Route path='/reset-password' element={<ResetPassword />}></Route>  {/* Rota para Reset Password com token */}
           <Route path='/select-user' element={<SelectUser />}></Route>  {/* Rota para selecionar se é Estagiario ou Empresa */}
           <Route path='/profile/:id' element={<Profile />}></Route>  {/*  Rota da Profile Page (Estagiario) */}
+          <Route path='/profile/:id/estagios' element={<EstagiosAtivos />}></Route>  {/* Rota 404 para páginas não encontradas */}
           <Route path='*' element={<NotFound />}></Route>  {/* Rota 404 para páginas não encontradas */}
+          
         </Routes>
 
         <Footer />
