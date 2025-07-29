@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import NavBar from '../components/NavBar';
 import { getUserRoleFromToken } from '../utils/jwtUtils';
 import ButtonGeral from '../components/ButtonGeral';
@@ -10,8 +9,6 @@ import NotFound from './NotFound404';
 import useEstagiosByCompany from '../hooks/useEstagiosByCompany';
 
 const ProfilePage = () => {
-
-    const navigate = useNavigate();
 
     const role = getUserRoleFromToken();
     const [userInfo, setUserInfo] = useState({});
