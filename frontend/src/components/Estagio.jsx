@@ -2,7 +2,21 @@ import React from "react";
 import Logo from "./Logo";
 import "../styles/Estagio.css";
 
-function Estagio({ NomeEmpresa, NomeEstagio, TotalVagas, Area, Inicio, TipoEstagio, Duracao, Localizacao }) {
+function Estagio({ NomeEmpresa, NomeEstagio, TotalVagas, Ativas, Area, Inicio, TipoEstagio, Duracao, Localizacao }) {
+    
+    const handleCandidatarClick = () => {
+        const token = localStorage.getItem('token');
+        
+        if (!token) {
+            // Se não estiver logado, redireciona para login
+            window.location.href = '/login';
+        } else {
+            // Se estiver logado, implementar lógica de candidatura
+            // Por agora, pode mostrar um alert ou navegar para página de candidatura
+            alert('Funcionalidade de candidatura será implementada aqui!');
+        }
+    };
+
     return (
         <div 
             className="container bg-white p-4 rounded shadow" 
@@ -44,7 +58,9 @@ function Estagio({ NomeEmpresa, NomeEstagio, TotalVagas, Area, Inicio, TipoEstag
             </div>
             <div className="apply-container">
                 <p>{Localizacao}</p>
-                <button style={{ minWidth: "150px", maxWidth: "150px" }} className="btn btn-primary">Candidatar-me</button>
+                <button className="btn btn-primary" onClick={handleCandidatarClick}>
+                    Candidatar-me
+                </button>
             </div>
             
         </div>

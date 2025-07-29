@@ -15,6 +15,9 @@ function Login() {
         setFieldErrors({});
         setLoading(true);
 
+        // Limpar token anterior antes de fazer novo login
+        localStorage.removeItem("token");
+
         const formData = new FormData(event.target);
         const data = {
             email: formData.get("email"),

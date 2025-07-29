@@ -36,7 +36,7 @@ function WelcomePage() {
           </p>
           <button
             className={styles.button}
-            onClick={() => navigate("/select-user")}
+            onClick={() => navigate("/home")}
           >
             Vamos a isso!
           </button>

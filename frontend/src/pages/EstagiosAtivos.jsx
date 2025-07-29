@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import BarraSuperiorCE from "../components/BarraSuperiorCE";
 import NavBar from "../components/NavBar";
 import ButtonGeral from "../components/ButtonGeral";
-import "../styles/EstagiosAtivos.module.css";
+import styles from "../styles/EstagiosAtivos.module.css";
 
 function EstagiosAtivos (){ 
     {/*Elementos da tabela*/}
@@ -101,7 +101,7 @@ function EstagiosAtivos (){
                     <input  type="text" placeholder="Procurar"></input>
                 </div>
                 <div style={{ maxWidth:"80%", backgroundColor:"white", marginLeft:"10%", marginRight:"10%"}}>
-                    <table style={{ maxWidth:"100%", maxHeight:"100%"}}>
+                    <table className={`table table-hover ${styles.border}`} style={{ maxWidth:"100%", maxHeight:"100%"}}>
                         <thead >
                             <tr>
                                 <th>Título de Estágio</th>

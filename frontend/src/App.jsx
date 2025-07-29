@@ -12,6 +12,8 @@ import ResetPassword from './pages/ResetPassword.jsx';
 import Footer from './components/Footer.jsx';
 import EstagiosAtivos from './pages/EstagiosAtivos.jsx';
 import NotFound from './pages/NotFound404.jsx'; // Importando a página 404
+import EstagiosAtivos from './pages/EstagiosAtivos.jsx';
+import ProtectedRoute from './components/ProtectedRoute.jsx';
 
 function App() {
   return (
@@ -26,10 +28,21 @@ function App() {
           <Route path='/forgot-password' element={<ForgotPassword />}></Route>  {/*  Rota da Forgot Password Page */}
           <Route path='/reset-password-test' element={<ResetPassword />}></Route>  {/* Rota de teste para Reset Password */}
           <Route path='/select-user' element={<SelectUser />}></Route>  {/* Rota para selecionar se é Estagiario ou Empresa */}
-          <Route path='/profile/:id' element={<Profile />}></Route>  {/*  Rota da Profile Page (Estagiario) */}
-          <Route path='/profile/:id/estagios' element={<EstagiosAtivos />}></Route>  {/* Rota 404 para páginas não encontradas */}
-          <Route path='*' element={<NotFound />}></Route>  {/* Rota 404 para páginas não encontradas */}
           
+          {/* Rotas protegidas - requerem autenticação */}
+          <Route path='/profile/:id' element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          }></Route>  {/*  Rota da Profile Page (protegida) */}
+          
+          <Route path='/estagios-ativos/:id' element={
+            <ProtectedRoute requiredRole="company">
+              <EstagiosAtivos />
+            </ProtectedRoute>
+          }></Route>  {/* Rota para Estágios Ativos (só empresas) */}
+          
+          <Route path='*' element={<NotFound />}></Route>  {/* Rota 404 para páginas não encontradas */}
         </Routes>
 
         <Footer />
