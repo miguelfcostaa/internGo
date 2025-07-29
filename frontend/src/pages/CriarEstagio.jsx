@@ -1,6 +1,5 @@
 import React from "react";
 import NavBar from "../components/NavBar.jsx"; 
-import BarraSuperior from "../components/BarraSuperiorCE";
 import style from "../styles/CriarEstagio.module.css";
 import { Form, Row, Col, Button } from 'react-bootstrap';
 
@@ -9,7 +8,6 @@ function CriacaoEstagio() {
      <div style={{ backgroundColor: "#fff", minHeight: "100vh" }}>
 
       <NavBar />
-      <BarraSuperior />
       <h6 className={style.titulo}> Publicar Novo Estágio na sua Empresa</h6>
       <div className={`${style.container} ${style.mt4}`}>
           {/* Abas de progresso */}
