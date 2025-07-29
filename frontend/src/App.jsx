@@ -35,7 +35,7 @@ function App() {
             </ProtectedRoute>
           }></Route>  {/*  Rota da Profile Page (protegida) */}
           
-          <Route path='/estagios-ativos' element={
+          <Route path='/estagios-ativos/:id' element={
             <ProtectedRoute requiredRole="company">
               <EstagiosAtivos />
             </ProtectedRoute>
