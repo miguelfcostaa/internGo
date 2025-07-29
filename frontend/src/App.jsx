@@ -8,8 +8,10 @@ import WelcomePage from './pages/WelcomePage.jsx';
 import RegisterUser from './pages/RegisterUser.jsx';
 import RegisterCompany from './pages/RegisterCompany.jsx';
 import ForgotPassword from './pages/ForgotPassword.jsx';
-import Footer from '../src/components/Footer.jsx';
+import Footer from './components/Footer.jsx';
+import NotFound from './pages/NotFound404.jsx'; // Importando a página 404
 import EstagiosAtivos from './pages/EstagiosAtivos.jsx';
+import ResetPassword from './pages/ResetPassword.jsx';
 
 function App() {
   return (
@@ -22,8 +24,10 @@ function App() {
           <Route path='/register-company' element={<RegisterCompany />}></Route>  {/*  Rota da Register Company Page */}
           <Route path='/register-user' element={<RegisterUser />}></Route>  {/*  Rota da Register User Page */}
           <Route path='/forgot-password' element={<ForgotPassword />}></Route>  {/*  Rota da Forgot Password Page */}
+          <Route path='/reset-password' element={<ResetPassword />}></Route>  {/* Rota para Reset Password com token */}
           <Route path='/select-user' element={<SelectUser />}></Route>  {/* Rota para selecionar se é Estagiario ou Empresa */}
           <Route path='/profile/:id' element={<Profile />}></Route>  {/*  Rota da Profile Page (Estagiario) */}
+          <Route path='*' element={<NotFound />}></Route>  {/* Rota 404 para páginas não encontradas */}
         </Routes>
 
         <Footer />

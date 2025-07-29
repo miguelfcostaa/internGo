@@ -32,7 +32,6 @@ function Estagio({ NomeEmpresa, NomeEstagio, TotalVagas, Ativas, Area, Inicio, T
                         <div><span className="estagio-info-label">Tipo de Estágio: </span> {TipoEstagio}</div>
                     </div>
                     <div className="estagio-info-right">
-                        <div><span className="estagio-info-label">Ativas: </span> {Ativas}</div>
                         <div><span className="estagio-info-label">Inicio: </span> {Inicio}</div>
                         <div><span className="estagio-info-label">Duração: </span> {Duracao} mês</div>
                     </div>

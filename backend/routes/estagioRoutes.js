@@ -1,8 +1,10 @@
 const express = require('express');
 const Estagio = require('../models/Estagio');
+const { verifyToken, verifyRole } = require('../middleware/auth');
+const Company = require('../models/Company');
 const router = express.Router();
 
-router.get('/all', async (req, res) => {
+router.get('/', async (req, res) => {
     try {
         const estagios = await Estagio.find();
         res.json(estagios);
@@ -10,6 +12,15 @@ router.get('/all', async (req, res) => {
         res.status(500).json({ message: 'Erro ao buscar estágios', error });
     }
 });
+
+router.get('/nEstagios/:companyId', async (req, res) => {
+    try {
+        const nEstagios = await Estagio.countDocuments({ company: req.params.companyId });
+        res.json({ nEstagios });
+    } catch (error) {
+        res.status(500).json({ message: 'Erro ao contar estágios', error });
+    }
+})
 
 router.get('/:id', async (req, res) => {
     try {
@@ -23,13 +34,25 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-router.post('/create', async (req, res) => {
+router.post('/create', verifyToken, async (req, res) => {
     try {
-        const estagio = new Estagio(req.body);
-        await estagio.save();
-        res.status(201).json(estagio);
+        const estagioData = req.body;
+        estagioData.company = await Company.findById(req.user.id);
+
+        const novoEstagio = new Estagio(estagioData);
+        await novoEstagio.save();
+        res.status(201).json(novoEstagio);
     } catch (error) {
         res.status(400).json({ message: 'Erro ao criar estágio', error });
+    }
+});
+
+router.get('/company/:companyId', async (req, res) => {
+    try {
+        const estagios = await Estagio.find({ company: req.params.companyId });
+        res.json(estagios);
+    } catch (error) {
+        res.status(500).json({ message: 'Erro ao buscar estágios da empresa', error });
     }
 });
 

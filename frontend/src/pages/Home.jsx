@@ -1,10 +1,14 @@
-import React from "react";
-import HomePageEstagio from "../components/Estagio";
+import React, { useEffect, useState } from "react";
+import Estagio from "../components/Estagio";
 import NavBar from "../components/NavBar";
 import "../styles/Home.css";
 import Filters from "../components/Filters";
+import useEstagios from "../hooks/useEstagios";
 
 function HomePage() {
+
+    const estagios = useEstagios("");
+
     return (
         <>  
             <NavBar />
@@ -12,94 +16,19 @@ function HomePage() {
                 <div className="flex">
                     <Filters />
                     <div className="estagios-container">
-                        <HomePageEstagio
-                            NomeEmpresa="Acin"
-                            NomeEstagio="Estágio de Técnico de Sistemas"
-                            TotalVagas={20}
-                            Ativas={5}
-                            Area="Informática"
-                            Inicio="Julho"
-                            TipoEstagio="Renumerado"
-                            Duracao="1"
-                            Localizacao="Lisboa, Portugal"
-                        />
-                        <HomePageEstagio
-                            NomeEmpresa="Acin"
-                            NomeEstagio="Estágio de Desenvolvimento Web"
-                            TotalVagas={20}
-                            Ativas={5}
-                            Area="Informática"
-                            Inicio="Julho"
-                            TipoEstagio="Renumerado"
-                            Duracao="1"
-                            Localizacao="Lisboa, Portugal"
-                        />
-                        <HomePageEstagio
-                            NomeEmpresa="Acin"
-                            NomeEstagio="Estágio de Técnico de Redes"
-                            TotalVagas={20}
-                            Ativas={5}
-                            Area="Informática"
-                            Inicio="Agosto"
-                            TipoEstagio="Renumerado"
-                            Duracao="1"
-                            Localizacao="Lisboa, Portugal"
-                        />
-                        <HomePageEstagio
-                            NomeEmpresa="Acin"
-                            NomeEstagio="Estágio de Técnico de Redes"
-                            TotalVagas={20}
-                            Ativas={5}
-                            Area="Informática"
-                            Inicio="Agosto"
-                            TipoEstagio="Renumerado"
-                            Duracao="1"
-                            Localizacao="Lisboa, Portugal"
-                        />
-                        <HomePageEstagio
-                            NomeEmpresa="Acin"
-                            NomeEstagio="Estágio de Técnico de Redes"
-                            TotalVagas={20}
-                            Ativas={5}
-                            Area="Informática"
-                            Inicio="Agosto"
-                            TipoEstagio="Renumerado"
-                            Duracao="1"
-                            Localizacao="Lisboa, Portugal"
-                        />
-                        <HomePageEstagio
-                            NomeEmpresa="Acin"
-                            NomeEstagio="Estágio de Técnico de Redes"
-                            TotalVagas={20}
-                            Ativas={5}
-                            Area="Informática"
-                            Inicio="Agosto"
-                            TipoEstagio="Renumerado"
-                            Duracao="1"
-                            Localizacao="Lisboa, Portugal"
-                        />
-                        <HomePageEstagio
-                            NomeEmpresa="Acin"
-                            NomeEstagio="Estágio de Técnico de Redes"
-                            TotalVagas={20}
-                            Ativas={5}
-                            Area="Informática"
-                            Inicio="Agosto"
-                            TipoEstagio="Renumerado"
-                            Duracao="1"
-                            Localizacao="Lisboa, Portugal"
-                        />
-                        <HomePageEstagio
-                            NomeEmpresa="Acin"
-                            NomeEstagio="Estágio de Técnico de Redes"
-                            TotalVagas={20}
-                            Ativas={5}
-                            Area="Informática"
-                            Inicio="Agosto"
-                            TipoEstagio="Renumerado"
-                            Duracao="1"
-                            Localizacao="Lisboa, Portugal"
-                        />
+                        {estagios.map((estagio, index) => (
+                            <Estagio
+                                key={index}
+                                NomeEmpresa={estagio.NomeEmpresa}
+                                NomeEstagio={estagio.title}
+                                TotalVagas={estagio.numeroVagas}
+                                Area={estagio.area}
+                                Inicio={estagio.dataInicio} 
+                                TipoEstagio={estagio.tipoEstagio}
+                                Duracao={estagio.duracao}
+                                Localizacao={estagio.localizacao}
+                            />
+                        ))}
                     </div>
                 </div>
                 
