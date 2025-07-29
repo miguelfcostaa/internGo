@@ -92,11 +92,7 @@ function EstagiosAtivos (){
             setData(updateData);
     }
     return(
-        <div style={{
-            backgroundColor: "white", 
-            minHeight: "100vh",
-            backgroundImage: "none"
-        }}>
+        <>
             <NavBar/>
             <BarraSuperiorCE/>
             <div></div>
@@ -107,8 +103,7 @@ function EstagiosAtivos (){
                 <div style={{display:"flex", marginTop:"2.5%", justifyContent:"center", alignItems:"center", marginBottom:"50px"}}>
                     <input  type="text" placeholder="Procurar"></input>
                 </div>
-                <div style={{ border:"1px solid black", maxWidth:"80%", backgroundColor:"white", marginLeft:"10%", marginRight:"10%"}}>
-                    <div>
+                <div style={{ maxWidth:"80%", backgroundColor:"white", marginLeft:"10%", marginRight:"10%"}}>
                     <table class="table table-hover" style={{ maxWidth:"100%", maxHeight:"100%"}}>
                         <thead >
                             <tr>
@@ -142,25 +137,27 @@ function EstagiosAtivos (){
                             ))}
                         </tbody>
                     </table>
-                    </div>
-                    <div>
-                        <button onClick={()=>mudarpagina(paginaAtual-1)} disabled={paginaAtual===1}>Anterior</button>
+                    <div style={{ display:"flex", justifyContent:"right", flexDirection:"row", gap:"5px"}}>
+                        <span onClick={()=>mudarpagina(paginaAtual-1)} disabled={paginaAtual===1}> {'< Anterior'} </span>
                         {temp.map(element=>(
-                            <button
+                        <>
+                            <span
                                 key={element}
                                 onClick={()=>mudarpagina(element)}
                                 style={{
-                                    color:paginaAtual==element?"blue":"red",
+                                    fontWeight:paginaAtual==element?"bold":"",
                                 }}
                             >
-                                {element}
-                            </button>
+                                {element} 
+                            </span>
+                            <span>{" |"}</span>
+                        </>
                         ))}
-                        <button onClick={()=>mudarpagina(paginaAtual+1)} disabled={paginaAtual===totalPaginas}>Próxmo</button>
+                        <span onClick={()=>mudarpagina(paginaAtual+1)} disabled={paginaAtual===totalPaginas}>{"Próxmo>"}</span>
                     </div>
                 </div>
             </div>
-        </div>
+        </>
     )
 }
 
