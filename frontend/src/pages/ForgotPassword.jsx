@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import "../styles/ForgotPassword.css";
+import styles from "../styles/ForgotPassword.module.css";
+import ButtonSubmit from "../components/ButtonSubmit";
 
 const PasswordReset = () => {
   const [email, setEmail] = useState("");
@@ -42,22 +43,22 @@ const PasswordReset = () => {
   };
 
   return (
-    <div className="app-wrapper">
-      <div className="forgot-container">
-        <h2>Envie o seu email</h2>
-        <p>
+    <div className={`${styles.appWrapper} page-with-background`}>
+      <div className={styles.forgotContainer}>
+        <h2 className={styles.title}>Envie o seu email</h2>
+        <p className={styles.description}>
           Por favor insira o email associado com a tua conta para poderes
           recuperar a palavra-passe.
         </p>
 
         {message && (
-          <div className={`message ${isSuccess ? "success" : "error"}`}>
+          <div className={`${styles.message} ${isSuccess ? styles.success : styles.error}`}>
             {message}
           </div>
         )}
 
-        <form onSubmit={handleSubmit}>
-          <label htmlFor="email">Email</label>
+        <form onSubmit={handleSubmit} className={styles.form}>
+          <label htmlFor="email" className={styles.label}>Email</label>
           <input
             type="email"
             id="email"
@@ -67,12 +68,18 @@ const PasswordReset = () => {
             onChange={(e) => setEmail(e.target.value)}
             required
             disabled={isLoading}
+            className={styles.emailInput}
           />
-          <button type="submit" disabled={isLoading || !email}>
-            {isLoading ? "Enviando..." : "Enviar email"}
-          </button>
+          <ButtonSubmit
+            text="Enviar email"
+            isSubmitting={isLoading}
+            loadingText="Enviando..."
+            type="submit"
+            variant="primary"
+            disabled={!email}
+          />
         </form>
-        <a href="/login">Voltar para o início de sessão</a>
+        <a href="/login" className={styles.backLink}>Voltar para o início de sessão</a>
       </div>
     </div>
   );

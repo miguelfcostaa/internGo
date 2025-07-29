@@ -97,17 +97,14 @@ function EstagiosAtivos (){
             <BarraSuperiorCE/>
             <div></div>
             <div>
-                <div style={{ marginLeft:"50px", marginRight:"50px", marginTop:"10%"}}>
-                    <ButtonGeral Name="Criar novo estágio"/>
-                </div>
-                <div style={{display:"flex", marginTop:"2.5%", justifyContent:"center", alignItems:"center", marginBottom:"50px"}}>
+                <div style={{display:"flex", marginTop:"300px", justifyContent:"center", alignItems:"center", marginBottom:"50px"}}>
                     <input  type="text" placeholder="Procurar"></input>
                 </div>
                 <div style={{ maxWidth:"80%", backgroundColor:"white", marginLeft:"10%", marginRight:"10%"}}>
                     <table className={`table table-hover ${styles.border}`} style={{ maxWidth:"100%", maxHeight:"100%"}}>
                         <thead >
                             <tr>
-                                <td>Título de Estágio</td>
+                                <th>Título de Estágio</th>
                                 <td>Status</td>
                                 <td>Tipo</td>
                                 <td>Candidaturas</td>
@@ -130,7 +127,7 @@ function EstagiosAtivos (){
                                     <td>
                                         <a href="">[Ver Candidaturas]</a>
                                         <a href="">[Editar]</a>
-                                        <button onClick={()=>PausarEstagio(index)}>[Pausar]</button>
+                                        <a style={{color:"#007BFF"}} onClick={()=>PausarEstagio(index)}>[Pausar]</a>
                                         <a href="">[Fechar]</a>
                                     </td>
                                 </tr>
@@ -155,6 +152,9 @@ function EstagiosAtivos (){
                         ))}
                         <span onClick={()=>mudarpagina(paginaAtual+1)} disabled={paginaAtual===totalPaginas}>{"Próxmo>"}</span>
                     </div>
+                </div>
+                <div style={{marginTop:"50px"}}>
+                    <ButtonGeral Name="Criar novo estágio"/>
                 </div>
             </div>
         </>

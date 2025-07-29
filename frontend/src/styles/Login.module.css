@@ -81,7 +81,7 @@
 /* Labels */
 .inputLabel {
   display: block;
-  font-size: 0.9rem;
+  font-size: medium;
   font-weight: 600;
   color: c;
   margin-bottom: 0.5rem;
@@ -185,7 +185,7 @@
 
 /* Label do checkbox */
 .checkboxLabel {
-  font-size: 0.9rem;
+  font-size: smaller;
   color: #5a5a5a;
   cursor: pointer;
   user-select: none;
@@ -223,7 +223,7 @@
 /* Link de esqueci a senha */
 .forgotPasswordLink {
   display: inline-block;
-  margin-top: 1.5rem;
+  margin-top: -px;
   color: #2c3e50;
   text-decoration: none;
   font-size: 15px;
