@@ -140,7 +140,8 @@ function Login() {
                     ) : null}
                 </div>
                     
-                <Link to="/reset-password-test" className={styles.forgetPasswordLink}>
+                <Link to="/forgot-password" className={styles.forgotPasswordLink}>
+                
                     Esqueceu a palavra-passe?
                 </Link>
             </div>
