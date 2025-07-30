@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import NavBar from "../components/NavBar.jsx";
 import style from "../styles/CriarEstagio.module.css";
 import { Form, Row, Col, Button, Card, Container } from "react-bootstrap";
-
+import RequiredFieldTooltip from "../components/RequiredFieldTooltip.jsx";
 
 function CriacaoEstagio() {
   const [step, setStep] = useState(1);
@@ -21,64 +21,61 @@ function CriacaoEstagio() {
     navigate(-1); // Navega para a página anterior
   };
 
+
    return (
     <div style={{ backgroundColor: "#fff", minHeight: "100vh" }}>
       <NavBar />
       <h6 className={style.titulo}> Publicar Novo Estágio na sua Empresa</h6>
 
       <div className={`${style.container} ${style.mt4}`}>
-        {/* Barra de progresso */}
-        <div className={`${style.mb4} ${style.borderBottom} ${style.pb2}`}>
-          <span className={step === 1 ? style.fwBold : style.textMuted}>
-            1. Informações Básicas
-          </span>{" "}
-          &gt;
-          <span className={`${step === 2 ? style.fwBold : style.textMuted} ${style.mx2}`}>
-            2. Detalhes do Estágio
-          </span>{" "}
-          &gt;
-          <span className={`${step === 3 ? style.fwBold : style.textMuted} ${style.mx2}`}>
-            3. Requisitos
-          </span>{" "}
-          &gt;
-          <span className={`${step === 4 ? style.fwBold : style.textMuted} ${style.mx2}`}>
-            4. Revisão
-          </span>
-        </div>
+      <div className={`${style.mb4} ${style.borderBottom} ${style.pb2}`}>
+  <span className={step === 1 ? style.fwBold : style.textMuted}>
+    1. Informações Básicas
+  </span>{" "}
+  &gt;
+  <span className={`${step === 2 ? style.fwBold : style.textMuted} ${style.mx2}`}>
+    2. Detalhes do Estágio
+  </span>{" "}
+  &gt;
+  <span className={`${step === 3 ? style.fwBold : style.textMuted} ${style.mx2}`}>
+    3. Requisitos
+  </span>{" "}
+  &gt;
+  <span className={`${step === 4 ? style.fwBold : style.textMuted} ${style.mx2}`}>
+    4. Revisão
+  </span>
+</div>
 
-        {/* Paso 1: Informações Básicas */}
-        {step === 1 && (
+      {/* Paso 1: Informações Básicas */}
+{step === 1 && (
   <Form>
     <Row className={style.mb3}>
-      {/* Columna izquierda */}
-      <Col md={6}>
-        <Form.Group className={style.mb3}>
+      <Col md={6} className={style.leftColumn}>
+        <Form.Group className={`${style.mb3} d-flex flex-column`}>
           <Form.Label className={style.formLabel}>
-            Título do Estágio <span className={style.textDanger}>*</span>
+            Título do Estágio <RequiredFieldTooltip />
           </Form.Label>
           <Form.Control
             className={style.formControl}
             type="text"
             placeholder="Ex: Estágio em Desenvolvimento de Software"
-            
           />
         </Form.Group>
 
-        <Form.Group className={style.mb3}>
+        <Form.Group className={`${style.mb3} d-flex flex-column`}>
           <Form.Label className={style.formLabel}>
-            Área(s) de Atuação <span className={style.textDanger}>*</span>
+            Área(s) de Atuação <RequiredFieldTooltip />
           </Form.Label>
           <Form.Control
             className={style.formControl}
             type="text"
             placeholder="Ex: Tecnologia da Informação"
-            
           />
         </Form.Group>
 
-        <Form.Group className={style.mb3}>
-          <Form.Label className={style.formLabel}>
-            Número de Vagas para este Estágio <span className={style.textDanger}>*</span>
+        <Form.Group className={`${style.mb3} ${style.inlineField}`}>
+          <Form.Label className={`${style.formLabel} mb-0`} style={{ minWidth: '160px' }}>
+            Número de Vagas para este Estágio <RequiredFieldTooltip />
           </Form.Label>
           <Form.Control
             className={style.smallInput}
@@ -89,27 +86,31 @@ function CriacaoEstagio() {
           />
         </Form.Group>
 
-        <Form.Group className={style.mb3}>
+        <Form.Group className={`${style.mb3} d-flex flex-column`}>
           <Form.Label className={style.formLabel}>
-            Localização(ões) do Estágio <span className={style.textDanger}>*</span>
+            Localização(ões) do Estágio <RequiredFieldTooltip />
           </Form.Label>
           <Form.Control
             className={style.formControl}
             type="text"
             placeholder="Ex: Funchal"
-          
           />
         </Form.Group>
       </Col>
 
-      <Col md={6}>
-        <Form.Group className={style.mb3}>
-          <Form.Label className={style.formLabel}>Data de Início Prevista *</Form.Label>
-          <Form.Control className={style.formControl} type="date" />
+      <Col md={6} className={style.rightColumn}>
+       <div className={style.rightColumnContainer}>
+        <Form.Group className={`${style.mb3} ${style.inlineField}`}>
+          <Form.Label className={style.formLabel} style={{ minWidth: '140px' }}>
+            Data de Início Prevista <RequiredFieldTooltip />
+          </Form.Label>
+          <Form.Control className={style.smallDate} type="date" />
         </Form.Group>
 
-        <Form.Group className={style.mb3}>
-          <Form.Label className={style.formLabel}>Tipo de Estágio *</Form.Label>
+        <Form.Group className={`${style.mb3} d-flex align-items-center`}>
+          <Form.Label className={`${style.formLabel} mb-0 me-3`} style={{ minWidth: '120px' }}>
+            Tipo de Estágio <RequiredFieldTooltip />
+          </Form.Label>
           <div className={style.radioGroup}>
             <Form.Check inline label="Presencial" type="radio" name="tipo" />
             <Form.Check inline label="Remoto" type="radio" name="tipo" />
@@ -117,23 +118,28 @@ function CriacaoEstagio() {
           </div>
         </Form.Group>
 
+        <Form.Group className={`${style.mb3}`} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+  <Form.Label className={style.formLabel} style={{ minWidth: '140px', marginBottom: 0 }}>
+    Duração do Estágio <RequiredFieldTooltip />
+  </Form.Label>
+  <Form.Select className={style.smallSelect}>
+    <option>Duração</option>
+    <option>3 meses</option>
+    <option>6 meses</option>
+    <option>12 meses</option>
+  </Form.Select>
+</Form.Group>
+
         <Form.Group className={`${style.mb3} ${style.inlineField}`}>
-          <Form.Label className={style.formLabel}>Duração do Estágio *</Form.Label>
-          <Form.Select className={style.smallSelect}>
-            <option>Duração</option>
-            <option>3 meses</option>
-            <option>6 meses</option>
-            <option>12 meses</option>
-          </Form.Select>
+          <Form.Label className={style.formLabel} style={{ minWidth: '140px' }}>
+            Prazo Limite para Candidaturas <RequiredFieldTooltip />
+          </Form.Label>
+          <Form.Control className={style.smallDate} type="date" />
         </Form.Group>
- <Form.Group className={style.mb3}>
-          <Form.Label className={style.formLabel}>Prazo Limite para Candidaturas *</Form.Label>
-          <Form.Control className={style.formControl} type="date" />
-        </Form.Group>
+         </div>
       </Col>
     </Row>
 
-    
     <div className={`${style.dFlex} ${style.justifyContentBetween} ${style.mt4}`}>
       <Button variant="secondary" className={style.btnSecondary} onClick={handleCancel}>
         Cancelar
@@ -143,42 +149,40 @@ function CriacaoEstagio() {
       </Button>
     </div>
   </Form>
-       
 )}
-      
+
+
         {/* Paso 2: Detalhes do Estágio */}
-        {step === 2 && (
-        <Form>
-        <Row className={style.mb3}>
-        <Col md={12}>
+       {step === 2 && (
+  <Form>
+    <Row className={style.mb3}>
+      <Col md={12}>
         <Form.Group className={style.mb3}>
           <Form.Label className={style.formLabel}>
-            Descrição do Estágio <span className={style.textDanger}>*</span>
+            Descrição do Estágio <RequiredFieldTooltip />
           </Form.Label>
           <Form.Control
             as="textarea"
             rows={4}
             className={style.formControl}
             placeholder="Descreva brevemente as atividades do estágio"
-          
           />
         </Form.Group>
 
         <Form.Group className={style.mb3}>
           <Form.Label className={style.formLabel}>
-            Benefícios Oferecidos <span className={style.textDanger}>*</span>
+            Benefícios Oferecidos <RequiredFieldTooltip />
           </Form.Label>
           <Form.Control
             className={style.formControl}
             type="text"
             placeholder="Ex: Bolsa, Vale-transporte"
-    
           />
         </Form.Group>
 
         <Form.Group className={style.mb3}>
           <Form.Label className={style.formLabel}>
-            Horário do Estágio <span className={style.textDanger}>*</span>
+            Horário do Estágio <RequiredFieldTooltip />
           </Form.Label>
           <Form.Control
             className={style.formControl}
@@ -205,10 +209,10 @@ function CriacaoEstagio() {
     <Row className={style.mb3}>
       <Col md={12}>
       
-        {/* Habilitações Académicas Mínimas */}
+  {/* Habilitações Académicas Mínimas */}
 <Form.Group className={style.mb3}>
   <Form.Label className={style.formLabel}>
-    Habilitações Académicas Mínimas <span className={style.textDanger}>*</span>
+    Habilitações Académicas Mínimas <RequiredFieldTooltip />
   </Form.Label>
   <Form.Select className={style.formSelect}>
     <option value="">Selecione o nível de habilitação</option>
