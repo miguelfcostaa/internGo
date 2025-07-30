@@ -311,75 +311,7 @@ function CriacaoEstagio() {
         )}
 
 
-        {/* Paso 2: Detalhes*/}
-     {step === 2 && (
-  <Form>
-    <Row className={style.mb3}>
-      <Col md={6} className={style.leftColumn}>
-        {/* Descrição */}
-        <Form.Group className={`${style.mb3} d-flex flex-column`}>
-          <Form.Label className={style.formLabel}>
-            Descrição do Estágio <RequiredFieldTooltip />
-          </Form.Label>
-          <Form.Control
-            as="textarea"
-            rows={5}
-            className={style.formControl}
-            name="descricao"
-            value={formData.descricao || ""}
-            onChange={handleChange}
-            placeholder="Descreva as principais atividades do estágio..."
-          />
-        </Form.Group>
-
-        {/* Horário */}
-        <Form.Group className={`${style.mb3} d-flex flex-column`}>
-          <Form.Label className={style.formLabel}>
-            Benefícios Oferecidos <RequiredFieldTooltip />
-          </Form.Label>
-          <Form.Control
-            type="text"
-            className={style.formControl}
-            name="horario"
-            value={formData.horario || ""}
-            onChange={handleChange}
-            placeholder="Ex: Segunda a Sexta, das 9h às 14h"
-          />
-        </Form.Group>
-      </Col>
-
-        <Form.Group className={style.mb3}>
-          <Form.Label className={style.formLabel}>
-            Horário do Estágio <RequiredFieldTooltip />
-          </Form.Label>
-          <Form.Control
-            className={style.formControl}
-            type="text"
-            placeholder="Ex: 9h às 15h"
-          />
-        </Form.Group>
-      </Col>
-    </Row>
-
-    {/* Botones */}
-    <div className={`${style.dFlex} ${style.justifyContentBetween} ${style.mt4}`}>
-      <Button
-        variant="secondary"
-        className={style.btnSecondary}
-        onClick={handleBack}
-      >
-        Voltar
-      </Button>
-      <Button
-        variant="primary"
-        className={style.btnPrimary}
-        onClick={handleNext}
-      >
-        Próximo passo
-      </Button>
-    </div>
-  </Form>
-)}
+        {/* Paso 2: Detalhes do Estágio */}
 
         {/* Paso 3: Requisitos */}
 {step === 3 && (
