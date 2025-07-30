@@ -1,10 +1,13 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import NavBar from "../components/NavBar.jsx";
 import style from "../styles/CriarEstagio.module.css";
 import { Form, Row, Col, Button, Card, Container } from "react-bootstrap";
 
+
 function CriacaoEstagio() {
   const [step, setStep] = useState(1);
+  const navigate = useNavigate();
 
   const handleNext = () => {
     if (step < 4) setStep(step + 1);
@@ -12,6 +15,10 @@ function CriacaoEstagio() {
 
   const handleBack = () => {
     if (step > 1) setStep(step - 1);
+  };
+
+  const handleCancel = () => {
+    navigate(-1); // Navega para a página anterior
   };
 
    return (
@@ -128,7 +135,7 @@ function CriacaoEstagio() {
 
     
     <div className={`${style.dFlex} ${style.justifyContentBetween} ${style.mt4}`}>
-      <Button variant="secondary" className={style.btnSecondary} onClick={handleBack}>
+      <Button variant="secondary" className={style.btnSecondary} onClick={handleCancel}>
         Cancelar
       </Button>
       <Button variant="primary" className={style.btnPrimary} onClick={handleNext}>
