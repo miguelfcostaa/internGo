@@ -24,9 +24,7 @@ const PasswordReset = () => {
 
       const data = await response.json();
 
-      if (response.ok) {
-        const data = await response.json();
-        
+      if (response.ok) {        
         if (data.emailFound) {
           setIsSuccess(true);
           setMessage("Email enviado com sucesso! Verifique a sua caixa de entrada.");
