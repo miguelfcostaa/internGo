@@ -14,7 +14,8 @@ import EstagiosCriados from './pages/EstagiosCriados.jsx';
 import NotFound from './pages/NotFound404.jsx'; // Importando a página 404
 import ProtectedRoute from './components/ProtectedRoute.jsx';
 import { SearchProvider } from "./contexts/SearchContext.js";
-import CriarEstagio from './pages/CriarEstagio.jsx'; 
+import CriarEstagio from './pages/CriarEstagio.jsx';
+import EditProfile from './pages/EditProfile.jsx'
 
 function App() {
   return (
@@ -31,7 +32,7 @@ function App() {
           <Route path='/forgot-password' element={<ForgotPassword />}></Route>  {/*  Rota da Forgot Password Page */}
           <Route path='/reset-password' element={<ResetPassword />}></Route>  {/* Rota para Reset Password */}
           <Route path='/select-user' element={<SelectUser />}></Route>  {/* Rota para selecionar se é Estagiario ou Empresa */}
-          
+          <Route path='/edit-profile/:id' element={<EditProfile/>}></Route>  {/* Rota para Criar Estágio */}
           <Route path='/criar-estagio' element={<CriarEstagio/>}></Route>  {/* Rota para Criar Estágio */}
           <Route path='/profile/:id' element={
             <ProtectedRoute>
