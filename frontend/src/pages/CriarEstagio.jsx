@@ -1,23 +1,46 @@
-import React from "react";
-import NavBar from "../components/NavBar.jsx"; 
+import React, { useState } from "react";
+import NavBar from "../components/NavBar.jsx";
 import style from "../styles/CriarEstagio.module.css";
-import { Form, Row, Col, Button } from 'react-bootstrap';
+import { Form, Row, Col, Button } from "react-bootstrap";
 
 function CriacaoEstagio() {
-  return (
-     <div style={{ backgroundColor: "#fff", minHeight: "100vh" }}>
+  const [step, setStep] = useState(1);
 
+  const handleNext = () => {
+    if (step < 4) setStep(step + 1);
+  };
+
+  const handleBack = () => {
+    if (step > 1) setStep(step - 1);
+  };
+
+  return (
+    <div style={{ backgroundColor: "#fff", minHeight: "100vh" }}>
       <NavBar />
       <h6 className={style.titulo}> Publicar Novo Estágio na sua Empresa</h6>
-      <div className={`${style.container} ${style.mt4}`}>
-          {/* Abas de progresso */}
-          <div className={`${style.mb4} ${style.borderBottom} ${style.pb2}`}>
-            <span className={`${style.fwBold} ${style.textPrimary}`}>1. Informações Básicas</span> &gt;
-            <span className={`${style.textMuted} ${style.mx2}`}>2. Detalhes do Estágio</span> &gt;
-            <span className={`${style.textMuted} ${style.mx2}`}>3. Requisitos</span> &gt;
-            <span className={`${style.textMuted} ${style.mx2}`}>4. Revisão</span>
-          </div>
 
+      <div className={`${style.container} ${style.mt4}`}>
+        {/* Barra de progresso */}
+        <div className={`${style.mb4} ${style.borderBottom} ${style.pb2}`}>
+          <span className={step === 1 ? style.fwBold : style.textMuted}>
+            1. Informações Básicas
+          </span>{" "}
+          &gt;
+          <span className={`${step === 2 ? style.fwBold : style.textMuted} ${style.mx2}`}>
+            2. Detalhes do Estágio
+          </span>{" "}
+          &gt;
+          <span className={`${step === 3 ? style.fwBold : style.textMuted} ${style.mx2}`}>
+            3. Requisitos
+          </span>{" "}
+          &gt;
+          <span className={`${step === 4 ? style.fwBold : style.textMuted} ${style.mx2}`}>
+            4. Revisão
+          </span>
+        </div>
+
+        {/* Paso 1: Informações Básicas */}
+        {step === 1 && (
           <Form>
             <Row className={style.mb3}>
               <Col md={6}>
@@ -45,16 +68,21 @@ function CriacaoEstagio() {
                   />
                 </Form.Group>
 
-              <Form.Group className={style.mb3}> {/* Apply a margin/spacing class to the Form.Group */}
-              <Form.Label className={style.formLabel}>
-                  Número de Vagas para este Estágio <span className={style.textDanger}>*</span>
-              </Form.Label>
-              <Form.Control
-              className={style.formControl} // This is where .formControl belongs
-              type="number"
-              min="1"
-              />
-              </Form.Group>
+                <Form.Group className={style.mb3}>
+                  <div className={style.inlineField}>
+                    <Form.Label className={style.formLabel}>
+                      Número de Vagas para este Estágio <span className={style.textDanger}>*</span>
+                    </Form.Label>
+                    <Form.Control
+                      className={style.smallInput}
+                      type="number"
+                      min="1"
+                      max="999"
+                      maxLength="3"
+                      placeholder="0"
+                    />
+                  </div>
+                </Form.Group>
 
                 <Form.Group className={style.mb3}>
                   <Form.Label className={style.formLabel}>
@@ -110,15 +138,107 @@ function CriacaoEstagio() {
             </Row>
 
             <div className={`${style.dFlex} ${style.justifyContentBetween} ${style.mt4}`}>
-              <Button variant="secondary" className={style.btnSecondary}>Guarde Rascunho</Button>
+              <Button variant="secondary" className={style.btnSecondary}>
+                Guarde Rascunho
+              </Button>
               <div>
-                <Button variant="secondary" className={`${style.btnSecondary} ${style.me2}`}>Cancelar</Button>
-                <Button variant="primary" className={style.btnPrimary}>Próximo passo</Button>
+                <Button variant="secondary" className={`${style.btnSecondary} ${style.me2}`}>
+                  Cancelar
+                </Button>
+                <Button variant="primary" className={style.btnPrimary} onClick={handleNext}>
+                  Próximo passo
+                </Button>
               </div>
             </div>
           </Form>
-        </div>
+        )}
+
+      
+        {/* Paso 2: Detalhes do Estágio */}
+        {step === 2 && (
+        <Form>
+        <Row className={style.mb3}>
+        <Col md={12}>
+        <Form.Group className={style.mb3}>
+          <Form.Label className={style.formLabel}>
+            Descrição do Estágio <span className={style.textDanger}>*</span>
+          </Form.Label>
+          <Form.Control
+            as="textarea"
+            rows={4}
+            className={style.formControl}
+            placeholder="Descreva brevemente as atividades do estágio"
+            required
+          />
+        </Form.Group>
+
+        <Form.Group className={style.mb3}>
+          <Form.Label className={style.formLabel}>
+            Benefícios Oferecidos <span className={style.textDanger}>*</span>
+          </Form.Label>
+          <Form.Control
+            className={style.formControl}
+            type="text"
+            placeholder="Ex: Bolsa, Vale-transporte"
+            required
+          />
+        </Form.Group>
+
+        <Form.Group className={style.mb3}>
+          <Form.Label className={style.formLabel}>
+            Horário do Estágio <span className={style.textDanger}>*</span>
+          </Form.Label>
+          <Form.Control
+            className={style.formControl}
+            type="text"
+            placeholder="Ex: 9h às 15h"
+            required
+          />
+        </Form.Group>
+      </Col>
+    </Row>
+
+    <div className={`${style.dFlex} ${style.justifyContentBetween} ${style.mt4}`}>
+      <Button variant="secondary" className={style.btnSecondary} onClick={handleBack}>
+        Voltar
+      </Button>
+      <Button variant="primary" className={style.btnPrimary} onClick={handleNext}>
+        Próximo passo
+      </Button>
+    </div>
+  </Form>
+)}
+        {/* Paso 3: Requisitos */}
+        {step === 3 && (
+          <div>
+            <p>Conteúdo de "Requisitos" (a definir)</p>
+            <div className={`${style.dFlex} ${style.justifyContentBetween} ${style.mt4}`}>
+              <Button variant="secondary" className={style.btnSecondary} onClick={handleBack}>
+                Voltar
+              </Button>
+              <Button variant="primary" className={style.btnPrimary} onClick={handleNext}>
+                Próximo passo
+              </Button>
+            </div>
+          </div>
+        )}
+
+        {/* Paso 4: Revisão */}
+        {step === 4 && (
+          <div>
+            <p>Conteúdo de "Revisão" (a definir)</p>
+            <div className={`${style.dFlex} ${style.justifyContentBetween} ${style.mt4}`}>
+              <Button variant="secondary" className={style.btnSecondary} onClick={handleBack}>
+                Voltar
+              </Button>
+              <Button variant="success" className={style.btnPrimary}>
+                Publicar Estágio
+              </Button>
+            </div>
+          </div>
+        )}
       </div>
+    </div>
   );
 }
 

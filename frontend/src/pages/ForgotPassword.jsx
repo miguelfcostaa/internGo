@@ -14,7 +14,7 @@ const PasswordReset = () => {
     setMessage("");
 
     try {
-      const response = await fetch("/api/auth/forgot-password", {
+      const response = await fetch("http://localhost:5000/api/auth/forgot-password", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -24,11 +24,14 @@ const PasswordReset = () => {
 
       const data = await response.json();
 
-      if (response.ok) {
-        setIsSuccess(true);
-        setMessage(
-          "Email enviado com sucesso! Verifique a sua caixa de entrada."
-        );
+      if (response.ok) {        
+        if (data.emailFound) {
+          setIsSuccess(true);
+          setMessage("Email enviado com sucesso! Verifique a sua caixa de entrada.");
+        } else {
+          setIsSuccess(false);
+          setMessage("Se o email existir na nossa base de dados, receberá um link de redefinição.");
+        }
         setEmail("");
       } else {
         setIsSuccess(false);

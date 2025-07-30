@@ -101,18 +101,18 @@ function EstagiosAtivos (){
                 <div style={{display:"flex", marginTop:"300px", justifyContent:"center", alignItems:"center", marginBottom:"50px"}}>
                     <input  type="text" placeholder="Procurar"></input>
                 </div>
-                <div style={{ maxWidth:"80%", backgroundColor:"white", marginLeft:"10%", marginRight:"10%"}}>
-                    <table className={`table table-hover ${styles.border}`} style={{ maxWidth:"100%", maxHeight:"100%"}}>
-                        <thead>
+                <div style={{ maxWidth:"80%", marginLeft:"10%", marginRight:"10%"}}>
+                    <table className="table table-hover" style={{ maxWidth:"100%", maxHeight:"100%"}}>
+                        <thead className={styles.thead}>
                             <tr>
-                                <th>Título de Estágio</th>
-                                <td className={styles.td}>Status</td>
-                                <td>Tipo</td>
-                                <td>Candidaturas</td>
-                                <td>Vagas</td>
-                                <td>Lozalização</td>
-                                <td>Publicado em</td>
-                                <td>Ações</td>
+                                <td className={styles.th}>Título de Estágio</td>
+                                <td className={styles.th}>Status</td>
+                                <td className={styles.th}>Tipo</td>
+                                <td className={styles.th}>Candidaturas</td>
+                                <td className={styles.th}>Vagas</td>
+                                <td className={styles.th}>Lozalização</td>
+                                <td className={styles.th}>Publicado em</td>
+                                <td className={styles.th}>Ações</td>
                             </tr>
                         </thead>
                         <tbody>
@@ -136,7 +136,7 @@ function EstagiosAtivos (){
                         </tbody>
                     </table>
                     <div style={{ display:"flex", justifyContent:"right", flexDirection:"row", gap:"5px"}}>
-                        <span onClick={()=>mudarpagina(paginaAtual-1)} disabled={paginaAtual===1}> {'< Anterior'} </span>
+                        <span className={styles.botao} onClick={()=>mudarpagina(paginaAtual-1)} disabled={paginaAtual===1}> {'< Anterior'} </span>
                         {temp.map(element=>(
                         <>
                             <span
@@ -144,6 +144,7 @@ function EstagiosAtivos (){
                                 onClick={()=>mudarpagina(element)}
                                 style={{
                                     fontWeight:paginaAtual==element?"bold":"",
+                                    border:"1px solid balack",
                                 }}
                             >
                                 {element} 

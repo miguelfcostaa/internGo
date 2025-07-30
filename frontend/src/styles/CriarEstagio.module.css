@@ -1,13 +1,13 @@
-/* Base styles for HTML, body, and root element */
+
 html,
 body,
 #root {
   height: 100%;
   margin: 0;
-  color: black; /* Default text color for the entire page */
+  color: black; 
 }
 
-/* Main container for the form */
+
 .container {
   max-width: 900px;
   margin: 2rem auto;
@@ -23,34 +23,44 @@ body,
   transform: translate(-50%, -50%);
 }
 
-/* Margin top utility class */
+
 .mt4 {
-  margin-top: 1.5rem; /* Used for spacing elements */
+  margin-top: 1.5rem; 
 }
 
-/* Title styling for the form header */
 .titulo {
-  text-align: left;
+  text-align: center;
   margin-top: 4rem;
   margin-left: 2rem;
   font-size: 1.25rem;
   font-weight: bold;
 }
 
-/* Progress Bar styling */
 .progressBar {
-  background-color: #f0f0f0; /* Changed from 'grey' to a light grey color to match common UI practices */
+  background-color: #f0f0f0; 
   padding: 10px 16px;
   border-radius: 6px;
   display: flex;
   align-items: center;
   font-size: 0.95rem;
-  user-select: none; /* Prevent text selection */
+  user-select: none; 
   box-sizing: border-box;
-  gap: 8px; /* Space between progress items */
+  gap: 8px; 
 }
 
-/* Style for the active progress step */
+.inlineField {
+  display: flex;
+  align-items: center;
+  gap: 12px; 
+}
+
+.smallInput {
+  width: 80px; 
+  text-align: center;
+  font-size: 0.95rem;
+  padding: 6px 8px;
+}
+
 .fwBold.textPrimary {
   font-weight: 700;
   color: black;
