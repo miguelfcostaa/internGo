@@ -1,8 +1,9 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import NavBar from "../components/NavBar.jsx";
 import style from "../styles/CriarEstagio.module.css";
 import { Form, Row, Col, Button, Card, Container } from "react-bootstrap";
-import { OverlayTrigger, Tooltip } from 'react-bootstrap';
+import RequiredFieldTooltip from "../components/RequiredFieldTooltip.jsx";
 
 function CriacaoEstagio() {
   const [step, setStep] = useState(1);
@@ -26,6 +27,7 @@ function CriacaoEstagio() {
     idiomas: "",
     outros: ""
   });
+  const navigate = useNavigate();
 
   const handleNext = () => {
     if (step < 4) setStep(step + 1);
@@ -45,6 +47,9 @@ function CriacaoEstagio() {
       Campo obrigatório
     </Tooltip>
   );
+  const handleCancel = () => {
+    navigate(-1); // Navega para a página anterior
+  };
 
 
    return (
@@ -290,7 +295,7 @@ function CriacaoEstagio() {
               <Button
                 variant="secondary"
                 className={style.btnSecondary}
-                onClick={handleBack}
+                onClick={handleCancel}
               >
                 Cancelar
               </Button>
@@ -314,15 +319,7 @@ function CriacaoEstagio() {
         {/* Descrição */}
         <Form.Group className={`${style.mb3} d-flex flex-column`}>
           <Form.Label className={style.formLabel}>
-            Descrição do Estágio{" "}
-            <OverlayTrigger placement="top" overlay={renderTooltip}>
-              <span
-                className={style.textDanger}
-                style={{ cursor: "pointer", color: "red" }}
-              >
-                *
-              </span>
-            </OverlayTrigger>
+            Descrição do Estágio <RequiredFieldTooltip />
           </Form.Label>
           <Form.Control
             as="textarea"
@@ -338,15 +335,7 @@ function CriacaoEstagio() {
         {/* Horário */}
         <Form.Group className={`${style.mb3} d-flex flex-column`}>
           <Form.Label className={style.formLabel}>
-            Horário de Trabalho{" "}
-            <OverlayTrigger placement="top" overlay={renderTooltip}>
-              <span
-                className={style.textDanger}
-                style={{ cursor: "pointer", color: "red" }}
-              >
-                *
-              </span>
-            </OverlayTrigger>
+            Benefícios Oferecidos <RequiredFieldTooltip />
           </Form.Label>
           <Form.Control
             type="text"
@@ -359,32 +348,16 @@ function CriacaoEstagio() {
         </Form.Group>
       </Col>
 
-      <Col md={6} className={style.rightColumn}>
-        <div className={style.rightColumnContainer}>
-          {/* Benefícios */}
-          <Form.Group className={`${style.mb3} d-flex flex-column`}>
-            <Form.Label className={style.formLabel}>
-              Benefícios Oferecidos{" "}
-              <OverlayTrigger placement="top" overlay={renderTooltip}>
-                <span
-                  className={style.textDanger}
-                  style={{ cursor: "pointer", color: "red" }}
-                >
-                  *
-                </span>
-              </OverlayTrigger>
-            </Form.Label>
-            <Form.Control
-              as="textarea"
-              rows={4}
-              className={style.formControl}
-              name="beneficios"
-              value={formData.beneficios || ""}
-              onChange={handleChange}
-              placeholder="Informe benefícios como bolsa auxílio, transporte, alimentação, etc."
-            />
-          </Form.Group>
-        </div>
+        <Form.Group className={style.mb3}>
+          <Form.Label className={style.formLabel}>
+            Horário do Estágio <RequiredFieldTooltip />
+          </Form.Label>
+          <Form.Control
+            className={style.formControl}
+            type="text"
+            placeholder="Ex: 9h às 15h"
+          />
+        </Form.Group>
       </Col>
     </Row>
 
@@ -417,10 +390,7 @@ function CriacaoEstagio() {
   {/* Habilitações Académicas Mínimas */}
 <Form.Group className={style.mb3}>
   <Form.Label className={style.formLabel}>
-    Habilitações Académicas Mínimas{" "}
-    <OverlayTrigger placement="top" overlay={renderTooltip}>
-      <span className={style.textDanger} style={{ cursor: 'pointer', color: 'red' }}>*</span>
-    </OverlayTrigger>
+    Habilitações Académicas Mínimas <RequiredFieldTooltip />
   </Form.Label>
   <Form.Select className={style.formSelect}>
     <option value="">Selecione o nível de habilitação</option>
