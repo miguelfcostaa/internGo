@@ -5,6 +5,7 @@ import style from "../styles/CriarEstagio.module.css";
 import { Form, Row, Col, Button, Card, Container } from "react-bootstrap";
 import RequiredFieldTooltip from "../components/RequiredFieldTooltip.jsx";
 
+
 function CriacaoEstagio() {
   const [step, setStep] = useState(1);
 
@@ -42,11 +43,6 @@ function CriacaoEstagio() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const renderTooltip = (props) => (
-    <Tooltip id="tooltip" {...props}>
-      Campo obrigatório
-    </Tooltip>
-  );
   const handleCancel = () => {
     navigate(-1); // Navega para a página anterior
   };
@@ -82,10 +78,7 @@ function CriacaoEstagio() {
               <Col md={6} className={style.leftColumn}>
                 <Form.Group className={`${style.mb3} d-flex flex-column`}>
                   <Form.Label className={style.formLabel}>
-                    Título do Estágio{" "}
-                    <OverlayTrigger placement="top" overlay={renderTooltip}>
-                      <span className={style.textDanger} style={{ cursor: "pointer", color: "red" }}>*</span>
-                    </OverlayTrigger>
+                    Título do Estágio <RequiredFieldTooltip />
                   </Form.Label>
                   <Form.Control
                     className={style.formControl}
@@ -99,10 +92,7 @@ function CriacaoEstagio() {
 
                 <Form.Group className={`${style.mb3} d-flex flex-column`}>
                   <Form.Label className={style.formLabel}>
-                    Área(s) de Atuação{" "}
-                    <OverlayTrigger placement="top" overlay={renderTooltip}>
-                      <span className={style.textDanger} style={{ cursor: "pointer", color: "red" }}>*</span>
-                    </OverlayTrigger>
+                    Área(s) de Atuação <RequiredFieldTooltip />
                   </Form.Label>
                   <Form.Control
                     className={style.formControl}
@@ -116,10 +106,7 @@ function CriacaoEstagio() {
 
                 <Form.Group className={`${style.mb3} ${style.inlineField}`}>
                   <Form.Label className={`${style.formLabel} mb-0`} style={{ minWidth: "160px" }}>
-                    Número de Vagas{" "}
-                    <OverlayTrigger placement="top" overlay={renderTooltip}>
-                      <span className={style.textDanger} style={{ cursor: "pointer", color: "red" }}>*</span>
-                    </OverlayTrigger>
+                    Número de Vagas <RequiredFieldTooltip />
                   </Form.Label>
                   <Form.Control
                     className={style.smallInput}
@@ -133,10 +120,7 @@ function CriacaoEstagio() {
 
                 <Form.Group className={`${style.mb3} d-flex flex-column`}>
                   <Form.Label className={style.formLabel}>
-                    Localização{" "}
-                    <OverlayTrigger placement="top" overlay={renderTooltip}>
-                      <span className={style.textDanger} style={{ cursor: "pointer", color: "red" }}>*</span>
-                    </OverlayTrigger>
+                    Localização <RequiredFieldTooltip />
                   </Form.Label>
                   <Form.Control
                     className={style.formControl}
@@ -157,15 +141,7 @@ function CriacaoEstagio() {
                       className={style.formLabel}
                       style={{ minWidth: "140px" }}
                     >
-                      Data de Início Prevista{" "}
-                      <OverlayTrigger placement="top" overlay={renderTooltip}>
-                        <span
-                          className={style.textDanger}
-                          style={{ cursor: "pointer", color: "red" }}
-                        >
-                          *
-                        </span>
-                      </OverlayTrigger>
+                      Data de Início Prevista <RequiredFieldTooltip />
                     </Form.Label>
                     <Form.Control
                       className={style.smallDate}
@@ -184,15 +160,7 @@ function CriacaoEstagio() {
                       className={`${style.formLabel} mb-0 me-3`}
                       style={{ minWidth: "120px" }}
                     >
-                      Tipo de Estágio{" "}
-                      <OverlayTrigger placement="top" overlay={renderTooltip}>
-                        <span
-                          className={style.textDanger}
-                          style={{ cursor: "pointer", color: "red" }}
-                        >
-                          *
-                        </span>
-                      </OverlayTrigger>
+                      Tipo de Estágio <RequiredFieldTooltip />
                     </Form.Label>
                     <div className={style.radioGroup}>
                       <Form.Check
@@ -238,15 +206,7 @@ function CriacaoEstagio() {
                       className={style.formLabel}
                       style={{ minWidth: "140px", marginBottom: 0 }}
                     >
-                      Duração do Estágio{" "}
-                      <OverlayTrigger placement="top" overlay={renderTooltip}>
-                        <span
-                          className={style.textDanger}
-                          style={{ cursor: "pointer", color: "red" }}
-                        >
-                          *
-                        </span>
-                      </OverlayTrigger>
+                      Duração do Estágio <RequiredFieldTooltip />
                     </Form.Label>
                     <Form.Select
                       className={style.smallSelect}
@@ -267,15 +227,7 @@ function CriacaoEstagio() {
                       className={style.formLabel}
                       style={{ minWidth: "140px" }}
                     >
-                      Prazo Limite de Candidatura {" "}
-                      <OverlayTrigger placement="top" overlay={renderTooltip}>
-                        <span
-                          className={style.textDanger}
-                          style={{ cursor: "pointer", color: "red" }}
-                        >
-                          *
-                        </span>
-                      </OverlayTrigger>
+                      Prazo Limite de Candidatura <RequiredFieldTooltip />
                     </Form.Label>
                     <Form.Control
                       className={style.smallDate}
