@@ -1,10 +1,9 @@
 const { Schema, model } = require('mongoose');
-const validations = require('../utils/validations');
 
 const estagioSchema = new Schema({
     status: {
         type: String,
-        required: true,
+        default: 'Ativo',
     },
     title: { // Título do estágio
         type: String,

@@ -58,7 +58,7 @@ const EstagiosCriados = () => {
             setEstagios(prev =>
                 prev.map(e =>
                     e._id === id
-                        ? { ...e, status: e.status === 'Ativo' ? 'Desativo' : 'Ativo' }
+                        ? { ...e, status: e.status === 'Ativo' ? 'Inativo' : 'Ativo' }
                         : e
                 )
             );
@@ -126,27 +126,6 @@ const EstagiosCriados = () => {
                                 ))}
                             </tbody>
                         </table>
-
-
-                        {/* <div style={{ display:"flex", justifyContent:"right", flexDirection:"row", gap:"5px"}}>
-                            <span className={styles.botao} onClick={()=>mudarpagina(paginaAtual-1)} disabled={paginaAtual===1}> {'< Anterior'} </span>
-                            {temp.map(element=>(
-                            <>
-                                <span
-                                    key={element}
-                                    onClick={()=>mudarpagina(element)}
-                                    style={{
-                                        fontWeight:paginaAtual==element?"bold":"",
-                                        border:"1px solid balack",
-                                    }}
-                                >
-                                    {element} 
-                                </span>
-                                <span>{" |"}</span>
-                            </>
-                            ))}
-                            <span onClick={()=>mudarpagina(paginaAtual+1)} disabled={paginaAtual===totalPaginas}>{"Próxmo>"}</span>
-                        </div> */}
                     </div>
                 </div>
             </div>
