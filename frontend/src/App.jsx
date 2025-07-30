@@ -32,7 +32,7 @@ function App() {
           <Route path='/reset-password' element={<ResetPassword />}></Route>  {/* Rota para Reset Password */}
           <Route path='/select-user' element={<SelectUser />}></Route>  {/* Rota para selecionar se é Estagiario ou Empresa */}
           
-          {/* Rotas protegidas - requerem autenticação */}
+          <Route path='/criar-estagio' element={<CriarEstagio/>}></Route>  {/* Rota para Criar Estágio */}
           <Route path='/profile/:id' element={
             <ProtectedRoute>
               <Profile />
