@@ -1,8 +1,8 @@
 const express = require('express');
-const Estagio = require('../models/Estagio');
-const { verifyToken, verifyRole } = require('../middleware/auth');
-const Company = require('../models/Company');
 const router = express.Router();
+const Estagio = require('../models/Estagio');
+const Company = require('../models/Company');
+const { verifyToken, verifyRole } = require('../middleware/auth');
 
 router.get('/', async (req, res) => {
     try {
@@ -77,12 +77,14 @@ router.put('/alterar-estado/:id', verifyToken, async (req, res) => {
         if (!estagio) {
             return res.status(404).json({ message: 'Estágio não encontrado' });
         }
-        estagio.status = req.body.status || (estagio.status === 'Ativo' ? 'Desativo' : 'Ativo');
+        estagio.status = req.body.status || (estagio.status === 'Ativo' ? 'Inativo' : 'Ativo');
         await estagio.save();
         res.json(estagio);
     } catch (error) {
         res.status(500).json({ message: 'Erro ao desativar estágio', error });
     }
 });
+
+
 
 module.exports = router;

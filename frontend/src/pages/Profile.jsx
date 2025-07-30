@@ -7,6 +7,7 @@ import styles from '../styles/Profile.module.css';
 import logo from '../assets/logo.jpg';
 import NotFound from './NotFound404';
 import useEstagiosByCompany from '../hooks/useEstagiosByCompany';
+import useCandidaturas from '../hooks/useCandidaturas';
 
 const ProfilePage = () => {
 
@@ -14,6 +15,7 @@ const ProfilePage = () => {
     const [userInfo, setUserInfo] = useState({});
     const [nEstagios, setNEstagios] = useState(0);
     const estagiosByCompany = useEstagiosByCompany(userInfo._id);
+    const candidaturas = useCandidaturas(userInfo._id);
 
     const getUserInfo = async (id) => {
         if (role === 'user') {
@@ -104,16 +106,18 @@ const ProfilePage = () => {
                                 </div>
                                 
                             </div>
-                            <div className='estagio-ativo-detalhes'>
+                            <div className={styles.estagioAtivoDetalhes}>
                                 <span>Ver Detalhes</span>    
                             </div>
                         </div>
                     </div>
 
                     <div className='mt-5'>
-                        <h2 className={styles.titulo}>
-                            Candidaturas Feitas
-                        </h2>
+                        <div className='mb-4'>
+                            <h2 className={styles.titulo}>
+                                Candidaturas Feitas
+                            </h2>
+                        </div>
                         <table className="table table-hover shadow">
                             <thead>
                                 <tr>
@@ -126,52 +130,35 @@ const ProfilePage = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td style={{ textAlign: 'left', paddingLeft: "2rem" }}>Estagio de Tecnico</td>
-                                    <td>Acin</td>
-                                    <td>Julho</td>
-                                    <td>1 Mês</td>
-                                    <td>Hybrido</td>
-                                    <td className={styles.linkIcon} style={{ paddingRight: "2rem" }}>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#447D9B" className="bi bi-link" viewBox="0 0 16 16">
-                                            <path d="M6.354 5.5H4a3 3 0 0 0 0 6h3a3 3 0 0 0 2.83-4H9q-.13 0-.25.031A2 2 0 0 1 7 10.5H4a2 2 0 1 1 0-4h1.535c.218-.376.495-.714.82-1z"/>
-                                            <path d="M9 5.5a3 3 0 0 0-2.83 4h1.098A2 2 0 0 1 9 6.5h3a2 2 0 1 1 0 4h-1.535a4 4 0 0 1-.82 1H12a3 3 0 1 0 0-6z"/>
-                                        </svg>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style={{ textAlign: 'left', paddingLeft: "2rem" }}>Estágio Web Development</td>
-                                    <td>Sky</td>
-                                    <td>Agosto</td>
-                                    <td>1 Mês</td>
-                                    <td>Remoto</td>
-                                    <td className={styles.linkIcon} style={{ paddingRight: "2rem" }}>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#447D9B" className="bi bi-link" viewBox="0 0 16 16">
-                                            <path d="M6.354 5.5H4a3 3 0 0 0 0 6h3a3 3 0 0 0 2.83-4H9q-.13 0-.25.031A2 2 0 0 1 7 10.5H4a2 2 0 1 1 0-4h1.535c.218-.376.495-.714.82-1z"/>
-                                            <path d="M9 5.5a3 3 0 0 0-2.83 4h1.098A2 2 0 0 1 9 6.5h3a2 2 0 1 1 0 4h-1.535a4 4 0 0 1-.82 1H12a3 3 0 1 0 0-6z"/>
-                                        </svg>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style={{ textAlign: 'left', paddingLeft: "2rem" }}>Estágio em Ciência de Dados</td>
-                                    <td>ARDITI</td>
-                                    <td>Julho</td>
-                                    <td>3 Meses</td>
-                                    <td>Presencial</td>
-                                    <td className={styles.linkIcon} style={{ paddingRight: "2rem" }}>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#447D9B" className="bi bi-link" viewBox="0 0 16 16">
-                                            <path d="M6.354 5.5H4a3 3 0 0 0 0 6h3a3 3 0 0 0 2.83-4H9q-.13 0-.25.031A2 2 0 0 1 7 10.5H4a2 2 0 1 1 0-4h1.535c.218-.376.495-.714.82-1z"/>
-                                            <path d="M9 5.5a3 3 0 0 0-2.83 4h1.098A2 2 0 0 1 9 6.5h3a2 2 0 1 1 0 4h-1.535a4 4 0 0 1-.82 1H12a3 3 0 1 0 0-6z"/>
-                                        </svg>
-                                    </td>
-                                </tr>
+                                {candidaturas.map((candidatura, index) => (
+                                    <tr key={index}>
+                                        <td style={{ textAlign: 'left', paddingLeft: "2rem" }}>{candidatura.estagio.title}</td>
+                                        <td>{candidatura.estagio.company.name}</td>
+                                        <td>
+                                            {candidatura.dataCandidatura
+                                            ? new Date(candidatura.dataCandidatura)
+                                                .toLocaleDateString('pt-PT', { day: '2-digit', month: '2-digit', year: 'numeric' })
+                                            : ''}
+                                        </td>
+                                        <td>{candidatura.estagio.duracao === 1 ? `${candidatura.estagio.duracao} Mês` : `${candidatura.estagio.duracao} Meses`}</td>
+                                        <td>{candidatura.estagio.tipoEstagio}</td>
+                                        <td className={styles.linkIcon} style={{ paddingRight: "2rem" }}>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#447D9B" className="bi bi-link" viewBox="0 0 16 16">
+                                                <path d="M6.354 5.5H4a3 3 0 0 0 0 6h3a3 3 0 0 0 2.83-4H9q-.13 0-.25.031A2 2 0 0 1 7 10.5H4a2 2 0 1 1 0-4h1.535c.218-.376.495-.714.82-1z"/>
+                                                <path d="M9 5.5a3 3 0 0 0-2.83 4h1.098A2 2 0 0 1 9 6.5h3a2 2 0 1 1 0 4h-1.535a4 4 0 0 1-.82 1H12a3 3 0 1 0 0-6z"/>
+                                            </svg>
+                                        </td>
+                                    </tr>
+                                ))}
                             </tbody>
                         </table>
                     </div>
                     <div className='mt-5'>
-                        <h2 className={styles.titulo}>
-                            Estágios Recomendados
-                        </h2>
+                        <div className='mb-4'>
+                            <h2 className={styles.titulo}>
+                                Estágios Recomendados
+                            </h2>
+                        </div>
                         <table className="table table-hover shadow align-middle" >
                             <tbody>
                                 <tr>
@@ -181,20 +168,6 @@ const ProfilePage = () => {
                                     <td style={{ paddingRight: "4rem" }}>Julho</td>
                                     <td style={{ paddingRight: "4rem" }}>1 Mês</td>
                                     <td style={{ paddingRight: "4rem" }}>Hybrido</td>
-                                    <td className={styles.linkIcon} style={{ paddingRight: "2rem" }}>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#447D9B" className="bi bi-link" viewBox="0 0 16 16">
-                                            <path d="M6.354 5.5H4a3 3 0 0 0 0 6h3a3 3 0 0 0 2.83-4H9q-.13 0-.25.031A2 2 0 0 1 7 10.5H4a2 2 0 1 1 0-4h1.535c.218-.376.495-.714.82-1z"/>
-                                            <path d="M9 5.5a3 3 0 0 0-2.83 4h1.098A2 2 0 0 1 9 6.5h3a2 2 0 1 1 0 4h-1.535a4 4 0 0 1-.82 1H12a3 3 0 1 0 0-6z"/>
-                                        </svg>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><img src={logo} alt="Company" width={50} height={50}/></td>
-                                    <td style={{ textAlign: 'left', paddingLeft: "4rem" }}>Estágio Web Development</td>
-                                    <td style={{ paddingRight: "4rem" }}>Sky</td>
-                                    <td style={{ paddingRight: "4rem" }}>Agosto</td>
-                                    <td style={{ paddingRight: "4rem" }}>1 Mês</td>
-                                    <td style={{ paddingRight: "4rem" }}>Remoto</td>
                                     <td className={styles.linkIcon} style={{ paddingRight: "2rem" }}>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#447D9B" className="bi bi-link" viewBox="0 0 16 16">
                                             <path d="M6.354 5.5H4a3 3 0 0 0 0 6h3a3 3 0 0 0 2.83-4H9q-.13 0-.25.031A2 2 0 0 1 7 10.5H4a2 2 0 1 1 0-4h1.535c.218-.376.495-.714.82-1z"/>
@@ -271,7 +244,7 @@ const ProfilePage = () => {
                                         <td>{estagio.title}</td>
                                         <td>{estagio.numeroVagas}</td>
                                         <td>{estagio.dataInicio}</td>
-                                        <td>{estagio.duracao}</td>
+                                        <td>{estagio.duracao === 1 ? `${estagio.duracao} Mês` : `${estagio.duracao} Meses`}</td>
                                         <td>{estagio.tipoEstagio}</td>
                                         <td className={styles.linkIcon} style={{ paddingRight: "2rem" }}>
                                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#000" className="bi bi-pen" viewBox="0 0 16 16">

@@ -6,6 +6,15 @@ const { verifyToken } = require('../middleware/auth');
 
 const router = express.Router();
 
+router.get('/', verifyToken, async (req, res) => {
+    try {
+        const users = await User.find().select('-password');
+        res.json(users);
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching users', error });
+    }
+}); 
+
 router.get('/:id', async (req, res) => {
     try {
         const user = await User.findById(req.params.id);

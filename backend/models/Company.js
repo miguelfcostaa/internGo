@@ -1,7 +1,4 @@
 const { Schema, model } = require('mongoose');
-const validations = require('../utils/validations'); 
-const { modelName } = require('./User');
-
 
 const companySchema = new Schema({
     name: {
