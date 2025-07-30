@@ -247,11 +247,11 @@ const ProfilePage = () => {
                     </div>
 
                     <div className='mt-5'>
-                        <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <h2 className={styles.titulo}>
-                                Estágios Criados
-                        </h2>
-                        <ButtonGeral Name="Criar Estágio" link={`/criar-estagio`} />
+                        <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+                            <h2 className={styles.titulo}>
+                                    Estágios Criados
+                            </h2>
+                            <ButtonGeral Name="Criar Estágio" link={`/criar-estagio`} />
                         </div>
 
                         <table className="table table-hover shadow">
@@ -284,7 +284,7 @@ const ProfilePage = () => {
                                 ))}
                                 <tr>
                                     <td colSpan={7} style={{ textAlign: 'center', verticalAlign: 'middle', cursor: 'pointer', fontWeight: '600' }} >
-                                        <a href={`/estagios-ativos/${userInfo._id}`} style={{ textDecoration: 'none', color: '#000' }}> Mostrar todos ({nEstagios}) </a>
+                                        <a href={`/estagios-criados/${userInfo._id}`} style={{ textDecoration: 'none', color: '#000' }}> Mostrar todos ({nEstagios}) </a>
                                     </td>
                                 </tr>
                             </tbody>
