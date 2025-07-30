@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import NavBar from "../components/NavBar.jsx";
 import style from "../styles/CriarEstagio.module.css";
-import { Form, Row, Col, Button } from "react-bootstrap";
+import { Form, Row, Col, Button, Card, Container } from "react-bootstrap";
 
 function CriacaoEstagio() {
   const [step, setStep] = useState(1);
@@ -14,7 +14,7 @@ function CriacaoEstagio() {
     if (step > 1) setStep(step - 1);
   };
 
-  return (
+   return (
     <div style={{ backgroundColor: "#fff", minHeight: "100vh" }}>
       <NavBar />
       <h6 className={style.titulo}> Publicar Novo Estágio na sua Empresa</h6>
@@ -41,118 +41,103 @@ function CriacaoEstagio() {
 
         {/* Paso 1: Informações Básicas */}
         {step === 1 && (
-          <Form>
-            <Row className={style.mb3}>
-              <Col md={6}>
-                <Form.Group className={style.mb3}>
-                  <Form.Label className={style.formLabel}>
-                    Título do Estágio <span className={style.textDanger}>*</span>
-                  </Form.Label>
-                  <Form.Control
-                    className={style.formControl}
-                    type="text"
-                    placeholder="Ex: Estágio em Desenvolvimento de Software"
-                    required
-                  />
-                </Form.Group>
+  <Form>
+    <Row className={style.mb3}>
+      {/* Columna izquierda */}
+      <Col md={6}>
+        <Form.Group className={style.mb3}>
+          <Form.Label className={style.formLabel}>
+            Título do Estágio <span className={style.textDanger}>*</span>
+          </Form.Label>
+          <Form.Control
+            className={style.formControl}
+            type="text"
+            placeholder="Ex: Estágio em Desenvolvimento de Software"
+            
+          />
+        </Form.Group>
 
-                <Form.Group className={style.mb3}>
-                  <Form.Label className={style.formLabel}>
-                    Área(s) de Atuação <span className={style.textDanger}>*</span>
-                  </Form.Label>
-                  <Form.Control
-                    className={style.formControl}
-                    type="text"
-                    placeholder="Ex: Tecnologia da Informação"
-                    required
-                  />
-                </Form.Group>
+        <Form.Group className={style.mb3}>
+          <Form.Label className={style.formLabel}>
+            Área(s) de Atuação <span className={style.textDanger}>*</span>
+          </Form.Label>
+          <Form.Control
+            className={style.formControl}
+            type="text"
+            placeholder="Ex: Tecnologia da Informação"
+            
+          />
+        </Form.Group>
 
-                <Form.Group className={style.mb3}>
-                  <div className={style.inlineField}>
-                    <Form.Label className={style.formLabel}>
-                      Número de Vagas para este Estágio <span className={style.textDanger}>*</span>
-                    </Form.Label>
-                    <Form.Control
-                      className={style.smallInput}
-                      type="number"
-                      min="1"
-                      max="999"
-                      maxLength="3"
-                      placeholder="0"
-                    />
-                  </div>
-                </Form.Group>
+        <Form.Group className={style.mb3}>
+          <Form.Label className={style.formLabel}>
+            Número de Vagas para este Estágio <span className={style.textDanger}>*</span>
+          </Form.Label>
+          <Form.Control
+            className={style.smallInput}
+            type="number"
+            min="1"
+            max="999"
+            placeholder="1"
+          />
+        </Form.Group>
 
-                <Form.Group className={style.mb3}>
-                  <Form.Label className={style.formLabel}>
-                    Localização(ões) do Estágio <span className={style.textDanger}>*</span>
-                  </Form.Label>
-                  <Form.Control
-                    className={style.formControl}
-                    type="text"
-                    placeholder="Ex: Funchal"
-                    required
-                  />
-                </Form.Group>
-              </Col>
+        <Form.Group className={style.mb3}>
+          <Form.Label className={style.formLabel}>
+            Localização(ões) do Estágio <span className={style.textDanger}>*</span>
+          </Form.Label>
+          <Form.Control
+            className={style.formControl}
+            type="text"
+            placeholder="Ex: Funchal"
+          
+          />
+        </Form.Group>
+      </Col>
 
-              <Col md={6}>
-                <Form.Group className={style.mb3}>
-                  <Form.Label className={style.formLabel}>
-                    Data de Início Prevista <span className={style.textDanger}>*</span>
-                  </Form.Label>
-                  <Form.Control className={style.formControl} type="date" required />
-                </Form.Group>
+      <Col md={6}>
+        <Form.Group className={style.mb3}>
+          <Form.Label className={style.formLabel}>Data de Início Prevista *</Form.Label>
+          <Form.Control className={style.formControl} type="date" />
+        </Form.Group>
 
-                <Form.Group className={style.mb3}>
-                  <Form.Label className={style.formLabel}>
-                    Tipo de Estágio <span className={style.textDanger}>*</span>
-                  </Form.Label>
-                  <div>
-                    <Form.Check inline label="Presencial" name="tipoEstagio" type="radio" />
-                    <Form.Check inline label="Remoto" name="tipoEstagio" type="radio" />
-                    <Form.Check inline label="Híbrido" name="tipoEstagio" type="radio" defaultChecked />
-                  </div>
-                </Form.Group>
+        <Form.Group className={style.mb3}>
+          <Form.Label className={style.formLabel}>Tipo de Estágio *</Form.Label>
+          <div className={style.radioGroup}>
+            <Form.Check inline label="Presencial" type="radio" name="tipo" />
+            <Form.Check inline label="Remoto" type="radio" name="tipo" />
+            <Form.Check inline label="Híbrido" type="radio" name="tipo" />
+          </div>
+        </Form.Group>
 
-                <Form.Group className={style.mb3}>
-                  <Form.Label className={style.formLabel}>
-                    Duração do Estágio <span className={style.textDanger}>*</span>
-                  </Form.Label>
-                  <Form.Select className={style.formSelect}>
-                    <option>Selecione a duração</option>
-                    <option>3 meses</option>
-                    <option>6 meses</option>
-                    <option>12 meses</option>
-                  </Form.Select>
-                </Form.Group>
+        <Form.Group className={`${style.mb3} ${style.inlineField}`}>
+          <Form.Label className={style.formLabel}>Duração do Estágio *</Form.Label>
+          <Form.Select className={style.smallSelect}>
+            <option>Duração</option>
+            <option>3 meses</option>
+            <option>6 meses</option>
+            <option>12 meses</option>
+          </Form.Select>
+        </Form.Group>
+ <Form.Group className={style.mb3}>
+          <Form.Label className={style.formLabel}>Prazo Limite para Candidaturas *</Form.Label>
+          <Form.Control className={style.formControl} type="date" />
+        </Form.Group>
+      </Col>
+    </Row>
 
-                <Form.Group className={style.mb3}>
-                  <Form.Label className={style.formLabel}>
-                    Prazo Limite para Candidaturas <span className={style.textDanger}>*</span>
-                  </Form.Label>
-                  <Form.Control className={style.formControl} type="date" required />
-                </Form.Group>
-              </Col>
-            </Row>
-
-            <div className={`${style.dFlex} ${style.justifyContentBetween} ${style.mt4}`}>
-              <Button variant="secondary" className={style.btnSecondary}>
-                Guarde Rascunho
-              </Button>
-              <div>
-                <Button variant="secondary" className={`${style.btnSecondary} ${style.me2}`}>
-                  Cancelar
-                </Button>
-                <Button variant="primary" className={style.btnPrimary} onClick={handleNext}>
-                  Próximo passo
-                </Button>
-              </div>
-            </div>
-          </Form>
-        )}
-
+    
+    <div className={`${style.dFlex} ${style.justifyContentBetween} ${style.mt4}`}>
+      <Button variant="secondary" className={style.btnSecondary} onClick={handleBack}>
+        Cancelar
+      </Button>
+      <Button variant="primary" className={style.btnPrimary} onClick={handleNext}>
+        Próximo passo
+      </Button>
+    </div>
+  </Form>
+       
+)}
       
         {/* Paso 2: Detalhes do Estágio */}
         {step === 2 && (
@@ -168,7 +153,7 @@ function CriacaoEstagio() {
             rows={4}
             className={style.formControl}
             placeholder="Descreva brevemente as atividades do estágio"
-            required
+          
           />
         </Form.Group>
 
@@ -180,7 +165,7 @@ function CriacaoEstagio() {
             className={style.formControl}
             type="text"
             placeholder="Ex: Bolsa, Vale-transporte"
-            required
+    
           />
         </Form.Group>
 
@@ -192,7 +177,6 @@ function CriacaoEstagio() {
             className={style.formControl}
             type="text"
             placeholder="Ex: 9h às 15h"
-            required
           />
         </Form.Group>
       </Col>
@@ -209,37 +193,181 @@ function CriacaoEstagio() {
   </Form>
 )}
         {/* Paso 3: Requisitos */}
-        {step === 3 && (
-          <div>
-            <p>Conteúdo de "Requisitos" (a definir)</p>
-            <div className={`${style.dFlex} ${style.justifyContentBetween} ${style.mt4}`}>
-              <Button variant="secondary" className={style.btnSecondary} onClick={handleBack}>
-                Voltar
-              </Button>
-              <Button variant="primary" className={style.btnPrimary} onClick={handleNext}>
-                Próximo passo
-              </Button>
-            </div>
-          </div>
-        )}
+{step === 3 && (
+  <Form>
+    <Row className={style.mb3}>
+      <Col md={12}>
+      
+        {/* Habilitações Académicas Mínimas */}
+<Form.Group className={style.mb3}>
+  <Form.Label className={style.formLabel}>
+    Habilitações Académicas Mínimas <span className={style.textDanger}>*</span>
+  </Form.Label>
+  <Form.Select className={style.formSelect}>
+    <option value="">Selecione o nível de habilitação</option>
+    <option value="1">Nível 1 – 4º ano do Ensino Básico</option>
+    <option value="2">Nível 2 – 6º ano do Ensino Básico</option>
+    <option value="3">Nível 3 – 9º ano do Ensino Básico</option>
+    <option value="4">Nível 4 – Ensino Secundário + Estágio Profissional</option>
+    <option value="5">Nível 5 – Cursos de Especialização Tecnológica (CET)</option>
+    <option value="6">Nível 6 – Licenciatura</option>
+    <option value="7">Nível 7 – Mestrado</option>
+    <option value="8">Nível 8 – Doutoramento</option>
+  </Form.Select>
+</Form.Group>
+
+        
+
+        {/* Curso(s) / Área(s) de Estudo Preferencial(is) */}
+        <Form.Group className={style.mb3}>
+          <Form.Label className={style.formLabel}>
+            Curso(s) / Área(s) de Estudo Preferencial(is)
+          </Form.Label>
+          <Form.Control
+            className={style.formControl}
+            type="text"
+            placeholder="Indique os cursos ou áreas de estudo mais relevantes para esta oportunidade"
+          />
+        </Form.Group>
+
+        <Form.Group className={style.mb3}>
+          <Form.Label className={style.formLabel}>Competências Técnicas Essenciais</Form.Label>
+          <Form.Control
+            className={style.formControl}
+            type="text"
+            placeholder="Liste ferramentas e aptidões técnicas essenciais"
+          />
+        </Form.Group>
+
+        <Form.Group className={style.mb3}>
+          <Form.Label className={style.formLabel}>Competências Pessoais (Soft Skills)</Form.Label>
+          <Form.Control
+            className={style.formControl}
+            type="text"
+            placeholder="Ex: Que qualidades pessoais são importantes para este estágio"
+          />
+        </Form.Group>
+
+        <Form.Group className={style.mb3}>
+          <Form.Label className={style.formLabel}>Idiomas</Form.Label>
+          <Form.Control
+            className={style.formControl}
+            type="text"
+            placeholder="Indique os idiomas exigidos (Ex: Inglês avançado, Espanhol básico)"
+          />
+        </Form.Group>
+
+        <Form.Group className={style.mb3}>
+          <Form.Label className={style.formLabel}>Outros Requisitos Específicos</Form.Label>
+          <Form.Control
+            as="textarea"
+            rows={3}
+            className={style.formControl}
+            placeholder="Ex: Algum requisito adicional não coberto acima"
+          />
+        </Form.Group>
+      </Col>
+    </Row>
+
+    <div className={`${style.dFlex} ${style.justifyContentBetween} ${style.mt4}`}>
+      <Button variant="secondary" className={style.btnSecondary} onClick={handleBack}>
+        Voltar
+      </Button>
+      <Button variant="primary" className={style.btnPrimary} onClick={handleNext}>
+        Próximo passo
+      </Button>
+    </div>
+  </Form>
+)}
+
 
         {/* Paso 4: Revisão */}
-        {step === 4 && (
-          <div>
-            <p>Conteúdo de "Revisão" (a definir)</p>
+         {step === 4 && (
+          <Container fluid className="p-0">
+            <p className="text-muted mb-3">
+              Confirme os dados do seu anúncio para garantir a melhor experiência aos candidatos.
+            </p>
+
+            <Card className="mb-4 shadow-sm">
+              <Card.Body>
+                <Row>
+                  <Col md={6}>
+                   <h6 className="fw-bold">
+                      Informações Básicas:{" "}
+                      <span 
+                        className="text-primary" 
+                        style={{ cursor: "pointer" }} 
+                        onClick={() => setStep(1)}
+                    >
+                        [ Editar ]
+                    </span>
+                    </h6>
+
+                    <p><strong>Título:</strong> </p>
+                    <p><strong>Áreas:</strong> </p>
+                    <p><strong>Vagas:</strong> </p>
+                    <p><strong>Localização:</strong></p>
+                    <p><strong>Tipo:</strong> </p>
+                    <p><strong>Início:</strong> </p>
+                    <p><strong>Duração:</strong></p>
+                    <p><strong>Prazo Candidaturas:</strong></p>
+                  </Col>
+                  <Col md={6}>
+                  <h6 className="fw-bold">
+                      Detalhes do Estágio {" "}
+                      <span 
+                        className="text-primary" 
+                        style={{ cursor: "pointer" }} 
+                        onClick={() => setStep(2)}
+                    >
+                        [ Editar ]
+                      </span>
+                  </h6>
+
+                    <p><strong>Habilitações:</strong></p>
+                    <p><strong>Cursos:</strong></p>
+                    <p><strong>Técnicas:</strong></p>
+                    <p><strong>Pessoais:</strong></p>
+                    <p><strong>Idiomas:</strong> </p>
+                    <p><strong>Outros:</strong> </p>
+                  </Col>
+                </Row>
+              </Card.Body>
+            </Card>
+
+            <Card className="mb-4 shadow-sm">
+              <Card.Body>
+                <h6 className="fw-bold">
+                    Requisitos {" "}
+                      <span 
+                        className="text-primary" 
+                        style={{ cursor: "pointer" }} 
+                         onClick={() => setStep(3)}
+                      >
+                        [ Editar ]
+                      </span>
+                </h6>
+                <p><strong>Descrição:</strong> </p>
+                <p><strong>Mentoria:</strong></p>
+                <p><strong>Benefícios:</strong></p>
+              </Card.Body>
+            </Card>
+
             <div className={`${style.dFlex} ${style.justifyContentBetween} ${style.mt4}`}>
               <Button variant="secondary" className={style.btnSecondary} onClick={handleBack}>
                 Voltar
               </Button>
-              <Button variant="success" className={style.btnPrimary}>
-                Publicar Estágio
-              </Button>
+              <div>
+                <Button variant="primary" className={style.btnPrimary}>
+                  Publicar Estágio
+                </Button>
+              </div>
             </div>
-          </div>
+          </Container>
+
         )}
       </div>
     </div>
   );
 }
-
 export default CriacaoEstagio;
