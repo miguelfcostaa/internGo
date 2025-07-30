@@ -87,7 +87,7 @@ const ProfilePage = () => {
                         <div className={styles.userInfo + ' shadow'}>{/*Informações do utilizador*/}
                             <div className={styles.userInfoLeft}>
                                 <img src={profilePhoto} alt="Foto de perfil" width={180} height={180} />
-                                <ButtonGeral Name="Ver Mais Detalhes" />
+                                <ButtonGeral Name="Ver Detalhes" link={`/edit-profile/${userInfo._id}/`} />
                             </div>
                             <div className={styles.userInfoRight}>
                                 <p>{userInfo.name}</p>
@@ -212,7 +212,7 @@ const ProfilePage = () => {
                         <div className={styles.userInfo + ' shadow'}>
                             <div className={styles.userInfoLeft}>
                                 <img src={profilePhoto} alt="Foto de perfil" width={180} height={180} />
-                                <ButtonGeral Name="Ver Detalhes" link={`/edit-profile/${userInfo.id}/`} />
+                                <ButtonGeral Name="Ver Detalhes" link={`/edit-profile/${userInfo._id}/`} />
                             </div>
 
                             <div className={styles.userInfoRight}>
