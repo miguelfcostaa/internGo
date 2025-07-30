@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { signupUser } from "../services/apiService";
 import PasswordCriteriaTooltip from "../components/PasswordCriteria"; // asegúrate que exista este componente
 import ButtonSubmit from "../components/ButtonSubmit"; // botón personalizado, si no tienes puedes usar uno normal
-import { isPasswordCriterionMet } from "../utils/registerUserUtils"; // función para validar contraseña
+import { validateForm, isPasswordCriterionMet } from "../utils/registerUserUtils"; // función para validar contraseña
 import "bootstrap/dist/css/bootstrap.min.css";
 import styles from "../styles/RegisterUser.module.css"; // CSS Module
 
@@ -23,6 +24,7 @@ function RegisterUser() {
   const [success, setSuccess] = useState("");
   const [showPasswordCriteria, setShowPasswordCriteria] = useState(false);
 
+    //handlers
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -34,35 +36,29 @@ function RegisterUser() {
     if (success) setSuccess("");
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Validación básica (puedes mejorar)
-    if (
-      !formData.name ||
-      !formData.cc ||
-      !formData.email ||
-      !formData.telefone ||
-      !formData.password ||
-      !formData.confirmPassword
-    ) {
-      setError("Por favor, preencha todos os campos.");
-      return;
-    }
-
-    if (formData.password !== formData.confirmPassword) {
-      setError("As senhas não coincidem.");
-      return;
-    }
-
     setLoading(true);
     setError("");
     setSuccess("");
 
-    // Aquí puedes hacer llamada API para crear usuario
-    setTimeout(() => {
+    const validationError = validateForm(formData);
+    if (validationError) {
+      setError(validationError);
       setLoading(false);
-      setSuccess("Conta criada com sucesso! Redirecionando...");
+      return;
+    }
+
+    try {
+      await signupUser(
+        formData.name,
+        formData.email,
+        formData.cc,
+        formData.telefone,
+        formData.password
+      );
+
+      setSuccess("Conta criada com sucesso! Redirecionando para o login...");
       setFormData({
         name: "",
         cc: "",
@@ -71,10 +67,31 @@ function RegisterUser() {
         password: "",
         confirmPassword: "",
       });
+
       setTimeout(() => {
         navigate("/login");
       }, 2000);
-    }, 1500);
+    } catch (err) {
+      handleError(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleError = (err) => {
+    if (err.response?.data) {
+      const errorData = err.response.data;
+      if (errorData.message) {
+        setError(errorData.message);
+      } else if (errorData.errors) {
+        const errorMessages = Object.values(errorData.errors).join(", ");
+        setError(errorMessages);
+      } else {
+        setError("Erro ao criar conta. Tente novamente.");
+      }
+    } else {
+      setError("Erro ao criar conta. Verifique sua conexão e tente novamente.");
+    }
   };
 
   const renderAlert = (type, message, icon) => (
