@@ -13,8 +13,7 @@ const ProfilePage = () => {
     const role = getUserRoleFromToken();
     const [userInfo, setUserInfo] = useState({});
     const [nEstagios, setNEstagios] = useState(0);
-
-
+    const estagiosByCompany = useEstagiosByCompany(userInfo._id);
 
     const getUserInfo = async (id) => {
         if (role === 'user') {
@@ -78,7 +77,6 @@ const ProfilePage = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const estagiosByCompany = useEstagiosByCompany(userInfo._id);
 
     return (
         <>
@@ -248,7 +246,7 @@ const ProfilePage = () => {
 
                     <div className='mt-5'>
                         <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-                            <h2 className={styles.titulo}>
+                            <h2 className={styles.titulo} style={{ cursor: "pointer" }} onClick={() => window.location.href = `/estagios-criados/${userInfo._id}`}>
                                     Estágios Criados
                             </h2>
                             <ButtonGeral Name="Criar Estágio" link={`/criar-estagio`} />
@@ -283,7 +281,7 @@ const ProfilePage = () => {
                                     </tr>
                                 ))}
                                 <tr>
-                                    <td colSpan={7} style={{ textAlign: 'center', verticalAlign: 'middle', cursor: 'pointer', fontWeight: '600' }} >
+                                    <td colSpan={7} style={{ textAlign: 'center', verticalAlign: 'middle', cursor: 'pointer', fontWeight: '600' }} onClick={() => window.location.href = `/estagios-criados/${userInfo._id}`}>
                                         <a href={`/estagios-criados/${userInfo._id}`} style={{ textDecoration: 'none', color: '#000' }}> Mostrar todos ({nEstagios}) </a>
                                     </td>
                                 </tr>
