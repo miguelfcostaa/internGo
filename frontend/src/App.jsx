@@ -33,21 +33,13 @@ function App() {
           <Route path='/reset-password' element={<ResetPassword />}></Route>  {/* Rota para Reset Password */}
           <Route path='/select-user' element={<SelectUser />}></Route>  {/* Rota para selecionar se é Estagiario ou Empresa */}
           <Route path='/edit-profile/:id' element={<EditProfile/>}></Route>  {/* Rota para Criar Estágio */}
-          <Route path='/criar-estagio' element={<CriarEstagio/>}></Route>  {/* Rota para Criar Estágio */}
-          <Route path='/profile/:id' element={
-            <ProtectedRoute>
-              <Profile />
-            </ProtectedRoute>
-          }></Route>  {/*  Rota da Profile Page (protegida) */}
-          
-          <Route path='/estagios-criados/:id' element={
-            <ProtectedRoute requiredRole="company">
-              <EstagiosCriados />
-            </ProtectedRoute>
-          }></Route>  {/* Rota para Estágios Criados (só empresas) */}
-
-          <Route path='*' element={<NotFound />}></Route>  {/* Rota 404 para páginas não encontradas */}
+          <Route path='/profile/:id' element={<ProtectedRoute><Profile /></ProtectedRoute>}></Route>  {/*  Rota da Profile Page (protegida) */}
+          <Route path='/estagios-criados/:id' element={<ProtectedRoute requiredRole="company"><EstagiosCriados /></ProtectedRoute>}></Route>  {/* Rota para Estágios Criados (só empresas) */}
+          <Route path='/criar-estagio/' element={<ProtectedRoute requiredRole="company"><CriarEstagio /></ProtectedRoute>}></Route>  {/*  Rota da Criar Estágio Page */}
+          <Route path='*' element={<NotFound />}>
+          </Route>  {/* Rota 404 para páginas não encontradas */}
         </Routes>
+      
 
         <Footer />
       </div>
