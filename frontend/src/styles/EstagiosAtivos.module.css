@@ -3,41 +3,12 @@
   height: 100vh;
 }
 
-.td {
-  padding: 12px;
-  border-bottom: 1px solid #eee;
+.flexRow {
+  display: flex;
+  flex-direction: row;
 }
-.th {
-  text-align: center;
-  padding: 12px;
-  border-bottom: 2px solid #ccc;
+
+.flexColumn {
+  display: flex;
+  flex-direction: column;
 }
-.thead{
-  background-color: #273F4F;
-  font-weight: bold;
-  font-size: ;
-}
-.table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 1rem;
-  font-family: 'Segoe UI', sans-serif;
-  font-size: 14px;
-}
-.a {
-  color: #007BFF;
-  text-decoration: none;
-  margin-right: 8px;
-}
-.tr:nth-child(even) {
-  background-color: #f9f9f9;
-}
-.link{
-  color: #007BFF;
-  text-decoration: none;
-  margin-right: 8px;
-}
-.link:hover {
-  text-decoration: underline;
-}
- 

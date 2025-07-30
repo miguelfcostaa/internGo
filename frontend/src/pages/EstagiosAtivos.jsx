@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import NavBar from "../components/NavBar";
 import ButtonGeral from "../components/ButtonGeral";
 import styles from "../styles/EstagiosAtivos.module.css";
+import ButtonVoltar from "../components/ButtonVoltar";
 
 function EstagiosAtivos (){ 
     {/*Elementos da tabela*/}
@@ -95,6 +96,8 @@ function EstagiosAtivos (){
         <div className={styles.background}>
             <NavBar/>
             <div>
+                <ButtonVoltar />
+
                 <div style={{display:"flex", marginTop:"300px", justifyContent:"center", alignItems:"center", marginBottom:"50px"}}>
                     <input  type="text" placeholder="Procurar"></input>
                 </div>
