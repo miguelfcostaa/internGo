@@ -71,5 +71,18 @@ router.get('/company/:companyId', async (req, res) => {
     }
 });
 
+router.put('/alterar-estado/:id', verifyToken, async (req, res) => {
+    try {
+        const estagio = await Estagio.findById(req.params.id);
+        if (!estagio) {
+            return res.status(404).json({ message: 'Estágio não encontrado' });
+        }
+        estagio.status = req.body.status || (estagio.status === 'Ativo' ? 'Desativo' : 'Ativo');
+        await estagio.save();
+        res.json(estagio);
+    } catch (error) {
+        res.status(500).json({ message: 'Erro ao desativar estágio', error });
+    }
+});
 
 module.exports = router;

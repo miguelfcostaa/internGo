@@ -10,7 +10,7 @@ import RegisterCompany from './pages/RegisterCompany.jsx';
 import ForgotPassword from './pages/ForgotPassword.jsx';
 import ResetPassword from './pages/ResetPassword.jsx';
 import Footer from './components/Footer.jsx';
-import EstagiosAtivos from './pages/EstagiosAtivos.jsx';
+import EstagiosCriados from './pages/EstagiosCriados.jsx';
 import NotFound from './pages/NotFound404.jsx'; // Importando a página 404
 import ProtectedRoute from './components/ProtectedRoute.jsx';
 import { SearchProvider } from "./contexts/SearchContext.js";
@@ -39,12 +39,12 @@ function App() {
             </ProtectedRoute>
           }></Route>  {/*  Rota da Profile Page (protegida) */}
           
-          <Route path='/estagios-ativos/:id' element={
+          <Route path='/estagios-criados/:id' element={
             <ProtectedRoute requiredRole="company">
-              <EstagiosAtivos />
+              <EstagiosCriados />
             </ProtectedRoute>
-          }></Route>  {/* Rota para Estágios Ativos (só empresas) */}
-          
+          }></Route>  {/* Rota para Estágios Criados (só empresas) */}
+
           <Route path='*' element={<NotFound />}></Route>  {/* Rota 404 para páginas não encontradas */}
         </Routes>
 
