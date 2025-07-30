@@ -106,7 +106,7 @@ body,
   font-weight: normal;
 }
 
-/* Prefijos para placeholders, si los necesitas */
+
 .formControl::-webkit-input-placeholder {
   color: #888;
 }
@@ -205,13 +205,13 @@ button {
 .rightColumnContainer {
   display: flex;
   flex-direction: column;
-  gap: 28px; /* espacio vertical entre campos */
-  margin-left: 10px; /* mueve todo el bloque a la derecha */
-  margin-top: 20px;  /* mueve el bloque hacia abajo */
+  gap: 28px; 
+  margin-left: 10px; 
+  margin-top: 20px; 
 }
 
 .row {
   margin-left: 0;
   margin-right: 0;
-  gap: 24px; /* espacio horizontal entre columnas */
+  gap: 24px; 
 }

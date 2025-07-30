@@ -7,6 +7,26 @@ import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 function CriacaoEstagio() {
   const [step, setStep] = useState(1);
 
+  const [formData, setFormData] = useState({
+    titulo: "",
+    area: "",
+    vagas: "",
+    localizacao: "",
+    inicio: "",
+    tipo: "",
+    duracao: "",
+    prazo: "",
+    descricao: "",
+    beneficios: "",
+    horario: "",
+    habilitacao: "",
+    cursos: "",
+    tecnicas: "",
+    pessoais: "",
+    idiomas: "",
+    outros: ""
+  });
+
   const handleNext = () => {
     if (step < 4) setStep(step + 1);
   };
@@ -15,11 +35,16 @@ function CriacaoEstagio() {
     if (step > 1) setStep(step - 1);
   };
 
- const renderTooltip = (props) => (
-  <Tooltip id="tooltip" {...props}>
-    Campo obrigatório
-  </Tooltip>
-);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const renderTooltip = (props) => (
+    <Tooltip id="tooltip" {...props}>
+      Campo obrigatório
+    </Tooltip>
+  );
 
 
    return (
@@ -45,197 +70,344 @@ function CriacaoEstagio() {
     4. Revisão
   </span>
 </div>
+             {/* Paso 1 */}
+        {step === 1 && (
+          <Form>
+            <Row className={style.mb3}>
+              <Col md={6} className={style.leftColumn}>
+                <Form.Group className={`${style.mb3} d-flex flex-column`}>
+                  <Form.Label className={style.formLabel}>
+                    Título do Estágio{" "}
+                    <OverlayTrigger placement="top" overlay={renderTooltip}>
+                      <span className={style.textDanger} style={{ cursor: "pointer", color: "red" }}>*</span>
+                    </OverlayTrigger>
+                  </Form.Label>
+                  <Form.Control
+                    className={style.formControl}
+                    type="text"
+                    name="titulo"
+                    value={formData.titulo}
+                    onChange={handleChange}
+                    placeholder="Ex: Estágio em Desenvolvimento de Software"
+                  />
+                </Form.Group>
 
-      {/* Paso 1: Informações Básicas */}
-{step === 1 && (
+                <Form.Group className={`${style.mb3} d-flex flex-column`}>
+                  <Form.Label className={style.formLabel}>
+                    Área(s) de Atuação{" "}
+                    <OverlayTrigger placement="top" overlay={renderTooltip}>
+                      <span className={style.textDanger} style={{ cursor: "pointer", color: "red" }}>*</span>
+                    </OverlayTrigger>
+                  </Form.Label>
+                  <Form.Control
+                    className={style.formControl}
+                    type="text"
+                    name="area"
+                    value={formData.area}
+                    onChange={handleChange}
+                    placeholder="Ex: Tecnologia da Informação"
+                  />
+                </Form.Group>
+
+                <Form.Group className={`${style.mb3} ${style.inlineField}`}>
+                  <Form.Label className={`${style.formLabel} mb-0`} style={{ minWidth: "160px" }}>
+                    Número de Vagas{" "}
+                    <OverlayTrigger placement="top" overlay={renderTooltip}>
+                      <span className={style.textDanger} style={{ cursor: "pointer", color: "red" }}>*</span>
+                    </OverlayTrigger>
+                  </Form.Label>
+                  <Form.Control
+                    className={style.smallInput}
+                    type="number"
+                    name="vagas"
+                    value={formData.vagas}
+                    onChange={handleChange}
+                    placeholder="1"
+                  />
+                </Form.Group>
+
+                <Form.Group className={`${style.mb3} d-flex flex-column`}>
+                  <Form.Label className={style.formLabel}>
+                    Localização{" "}
+                    <OverlayTrigger placement="top" overlay={renderTooltip}>
+                      <span className={style.textDanger} style={{ cursor: "pointer", color: "red" }}>*</span>
+                    </OverlayTrigger>
+                  </Form.Label>
+                  <Form.Control
+                    className={style.formControl}
+                    type="text"
+                    name="localizacao"
+                    value={formData.localizacao}
+                    onChange={handleChange}
+                    placeholder="Ex: Funchal"
+                  />
+                </Form.Group>
+              </Col>
+
+               <Col md={6} className={style.rightColumn}>
+                <div className={style.rightColumnContainer}>
+                  {/* Data Início */}
+                  <Form.Group className={`${style.mb3} ${style.inlineField}`}>
+                    <Form.Label
+                      className={style.formLabel}
+                      style={{ minWidth: "140px" }}
+                    >
+                      Data de Início Prevista{" "}
+                      <OverlayTrigger placement="top" overlay={renderTooltip}>
+                        <span
+                          className={style.textDanger}
+                          style={{ cursor: "pointer", color: "red" }}
+                        >
+                          *
+                        </span>
+                      </OverlayTrigger>
+                    </Form.Label>
+                    <Form.Control
+                      className={style.smallDate}
+                      type="date"
+                      name="dataInicio"
+                      value={formData.dataInicio}
+                      onChange={handleChange}
+                    />
+                  </Form.Group>
+
+                  {/* Tipo Estágio */}
+                  <Form.Group
+                    className={`${style.mb3} d-flex align-items-center`}
+                  >
+                    <Form.Label
+                      className={`${style.formLabel} mb-0 me-3`}
+                      style={{ minWidth: "120px" }}
+                    >
+                      Tipo de Estágio{" "}
+                      <OverlayTrigger placement="top" overlay={renderTooltip}>
+                        <span
+                          className={style.textDanger}
+                          style={{ cursor: "pointer", color: "red" }}
+                        >
+                          *
+                        </span>
+                      </OverlayTrigger>
+                    </Form.Label>
+                    <div className={style.radioGroup}>
+                      <Form.Check
+                        inline
+                        label="Presencial"
+                        type="radio"
+                        name="tipo"
+                        value="Presencial"
+                        checked={formData.tipo === "Presencial"}
+                        onChange={handleChange}
+                      />
+                      <Form.Check
+                        inline
+                        label="Remoto"
+                        type="radio"
+                        name="tipo"
+                        value="Remoto"
+                        checked={formData.tipo === "Remoto"}
+                        onChange={handleChange}
+                      />
+                      <Form.Check
+                        inline
+                        label="Híbrido"
+                        type="radio"
+                        name="tipo"
+                        value="Híbrido"
+                        checked={formData.tipo === "Híbrido"}
+                        onChange={handleChange}
+                      />
+                    </div>
+                  </Form.Group>
+
+                  {/* Duração */}
+                  <Form.Group
+                    className={`${style.mb3}`}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "12px",
+                    }}
+                  >
+                    <Form.Label
+                      className={style.formLabel}
+                      style={{ minWidth: "140px", marginBottom: 0 }}
+                    >
+                      Duração do Estágio{" "}
+                      <OverlayTrigger placement="top" overlay={renderTooltip}>
+                        <span
+                          className={style.textDanger}
+                          style={{ cursor: "pointer", color: "red" }}
+                        >
+                          *
+                        </span>
+                      </OverlayTrigger>
+                    </Form.Label>
+                    <Form.Select
+                      className={style.smallSelect}
+                      name="duracao"
+                      value={formData.duracao}
+                      onChange={handleChange}
+                    >
+                      <option value="">Duração</option>
+                      <option value="3 meses">3 meses</option>
+                      <option value="6 meses">6 meses</option>
+                      <option value="12 meses">12 meses</option>
+                    </Form.Select>
+                  </Form.Group>
+
+                  {/* Prazo */}
+                  <Form.Group className={`${style.mb3} ${style.inlineField}`}>
+                    <Form.Label
+                      className={style.formLabel}
+                      style={{ minWidth: "140px" }}
+                    >
+                      Prazo Limite de Candidatura {" "}
+                      <OverlayTrigger placement="top" overlay={renderTooltip}>
+                        <span
+                          className={style.textDanger}
+                          style={{ cursor: "pointer", color: "red" }}
+                        >
+                          *
+                        </span>
+                      </OverlayTrigger>
+                    </Form.Label>
+                    <Form.Control
+                      className={style.smallDate}
+                      type="date"
+                      name="prazo"
+                      value={formData.prazo}
+                      onChange={handleChange}
+                    />
+                  </Form.Group>
+                </div>
+              </Col>
+            </Row>
+
+            <div
+              className={`${style.dFlex} ${style.justifyContentBetween} ${style.mt4}`}
+            >
+              <Button
+                variant="secondary"
+                className={style.btnSecondary}
+                onClick={handleBack}
+              >
+                Cancelar
+              </Button>
+              <Button
+                variant="primary"
+                className={style.btnPrimary}
+                onClick={handleNext}
+              >
+                Próximo passo
+              </Button>
+            </div>
+          </Form>
+        )}
+
+
+        {/* Paso 2: Detalhes*/}
+     {step === 2 && (
   <Form>
     <Row className={style.mb3}>
       <Col md={6} className={style.leftColumn}>
+        {/* Descrição */}
         <Form.Group className={`${style.mb3} d-flex flex-column`}>
           <Form.Label className={style.formLabel}>
-            Título do Estágio{' '}
+            Descrição do Estágio{" "}
             <OverlayTrigger placement="top" overlay={renderTooltip}>
-              <span className={style.textDanger} style={{ cursor: 'pointer', color: 'red' }}>*</span>
+              <span
+                className={style.textDanger}
+                style={{ cursor: "pointer", color: "red" }}
+              >
+                *
+              </span>
             </OverlayTrigger>
           </Form.Label>
           <Form.Control
+            as="textarea"
+            rows={5}
             className={style.formControl}
-            type="text"
-            placeholder="Ex: Estágio em Desenvolvimento de Software"
+            name="descricao"
+            value={formData.descricao || ""}
+            onChange={handleChange}
+            placeholder="Descreva as principais atividades do estágio..."
           />
         </Form.Group>
 
+        {/* Horário */}
         <Form.Group className={`${style.mb3} d-flex flex-column`}>
           <Form.Label className={style.formLabel}>
-            Área(s) de Atuação{' '}
+            Horário de Trabalho{" "}
             <OverlayTrigger placement="top" overlay={renderTooltip}>
-              <span className={style.textDanger} style={{ cursor: 'pointer', color: 'red' }}>*</span>
+              <span
+                className={style.textDanger}
+                style={{ cursor: "pointer", color: "red" }}
+              >
+                *
+              </span>
             </OverlayTrigger>
           </Form.Label>
           <Form.Control
-            className={style.formControl}
             type="text"
-            placeholder="Ex: Tecnologia da Informação"
-          />
-        </Form.Group>
-
-        <Form.Group className={`${style.mb3} ${style.inlineField}`}>
-          <Form.Label className={`${style.formLabel} mb-0`} style={{ minWidth: '160px' }}>
-            Número de Vagas para este Estágio{' '}
-            <OverlayTrigger placement="top" overlay={renderTooltip}>
-              <span className={style.textDanger} style={{ cursor: 'pointer', color: 'red' }}>*</span>
-            </OverlayTrigger>
-          </Form.Label>
-          <Form.Control
-            className={style.smallInput}
-            type="number"
-            min="1"
-            max="999"
-            placeholder="1"
-          />
-        </Form.Group>
-
-        <Form.Group className={`${style.mb3} d-flex flex-column`}>
-          <Form.Label className={style.formLabel}>
-            Localização(ões) do Estágio{' '}
-            <OverlayTrigger placement="top" overlay={renderTooltip}>
-              <span className={style.textDanger} style={{ cursor: 'pointer', color: 'red' }}>*</span>
-            </OverlayTrigger>
-          </Form.Label>
-          <Form.Control
             className={style.formControl}
-            type="text"
-            placeholder="Ex: Funchal"
+            name="horario"
+            value={formData.horario || ""}
+            onChange={handleChange}
+            placeholder="Ex: Segunda a Sexta, das 9h às 14h"
           />
         </Form.Group>
       </Col>
 
       <Col md={6} className={style.rightColumn}>
-       <div className={style.rightColumnContainer}>
-        <Form.Group className={`${style.mb3} ${style.inlineField}`}>
-          <Form.Label className={style.formLabel} style={{ minWidth: '140px' }}>
-            Data de Início Prevista{' '}
-            <OverlayTrigger placement="top" overlay={renderTooltip}>
-              <span className={style.textDanger} style={{ cursor: 'pointer', color: 'red' }}>*</span>
-            </OverlayTrigger>
-          </Form.Label>
-          <Form.Control className={style.smallDate} type="date" />
-        </Form.Group>
-
-        <Form.Group className={`${style.mb3} d-flex align-items-center`}>
-          <Form.Label className={`${style.formLabel} mb-0 me-3`} style={{ minWidth: '120px' }}>
-            Tipo de Estágio{' '}
-            <OverlayTrigger placement="top" overlay={renderTooltip}>
-              <span className={style.textDanger} style={{ cursor: 'pointer', color: 'red' }}>*</span>
-            </OverlayTrigger>
-          </Form.Label>
-          <div className={style.radioGroup}>
-            <Form.Check inline label="Presencial" type="radio" name="tipo" />
-            <Form.Check inline label="Remoto" type="radio" name="tipo" />
-            <Form.Check inline label="Híbrido" type="radio" name="tipo" />
-          </div>
-        </Form.Group>
-
-        <Form.Group className={`${style.mb3}`} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-  <Form.Label className={style.formLabel} style={{ minWidth: '140px', marginBottom: 0 }}>
-    Duração do Estágio{' '}
-    <OverlayTrigger placement="top" overlay={renderTooltip}>
-      <span className={style.textDanger} style={{ cursor: 'pointer', color: 'red' }}>*</span>
-    </OverlayTrigger>
-  </Form.Label>
-  <Form.Select className={style.smallSelect}>
-    <option>Duração</option>
-    <option>3 meses</option>
-    <option>6 meses</option>
-    <option>12 meses</option>
-  </Form.Select>
-</Form.Group>
-
-        <Form.Group className={`${style.mb3} ${style.inlineField}`}>
-          <Form.Label className={style.formLabel} style={{ minWidth: '140px' }}>
-            Prazo Limite para Candidaturas{' '}
-            <OverlayTrigger placement="top" overlay={renderTooltip}>
-              <span className={style.textDanger} style={{ cursor: 'pointer', color: 'red' }}>*</span>
-            </OverlayTrigger>
-          </Form.Label>
-          <Form.Control className={style.smallDate} type="date" />
-        </Form.Group>
-         </div>
+        <div className={style.rightColumnContainer}>
+          {/* Benefícios */}
+          <Form.Group className={`${style.mb3} d-flex flex-column`}>
+            <Form.Label className={style.formLabel}>
+              Benefícios Oferecidos{" "}
+              <OverlayTrigger placement="top" overlay={renderTooltip}>
+                <span
+                  className={style.textDanger}
+                  style={{ cursor: "pointer", color: "red" }}
+                >
+                  *
+                </span>
+              </OverlayTrigger>
+            </Form.Label>
+            <Form.Control
+              as="textarea"
+              rows={4}
+              className={style.formControl}
+              name="beneficios"
+              value={formData.beneficios || ""}
+              onChange={handleChange}
+              placeholder="Informe benefícios como bolsa auxílio, transporte, alimentação, etc."
+            />
+          </Form.Group>
+        </div>
       </Col>
     </Row>
 
+    {/* Botones */}
     <div className={`${style.dFlex} ${style.justifyContentBetween} ${style.mt4}`}>
-      <Button variant="secondary" className={style.btnSecondary} onClick={handleBack}>
-        Cancelar
-      </Button>
-      <Button variant="primary" className={style.btnPrimary} onClick={handleNext}>
-        Próximo passo
-      </Button>
-    </div>
-  </Form>
-)}
-
-
-        {/* Paso 2: Detalhes do Estágio */}
-       {step === 2 && (
-  <Form>
-    <Row className={style.mb3}>
-      <Col md={12}>
-        <Form.Group className={style.mb3}>
-          <Form.Label className={style.formLabel}>
-            Descrição do Estágio{" "}
-            <OverlayTrigger placement="top" overlay={renderTooltip}>
-              <span className={style.textDanger} style={{ cursor: 'pointer', color: 'red' }}>*</span>
-            </OverlayTrigger>
-          </Form.Label>
-          <Form.Control
-            as="textarea"
-            rows={4}
-            className={style.formControl}
-            placeholder="Descreva brevemente as atividades do estágio"
-          />
-        </Form.Group>
-
-        <Form.Group className={style.mb3}>
-          <Form.Label className={style.formLabel}>
-            Benefícios Oferecidos{" "}
-            <OverlayTrigger placement="top" overlay={renderTooltip}>
-              <span className={style.textDanger} style={{ cursor: 'pointer', color: 'red' }}>*</span>
-            </OverlayTrigger>
-          </Form.Label>
-          <Form.Control
-            className={style.formControl}
-            type="text"
-            placeholder="Ex: Bolsa, Vale-transporte"
-          />
-        </Form.Group>
-
-        <Form.Group className={style.mb3}>
-          <Form.Label className={style.formLabel}>
-            Horário do Estágio{" "}
-            <OverlayTrigger placement="top" overlay={renderTooltip}>
-              <span className={style.textDanger} style={{ cursor: 'pointer', color: 'red' }}>*</span>
-            </OverlayTrigger>
-          </Form.Label>
-          <Form.Control
-            className={style.formControl}
-            type="text"
-            placeholder="Ex: 9h às 15h"
-          />
-        </Form.Group>
-      </Col>
-    </Row>
-
-    <div className={`${style.dFlex} ${style.justifyContentBetween} ${style.mt4}`}>
-      <Button variant="secondary" className={style.btnSecondary} onClick={handleBack}>
+      <Button
+        variant="secondary"
+        className={style.btnSecondary}
+        onClick={handleBack}
+      >
         Voltar
       </Button>
-      <Button variant="primary" className={style.btnPrimary} onClick={handleNext}>
+      <Button
+        variant="primary"
+        className={style.btnPrimary}
+        onClick={handleNext}
+      >
         Próximo passo
       </Button>
     </div>
   </Form>
 )}
+
         {/* Paso 3: Requisitos */}
 {step === 3 && (
   <Form>
