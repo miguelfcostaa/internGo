@@ -212,7 +212,7 @@ const ProfilePage = () => {
                         <div className={styles.userInfo + ' shadow'}>
                             <div className={styles.userInfoLeft}>
                                 <img src={profilePhoto} alt="Foto de perfil" width={180} height={180} />
-                                <ButtonGeral Name="Ver Detalhes" link={`/profile/${userInfo.id}/`} />
+                                <ButtonGeral Name="Ver Detalhes" link={`/edit-profile/${userInfo.id}/`} />
                             </div>
 
                             <div className={styles.userInfoRight}>
