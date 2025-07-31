@@ -10,6 +10,9 @@ const companyRoutes = require('./routes/companyRoutes');
 const authRoutes = require('./routes/authRoutes');
 const { testEmailConnection } = require('./utils/emailService');
 
+// Importar rate limiting
+const { loginLimiter } = require('./middleware/rateLimiting');
+
 const Company = require('./models/Company');
 const User = require('./models/User');
 const Estagio = require('./models/Estagio');
@@ -54,7 +57,7 @@ app.get('/api/test', (req, res) => {
   });
 });
 
-app.post('/api/login', async (req, res) => {
+app.post('/api/login', loginLimiter, async (req, res) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
