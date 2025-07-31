@@ -5,7 +5,6 @@ import style from "../styles/CriarEstagio.module.css";
 import { Form, Row, Col, Button, Card, Container } from "react-bootstrap";
 import RequiredFieldTooltip from "../components/RequiredFieldTooltip.jsx";
 
-
 function CriacaoEstagio() {
   const [step, setStep] = useState(1);
 
@@ -59,8 +58,7 @@ function CriacaoEstagio() {
     navigate(-1); // Navega para a página anterior
   };
 
-
-   return (
+  return (
     <div style={{ backgroundColor: "#fff", minHeight: "100vh" }}>
       <NavBar />
       <h6 className={style.titulo}> Publicar Novo Estágio na sua Empresa</h6>
@@ -327,16 +325,26 @@ function CriacaoEstagio() {
       </Col>
     </Row>
 
-    <div className={`${style.dFlex} ${style.justifyContentBetween} ${style.mt4}`}>
-      <Button variant="secondary" className={style.btnSecondary} onClick={handleBack}>
-        Voltar
-      </Button>
-      <Button variant="primary" className={style.btnPrimary} onClick={handleNext}>
-        Próximo passo
-      </Button>
-    </div>
-  </Form>
-)}
+            <div
+              className={`${style.dFlex} ${style.justifyContentBetween} ${style.mt4}`}
+            >
+              <Button
+                variant="secondary"
+                className={style.btnSecondary}
+                onClick={handleBack}
+              >
+                Voltar
+              </Button>
+              <Button
+                variant="primary"
+                className={style.btnPrimary}
+                onClick={handleNext}
+              >
+                Próximo passo
+              </Button>
+            </div>
+          </Form>
+        )}
         {/* Paso 3: Requisitos */}
          {step === 3 && (
   <Form>
