@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { Container, Row, Col, Form, Button, Card } from "react-bootstrap";
 import NavBar from "../components/NavBar";
 import style from "../styles/CriarEstagio.module.css";
+import RequiredFieldTooltip from "../components/RequiredFieldTooltip.jsx";
 import { Tooltip, OverlayTrigger } from "react-bootstrap";
-import RequiredFieldTooltip from "../components/RequiredFieldTooltip";
 
 const CriacaoEstagio = () => {
   const navigate = useNavigate();

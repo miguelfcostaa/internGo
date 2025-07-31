@@ -1,4 +1,4 @@
-.filtros-container {
+.filtrosContainer {
     margin-top: 2rem;
     background-color: #f5f5f5;
     padding: 1rem;
@@ -6,7 +6,7 @@
     font-family: Arial, sans-serif;
 }
 
-.filtros-tags p {
+.filtrosTags p {
     margin: 0 0 0.5rem;
     font-weight: bold;
 }
@@ -31,7 +31,7 @@
 
 }
 
-.tag button {
+.tag .botao {
     margin-left: 4px;
     border: none;
     background: transparent;
@@ -40,7 +40,12 @@
     color: #1e3a8a;
 }
 
-.filtro-categoria {
+.botao {
+    margin-left: 0px;
+    border: none;
+}
+
+.filtroCategoria {
     margin-top: 1rem;
     border: 1px solid #e0e0e0;
     border-radius: 4px;
@@ -48,7 +53,7 @@
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.05);
 }
 
-.filtro-titulo {
+.filtroTitulo {
     background: none;
     border: none;
     font-weight: bold;
@@ -60,21 +65,21 @@
     align-items: center;
 }
 
-.filtro-opcoes {
+.filtroOpcoes {
     padding: 0.5rem 1rem 1rem;
     display: flex;
     flex-direction: column;
     gap: 0.4rem;
 }
 
-.filtro-opcoes label {
+.filtroOpcoes label {
     font-size: 0.95rem;
     text-align: left;
     padding-left: 0.25rem;
     cursor: pointer;
 }
 
-.filtro-opcao {
+.filtroOpcao {
     display: flex;
     flex-direction: row;
     gap: 0.75rem;

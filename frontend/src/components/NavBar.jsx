@@ -11,7 +11,6 @@ const NavBar = () => {
     const [searchInput, setSearchInput] = useState('');
     const navigate = useNavigate();
 
-
   const role = getUserRoleFromToken();
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [userInfo, setUserInfo] = useState({});
@@ -141,7 +140,6 @@ const NavBar = () => {
                         >
                             <span style={{ fontSize: '1.4rem', marginRight: 8 }}>{userInfo.name}</span>
                             <svg 
-                                style={{ color: atProfile ? "#447D9B" : '#000' }}
                                 xmlns="http://www.w3.org/2000/svg" 
                                 width="16" 
                                 height="16" 
@@ -202,7 +200,7 @@ const NavBar = () => {
       </div>
       {showLogoutModal && <LogoutModal />}
     </nav>
-  )};
+  )}};
 
   // Navbar for no logged user
   const renderNoUserNav = () => (
@@ -225,9 +223,9 @@ const NavBar = () => {
     </nav>
   );
 
-  if (role === 'user' || role === 'company') return renderUserNav();
+  if (role === 'user' || role === 'company') return renderNav();
   return renderNoUserNav();
 };
-}
+
 
 export default NavBar;
