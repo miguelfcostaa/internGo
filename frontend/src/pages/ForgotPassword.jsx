@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styles from "../styles/ForgotPassword.module.css";
 import ButtonSubmit from "../components/ButtonSubmit";
+import { validateEmail, validateRequired } from "../utils/validationUtils";
 
 const PasswordReset = () => {
   const [email, setEmail] = useState("");
@@ -12,6 +13,23 @@ const PasswordReset = () => {
     e.preventDefault();
     setIsLoading(true);
     setMessage("");
+
+    // Validação de campo obrigatório
+    const emailRequiredValidation = validateRequired(email, "Email");
+    if (!emailRequiredValidation.isValid) {
+      setMessage(emailRequiredValidation.message);
+      setIsSuccess(false);
+      setIsLoading(false);
+      return;
+    }
+    
+    // Validação de formato do email
+    if (!validateEmail(email)) {
+      setMessage("Formato de email inválido");
+      setIsSuccess(false);
+      setIsLoading(false);
+      return;
+    }
 
     try {
       const response = await fetch("http://localhost:5000/api/auth/forgot-password", {
@@ -63,13 +81,12 @@ const PasswordReset = () => {
         <form onSubmit={handleSubmit} className={styles.form}>
           <label htmlFor="email" className={styles.label}>Email</label>
           <input
-            type="email"
+            type="text"
             id="email"
             name="email"
             value={email}
             placeholder="Digite seu email"
             onChange={(e) => setEmail(e.target.value)}
-            required
             disabled={isLoading}
             className={styles.emailInput}
           />
