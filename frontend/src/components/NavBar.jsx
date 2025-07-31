@@ -5,7 +5,7 @@ import { getUserRoleFromToken } from '../utils/jwtUtils';
 import { useSearch } from '../contexts/SearchContext';
 import { useNavigate } from 'react-router-dom';
 
-const NavBar = ({ atProfile }) => {
+const NavBar = () => {
 
     const { setQuery } = useSearch();
     const [searchInput, setSearchInput] = useState('');
@@ -143,11 +143,10 @@ const NavBar = ({ atProfile }) => {
                             style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}
                             onClick={() => setShowDropdown(prev => !prev)}
                         >
-                            <span style={{ marginLeft: '10px', marginRight: '10px', fontSize: '1.4rem', color: atProfile ? "#447D9B" : '#000' }}>
+                            <span style={{ marginLeft: '10px', marginRight: '10px', fontSize: '1.4rem' }}>
                                 {userInfo.name}
                             </span>
                             <svg 
-                                style={{ color: atProfile ? "#447D9B" : '#000' }}
                                 xmlns="http://www.w3.org/2000/svg" 
                                 width="16" 
                                 height="16" 

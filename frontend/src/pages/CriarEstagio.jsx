@@ -4,6 +4,7 @@ import NavBar from "../components/NavBar.jsx";
 import style from "../styles/CriarEstagio.module.css";
 import { Form, Row, Col, Button, Card, Container } from "react-bootstrap";
 import RequiredFieldTooltip from "../components/RequiredFieldTooltip.jsx";
+import { Tooltip, OverlayTrigger } from "react-bootstrap";
 
 function CriacaoEstagio() {
   const [step, setStep] = useState(1);

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import NavBar from '../components/NavBar';
 import { getUserRoleFromToken } from '../utils/jwtUtils';
 import ButtonGeral from '../components/ButtonGeral';
@@ -8,47 +9,18 @@ import logo from '../assets/logo.jpg';
 import NotFound from './NotFound404';
 import useEstagiosByCompany from '../hooks/useEstagiosByCompany';
 import useCandidaturas from '../hooks/useCandidaturas';
+import useUser from '../hooks/useUser';
 
 const ProfilePage = () => {
 
+    const { id } = useParams();
+    const [userInfo, setUserInfo] = useUser(id);
+    
     const role = getUserRoleFromToken();
-    const [userInfo, setUserInfo] = useState({});
     const [nEstagios, setNEstagios] = useState(0);
     const estagiosByCompany = useEstagiosByCompany(userInfo._id);
     const candidaturas = useCandidaturas(userInfo._id);
 
-    const getUserInfo = async (id) => {
-        if (role === 'user') {
-            const request = await fetch(`http://localhost:5000/api/users/${id}`, {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${localStorage.getItem('token')}`
-                }
-            });
-            const data = await request.json();
-            if (request.ok) {
-                setUserInfo(data);
-            } else {
-                console.error("Error fetching user info:", data.message);
-            }
-        }
-        else if (role === 'company') {
-            const request = await fetch(`http://localhost:5000/api/companies/${id}`, {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${localStorage.getItem('token')}`
-                }
-            });
-            const data = await request.json();
-            if (request.ok) {
-                setUserInfo(data);
-            } else {
-                console.error("Error fetching company info:", data.message);
-            }
-        }
-    };
 
     const getNumberOfEstagios = async (id) => {
             const request = await fetch(`http://localhost:5000/api/estagios/nEstagios/${id}`, {
@@ -73,8 +45,8 @@ const ProfilePage = () => {
         if (token) {
             const payload = JSON.parse(atob(token.split('.')[1]));
             const id = payload.id;
-            getUserInfo(id);
             getNumberOfEstagios(id); 
+            setUserInfo(userInfo);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -82,7 +54,7 @@ const ProfilePage = () => {
 
     return (
         <>
-            <NavBar atProfile={true} />
+            <NavBar />
             {role === 'user' ? (
                 <div className={styles.background}>
                     <div className={styles.flexRow}>

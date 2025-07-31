@@ -114,9 +114,61 @@ async function validateCompanyInput(Company ,data) {
 }
 
 
+const validateUserUpdate = async (data) => {
+    const errors = {};
+
+    const listaNacionalidades = [
+        'Portuguesa', 'Espanhola', 'Francesa', 'Alemã', 'Italiana', 'Britânica',
+        'Americana', 'Brasileira', 'Argelina', 'Angolana', 'Moçambicana'
+    ];
+
+    // Valida nome
+    if (!validateName(data.name)) {
+        errors.name = 'Nome deve ter entre 3 e 50 caracteres.';
+    }
+
+    // Valida email (formato)
+    if (!validateEmail(data.email)) {
+        errors.email = 'Email deve ter formato válido.';
+    }
+
+    // Valida Idade
+    if (data.idade && (isNaN(data.idade) || data.idade < 0 || data.idade > 120)) {
+        errors.idade = 'Idade deve ser um número válido entre 0 e 120.';
+    }
+
+    // Valida telefone
+    if (data.telefone.length !== 9) {
+        errors.telefone = 'Número de telefone deve conter no minimo 9 digitos.';
+    }
+
+    // Valida morada
+    if (data.morada.length < 3 || data.morada.length > 100) {
+        errors.morada = 'Morada deve ter entre 3 e 100 caracteres.';
+    }
+
+    // Valida Aniversario YYYY-MM-DD
+    if (data.aniversario && data.aniversario !== "" && !/^\d{4}-\d{2}-\d{2}$/.test(data.aniversario)) {
+        errors.aniversario = 'Aniversário deve ter formato YYYY-MM-DD.';
+    }
+
+    // Valida Nacionalidade
+    if (!validateName(data.nacionalidade) || !listaNacionalidades.includes(data.nacionalidade)) {
+        errors.nacionalidade = 'Escreva uma nacionalidade válida.';
+    }
+
+    // Valida CC
+    if (!data.cc || data.cc.length !== 8 || !/^\d{8}$/.test(data.cc)) {
+        errors.cc = 'Cartão de Cidadão deve ter exatamente 8 dígitos.';
+    }
+
+    return errors;
+}
+
 
 
 module.exports = {
+    validateUserUpdate,
     validateCompanyInput,
     validateName,
     validateEmail,

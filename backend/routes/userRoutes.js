@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const { verifyToken } = require('../middleware/auth');
+const validations = require('../utils/validations');
 
 const router = express.Router();
 
@@ -182,105 +183,26 @@ router.post('/login', async (req, res) => {
     });
   }
 });
-/*
-// GET /api/users/profile - Obter perfil do usuário logado
-router.get('/profile', verifyToken, (req, res) => {
-  res.json({
-    success: true,
-    user: {
-      id: req.user._id,
-      name: req.user.name,
-      email: req.user.email,
-      cc: req.user.cc,
-      telefone: req.user.telefone,
-      createdAt: req.user.createdAt,
-      updatedAt: req.user.updatedAt
+
+
+router.put('/:id', verifyToken, async (req, res) => {
+    try {
+        req.body.aniversario = req.body.aniversario ? req.body.aniversario.slice(0, 10) : null; 
+        const errors = await validations.validateUserUpdate(req.body);
+        
+        if (Object.keys(errors).length > 0) {
+            return res.status(400).json({ message: errors });
+        }
+
+        const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        if (!updatedUser) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        res.json(updatedUser);
+    } catch (error) {
+        console.error('Error updating user:', error);
+        res.status(500).json({ message: 'Error updating user', error });
     }
-  });
-});*/
-/*
-// PUT /api/users/profile - Atualizar perfil do usuário
-router.put('/profile', verifyToken, async (req, res) => {
-  try {
-    const { name, telefone } = req.body;
-    const updateData = {};
-
-    if (name) updateData.name = name.trim();
-    if (telefone) updateData.telefone = telefone.trim();
-
-    const updatedUser = await User.findByIdAndUpdate(
-      req.user._id,
-      updateData,
-      { new: true, runValidators: true }
-    ).select('-password');
-
-    res.json({
-      success: true,
-      message: 'Perfil atualizado com sucesso',
-      user: {
-        id: updatedUser._id,
-        name: updatedUser.name,
-        email: updatedUser.email,
-        cc: updatedUser.cc,
-        telefone: updatedUser.telefone,
-        updatedAt: updatedUser.updatedAt
-      }
-    });
-
-  } catch (error) {
-    console.error('Erro ao atualizar perfil:', error);
-    res.status(400).json({
-      success: false,
-      message: error.message || 'Erro ao atualizar perfil'
-    });
-  }
-});*/
-/** 
-// POST /api/users/change-password - Alterar senha
-router.post('/change-password', verifyToken, async (req, res) => {
-  try {
-    const { currentPassword, newPassword } = req.body;
-
-    if (!currentPassword || !newPassword) {
-      return res.status(400).json({
-        success: false,
-        message: 'Palavra-passe atual e nova são obrigatórias'
-      });
-    }
-
-    // Buscar usuário com senha
-    const user = await User.findById(req.user._id);
-    
-    // Verificar senha atual
-    const isCurrentPasswordValid = await bcrypt.compare(currentPassword, user.password);
-    if (!isCurrentPasswordValid) {
-      return res.status(400).json({
-        success: false,
-        message: 'Palavra-passe atual incorreta'
-      });
-    }
-
-    // Hash da nova senha
-    const saltRounds = 12;
-    const hashedNewPassword = await bcrypt.hash(newPassword, saltRounds);
-
-    // Atualizar senha
-    await User.findByIdAndUpdate(req.user._id, { 
-      password: hashedNewPassword 
-    });
-
-    res.json({
-      success: true,
-      message: 'Palavra-passe alterada com sucesso'
-    });
-
-  } catch (error) {
-    console.error('Erro ao alterar senha:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Erro interno do servidor'
-    });
-  }
-});*/
+});
 
 module.exports = router;
