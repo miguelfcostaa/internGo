@@ -264,7 +264,68 @@ function CriacaoEstagio() {
 
 
         {/* Paso 2: Detalhes do Estágio */}
+        {step === 2 && (
+  <Form>
+    <Row className={style.mb3}>
+      <Col md={12}>
+        {/* Descrição do Estágio */}
+        <Form.Group className={style.mb3}>
+          <Form.Label className={style.formLabel}>
+            Descrição do Estágio <RequiredFieldTooltip />
+          </Form.Label>
+          <Form.Control
+            as="textarea"
+            rows={4}
+            className={`${style.formControl} w-100`}
+            placeholder="Descreva brevemente as atividades do estágio"
+            name="descricao"
+            value={formData.descricao || ""}
+            onChange={handleChange}
+          />
+        </Form.Group>
 
+        {/* Benefícios Oferecidos */}
+        <Form.Group className={style.mb3}>
+          <Form.Label className={style.formLabel}>
+            Benefícios Oferecidos <RequiredFieldTooltip />
+          </Form.Label>
+          <Form.Control
+            className={`${style.formControl} w-100`}
+            type="text"
+            placeholder="Ex: Bolsa, Vale-transporte"
+            name="beneficios"
+            value={formData.beneficios || ""}
+            onChange={handleChange}
+          />
+        </Form.Group>
+
+        {/* Horário do Estágio */}
+        <Form.Group className={style.mb3}>
+          <Form.Label className={style.formLabel}>
+            Horário do Estágio <RequiredFieldTooltip />
+          </Form.Label>
+          <Form.Control
+            className={`${style.formControl} w-100`}
+            type="text"
+            placeholder="Ex: 9h às 15h"
+            name="horario"
+            value={formData.horario || ""}
+            onChange={handleChange}
+          />
+        </Form.Group>
+      </Col>
+    </Row>
+
+    <div className={`${style.dFlex} ${style.justifyContentBetween} ${style.mt4}`}>
+      <Button variant="secondary" className={style.btnSecondary} onClick={handleBack}>
+        Voltar
+      </Button>
+      <Button variant="primary" className={style.btnPrimary} onClick={handleNext}>
+        Próximo passo
+      </Button>
+    </div>
+  </Form>
+)}
         {/* Paso 3: Requisitos */}
 {step === 3 && (
   <Form>
