@@ -16,11 +16,11 @@ import ProtectedRoute from './components/ProtectedRoute.jsx';
 import { SearchProvider } from "./contexts/SearchContext.js";
 import CriarEstagio from './pages/CriarEstagio.jsx';
 import EditProfile from './pages/EditProfile.jsx'
-
+ 
 function App() {
   return (
         <SearchProvider>
-
+ 
     <Router>
       <div className="App" style={{ minHeight: '100vh', position: 'relative', paddingBottom: '70px' }}>
         <Routes>
@@ -39,14 +39,14 @@ function App() {
           <Route path='*' element={<NotFound />}>
           </Route>  {/* Rota 404 para páginas não encontradas */}
         </Routes>
-      
-
+     
+ 
         <Footer />
       </div>
     </Router>
         </SearchProvider>
-
+ 
   );
 }
-
+ 
 export default App;

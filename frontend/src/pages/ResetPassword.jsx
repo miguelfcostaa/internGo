@@ -2,6 +2,13 @@ import React, { useState, useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import styles from "../styles/ResetPassword.module.css";
 import ButtonSubmit from "../components/ButtonSubmit";
+import PasswordCriteriaTooltip from "../components/PasswordCriteria"; 
+import { isPasswordCriterionMet } from "../utils/registerUserUtils";
+import { 
+  validateRequired, 
+  validatePassword, 
+  validatePasswordMatch 
+} from "../utils/validationUtils";
 
 const PasswordReset = () => {
   const [searchParams] = useSearchParams();
@@ -14,6 +21,9 @@ const PasswordReset = () => {
   const [message, setMessage] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
   const [token, setToken] = useState("");
+  const [showPasswordCriteria, setShowPasswordCriteria] = useState(false);
+
+  
 
   useEffect(() => {
     const tokenFromUrl = searchParams.get("token");
@@ -37,16 +47,36 @@ const PasswordReset = () => {
     setIsLoading(true);
     setMessage("");
 
-    // Validações
-    if (formData.password !== formData.confirmPassword) {
-      setMessage("As palavras-passe não coincidem");
+    // Validação de campos obrigatórios
+    const passwordValidation = validateRequired(formData.password, "Nova palavra-passe");
+    if (!passwordValidation.isValid) {
+      setMessage(passwordValidation.message);
       setIsSuccess(false);
       setIsLoading(false);
       return;
     }
 
-    if (formData.password.length < 6) {
-      setMessage("A palavra-passe deve ter pelo menos 6 caracteres");
+    const confirmPasswordValidation = validateRequired(formData.confirmPassword, "Confirmação de palavra-passe");
+    if (!confirmPasswordValidation.isValid) {
+      setMessage(confirmPasswordValidation.message);
+      setIsSuccess(false);
+      setIsLoading(false);
+      return;
+    }
+
+    // Validação de coincidência
+    const passwordMatchValidation = validatePasswordMatch(formData.password, formData.confirmPassword);
+    if (!passwordMatchValidation.isValid) {
+      setMessage(passwordMatchValidation.message);
+      setIsSuccess(false);
+      setIsLoading(false);
+      return;
+    }
+
+    // Validação completa da senha
+    const passwordStrengthValidation = validatePassword(formData.password);
+    if (!passwordStrengthValidation.isValid) {
+      setMessage(passwordStrengthValidation.message);
       setIsSuccess(false);
       setIsLoading(false);
       return;
@@ -115,7 +145,21 @@ const PasswordReset = () => {
         )}
 
         <form onSubmit={handleSubmit} className={styles.form}>
-          <label htmlFor="password" className={styles.label}>Nova Palavra-passe</label>
+          <label htmlFor="password" className={`${styles.label} d-flex align-items-center`}>
+            Nova Palavra-passe
+            <div
+              className={`${styles.infoIcon} ms-2`}
+              onClick={() => setShowPasswordCriteria(!showPasswordCriteria)}
+              style={{ cursor: "pointer", fontSize: "16px", color: "#007bff", position: "relative" }}
+            >
+              ⓘ
+              <PasswordCriteriaTooltip
+                password={formData.password}
+                isVisible={showPasswordCriteria}
+                isPasswordCriterionMet={isPasswordCriterionMet}
+              />
+            </div>
+          </label>
           <input
             type="password"
             id="password"
@@ -123,10 +167,8 @@ const PasswordReset = () => {
             value={formData.password}
             placeholder="Digite a nova palavra-passe"
             onChange={handleChange}
-            required
             disabled={isLoading}
             className={styles.passwordInput}
-            minLength={6}
           />
 
           <label htmlFor="confirmPassword" className={styles.label}>Confirmar Palavra-passe</label>
@@ -137,10 +179,8 @@ const PasswordReset = () => {
             value={formData.confirmPassword}
             placeholder="Confirme a nova palavra-passe"
             onChange={handleChange}
-            required
             disabled={isLoading}
             className={styles.passwordInput}
-            minLength={6}
           />
 
           <ButtonSubmit
