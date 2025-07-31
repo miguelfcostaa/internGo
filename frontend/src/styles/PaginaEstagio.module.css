@@ -1,0 +1,51 @@
+.background{
+    background-color: #F2F2F2;
+    height: 140vh;
+    padding-top: 2rem;
+    padding-right: 15%;
+    padding-left: 15%;
+}
+.heading{
+    margin-left: 20px;
+    font-weight: bold;
+    text-align: left;
+}
+.logo{
+    width: 100px;
+    height: 100px;
+}
+.bigbox{
+    background-color: white;
+    margin-top: 2.5%;
+    width: 100%;
+    border: 1px solid rgb(180, 178, 178);
+    border-radius: 20px;
+}
+.list{
+    margin-top: 15px;
+    text-align: left;
+    font-size: 16px;
+}
+.listheading{
+    margin-top: 15px;
+    font-weight: bold;
+}
+.description{
+    margin-top: 5px;
+    margin-left: 20px;
+    font-weight: normal;
+}
+.sidebar{
+    background-color: rgb(174, 173, 182);
+    border-radius: 10px;
+    max-height: 100%;
+    width: 30%;
+}
+.margin{
+    margin-top: 20px;
+    margin-right: 10px;
+}
+.descriptionsidebar{
+    margin-left: 5px;
+    font-weight: normal;
+}
