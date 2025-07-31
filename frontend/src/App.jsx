@@ -15,7 +15,8 @@ import NotFound from './pages/NotFound404.jsx'; // Importando a página 404
 import ProtectedRoute from './components/ProtectedRoute.jsx';
 import { SearchProvider } from "./contexts/SearchContext.js";
 import CriarEstagio from './pages/CriarEstagio.jsx';
-import EditProfile from './pages/EditProfile.jsx'
+import EditProfile from './pages/EditProfile.jsx';
+import PaginaEstagio from './pages/PaginaEstagio.jsx';
  
 function App() {
   return (
@@ -36,11 +37,9 @@ function App() {
           <Route path='/profile/:id' element={<ProtectedRoute><Profile /></ProtectedRoute>}></Route>  {/*  Rota da Profile Page (protegida) */}
           <Route path='/estagios-criados/:id' element={<ProtectedRoute requiredRole="company"><EstagiosCriados /></ProtectedRoute>}></Route>  {/* Rota para Estágios Criados (só empresas) */}
           <Route path='/criar-estagio/' element={<ProtectedRoute requiredRole="company"><CriarEstagio /></ProtectedRoute>}></Route>  {/*  Rota da Criar Estágio Page */}
-          <Route path='*' element={<NotFound />}>
-          </Route>  {/* Rota 404 para páginas não encontradas */}
-        </Routes>
-     
- 
+          <Route path='*' element={<NotFound />}> </Route>  {/* Rota 404 para páginas não encontradas */}
+          <Route path='/pagina-estagio/' element={<PaginaEstagio />}></Route>   {/*  Rota info completa de estagio page */}
+          </Routes>
         <Footer />
       </div>
     </Router>
