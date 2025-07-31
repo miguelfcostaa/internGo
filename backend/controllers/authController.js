@@ -3,11 +3,17 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const Company = require('../models/Company');
 const { sendPasswordResetEmail, generateResetToken } = require('../utils/emailService');
+const { validateEmail, validatePassword } = require('../utils/validations');
 
 // Registrar usuário
 const registerUser = async (req, res) => {
   try {
     const { name, email, cc, telefone, password } = req.body;
+
+    // Validar formato do email
+    if (!email || !validateEmail(email)) {
+      return res.status(400).json({ message: 'Formato de email inválido' });
+    }
 
     // Verificar se o usuário já existe
     const existingUser = await User.findOne({ email });
@@ -40,6 +46,11 @@ const registerUser = async (req, res) => {
 const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
+
+    // Validar formato do email
+    if (!email || !validateEmail(email)) {
+      return res.status(400).json({ message: 'Formato de email inválido' });
+    }
 
     // Encontrar usuário
     const user = await User.findOne({ email });
@@ -82,6 +93,11 @@ const forgotPassword = async (req, res) => {
 
     if (!email) {
       return res.status(400).json({ message: 'Email é obrigatório' });
+    }
+
+    // Validar formato do email
+    if (!validateEmail(email)) {
+      return res.status(400).json({ message: 'Formato de email inválido' });
     }
 
     // Procurar o usuário pelo email (tanto User quanto Company)
@@ -133,6 +149,12 @@ const resetPassword = async (req, res) => {
 
     if (!token || !newPassword) {
       return res.status(400).json({ message: 'Token e nova password são obrigatórios' });
+    }
+
+    // Validar nova senha
+    const passwordValidation = validatePassword(newPassword);
+    if (passwordValidation !== null) {
+      return res.status(400).json({ message: passwordValidation });
     }
 
     // Encontrar usuário com token válido (tanto User quanto Company)

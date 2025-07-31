@@ -8,22 +8,22 @@ function PasswordCriteriaTooltip({ password, isVisible, isPasswordCriterionMet }
   
   return (
     <div className={styles.passwordCriteriaTooltip}>
-      <h4>Password must have:</h4>
+      <h4>A palavra-passe deve ter:</h4>
       <ul>
         <li className={isPasswordCriterionMet('length', password) ? styles.met : ""}>
-          At least 6 characters
+          Pelo menos 6 caracteres
         </li>
         <li className={isPasswordCriterionMet('uppercase', password) ? styles.met : ""}>
-          At least one uppercase letter
+          Pelo menos uma letra maiúscula
         </li>
         <li className={isPasswordCriterionMet('lowercase', password) ? styles.met : ""}>
-          At least one lowercase letter
+          Pelo menos uma letra minúscula
         </li>
         <li className={isPasswordCriterionMet('number', password) ? styles.met : ""}>
-          At least one number
+          Pelo menos um número
         </li>
         <li className={isPasswordCriterionMet('symbol', password) ? styles.met : ""}>
-          At least one symbol
+          Pelo menos um símbolo
         </li>
       </ul>
     </div>
