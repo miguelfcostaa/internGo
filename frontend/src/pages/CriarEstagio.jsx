@@ -1,33 +1,37 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import NavBar from "../components/NavBar.jsx";
+import { Container, Row, Col, Form, Button, Card } from "react-bootstrap";
+import NavBar from "../components/NavBar";
 import style from "../styles/CriarEstagio.module.css";
-import { Form, Row, Col, Button, Card, Container } from "react-bootstrap";
-import RequiredFieldTooltip from "../components/RequiredFieldTooltip.jsx";
+import RequiredFieldTooltip from "../components/RequiredFieldTooltip";
 
-function CriacaoEstagio() {
-  const [step, setStep] = useState(1);
-
-  const [formData, setFormData] = useState({
-  titulo: "",
-  area: "",
-  vagas: "",
-  localizacao: "",
-  inicio: "",        
-  tipo: "",
-  duracao: "",
-  prazo: "",
-  descricao: "",
-  beneficios: "",
-  horaInicio: "",
-  horaFim: "",
-  habilitacoes: "",   
-  competenciasTecnicas: "",
-  softSkills: "",
-  idiomas: "",
-  outrosRequisitos: "",
-});
+const CriacaoEstagio = () => {
   const navigate = useNavigate();
+  const [step, setStep] = useState(1);
+  const [formData, setFormData] = useState({
+    titulo: "",
+    area: "",
+    vagas: "",
+    localizacao: "",
+    inicio: "",
+    tipo: "",
+    duracao: "",
+    prazo: "",
+    descricao: "",
+    beneficios: "",
+    horaInicio: "",
+    horaFim: "",
+    habilitacoes: "",
+    competenciasTecnicas: "",
+    softSkills: "",
+    idiomas: "",
+    outrosRequisitos: "",
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
 
   const handleNext = () => {
     if (step < 4) setStep(step + 1);
@@ -37,52 +41,27 @@ function CriacaoEstagio() {
     if (step > 1) setStep(step - 1);
   };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-    const handleChange = (e) => {
-  const { name, value } = e.target;
-  setFormData(prev => {
-    const newData = { ...prev, [name]: value };
-
-    if (name === "horaInicio" || name === "horaFim") {
-      newData.horario = `${newData.horaInicio || "--:--"} até ${newData.horaFim || "--:--"}`;
-    }
-
-    return newData;
-  });
-};
-  };
-
   const handleCancel = () => {
-    navigate(-1); // Navega para a página anterior
+    navigate(-1); 
   };
 
   return (
     <div style={{ backgroundColor: "#fff", minHeight: "100vh" }}>
       <NavBar />
-      <h6 className={style.titulo}> Publicar Novo Estágio na sua Empresa</h6>
+      <h6 className={style.titulo}>Publicar Novo Estágio na sua Empresa</h6>
 
+      {/* BARRA DE ETAPAS */}
       <div className={`${style.container} ${style.mt4}`}>
-      <div className={`${style.mb4} ${style.borderBottom} ${style.pb2}`}>
-  <span className={step === 1 ? style.fwBold : style.textMuted}>
-    1. Informações Básicas
-  </span>{" "}
-  &gt;
-  <span className={`${step === 2 ? style.fwBold : style.textMuted} ${style.mx2}`}>
-    2. Detalhes do Estágio
-  </span>{" "}
-  &gt;
-  <span className={`${step === 3 ? style.fwBold : style.textMuted} ${style.mx2}`}>
-    3. Requisitos
-  </span>{" "}
-  &gt;
-  <span className={`${step === 4 ? style.fwBold : style.textMuted} ${style.mx2}`}>
-    4. Revisão
-  </span>
-</div>
-          {/* Paso 1 */}
-{step === 1 && (
+        <div className={`${style.mb4} ${style.borderBottom} ${style.pb2}`}>
+          <span className={step === 1 ? style.fwBold : style.textMuted}>1. Informações Básicas</span> &gt;
+          <span className={`${step === 2 ? style.fwBold : style.textMuted} ${style.mx2}`}>2. Detalhes do Estágio</span> &gt;
+          <span className={`${step === 3 ? style.fwBold : style.textMuted} ${style.mx2}`}>3. Requisitos</span> &gt;
+          <span className={`${step === 4 ? style.fwBold : style.textMuted} ${style.mx2}`}>4. Revisão</span>
+        </div>
+
+        {/* FORMULÁRIOS POR ETAPA */}
+        {/* Paso 1 */}
+  {step === 1 && (
   <Form>
     <Row className={style.mb3}>
       <Col md={6} className={style.leftColumn}>
@@ -145,7 +124,6 @@ function CriacaoEstagio() {
 
       <Col md={6} className={style.rightColumn}>
         <div className={style.rightColumnContainer}>
-          {/* Data Início */}
           <Form.Group className={`${style.mb3} ${style.inlineField}`}>
             <Form.Label
               className={style.formLabel}
@@ -162,7 +140,6 @@ function CriacaoEstagio() {
             />
           </Form.Group>
 
-          {/* Tipo Estágio */}
           <Form.Group
             className={`${style.mb3} d-flex align-items-center`}
           >
@@ -203,7 +180,6 @@ function CriacaoEstagio() {
             </div>
           </Form.Group>
 
-          {/* Duração */}
           <Form.Group
             className={`${style.mb3}`}
             style={{
@@ -231,7 +207,6 @@ function CriacaoEstagio() {
             </Form.Select>
           </Form.Group>
 
-          {/* Prazo */}
           <Form.Group className={`${style.mb3} ${style.inlineField}`}>
             <Form.Label
               className={style.formLabel}
@@ -251,9 +226,13 @@ function CriacaoEstagio() {
       </Col>
     </Row>
     <div className={`${style.dFlex} ${style.justifyContentBetween} ${style.mt4}`}>
-      <Button variant="secondary" className={style.btnSecondary} onClick={handleBack}>
-        Voltar
-      </Button>
+      <Button 
+  variant="secondary" 
+  className={style.btnSecondary} 
+  onClick={() => navigate ('/profile/:id')}
+>
+  Cancelar
+</Button>
       <Button variant="primary" className={style.btnPrimary} onClick={handleNext}>
         Próximo passo
       </Button>
@@ -261,12 +240,12 @@ function CriacaoEstagio() {
   </Form>
 )}
 
-        {/* Paso 2: Detalhes do Estágio */}
-       {step === 2 && (
+  {/* Paso 2*/}
+
+  {step === 2 && (
   <Form>
     <Row className={style.mb3}>
       <Col md={12}>
-        {/* Descrição do Estágio */}
         <Form.Group className={style.mb3}>
           <Form.Label className={style.formLabel}>
             Descrição do Estágio <RequiredFieldTooltip />
@@ -282,7 +261,6 @@ function CriacaoEstagio() {
           />
         </Form.Group>
 
-        {/* Benefícios Oferecidos */}
         <Form.Group className={style.mb3}>
           <Form.Label className={style.formLabel}>
             Benefícios Oferecidos <RequiredFieldTooltip />
@@ -297,8 +275,7 @@ function CriacaoEstagio() {
           />
         </Form.Group>
 
-        {/* Horário do Estágio */}
-        <Form.Group className={`${style.mb3} d-flex align-items-center`}>
+       <Form.Group className={`${style.mb3} d-flex align-items-center`}>
           <Form.Label className={`${style.formLabel} me-3`}>
             Horário de Estágio <RequiredFieldTooltip />
           </Form.Label>
@@ -345,8 +322,10 @@ function CriacaoEstagio() {
             </div>
           </Form>
         )}
-        {/* Paso 3: Requisitos */}
-         {step === 3 && (
+
+
+  {/* Paso 3*/}
+        {step === 3 && (
   <Form>
     <Row className={style.mb3}>
       <Col md={12}>
@@ -438,19 +417,23 @@ function CriacaoEstagio() {
   </Form>
 )}
 
-        {/* Paso 4: Revisão */}
- {step === 4 && (
-  <Container fluid className="p-0">
-    <p className="text-muted mb-3">
-      Confirme os dados do seu anúncio para garantir a melhor experiência aos candidatos.
+{/* Paso 4 */}
+
+        {step === 4 && (
+   <Container fluid className="p-0 text-start">
+    <p className="fw-bold text-secondary text-start mb-3">
+      Revise o Seu Anúncio de Estágio na Empresa <br />
+      <span className="fw-normal text-muted">
+        Por favor, verifique todos os detalhes antes de publicar. Esta é a versão final que os candidatos verão.
+      </span>
     </p>
 
-    <Card className="mb-4 shadow-sm">
-      <Card.Body>
-        <Row>
-          <Col md={6}>
-            <h6 className="fw-bold">
-              Informações Básicas:{" "}
+    <Row className="mb-4">
+      <Col md={6}>
+        <Card className="shadow-sm h-100">
+          <Card.Body>
+            <h6 className="fw-bold text-dark mb-3">
+              1. Informações Básicas{" "}
               <span
                 className="text-primary"
                 style={{ cursor: "pointer" }}
@@ -459,78 +442,78 @@ function CriacaoEstagio() {
                 [ Editar ]
               </span>
             </h6>
+            <p><strong className="text-secondary">Título:</strong> {formData.titulo || "-"}</p>
+            <p><strong className="text-secondary">Áreas:</strong> {formData.area || "-"}</p>
+            <p><strong className="text-secondary">Vagas:</strong> {formData.vagas || "-"}</p>
+            <p><strong className="text-secondary">Localização:</strong> {formData.localizacao || "-"}</p>
+            <p><strong className="text-secondary">Tipo:</strong> {formData.tipo || "-"}</p>
+            <p><strong className="text-secondary">Início:</strong> {formData.inicio || "-"}</p>
+            <p><strong className="text-secondary">Duração:</strong> {formData.duracao || "-"}</p>
+            <p><strong className="text-secondary">Prazo Candidaturas:</strong> {formData.prazo || "-"}</p>
+          </Card.Body>
+        </Card>
+      </Col>
 
-            <p><strong>Título:</strong> {formData.titulo || "-"}</p>
-            <p><strong>Áreas:</strong> {formData.area || "-"}</p>
-            <p><strong>Vagas:</strong> {formData.vagas || "-"}</p>
-            <p><strong>Localização:</strong> {formData.localizacao || "-"}</p>
-            <p><strong>Tipo:</strong> {formData.tipo || "-"}</p>
-            <p><strong>Início:</strong> {formData.dataInicio || "-"}</p>
-            <p><strong>Duração:</strong> {formData.duracao || "-"}</p>
-            <p><strong>Prazo Candidaturas:</strong> {formData.prazo || "-"}</p>
-          </Col>
-
-          <Col md={6}>
-            <h6 className="fw-bold">
-              Detalhes do Estágio{" "}
+      <Col md={6}>
+        <Card className="shadow-sm h-100">
+          <Card.Body>
+            <h6 className="fw-bold text-dark mb-3">
+              2. Requisitos do Candidato{" "}
               <span
                 className="text-primary"
                 style={{ cursor: "pointer" }}
-                onClick={() => setStep(2)}
+                onClick={() => setStep(3)}
               >
                 [ Editar ]
               </span>
             </h6>
-
-            <p><strong>Descrição do Estágio:</strong> {formData.descricao || "-"}</p>
-            <p><strong>Benefícios Oferecidos:</strong> {formData.beneficios || "-"}</p>
-            <p>
-              <strong>Horário de Estágio:</strong>{" "}
-              {formData.horaInicio && formData.horaFim
-                ? `${formData.horaInicio} até ${formData.horaFim}`
-                : "-"}
-            </p>
-          </Col>
-        </Row>
-      </Card.Body>
-    </Card>
-
-    <Card className="mb-4 shadow-sm">
+           <p><strong className="text-secondary">Habilitações:</strong> {formData.habilitacoes || "-"}</p>
+<p><strong className="text-secondary">Competências Técnicas:</strong> {formData.competenciasTecnicas || "-"}</p>
+<p><strong className="text-secondary">Soft Skills:</strong> {formData.softSkills || "-"}</p>
+<p><strong className="text-secondary">Idiomas:</strong> {formData.idiomas || "-"}</p>
+<p><strong className="text-secondary">Outros Requisitos:</strong> {formData.outrosRequisitos || "-"}</p>
+          </Card.Body>
+        </Card>
+      </Col>
+    </Row>
+    <Card className="shadow-sm mb-4">
       <Card.Body>
-        <h6 className="fw-bold">
-          Requisitos{" "}
+        <h6 className="fw-bold text-dark mb-3">
+          3. Detalhes do Estágio{" "}
           <span
             className="text-primary"
             style={{ cursor: "pointer" }}
-            onClick={() => setStep(3)}
+            onClick={() => setStep(2)}
           >
             [ Editar ]
           </span>
         </h6>
-
-        <p><strong>Habilitações Académicas Mínimas:</strong> {formData.habilitacoes || "-"}</p>
-        <p><strong>Competências Técnicas Essenciais:</strong> {formData.competenciasTecnicas || "-"}</p>
-        <p><strong>Competências Pessoais (Soft Skills):</strong> {formData.softSkills || "-"}</p>
-        <p><strong>Idiomas:</strong> {formData.idiomas || "-"}</p>
-        <p><strong>Outros Requisitos:</strong> {formData.outrosRequisitos || "-"}</p>
+        <p><strong className="text-secondary">Descrição:</strong> {formData.descricao || "-"}</p>
+        <p><strong className="text-secondary">Mentoria/Aprendizagem:</strong> {formData.mentoria || "-"}</p>
+        <p><strong className="text-secondary">Benefícios:</strong> {formData.beneficios || "-"}</p>
       </Card.Body>
     </Card>
 
-    <div className={`${style.dFlex} ${style.justifyContentBetween} ${style.mt4}`}>
+     <div className={`${style.dFlex} ${style.justifyContentBetween} ${style.mt4}`}>
       <Button variant="secondary" className={style.btnSecondary} onClick={handleBack}>
         Voltar
       </Button>
-      <div>
-        <Button variant="primary" className={style.btnPrimary}>
-          Publicar Estágio
-        </Button>
-      </div>
+      <Button variant="primary" className={style.btnPrimary} onClick={handleNext}>
+        Publicar Esstágio
+      </Button>
     </div>
+
+
+  
   </Container>
+  
 )}
+
+
       </div>
     </div>
   );
-}
+};
 
 export default CriacaoEstagio;
+
