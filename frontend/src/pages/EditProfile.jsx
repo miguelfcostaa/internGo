@@ -51,7 +51,7 @@ function EditUserProfile() {
           </div>
         </div>
         <div style={{display: "flex", flexDirection: "row", marginTop:"50px", height:"100%"}}>
-          <div className="rounded p-2" style={{border:"1px black", borderRadius:"5px", width:"50%"}}>
+          <div className="rounded p-2 border" style={{border:"1px black", borderRadius:"5px", width:"50%"}}>
             <h5 style={{fontWeight: "bold", marginTop:"20px",  fontSize:"25px", marginLeft:"50px", textAlign:"left"}}>Formação Académica</h5>
             <ul style={{fontSize:"20px", textAlign:"left"}}> 
               {formacaoAcademica.map((element,index)=>(
@@ -62,7 +62,7 @@ function EditUserProfile() {
               ))}
             </ul>
           </div>
-          <div className="rounded p-2"  style={{ width:"50%"}}>
+          <div className="rounded p-2 border"  style={{ width:"50%"}}>
             <div style={{display:"flex", flexDirection:"row", marginTop:"20px", justifyContent:"space-between"}}>
               <h5 style={{fontWeight: "bold", fontSize:"25px", marginLeft:"50px"}}>Competências Técnicas</h5>
               <div style={{ fontSize:"25px", textAlign:"right", marginRight:"50px"}}>+</div>
