@@ -44,6 +44,5 @@ const forgotPasswordLimiter = rateLimit({
 module.exports = {
   authGeneralLimiter,
   loginLimiter,
-  forgotPasswordLimiter,
-  resetPasswordLimiter
+  forgotPasswordLimiter
 };
