@@ -14,87 +14,103 @@ function PaginaCandidatarEstagio(){
         morada:"",
         nacionalidade:"",
         nivelQNQ:"",
-        Curso:"",
+        curso:"",
         localEnsino:"",
         apresentacao:"",
+        carta:"",
       });
-    const [paginaAtual, setpaginaAtual]=useState(1);
-    function proximaPagina(){
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prev) => ({ ...prev, [name]: value }));
+  };
 
-    }
-    function paginaAnterior(){
-
-    }
     return(
         <div>
             <NavBar/>
             <div className={Styles.background}>
                 <ButtonVoltar/>
+                <h4 className={Styles.heading}>Estágio Técnico de sistemas</h4>
                 <div className={Styles.bigbox}>
-                    <div className={Styles.boxheader}>
-                        <span className={paginaAtual === 1 ? Styles.current: Styles.muted}>1. Informações básicas{" >"}</span>
-                        <span className={paginaAtual === 2 ? Styles.current: Styles.muted}>2. Informações básicas{" >"}</span>
-                        <span className={paginaAtual === 3 ? Styles.current: Styles.muted}>3. Informações básicas{" >"}</span>
-                    </div>
-                    {paginaAtual === 1 ? (
-                        <form>
-                            <div style={{paddingRight:"5%", paddingLeft:"5%"}}>
+                    <form>
+                        <div style={{paddingRight:"5%", paddingLeft:"5%"}}>
+                            <div style={{display:"flex", flexDirection:"column"}}>
                                 <div style={{display:"flex", flexDirection:"row"}}>
-                                    <div style={{display:"flex", flexDirection:"column", width:"50%"}}>
-                                        <label className={Styles.labelcoluna}>Nome completo:
-                                            <input type="text" placeholder=""></input>
-                                        </label>
-                                        <label className={Styles.labelcoluna}>Sexo:{/*criar um menu de opçoes*/}
-                                            <input type="text" placeholder=""></input>
-                                        </label>
-                                        <label className={Styles.labelcoluna}>Nº de telefone:
-                                            <input type="text" placeholder=""></input>{/*colocar aquelas opçoes dos numeros*/}
-                                        </label>
-                                        <label className={Styles.labelcoluna}>Morada:
-                                            <input type="text" placeholder=""></input>
-                                        </label>
-                                        <label className={Styles.labelcoluna}>QNQ:{/*criar um menu de opçoes*/}</label>
-                                            <select>
-                                                <option></option>{/*criar os resto das opções*/}
-                                            </select>
-                                        <label className={Styles.labelcoluna}>Curso:
-                                            <input type="text" placeholder=""></input>
-                                        </label>
-                                    </div>
-                                    <div style={{display:"flex", flexDirection:"column", width:"50%"}}>
-                                        <label className={Styles.labelcoluna}>Data de nascimento:
-                                            <input type="text" placeholder=""></input>
-                                        </label>
-                                        <label className={Styles.labelcoluna}>nº do cc:
-                                            <input type="text" placeholder=""></input>
-                                        </label>
-                                        <label className={Styles.labelcoluna}>Email:
-                                            <input type="text" placeholder=""></input>
-                                        </label>
-                                        <label className={Styles.labelcoluna}>Nacionalidade:
-                                            <input type="text" placeholder=""></input>
-                                        </label>
-                                        <label className={Styles.label}>É estudante:{/*criar um menu de opçoes*/}<br></br>
-                                            <input type="radio" id="sim"placeholder=""></input>
-                                            <label for="sim">Sim</label>
-                                            <input style={{marginLeft:"50px"}} type="radio" id="Nao"placeholder=""></input>
-                                            <label for="Nao">Nao</label>
-                                        </label>
-                                        <label className={Styles.labelcoluna}>Universidade/Entidade Formadora:
-                                            <input type="text" placeholder=""></input>
-                                        </label>
-                                    </div>
+                                    <label className={Styles.labelcoluna}>Nome completo:
+                                        <input type="text" placeholder="" name="name" value={formData.name} onChange={handleChange}></input>
+                                    </label>
+                                    <label className={Styles.labelcoluna}>Sexo:{/*criar um menu de opçoes*/}
+                                        <select>
+                                            <option name="sexo" value="">------</option>
+                                            <option name="sexo" value={formData.sexo} onChange={handleChange}>Masculino</option>
+                                            <option name="sexo" value={formData.sexo} onChange={handleChange}>Femenino</option>
+                                            <option name="sexo" value={formData.sexo} onChange={handleChange}>Prefiro não especificar</option>
+                                        </select>
+                                    </label>
                                 </div>
-                                <label style={{marginTop:"50px", width:"100%"}}>Escreva a sua carta de Apresentação
-                                    <textarea className={Styles.textarea} rows="6" cols="50"></textarea>
-                                </label>
+                                <div style={{display:"flex", flexDirection:"row"}}>
+                                    <label className={Styles.labelcoluna}>Nº de telemóvel:
+                                        <input type="text" placeholder="" name="telemovel" value={formData.telemovel} onChange={handleChange}></input>{/*colocar aquelas opçoes dos numeros*/}
+                                    </label>
+                                    <label className={Styles.labelcoluna}>Email:
+                                        <input type="text" placeholder="" name="email" value={formData.email} onChange={handleChange}></input>
+                                    </label>
+                                </div>
+                                <div style={{display:"flex", flexDirection:"row"}}>
+                                    <label className={Styles.labelcoluna}>Morada:
+                                        <input type="text" placeholder="" name="morada" value={formData.morada} onChange={handleChange}></input>
+                                    </label>
+                                    <label className={Styles.labelcoluna}>Nacionalidade:
+                                        <input type="text" placeholder="" name="nacionalidade" value={formData.nacionalidade} onChange={handleChange}></input>
+                                    </label>
+                                </div>
+                                <div style={{display:"flex", flexDirection:"row"}}>
+                                    <label className={Styles.labelcoluna}>Data de nascimento:
+                                        <input type="text" placeholder="" name="dataNascimento" value={formData.dataNascimento} onChange={handleChange}></input>
+                                    </label>
+                                    <label className={Styles.labelcoluna}>nº do cc:
+                                        <input type="text" placeholder="" name="cc" value={formData.cc} onChange={handleChange}></input>
+                                    </label>
+                                </div>
+                                <div style={{display:"flex", flexDirection:"row"}}>
+                                    <label className={Styles.labelcoluna}>QNQ:{/*criar um menu de opçoes*/}
+                                        <select>
+                                            <option name="nivelQNQ" value="" onChange={handleChange}>Escolha o seu nível de habilitação</option>
+                                            <option name="nivelQNQ" value="Nível 1" onChange={handleChange}>Nível 1-4ºano do Ensino Básico</option>
+                                            <option name="nivelQNQ" value="Nível 2" onChange={handleChange}>Nível 2-6ºano do Ensino Básico</option>
+                                            <option name="nivelQNQ" value="Nível 3" onChange={handleChange}>Nível 3-9ºano do Ensino Básico</option>
+                                            <option name="nivelQNQ" value="Nível 4" onChange={handleChange}>Nível 4-Ensino Secundário + Estágio Profissional</option>
+                                            <option name="nivelQNQ" value="Nível 5" onChange={handleChange}>Nível 5-Cursos de Especialização Tecnólogica (CET)</option>
+                                            <option name="nivelQNQ" value="Nível 6" onChange={handleChange}>Nível 6-Licenciatura</option>
+                                            <option name="nivelQNQ" value="Nível 7" onChange={handleChange}>Nível 7-Mestrado</option>
+                                            <option name="nivelQNQ" value="Nível 8" onChange={handleChange}>Nível 8-Doutoramento</option>
+                                        </select>
+                                    </label>
+                                    <label className={Styles.labelcoluna}>Curso:
+                                        <input type="text" placeholder="" name="curso" value={formData.curso} onChange={handleChange}></input>
+                                    </label>
+                                </div>
+                                <div style={{display:"flex", flexDirection:"row"}}>
+                                    <label  className={Styles.labelcoluna}>É estudante:
+                                        <select>
+                                            <option name="curso" value=""  onChange={handleChange}>------</option>
+                                            <option name="curso" value="Sim" onChange={handleChange}>Sim</option>
+                                            <option name="curso" value="Nao" onChange={handleChange}>Não</option>
+                                        </select>
+                                    </label>
+                                    <label className={Styles.labelcoluna}>Universidade/Entidade Formadora:
+                                        <input type="text" placeholder="" name="localEnsino" value={formData.localEnsino} onChange={handleChange}></input>
+                                    </label>
+                                </div>
                             </div>
-                        </form>
-                    ) : paginaAtual === 2 ? (
-                        <div></div>
-                    ):(
-                        <div></div>
-                    )}
+                            <div>
+                                <input type="file" style={{ marginTop:"30px"}}></input> {/*Falta guardar este ficheiro*/}
+                            </div>
+                            <label style={{marginTop:"30px", width:"100%", textAlign:"left"}}>Escreva a sua carta de Apresentação
+                                <textarea className={Styles.textarea} rows="6" cols="50" name="carta" value={formData.carta} onChange={handleChange}></textarea>
+                            </label>
+                        </div>
+                        <input type="submit" value="Candidatar" className={Styles.submit}></input>
+                    </form>
                 </div>
             </div>
         </div>
