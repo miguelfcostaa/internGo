@@ -3,7 +3,14 @@
     background-color: #f5f5f5;
     padding: 1rem;
     width: 350px;
+    max-width: 350px;
+    min-width: 350px;
     font-family: Arial, sans-serif;
+    align-self: flex-start;
+    position: sticky;
+    top: 1rem;
+    max-height: calc(100vh - 120px);
+    overflow-y: auto;
 }
 
 .filtrosTags p {
@@ -80,4 +87,24 @@
     display: flex;
     flex-direction: row;
     gap: 0.75rem;
+}
+
+/* Scrollbar customizada para os filtros */
+.filtrosContainer::-webkit-scrollbar {
+    width: 6px;
+}
+
+.filtrosContainer::-webkit-scrollbar-track {
+    background: #e0e0e0;
+    border-radius: 8px;
+}
+
+.filtrosContainer::-webkit-scrollbar-thumb {
+    background: #b0b0b0;
+    border-radius: 8px;
+    transition: background 0.3s ease;
+}
+
+.filtrosContainer::-webkit-scrollbar-thumb:hover {
+    background: #909090;
 }

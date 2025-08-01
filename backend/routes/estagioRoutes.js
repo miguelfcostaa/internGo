@@ -9,11 +9,13 @@ const {
     contarEstagios,
     alterarEstadoEstagio,
     atualizarEstagio,
-    deletarEstagio
+    deletarEstagio,
+    obterOpcoesFiltros
 } = require('../controllers/estagioController');
 
 // Rotas para estágios
 router.get('/', obterEstagios);
+router.get('/filtros/opcoes', obterOpcoesFiltros);
 router.get('/nEstagios/:companyId', contarEstagios);
 router.get('/:id', obterEstagio);
 router.post('/create', verifyToken, criarEstagio);

@@ -32,6 +32,61 @@ const criarEstagio = async (req, res) => {
     }
 };
 
+// Função para criar busca insensível a acentos usando $or com variações
+const createAccentInsensitiveFilter = (fieldName, searchTerms) => {
+    const variations = [];
+    
+    searchTerms.forEach(term => {
+        // Lógica especial baseada no tipo de termo
+        if (term.includes(',')) {
+            // Para termos com vírgula (como "Ribeira Brava, Madeira"): apenas busca exata
+            const escapedTerm = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            
+            // Busca exata
+            variations.push({ [fieldName]: { $regex: new RegExp(`^${escapedTerm}$`, 'i') } });
+            
+            // Busca exata sem acentos
+            const normalized = term.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+            if (normalized !== term) {
+                const escapedNormalized = normalized.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                variations.push({ [fieldName]: { $regex: new RegExp(`^${escapedNormalized}$`, 'i') } });
+            }
+            
+            // Busca exata com variações de acentos
+            const flexiblePattern = term
+                .replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+                .replace(/a/gi, '[aáàâãä]')
+                .replace(/e/gi, '[eéèêë]')
+                .replace(/i/gi, '[iíìîï]')
+                .replace(/o/gi, '[oóòôõö]')
+                .replace(/u/gi, '[uúùûü]')
+                .replace(/c/gi, '[cç]');
+                
+            variations.push({ [fieldName]: { $regex: new RegExp(`^${flexiblePattern}$`, 'i') } });
+            
+        } else {
+            // Para termos sem vírgula (como "Ribeira Brava"): busca exata + substring
+            const escapedTerm = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            
+            // Busca exata
+            variations.push({ [fieldName]: { $regex: new RegExp(`^${escapedTerm}$`, 'i') } });
+            
+            // Busca por substring (para encontrar "Ribeira Brava" em "Ribeira Brava, Madeira")
+            variations.push({ [fieldName]: { $regex: new RegExp(`^${escapedTerm}\\b`, 'i') } }); // Word boundary
+            
+            // Busca exata sem acentos
+            const normalized = term.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+            if (normalized !== term) {
+                const escapedNormalized = normalized.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                variations.push({ [fieldName]: { $regex: new RegExp(`^${escapedNormalized}$`, 'i') } });
+                variations.push({ [fieldName]: { $regex: new RegExp(`^${escapedNormalized}\\b`, 'i') } });
+            }
+        }
+    });
+    
+    return { $or: variations };
+};
+
 // Função para obter todos os estágios
 const obterEstagios = async (req, res) => {
     try {
@@ -39,20 +94,27 @@ const obterEstagios = async (req, res) => {
             status: 'Ativo' // Só mostrar estágios ativos na homepage
         };
 
+        const andConditions = [filtros];
+
         if (req.query.area) {
-            filtros.area = { $in: Array.isArray(req.query.area) ? req.query.area : [req.query.area] };
+            const areas = Array.isArray(req.query.area) ? req.query.area : req.query.area.split(',');
+            andConditions.push(createAccentInsensitiveFilter('area', areas));
         }
         if (req.query.localizacao) {
-            filtros.localizacao = { $in: Array.isArray(req.query.localizacao) ? req.query.localizacao : [req.query.localizacao] };
+            const localizacoes = Array.isArray(req.query.localizacao) ? req.query.localizacao : req.query.localizacao.split(',');
+            andConditions.push(createAccentInsensitiveFilter('localizacao', localizacoes));
         }
         if (req.query.duracao) {
-            filtros.duracao = { $in: Array.isArray(req.query.duracao) ? req.query.duracao : [req.query.duracao] };
+            const duracoes = Array.isArray(req.query.duracao) ? req.query.duracao : req.query.duracao.split(',');
+            filtros.duracao = { $in: duracoes.map(d => parseInt(d)) };
         }
         if (req.query.tipoEstagio) {
-            filtros.tipoEstagio = { $in: Array.isArray(req.query.tipoEstagio) ? req.query.tipoEstagio : [req.query.tipoEstagio] };
+            const tipos = Array.isArray(req.query.tipoEstagio) ? req.query.tipoEstagio : req.query.tipoEstagio.split(',');
+            andConditions.push(createAccentInsensitiveFilter('tipoEstagio', tipos));
         }
 
-        const estagios = await Estagio.find(filtros).populate('company', 'name');
+        const finalFilter = andConditions.length > 1 ? { $and: andConditions } : filtros;
+        const estagios = await Estagio.find(finalFilter).populate('company', 'name');
         res.json(estagios);
     } catch (error) {
         res.status(500).json({ message: 'Erro ao buscar estágios', error });
@@ -216,6 +278,54 @@ const deletarEstagio = async (req, res) => {
     }
 };
 
+// Função para normalizar strings removendo acentos e convertendo para lowercase
+const normalizeString = (str) => {
+    return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+};
+
+// Função para obter valores únicos baseados na normalização
+const getUniqueNormalizedValues = (values) => {
+    const seen = new Map();
+    
+    values.forEach(value => {
+        if (value) {
+            const normalized = normalizeString(value);
+            if (!seen.has(normalized)) {
+                seen.set(normalized, value);
+            }
+        }
+    });
+    
+    return Array.from(seen.values()).sort();
+};
+
+// Função para obter opções de filtro dinâmicas
+const obterOpcoesFiltros = async (req, res) => {
+    try {
+        // Buscar apenas estágios ativos
+        const estagiosAtivos = await Estagio.find({ status: 'Ativo' });
+        
+        // Extrair valores únicos para cada campo de filtro, tratando acentos como equivalentes
+        const areas = getUniqueNormalizedValues(estagiosAtivos.map(estagio => estagio.area));
+        const localizacoes = getUniqueNormalizedValues(estagiosAtivos.map(estagio => estagio.localizacao));
+        const duracoes = [...new Set(estagiosAtivos.map(estagio => estagio.duracao))].filter(Boolean).sort((a, b) => a - b);
+        const tiposEstagio = getUniqueNormalizedValues(estagiosAtivos.map(estagio => estagio.tipoEstagio));
+        
+        res.json({
+            area: areas,
+            localizacao: localizacoes,
+            duracao: duracoes,
+            tipoEstagio: tiposEstagio
+        });
+    } catch (error) {
+        console.error('Erro ao obter opções de filtros:', error);
+        res.status(500).json({ 
+            message: 'Erro ao obter opções de filtros', 
+            error: error.message 
+        });
+    }
+};
+
 module.exports = {
     criarEstagio,
     obterEstagios,
@@ -224,5 +334,6 @@ module.exports = {
     contarEstagios,
     alterarEstadoEstagio,
     atualizarEstagio,
-    deletarEstagio
+    deletarEstagio,
+    obterOpcoesFiltros
 };
