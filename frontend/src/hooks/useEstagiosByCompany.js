@@ -1,12 +1,17 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 export default function useEstagiosByCompany(companyId) {
     const [estagios, setEstagios] = useState([]);
+    const [loading, setLoading] = useState(true); // Iniciar como true
 
-    useEffect(() => {
-        if (!companyId) return; 
-
-        const getEstagios = async () => {
+    const getEstagios = useCallback(async () => {
+        if (!companyId) {
+            setLoading(false);
+            return;
+        }
+        
+        setLoading(true);
+        try {
             const response = await fetch(`http://localhost:5000/api/estagios/company/${companyId}`, {
                 method: "GET",
                 headers: {
@@ -32,13 +37,30 @@ export default function useEstagiosByCompany(companyId) {
                     })
                 );
                 setEstagios(estagiosComEmpresa);
+                
+                // Se há estágios, pare o loading imediatamente
+                if (estagiosComEmpresa.length > 0) {
+                    setLoading(false);
+                } else {
+                    // Se não há estágios, adicione um delay de 2 segundos antes de parar o loading
+                    setTimeout(() => {
+                        setLoading(false);
+                    }, 2000);
+                }
             } else {
                 console.error("Error fetching estagios:", response.statusText);
+                setLoading(false);
             }
-        };
-
-        getEstagios();
+        } catch (error) {
+            console.error("Error fetching estagios:", error);
+            setLoading(false);
+        }
     }, [companyId]);
 
-    return estagios;
+    useEffect(() => {
+        getEstagios();
+    }, [getEstagios]);
+
+    // Retornar também a função de recarregar para poder ser chamada externamente
+    return { estagios, loading, reloadEstagios: getEstagios };
 }
