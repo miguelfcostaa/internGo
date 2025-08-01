@@ -78,7 +78,15 @@ function PaginaCandidatarEstagio(){
                                 </div>
                                 <div style={{display:"flex", flexDirection:"row"}}>
                                     <label className={style.labelcoluna}>Nº de telemóvel:
-                                        <input type="text" placeholder="" name="telemovel" value={formData.telemovel} onChange={handleChange}></input>{/*colocar aquelas opçoes dos numeros*/}
+                                        <div style={{ display:"flex", flexDirection:"row"}}>
+                                        <select style={{width:"20%"}}>
+                                            <option value="+351">+351</option>
+                                            <option value="+55">+55</option>
+                                            <option value="+1">+1</option>
+                                            <option value="+58">+58</option>
+                                        </select>
+                                        <input type="text" placeholder="" name="telemovel" value={formData.telemovel} onChange={handleChange} style={{width:"100%"}}></input>
+                                        </div>
                                     </label>
                                     <label className={style.labelcoluna}>Email:
                                         <input type="text" placeholder="" name="email" value={formData.email} onChange={handleChange}></input>
@@ -160,7 +168,6 @@ function PaginaCandidatarEstagio(){
                         </div>
                         <input type="submit" value="Candidatar" className={style.submit}></input>
                     </form>
-                    {console.log(formData)}
                 </div>
             </div>
         </div>
