@@ -45,6 +45,7 @@ function App() {
           <Route path='*' element={<NotFound />}> </Route>  {/* Rota 404 para páginas não encontradas */}
           <Route path='/pagina-estagio/' element={<PaginaEstagio />}></Route>   {/*  Rota info completa de estagio page */}
           <Route path='/candidatar-estagio/' element={<PaginaCandidatarEstagio/>}></Route>   {/*  Rota info completa de estagio page */}
+          <Route path ='/editar/' element={<EditarEstagio/>}></Route>  
           </Routes>
         <Footer />
       </div>
