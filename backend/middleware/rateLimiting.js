@@ -45,5 +45,4 @@ module.exports = {
   authGeneralLimiter,
   loginLimiter,
   forgotPasswordLimiter,
-  resetPasswordLimiter
 };
