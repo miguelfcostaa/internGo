@@ -27,14 +27,10 @@ const ProfilePage = () => {
 
     const { id } = useParams();
     const [userInfo, setUserInfo] = useUser(id);
-    console.log("User Info:", userInfo.id);
-
     const role = getUserRoleFromToken();
     const [nEstagios, setNEstagios] = useState(0);
     const candidatos = useCandidatos(userInfo._id);
-    console.log("Candidatos:", candidatos);
     const candidaturas = useCandidaturas(userInfo.company);
-    console.log("Candidaturas:", candidaturas); 
     const { estagios: estagiosByCompany, loading: estagiosLoading } = useEstagiosByCompany(userInfo?._id);
 
 
