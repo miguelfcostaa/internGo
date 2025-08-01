@@ -35,7 +35,10 @@ const companySchema = new Schema({
     resetPasswordExpires: {
         type: Date,
         default: null
-    }
+    },
+    codigoPostal: {
+        type: String,
+    },
 }, {
     timestamps: true // Adiciona createdAt e updatedAt automaticamente
 });

@@ -1,8 +1,57 @@
 const express = require('express');
 const router = express.Router();
 const Candidatura = require('../models/Candidatura');
+const Estagio = require('../models/Estagio');
 const { verifyToken, verifyRole } = require('../middleware/auth');
 const Company = require('../models/Company');
+
+
+router.get('/', verifyToken, async (req, res) => {
+    try {
+        const candidaturas = await Candidatura
+            .find()
+            .populate({
+                path: 'estagio',
+                populate: { path: 'company', select: 'name' }
+            })
+            .populate('user');
+
+        if (!candidaturas || candidaturas.length === 0) {
+            return res.status(404).json({ message: 'Nenhuma candidatura encontrada.' });
+        }
+
+        res.json(candidaturas);
+    } catch (error) {
+        res.status(500).json({ message: 'Erro ao buscar candidaturas', error });
+    }
+});
+
+// Rota para buscar todas as candidaturas a uma empresa 
+router.get('/empresa/:companyId', verifyToken, async (req, res) => {
+    try {
+        // 1. Buscar todos os estágios da empresa
+        const estagios = await Estagio.find({ company: req.params.companyId }).select('_id');
+        const estagioIds = estagios.map(e => e._id);
+
+        // 2. Buscar candidaturas desses estágios
+        const candidaturas = await Candidatura
+            .find({ estagio: { $in: estagioIds } })
+            .populate({
+                path: 'estagio',
+                populate: { path: 'company', select: 'name' }
+            })
+            .populate('user');
+
+        if (!candidaturas || candidaturas.length === 0) {
+            return res.status(404).json({ message: 'Nenhuma candidatura encontrada.' });
+        }
+
+        res.json(candidaturas);
+    } catch (error) {
+        res.status(500).json({ message: 'Erro ao buscar candidaturas', error });
+    }
+});
+
 
 // Rota para buscar todas as candidaturas de um user
 router.get('/user/:userId', async (req, res) => {
@@ -13,7 +62,6 @@ router.get('/user/:userId', async (req, res) => {
                 path: 'estagio',
                 populate: { path: 'company', select: 'name' }
             })
-            .populate('user');
 
         if (!candidaturas || candidaturas.length === 0) {
             return res.status(404).json({ message: 'Nenhuma candidatura encontrada.' });
@@ -32,7 +80,10 @@ router.get('/estagio/:estagioId', async (req, res) => {
         const candidaturas = await Candidatura
             .find({ estagio: req.params.estagioId })
             .populate('user')
-            .populate('estagio');
+            .populate({
+                path: 'estagio',
+                populate: { path: 'company', select: 'name' }
+            });
         
         if (!candidaturas || candidaturas.length === 0) {
             return res.status(404).json({ message: 'Nenhuma candidatura encontrada para este estágio.' });

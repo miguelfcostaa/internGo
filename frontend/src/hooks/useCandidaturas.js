@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 
-export default function useCandidaturas(userId) {
-    const [candidatos, setCandidatos] = useState([]);
+export default function useCandidaturas(companyId) {
+    const [candidaturas, setCandidaturas] = useState([]);
 
     useEffect(() => {
-        const getCandidatos = async () => {
-            const response = await fetch(`http://localhost:5000/api/candidaturas/user/${userId}`, {
+        const getCandidaturas = async () => {
+            const response = await fetch(`http://localhost:5000/api/candidaturas/empresa/${companyId}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -16,14 +16,14 @@ export default function useCandidaturas(userId) {
             const data = await response.json();
 
             if (response.ok) {
-                setCandidatos(data);
+                setCandidaturas(data);
             } else {
-                console.error("Error fetching candidatos:", response.statusText);
+                console.error("Error fetching candidaturas:", response.statusText);
             }
         };
 
-        getCandidatos();
-    }, [userId]);
+        getCandidaturas();
+    }, [companyId]);
 
-    return candidatos;
+    return candidaturas;
 }

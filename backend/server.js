@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
+const candidaturaRoutes = require('./routes/candidaturaRoutes');
 const userRoutes = require('./routes/userRoutes');
 const estagioRoutes = require('./routes/estagioRoutes');
 const companyRoutes = require('./routes/companyRoutes');
@@ -32,6 +33,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/companies', companyRoutes);
 app.use('/api/estagios', estagioRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/candidaturas', candidaturaRoutes);
 
 // Conectar ao MongoDB
 mongoose.connect(process.env.MONGODB_URI)

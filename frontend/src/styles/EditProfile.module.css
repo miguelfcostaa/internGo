@@ -83,6 +83,7 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    height: 14rem;
 }
 
 .formacaoAcademica {
@@ -97,6 +98,11 @@
     padding: 1rem;
     border: 1px solid #d8d8d8;
     border-radius: 8px;
+    text-align: left;
+    max-height: 15rem;
+    overflow: auto;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .buttonEditarPerfil {
@@ -139,9 +145,40 @@
     height: 1.5rem;
 }
 
+.invisibleSelect {
+    border: none;
+    background: transparent;
+    opacity: 80%;
+    outline: none;
+    color: inherit;
+    font-size: 1.25rem;
+    font-style: italic;
+    max-width: fit-content;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 0;
+    height: 1.5rem;
+}
+
+
 .placeholder {
     color: #999;
     font-style: italic;
     position: absolute;
     pointer-events: none;
+}
+
+.invisibleInputCompetencia {
+    border: none;
+    background: transparent;
+    opacity: 80%;
+    outline: none;
+    color: inherit;
+    font-style: italic;
+    width: 480px;
+    max-width: 480px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 1rem;
+    height: 1.5rem;
 }

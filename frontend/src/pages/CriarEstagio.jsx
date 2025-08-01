@@ -477,21 +477,21 @@ const CriacaoEstagio = () => {
       </Col>
     </Row>
     <Card className="shadow-sm mb-4">
-      <Card.Body>
-        <h6 className="fw-bold text-dark mb-3">
-          3. Detalhes do Estágio{" "}
-          <span
-            className="text-primary"
-            style={{ cursor: "pointer" }}
-            onClick={() => setStep(2)}
-          >
-            [ Editar ]
-          </span>
-        </h6>
-        <p><strong className="text-secondary">Descrição:</strong> {formData.descricao || "-"}</p>
-        <p><strong className="text-secondary">Mentoria/Aprendizagem:</strong> {formData.mentoria || "-"}</p>
-        <p><strong className="text-secondary">Benefícios:</strong> {formData.beneficios || "-"}</p>
-      </Card.Body>
+        <Card.Body>
+            <h6 className="fw-bold text-dark mb-3">
+                3. Detalhes do Estágio{" "}
+                <span
+                    className="text-primary"
+                    style={{ cursor: "pointer" }}
+                    onClick={() => setStep(2)}
+                >
+                    [ Editar ]
+                </span>
+            </h6>
+            <p><strong className="text-secondary">Descrição:</strong> {formData.descricao || "-"}</p>
+            <p><strong className="text-secondary">Mentoria/Aprendizagem:</strong> {formData.mentoria || "-"}</p>
+            <p><strong className="text-secondary">Benefícios:</strong> {formData.beneficios || "-"}</p>
+        </Card.Body>
     </Card>
 
      <div className={`${style.dFlex} ${style.justifyContentBetween} ${style.mt4}`}>

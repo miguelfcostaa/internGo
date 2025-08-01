@@ -65,14 +65,14 @@ const userSchema = new mongoose.Schema({
     nacionalidade: {
         type: String,
     },
-    aniversario: {
-        type: Date,
+    nif: {
+        type: String,
     },
     formacaoAcademica: {
         type: String,
     },
     competenciasTecnicas: {
-        type: [String], // Array de strings para armazenar várias competências
+        type: Array, 
     },
 }, {
     timestamps: true

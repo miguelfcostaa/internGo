@@ -8,23 +8,39 @@ import styles from '../styles/Profile.module.css';
 import logo from '../assets/logo.jpg';
 import NotFound from './NotFound404';
 import useEstagiosByCompany from '../hooks/useEstagiosByCompany';
+import useCandidatos from '../hooks/useCandidatos';
 import useCandidaturas from '../hooks/useCandidaturas';
 import useUser from '../hooks/useUser';
 
 const ProfilePage = () => {
 
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            const payload = JSON.parse(atob(token.split('.')[1]));
+            const id = payload.id;
+            getNumberOfEstagios(id); 
+            setUserInfo(userInfo);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);    
+
     const { id } = useParams();
     const [userInfo, setUserInfo] = useUser(id);
-    
+    console.log("User Info:", userInfo.id);
+
     const role = getUserRoleFromToken();
     const [nEstagios, setNEstagios] = useState(0);
+    const candidatos = useCandidatos(userInfo._id);
+    console.log("Candidatos:", candidatos);
+    const candidaturas = useCandidaturas(userInfo.company);
+    console.log("Candidaturas:", candidaturas);
     const estagiosByCompany = useEstagiosByCompany(userInfo._id);
-    const candidaturas = useCandidaturas(userInfo._id);
-    const { estagios: estagiosByCompany, loading: estagiosLoading } = useEstagiosByCompany(userInfo?._id);
+    const estagiosLoading = estagiosByCompany.loading;
  
 
     const getNumberOfEstagios = async (id) => {
-            const request = await fetch(`http://localhost:5000/api/estagios/nEstagios/${id}`, {
+        const request = await fetch(`http://localhost:5000/api/estagios/nEstagios/${id}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -41,16 +57,7 @@ const ProfilePage = () => {
         }
     };
 
-    useEffect(() => {
-        const token = localStorage.getItem('token');
-        if (token) {
-            const payload = JSON.parse(atob(token.split('.')[1]));
-            const id = payload.id;
-            getNumberOfEstagios(id); 
-            setUserInfo(userInfo);
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    
 
 
     return (
@@ -103,18 +110,18 @@ const ProfilePage = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {candidaturas.map((candidatura, index) => (
+                                {candidatos.map((candidato, index) => (
                                     <tr key={index}>
-                                        <td style={{ textAlign: 'left', paddingLeft: "2rem" }}>{candidatura.estagio.title}</td>
-                                        <td>{candidatura.estagio.company.name}</td>
+                                        <td style={{ textAlign: 'left', paddingLeft: "2rem" }}>{candidato.estagio.title}</td>
+                                        <td>{candidato.estagio.company.name}</td>
                                         <td>
-                                            {candidatura.dataCandidatura
-                                            ? new Date(candidatura.dataCandidatura)
+                                            {candidato.dataCandidatura
+                                            ? new Date(candidato.dataCandidatura)
                                                 .toLocaleDateString('pt-PT', { day: '2-digit', month: '2-digit', year: 'numeric' })
                                             : ''}
                                         </td>
-                                        <td>{candidatura.estagio.duracao === 1 ? `${candidatura.estagio.duracao} Mês` : `${candidatura.estagio.duracao} Meses`}</td>
-                                        <td>{candidatura.estagio.tipoEstagio}</td>
+                                        <td>{candidato.estagio.duracao === 1 ? `${candidato.estagio.duracao} Mês` : `${candidato.estagio.duracao} Meses`}</td>
+                                        <td>{candidato.estagio.tipoEstagio}</td>
                                         <td className={styles.linkIcon} style={{ paddingRight: "2rem" }}>
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#447D9B" className="bi bi-link" viewBox="0 0 16 16">
                                                 <path d="M6.354 5.5H4a3 3 0 0 0 0 6h3a3 3 0 0 0 2.83-4H9q-.13 0-.25.031A2 2 0 0 1 7 10.5H4a2 2 0 1 1 0-4h1.535c.218-.376.495-.714.82-1z"/>
@@ -166,33 +173,33 @@ const ProfilePage = () => {
                                 <p style={{ fontSize: '1.2rem' }}>{userInfo.email}</p>
                             </div>
                         </div>
-                        <div style={{ width: '100%' }}>
+                        <div className={styles.candidaturasContainer}>
                             <h2 className={styles.titulo}>
                                     Candidaturas Recebidas
                             </h2>
                             <div className={styles.candidaturasRecebidas + ' shadow'}>
                                 {candidaturas.map((candidatura, index) => (
-                                    <div key={index}>
-                                        <p>{candidatura.nome}</p>
-                                        <p>{candidatura.email}</p>
-                                        <p>{candidatura.telefone}</p>
+                                    <div key={index} className={styles.candidaturaItem}>
+                                            <p>{candidatura.user.name}</p>
+                                            <p>{candidatura.estagio.title}</p>
+                                            <p className={styles.verCandidatura}>Ver candidatura</p>
                                     </div>
-                                ))}
-                                <div>
-                                    <p>Bad Bunny</p>
-                                    <p>Quim Barreiros</p>
-                                    <p>Tiagovski</p>
-                                </div>
-                                <div>
-                                    <p>Estágio de Tecnico</p>
-                                    <p>Estagio de Tecnico</p>
-                                    <p>Estagio Web Development</p>
-                                </div>
-                                <div>
-                                    <p className={styles.verCandidatura}>Ver candidatura</p>
-                                    <p className={styles.verCandidatura}>Ver candidatura</p>
-                                    <p className={styles.verCandidatura}>Ver candidatura</p>
-                                </div>
+                                    ))}
+                                    {/* <div>
+                                        <p>Bad Bunny</p>
+                                        <p>Quim Barreiros</p>
+                                        <p>Tiagovski</p>
+                                    </div>
+                                    <div>
+                                        <p>Estágio de Tecnico</p>
+                                        <p>Estagio de Tecnico</p>
+                                        <p>Estagio Web Development</p>
+                                    </div>
+                                    <div>
+                                        <p className={styles.verCandidatura}>Ver candidatura</p>
+                                        <p className={styles.verCandidatura}>Ver candidatura</p>
+                                        <p className={styles.verCandidatura}>Ver candidatura</p>
+                                    </div> */}
                             </div>
                         </div>
                     </div>

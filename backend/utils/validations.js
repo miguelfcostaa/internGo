@@ -147,9 +147,9 @@ const validateUserUpdate = async (data) => {
         errors.morada = 'Morada deve ter entre 3 e 100 caracteres.';
     }
 
-    // Valida Aniversario YYYY-MM-DD
-    if (data.aniversario && data.aniversario !== "" && !/^\d{4}-\d{2}-\d{2}$/.test(data.aniversario)) {
-        errors.aniversario = 'Aniversário deve ter formato YYYY-MM-DD.';
+    // Valida NIF
+    if (data.nif && data.nif !== "" && !/^\d{9}$/.test(data.nif)) {
+        errors.nif = 'NIF deve ter exatamente 9 dígitos.';
     }
 
     // Valida Nacionalidade
