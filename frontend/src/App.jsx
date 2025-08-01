@@ -17,6 +17,7 @@ import { SearchProvider } from "./contexts/SearchContext.js";
 import CriarEstagio from './pages/CriarEstagio.jsx';
 import EditProfile from './pages/EditProfile.jsx';
 import PaginaEstagio from './pages/PaginaEstagio.jsx';
+import PaginaCandidatarEstagio from './pages/PaginaCandidatarEstagio.jsx';
  
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
           <Route path='/criar-estagio/' element={<ProtectedRoute requiredRole="company"><CriarEstagio /></ProtectedRoute>}></Route>  {/*  Rota da Criar Estágio Page */}
           <Route path='*' element={<NotFound />}> </Route>  {/* Rota 404 para páginas não encontradas */}
           <Route path='/pagina-estagio/' element={<PaginaEstagio />}></Route>   {/*  Rota info completa de estagio page */}
+          <Route path='/candidatar-estagio/' element={<PaginaCandidatarEstagio/>}></Route>   {/*  Rota info completa de estagio page */}
           </Routes>
         <Footer />
       </div>
