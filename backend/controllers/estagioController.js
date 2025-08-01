@@ -35,7 +35,9 @@ const criarEstagio = async (req, res) => {
 // Função para obter todos os estágios
 const obterEstagios = async (req, res) => {
     try {
-        const filtros = {};
+        const filtros = {
+            status: 'Ativo' // Só mostrar estágios ativos na homepage
+        };
 
         if (req.query.area) {
             filtros.area = { $in: Array.isArray(req.query.area) ? req.query.area : [req.query.area] };
