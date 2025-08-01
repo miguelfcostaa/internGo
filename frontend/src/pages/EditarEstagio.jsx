@@ -41,6 +41,26 @@ const EditarEstagio = () => {
     idiomas: "",
     outrosRequisitos: "",
   });
+    //limite de cratcteres
+    const [Warnings, setWarnings] = useState({
+      titulo: false,
+      area: false,
+      vagas: false,
+      localizacao: false,
+      inicio: false,
+      tipo: false,
+      duracao: false,
+      prazo: false,
+      descricao: false,
+      beneficios: false,
+      horaInicio: false,
+      horaFim: false,
+      habilitacoes: false,
+      competenciasTecnicas: false,
+      softSkills: false,
+      idiomas: false,
+      outrosRequisitos: false,
+    });
 
   useEffect(() => {
     const carregarEstagio = async () => {
@@ -91,10 +111,14 @@ const EditarEstagio = () => {
       carregarEstagio();
     }
   }, [id]);
-
+const messageMaxChat="Atingiu o maximo de caracteres permitido"
+  const maxChars = 10;
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+     if (value.length <= maxChars) {
+            setFormData((prev) => ({ ...prev, [name]: value }));;
+            setWarnings((prev) => ({ ...prev, [name]: value.length === maxChars }));
+        } 
   };
 
   const handleNext = async () => {
@@ -297,6 +321,11 @@ return (
                 placeholder="Ex: Estágio em Desenvolvimento Web"
                 className={style.input}
               />
+              {Warnings["titulo"] && (
+                <span className={style.charterror}>
+                {messageMaxChat}
+                </span>
+              )}
             </Form.Group>
 
             <Form.Group className="mb-3">
@@ -351,6 +380,11 @@ return (
                     placeholder="Ex: Lisboa, Porto, Remoto"
                     className={style.input}
                   />
+              {Warnings["localizacao"] && (
+                <span className={style.charterror}>
+                {messageMaxChat}
+                </span>
+              )}
                 </Form.Group>
               </Col>
             </Row>
