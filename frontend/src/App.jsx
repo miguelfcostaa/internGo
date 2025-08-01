@@ -17,6 +17,7 @@ import { SearchProvider } from "./contexts/SearchContext.js";
 import CriarEstagio from './pages/CriarEstagio.jsx';
 import EditProfile from './pages/EditProfile.jsx';
 import PaginaEstagio from './pages/PaginaEstagio.jsx';
+import PaginaCandidatarEstagio from './pages/PaginaCandidatarEstagio.jsx';
 import InfoEstagio from './pages/InfoEstágio.jsx';
 import EditarEstagio from './pages/EditarEstagio.jsx';
  
@@ -43,6 +44,7 @@ function App() {
           <Route path='/estagio/:id/editar' element={<ProtectedRoute requiredRole="company"><EditarEstagio /></ProtectedRoute>}></Route>  {/* Rota para editar um estágio específico */}
           <Route path='*' element={<NotFound />}> </Route>  {/* Rota 404 para páginas não encontradas */}
           <Route path='/pagina-estagio/' element={<PaginaEstagio />}></Route>   {/*  Rota info completa de estagio page */}
+          <Route path='/candidatar-estagio/' element={<PaginaCandidatarEstagio/>}></Route>   {/*  Rota info completa de estagio page */}
           </Routes>
         <Footer />
       </div>
