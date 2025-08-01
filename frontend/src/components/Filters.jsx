@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import styles from '../styles/Filters.module.css';
-import useEstagios from '../hooks/useEstagios';
 
 const filterDefinitions = [
     {
@@ -95,6 +94,7 @@ const Filters = ({ setEstagios, searchTag, setSearchTag, onRemoveSearchTag }) =>
 
     useEffect(() => {
         getEstagios();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selected]);
 
 
