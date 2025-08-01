@@ -3,121 +3,110 @@ import NavBar from "../components/NavBar";
 import ButtonVoltar from "../components/ButtonVoltar";
 import Styles from "../styles/PaginaEstagio.module.css";
 import acin from "../assets/acin.png";
+import { useNavigate } from "react-router-dom";
 
 function PaginaEstagio() {
+  const navigate = useNavigate();
+  const handleCandidatar = () => {
+    navigate("/candidatar-estagio");
+  };
+
   return (
     <div>
       <NavBar />
-      
       <div className={Styles.voltarWrapper}>
         <ButtonVoltar />
       </div>
 
-       <main className={`${Styles.background} container py-4`}>
-       
+      <main className={Styles.background}>
 
-   {/* Caja principal: info + sidebar */}
-        <div className={`${Styles.bigbox} row`}>
-            <div className={`${Styles.headerBox} d-flex align-items-center mb-4`}>
-          <img src={acin} className={Styles.acin} alt="Logo Empresa" />
-          <div>
-            <h4 className={Styles.heading}>Acin group </h4>
-            <h4 className={Styles.heading}>Estágio Técnico de Sistemas</h4>
+        {/* Encabezado */}
+        <div className={Styles.headerBox}>
+          <div className={Styles.headerContent}></div>
+          <div className={Styles.logoTitle}>
+            <img src={acin} className={Styles.acin} alt="Logo Empresa" />
+            <div className={Styles.titleTexts}>
+              <h4 className={Styles.heading}>Acin group</h4>
+              <h4 className={Styles.heading}>Estágio Técnico de Sistemas</h4>
+            </div>
+            <div className={Styles.contactInfo}>
+              <strong>Email:</strong> acin.group@email.com 
+             </div>
+
           </div>
+          <hr className={Styles.separator} />
         </div>
-          <div className="col-md-8">
-            <ul className={Styles.list}>
-              <li className={Styles.listheading}>
-                Área de Atuação: Tecnologia da Informação / Infraestrutura de Sistemas.
-                <p className={Styles.description}>
-                  Tecnologia da Informação / Infraestrutura de Sistemas.
+
+        {/* Contenido principal (columna izquierda + sidebar) */}
+        <div className={Styles.mainContent}>
+          {/* Columna izquierda */}
+          <div className={Styles.leftColumn}>
+            <ul className={Styles.cleanList}>
+              <li>
+                <strong>Área(s) de Atuação:</strong>
+                <p>Tecnologia da Informação / Infraestrutura de Sistemas.</p>
+              </li>
+              <li>
+                <strong>Habilitações Académicas Mínimas:</strong>
+                <p>
+                  Engenharia Informática, Técnico de Sistemas e Redes,
+                  Tecnologias de Informação, Ciência da Computação
                 </p>
               </li>
-              <li className={Styles.listheading}>
-                Cursos Preferenciais / Áreas de Estudo:
-                <p className={Styles.description}>
-                  Engenharia Informática, Técnico de Sistemas e Redes, Tecnologias de Informação, Ciência da Computação
-                </p>
-              </li>
-              <li className={Styles.listheading}>
-                Descrição do Estágio:
-                <p className={Styles.description}>
-                  Este estágio visa proporcionar uma experiência prática em ambientes de infraestrutura tecnológica,
-                  com foco em instalação, configuração e manutenção de sistemas e redes.
-                  O estagiário irá trabalhar em conjunto com a equipa técnica em projetos internos e externos, 
-                  adquirindo experiência real em operações de TI.
-                </p>
-              </li>
-              <li className={Styles.listheading}>
-                Competências Técnicas Essenciais:
-                <ul className={Styles.description}>
+              <li>
+                <strong>Competências Técnicas Essenciais:</strong>
+                <ul className={Styles.subList}>
                   <li>Conhecimentos básicos de redes (TCP/IP, DHCP, DNS)</li>
                   <li>Familiaridade com sistemas operativos Windows e Linux</li>
-                  <li>Instalação e configuração de software e hardware</li>
-                  <li>Noções de segurança da informação</li>
                   <li>Capacidade de resolver problemas técnicos</li>
                 </ul>
               </li>
-              <li className={Styles.listheading}>
-                Competências Pessoais (Soft Skills):
-                <ul className={Styles.description}>
+              <li>
+                <strong>Competências Pessoais (Soft Skills):</strong>
+                <ul className={Styles.subList}>
                   <li>Proatividade</li>
                   <li>Boa comunicação e trabalho em equipa</li>
-                  <li>Capacidade de aprendizagem contínua</li>
                   <li>Gestão de tempo e organização</li>
                   <li>Responsabilidade e ética profissional</li>
                 </ul>
               </li>
-              <li className={Styles.listheading}>
-                Idiomas:
-                <ul className={Styles.description}>
+              <li>
+                <strong>Idiomas:</strong>
+                <ul className={Styles.subList}>
                   <li>Português</li>
                   <li>Inglês</li>
                   <li>Espanhol</li>
                   <li>Alemão</li>
                 </ul>
               </li>
+              <li>
+                <strong>Descrição do Estágio:</strong>
+                <p>
+                  Este estágio visa proporcionar uma experiência prática em
+                  ambientes de infraestrutura tecnológica, com foco em
+                  instalação, configuração e manutenção de sistemas e redes. O
+                  estagiário irá trabalhar em conjunto com a equipa técnica em
+                  projetos internos e externos, adquirindo experiência real em
+                  operações de TI.
+                </p>
+              </li>
             </ul>
           </div>
 
-          {/* Sidebar */}
-          <div className={`col-md-4 ${Styles.sidebar}`}>
-            <p className={Styles.heading}>
-              Prazo da Candidatura:
-              <span className={Styles.descriptionsidebar}> 10/9/2024</span>
-            </p>
-            <p className={Styles.heading}>
-              Local de estágio:
-              <span className={Styles.descriptionsidebar}> Ribeira Brava, Madeira.</span>
-            </p>
-            <p className={Styles.heading}>
-              Ínicio do Estágio:
-              <span className={Styles.descriptionsidebar}> 1/10/2024</span>
-            </p>
-            <p className={Styles.heading}>
-              Duração:
-              <span className={Styles.descriptionsidebar}> 1 Mês.</span>
-            </p>
-            <p className={Styles.heading}>
-              Número de Vagas:
-              <span className={Styles.descriptionsidebar}> 10 vagas disponivéis.</span>
-            </p>
-            <p className={Styles.heading}>
-              Horas de Trabalho:
-              <span className={Styles.descriptionsidebar}> 8h diárias, com 1 hora de almoço.</span>
-            </p>
-            <p className={Styles.heading}>
-              Horário:
-              <span className={Styles.descriptionsidebar}> 9h-13h | 14h-18h</span>
-            </p>
-            <p className={Styles.heading}>
-              Tipo de Estágio:
-              <span className={Styles.descriptionsidebar}> Remunerado</span>
-            </p>
-            <p className={Styles.heading}>
-              Benefícios oferecidos:
-              <span className={Styles.descriptionsidebar}> Almoço e Transporte</span>
-            </p>
+          {/* Sidebar + botón */}
+          <div className={Styles.sidebarWrapper}>
+            <div className={Styles.sidebar}>
+              <p><strong>Prazo da Candidatura:</strong> 10/9/2024</p>
+              <p><strong>Local de estágio:</strong> Ribeira Brava, Madeira.</p>
+              <p><strong>Ínicio do Estágio:</strong> 1/10/2024</p>
+              <p><strong>Duração:</strong> 1 Mês</p>
+              <p><strong>Número de Vagas:</strong> 10 vagas disponivéis</p>
+              <p><strong>Horário do Estágio:</strong>10h até 16h</p>
+              <p><strong>Benefícios oferecidos:</strong> Almoço e Transporte</p>
+            </div>
+            <button className={Styles.customButton} onClick={handleCandidatar}>
+              Candidatar-se
+            </button>
           </div>
         </div>
       </main>

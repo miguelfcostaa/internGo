@@ -1,32 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import styles from '../styles/Filters.module.css';
 
-const filterDefinitions = [
-    {
-        key: 'area',
-        label: 'Área',
-        options: ['Informatica', 'Eletronica', 'Saude', 'Engenharia', 'Gestao', 'Marketing', 'Recursos Humanos', 'Logistica']
-    },
-    {
-        key: 'localizacao',
-        label: 'Localização',
-        options: ['Funchal', 'Lisboa', 'Porto']
-    },
-    {
-        key: 'duracao',
-        label: 'Duração',
-        options: ['1', '3', '12'],
-        format: (value) => `${value} mês(es)`
-    },
-    {
-        key: 'tipoEstagio',
-        label: 'Tipo de estágio',
-        options: ['Presencial', 'Remoto', 'Hibrido']
-    }
-];
-
 const Filters = ({ setEstagios, searchTag, setSearchTag, onRemoveSearchTag }) => {
-
+    const [filterDefinitions, setFilterDefinitions] = useState([]);
     const [selected, setSelected] = useState({
         area: [],
         localizacao: [],
@@ -63,6 +39,76 @@ const Filters = ({ setEstagios, searchTag, setSearchTag, onRemoveSearchTag }) =>
 
     const totalSelected = Object.values(selected).flat().length;
 
+    // Função para buscar opções de filtro dinâmicas
+    const getFilterOptions = async () => {
+        try {
+            const response = await fetch('http://localhost:5000/api/estagios/filtros/opcoes', {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                }
+            });
+            
+            if (response.ok) {
+                const data = await response.json();
+                console.log("Opções de filtro:", data);
+                
+                // Criar array de definições de filtro com dados dinâmicos
+                const dynamicFilterDefinitions = [
+                    {
+                        key: 'area',
+                        label: 'Área',
+                        options: data.area || []
+                    },
+                    {
+                        key: 'localizacao',
+                        label: 'Localização',
+                        options: data.localizacao || []
+                    },
+                    {
+                        key: 'duracao',
+                        label: 'Duração',
+                        options: data.duracao || [],
+                        format: (value) => `${value} mês(es)`
+                    },
+                    {
+                        key: 'tipoEstagio',
+                        label: 'Tipo de estágio',
+                        options: data.tipoEstagio || []
+                    }
+                ];
+                
+                setFilterDefinitions(dynamicFilterDefinitions);
+            }
+        } catch (error) {
+            console.error("Error fetching filter options:", error);
+            // Em caso de erro, usar opções estáticas como fallback
+            setFilterDefinitions([
+                {
+                    key: 'area',
+                    label: 'Área',
+                    options: []
+                },
+                {
+                    key: 'localizacao',
+                    label: 'Localização',
+                    options: []
+                },
+                {
+                    key: 'duracao',
+                    label: 'Duração',
+                    options: [],
+                    format: (value) => `${value} mês(es)`
+                },
+                {
+                    key: 'tipoEstagio',
+                    label: 'Tipo de estágio',
+                    options: []
+                }
+            ]);
+        }
+    };
+
 
     const getEstagios = async () => {
         try {
@@ -93,7 +139,17 @@ const Filters = ({ setEstagios, searchTag, setSearchTag, onRemoveSearchTag }) =>
     };
 
     useEffect(() => {
-        getEstagios();
+        getFilterOptions();
+    }, []);
+
+    useEffect(() => {
+        if (Object.values(selected).some(arr => arr.length > 0)) {
+            getEstagios();
+        } else {
+            // Se não há filtros selecionados, recarregar as opções de filtro
+            getFilterOptions();
+            getEstagios();
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selected]);
 
@@ -133,7 +189,9 @@ const Filters = ({ setEstagios, searchTag, setSearchTag, onRemoveSearchTag }) =>
                 </div>
             </div>
 
-            {filterDefinitions.map(({ key, label, options, format }) => (
+            {filterDefinitions
+                .filter(({ options }) => options && options.length > 0) // Só mostra filtros com opções
+                .map(({ key, label, options, format }) => (
                 <div key={key} className={styles.filtroCategoria}>
                     <button className={styles.filtroTitulo} onClick={() => toggleDropdown(key)}>
                         {label}{' '}
