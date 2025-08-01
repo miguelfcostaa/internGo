@@ -3,47 +3,47 @@ import { useNavigate } from "react-router-dom";
 import { Container, Row, Col, Form, Button, Card } from "react-bootstrap";
 import NavBar from "../components/NavBar";
 import style from "../styles/CriarEstagio.module.css";
-import RequiredFieldTooltip from "../components/RequiredFieldTooltip";
+import RequiredFieldTooltip from "../components/RequiredFieldTooltip.jsx";
 
 const CriacaoEstagio = () => {
-  const navigate = useNavigate();
-  const [step, setStep] = useState(1);
-  const [formData, setFormData] = useState({
-    titulo: "",
-    area: "",
-    vagas: "",
-    localizacao: "",
-    inicio: "",
-    tipo: "",
-    duracao: "",
-    prazo: "",
-    descricao: "",
-    beneficios: "",
-    horaInicio: "",
-    horaFim: "",
-    habilitacoes: "",
-    competenciasTecnicas: "",
-    softSkills: "",
-    idiomas: "",
-    outrosRequisitos: "",
-  });
+    const navigate = useNavigate();
+    const [step, setStep] = useState(1);
+    const [formData, setFormData] = useState({
+        titulo: "",
+        area: "",
+        vagas: "",
+        localizacao: "",
+        inicio: "",
+        tipo: "",
+        duracao: "",
+        prazo: "",
+        descricao: "",
+        beneficios: "",
+        horaInicio: "",
+        horaFim: "",
+        habilitacoes: "",
+        competenciasTecnicas: "",
+        softSkills: "",
+        idiomas: "",
+        outrosRequisitos: "",
+    });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prev) => ({ ...prev, [name]: value }));
+    };
 
-  const handleNext = () => {
-    if (step < 4) setStep(step + 1);
-  };
+    const handleNext = () => {
+        if (step < 4) setStep(step + 1);
+    };
 
-  const handleBack = () => {
-    if (step > 1) setStep(step - 1);
-  };
+    const handleBack = () => {
+        if (step > 1) setStep(step - 1);
+    };
 
-  const handleCancel = () => {
-    navigate(-1); 
-  };
+    const handleCancel = () => {
+        navigate(-1); 
+    };
 
   return (
     <div style={{ backgroundColor: "#fff", minHeight: "100vh" }}>

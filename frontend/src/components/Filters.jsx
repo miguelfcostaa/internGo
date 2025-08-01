@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import '../styles/Filters.css';
-import useEstagios from '../hooks/useEstagios';
+import styles from '../styles/Filters.module.css';
 
 const filterDefinitions = [
     {
@@ -95,33 +94,34 @@ const Filters = ({ setEstagios, searchTag, setSearchTag, onRemoveSearchTag }) =>
 
     useEffect(() => {
         getEstagios();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selected]);
 
 
 
     return (
-        <div className="filtros-container">
-            <div className="filtros-tags">
+        <div className={styles.filtrosContainer}>
+            <div className={styles.filtrosTags}>
                 <p style={{ textAlign: 'left', fontSize: '1.4rem' }}>
                     Filtro resultados ({totalSelected}):
                 </p>
-                <div className="tags">
+                <div className={styles.tags}>
                     {filterDefinitions.map(({ key, format }) =>
                         selected[key].map((item, i) => (
-                            <span key={`${key}-${i}`} className="tag">
+                            <span key={`${key}-${i}`} className={styles.tag}>
                                 {format ? format(item) : item}
-                                <button onClick={() => removeFilter(key, item)}>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                                <span className={styles.botao} onClick={() => removeFilter(key, item)}>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" className="bi bi-x-lg" viewBox="0 0 16 16">
                                         <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
                                     </svg>
-                                </button>
+                                </span>
                             </span>
                         ))
                     )}
                     {searchTag ? (
-                        <span className="tag">
+                        <span className={styles.tag}>
                             {searchTag}
-                            <button onClick={onRemoveSearchTag}>
+                            <button className={styles.botao} onClick={onRemoveSearchTag}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
                                     <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
                                 </svg>
@@ -134,8 +134,8 @@ const Filters = ({ setEstagios, searchTag, setSearchTag, onRemoveSearchTag }) =>
             </div>
 
             {filterDefinitions.map(({ key, label, options, format }) => (
-                <div key={key} className="filtro-categoria">
-                    <button className="filtro-titulo" onClick={() => toggleDropdown(key)}>
+                <div key={key} className={styles.filtroCategoria}>
+                    <button className={styles.filtroTitulo} onClick={() => toggleDropdown(key)}>
                         {label}{' '}
                         {isOpen[key] ? (
                             <svg width="16" height="16" fill="currentColor" className="bi bi-caret-up-fill" viewBox="0 0 16 16">
@@ -148,9 +148,9 @@ const Filters = ({ setEstagios, searchTag, setSearchTag, onRemoveSearchTag }) =>
                         )}
                     </button>
                     {isOpen[key] && (
-                        <div className="filtro-opcoes">
+                        <div className={styles.filtroOpcoes}>
                             {options.map((option, i) => (
-                                <label key={i} className="filtro-opcao">
+                                <label key={i} className={styles.filtroOpcao}>
                                     <input
                                         type="checkbox"
                                         name={label}

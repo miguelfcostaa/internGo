@@ -5,10 +5,11 @@ import { getUserRoleFromToken } from '../utils/jwtUtils';
 import { useSearch } from '../contexts/SearchContext';
 import { useNavigate } from 'react-router-dom';
 
-const NavBar = ({ atProfile }) => {
-  const { setQuery } = useSearch();
-  const [searchInput, setSearchInput] = useState('');
-  const navigate = useNavigate();
+const NavBar = () => {
+
+    const { setQuery } = useSearch();
+    const [searchInput, setSearchInput] = useState('');
+    const navigate = useNavigate();
 
   const role = getUserRoleFromToken();
   const [showLogoutModal, setShowLogoutModal] = useState(false);
@@ -108,46 +109,47 @@ const NavBar = ({ atProfile }) => {
     </div>
   );
 
-  // Navbar for logged in users
-  const renderUserNav = () => (
-    <nav className="navbar" style={{ backgroundColor: "#D7D7D7" }}>
-      <div className="container d-flex align-items-center justify-content-between">
-        <Logo className="navbar-brand" width="80" height="80" />
-   <form className="search-container" onSubmit={handleSearch}>
-  <input
-    className="search-box"
-    type="text"
-    placeholder="Procurar..."
-    aria-label="Search"
-    value={searchInput}
-    onChange={e => setSearchInput(e.target.value)}
-  />
-  <button className="search-button" type="submit" aria-label="Buscar">
-    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="search-icon">
-      <circle cx="11" cy="11" r="8"></circle>
-      <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-    </svg>
-  </button>
-</form>
-        <div className="navbar-brand position-relative" ref={dropdownRef} style={{ cursor: 'pointer' }}>
-          <div
-            className="d-flex align-items-center"
-            onClick={() => setShowDropdown(prev => !prev)}
-            style={{ color: atProfile ? "#447D9B" : '#000' }}
-          >
-            <span style={{ fontSize: '1.4rem', marginRight: 8 }}>{userInfo.name}</span>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              fill="currentColor"
-              className="bi bi-caret-down-fill"
-              viewBox="0 0 16 16"
-              style={{ color: atProfile ? "#447D9B" : '#000' }}
-            >
-              <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
-            </svg>
-          </div>
+
+    const renderNav = (type) => {
+        if (userLoggedIn) {
+            return (
+                <nav className="navbar" style={{ backgroundColor: "#D7D7D7"}}>
+                    <div className="container d-flex align-items-center justify-content-between">
+                        <Logo className="navbar-brand" width="80" height="80" />
+                        <form className="search-container" onSubmit={handleSearch}>
+                            <input
+                                className="search-box"
+                                type="text"
+                                placeholder="Procurar..."
+                                aria-label="Search"
+                                value={searchInput}
+                                onChange={e => setSearchInput(e.target.value)}
+                            />
+                            <button className="search-button" type="submit" aria-label="Buscar">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="search-icon">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                              </svg>
+                            </button>
+                        </form>
+                        <div className="navbar-brand position-relative" ref={dropdownRef} style={{ position: 'relative' }}>
+                        <div
+                          className="d-flex align-items-center"
+                          style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}
+                          onClick={() => setShowDropdown(prev => !prev)}
+                        >
+                            <span style={{ fontSize: '1.4rem', marginRight: 8 }}>{userInfo.name}</span>
+                            <svg 
+                                xmlns="http://www.w3.org/2000/svg" 
+                                width="16" 
+                                height="16" 
+                                fill="currentColor" 
+                                className="bi bi-caret-down-fill" 
+                                viewBox="0 0 16 16"
+                            >
+                                <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+                            </svg>
+                        </div>
 
           {showDropdown && (
             <div
@@ -198,7 +200,7 @@ const NavBar = ({ atProfile }) => {
       </div>
       {showLogoutModal && <LogoutModal />}
     </nav>
-  );
+  )}};
 
   // Navbar for no logged user
   const renderNoUserNav = () => (
@@ -221,8 +223,9 @@ const NavBar = ({ atProfile }) => {
     </nav>
   );
 
-  if (role === 'user' || role === 'company') return renderUserNav();
+  if (role === 'user' || role === 'company') return renderNav();
   return renderNoUserNav();
 };
+
 
 export default NavBar;
