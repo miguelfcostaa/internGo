@@ -49,3 +49,8 @@
     margin-top: 25px;
     margin-bottom: 25px;
 }
+.charterror{
+    color: red;
+    font-size: 15px;
+    text-align: left;
+}

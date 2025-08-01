@@ -31,10 +31,35 @@ const CriacaoEstagio = () => {
     idiomas: "",
     outrosRequisitos: "",
   });
-
+  //limite de cratcteres
+  const [Warnings, setWarnings] = useState({
+    titulo: false,
+    area: false,
+    vagas: false,
+    localizacao: false,
+    inicio: false,
+    tipo: false,
+    duracao: false,
+    prazo: false,
+    descricao: false,
+    beneficios: false,
+    horaInicio: false,
+    horaFim: false,
+    habilitacoes: false,
+    competenciasTecnicas: false,
+    softSkills: false,
+    idiomas: false,
+    outrosRequisitos: false,
+  });
+//maximo de caracteres e mensagem de erro
+  const messageMaxChat="Atingiu o maximo de caracteres permitido"
+  const maxChars = 10;
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+     if (value.length <= maxChars) {
+            setFormData((prev) => ({ ...prev, [name]: value }));;
+            setWarnings((prev) => ({ ...prev, [name]: value.length === maxChars }));
+        } 
   };
 
   const handleNext = async () => {
@@ -204,7 +229,13 @@ const CriacaoEstagio = () => {
                     onChange={handleChange}
                     placeholder="Ex: Estágio em Desenvolvimento de Software"
                   />
+                  {Warnings["titulo"] && (
+                      <span className={style.charterror}>
+                      {messageMaxChat}
+                      </span>
+                  )}
                 </Form.Group>
+                
 
                 <Form.Group className={`${style.mb3} d-flex flex-column`}>
                   <Form.Label className={style.formLabel}>
@@ -218,6 +249,11 @@ const CriacaoEstagio = () => {
                     onChange={handleChange}
                     placeholder="Ex: Tecnologia da Informação"
                   />
+                  {Warnings["area"] && (
+                      <span className={style.charterror}>
+                      {messageMaxChat}
+                      </span>
+                  )}
                 </Form.Group>
 
                 <Form.Group className={`${style.mb3} ${style.inlineField}`}>
@@ -249,6 +285,11 @@ const CriacaoEstagio = () => {
                     onChange={handleChange}
                     placeholder="Ex: Funchal"
                   />
+                  {Warnings["localizacao"] && (
+                      <span className={style.charterror}>
+                      {messageMaxChat}
+                      </span>
+                  )}
                 </Form.Group>
               </Col>
 
@@ -395,6 +436,11 @@ const CriacaoEstagio = () => {
                     value={formData.descricao}
                     onChange={handleChange}
                   />
+                  {Warnings["descricao"] && (
+                      <span className={style.charterror}>
+                      {messageMaxChat}
+                      </span>
+                  )}
                 </Form.Group>
 
                 <Form.Group className={style.mb3}>
@@ -409,6 +455,11 @@ const CriacaoEstagio = () => {
                     value={formData.beneficios}
                     onChange={handleChange}
                   />
+                  {Warnings["beneficios"] && (
+                      <span className={style.charterror}>
+                      {messageMaxChat}
+                      </span>
+                  )}
                 </Form.Group>
 
                 <Form.Group
@@ -504,6 +555,11 @@ const CriacaoEstagio = () => {
                     value={formData.competenciasTecnicas || ""}
                     onChange={handleChange}
                   />
+                  {Warnings["competenciasTecnicas"] && (
+                      <span className={style.charterror}>
+                      {messageMaxChat}
+                      </span>
+                  )}
                 </Form.Group>
 
                 <Form.Group className={style.mb3}>
@@ -518,6 +574,11 @@ const CriacaoEstagio = () => {
                     value={formData.softSkills || ""}
                     onChange={handleChange}
                   />
+                  {Warnings["softSkills"] && (
+                      <span className={style.charterror}>
+                      {messageMaxChat}
+                      </span>
+                  )}
                 </Form.Group>
 
                 <Form.Group className={style.mb3}>
@@ -530,6 +591,11 @@ const CriacaoEstagio = () => {
                     value={formData.idiomas || ""}
                     onChange={handleChange}
                   />
+                  {Warnings["idiomas"] && (
+                      <span className={style.charterror}>
+                      {messageMaxChat}
+                      </span>
+                  )}
                 </Form.Group>
 
                 <Form.Group className={style.mb3}>
@@ -545,6 +611,11 @@ const CriacaoEstagio = () => {
                     value={formData.outrosRequisitos || ""}
                     onChange={handleChange}
                   />
+                  {Warnings["outrosRequisitos"] && (
+                      <span className={style.charterror}>
+                      {messageMaxChat}
+                      </span>
+                  )}
                 </Form.Group>
               </Col>
             </Row>

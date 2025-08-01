@@ -1,7 +1,7 @@
 import {React, useState} from "react";
 import ButtonVoltar from "../components/ButtonVoltar";
 import NavBar from "../components/NavBar";
-import Styles from"../styles/PaginaCandidatarEstagio.module.css";
+import style from"../styles/PaginaCandidatarEstagio.module.css";
 
 function PaginaCandidatarEstagio(){
     const [Warnings, setWarnings] = useState({
@@ -39,7 +39,6 @@ function PaginaCandidatarEstagio(){
       const maxChars = 10;
     const handleChange = (e) => {
         const { name, value } = e.target;
-        const input = e.target.value;
         if (value.length <= maxChars) {
             setFormData((prev) => ({ ...prev, [name]: value }));
             setWarnings((prev) => ({ ...prev, [name]: value.length === maxChars }));
@@ -51,24 +50,24 @@ function PaginaCandidatarEstagio(){
     return(
         <div>
             <NavBar/>
-            <div className={Styles.background}>
+            <div className={style.background}>
                 <ButtonVoltar/>
-                <h4 className={Styles.heading}>Estágio Técnico de sistemas</h4>
-                <div className={Styles.bigbox}>
+                <h4 className={style.heading}>Estágio Técnico de sistemas</h4>
+                <div className={style.bigbox}>
                     <form onSubmit={handlesSubmit}>
                         <div style={{paddingRight:"5%", paddingLeft:"5%"}}>
                             <div style={{display:"flex", flexDirection:"column"}}>
                                 <div style={{display:"flex", flexDirection:"row"}}>
-                                    <label className={Styles.labelcoluna}>Nome completo:
+                                    <label className={style.labelcoluna}>Nome completo:
                                         <input type="text" placeholder="" name="name" value={formData.name} onChange={handleChange}></input>
                                         {/*Mensagem qquando o limite de caracteres é atingindo*/}
                                         {Warnings["name"] && (
-                                            <p style={{ color: 'red', fontsize:"10px" }}>
+                                            <span className={style.charterror}>
                                             {messageMaxChat}
-                                            </p>
+                                            </span>
                                         )}
                                     </label>
-                                    <label className={Styles.labelcoluna}>Sexo:{/*criar um menu de opçoes*/}
+                                    <label className={style.labelcoluna}>Sexo:{/*criar um menu de opçoes*/}
                                         <select name="sexo" value={formData.sexo} onChange={handleChange}>
                                             <option value="">------</option>
                                             <option value="Masculino">Masculino</option>
@@ -78,41 +77,41 @@ function PaginaCandidatarEstagio(){
                                     </label>
                                 </div>
                                 <div style={{display:"flex", flexDirection:"row"}}>
-                                    <label className={Styles.labelcoluna}>Nº de telemóvel:
+                                    <label className={style.labelcoluna}>Nº de telemóvel:
                                         <input type="text" placeholder="" name="telemovel" value={formData.telemovel} onChange={handleChange}></input>{/*colocar aquelas opçoes dos numeros*/}
                                     </label>
-                                    <label className={Styles.labelcoluna}>Email:
+                                    <label className={style.labelcoluna}>Email:
                                         <input type="text" placeholder="" name="email" value={formData.email} onChange={handleChange}></input>
                                     </label>
                                 </div>
                                 <div style={{display:"flex", flexDirection:"row"}}>
-                                    <label className={Styles.labelcoluna}>Morada:
+                                    <label className={style.labelcoluna}>Morada:
                                         <input type="text" placeholder="" name="morada" value={formData.morada} onChange={handleChange}></input>
                                         {Warnings["morada"] && (
-                                            <p style={{ color: 'red', fontsize:"10px" }}>
+                                            <span className={style.charterror}>
                                             {messageMaxChat}
-                                            </p>
+                                            </span>
                                         )}
                                     </label>
-                                    <label className={Styles.labelcoluna}>Nacionalidade:
+                                    <label className={style.labelcoluna}>Nacionalidade:
                                         <input type="text" placeholder="" name="nacionalidade" value={formData.nacionalidade} onChange={handleChange}></input>
                                         {Warnings["nacionalidade"] && (
-                                            <p style={{ color: 'red', fontsize:"10px" }}>
+                                            <span className={style.charterror}>
                                             {messageMaxChat}
-                                            </p>
+                                            </span>
                                         )}
                                     </label>
                                 </div>
                                 <div style={{display:"flex", flexDirection:"row"}}>
-                                    <label className={Styles.labelcoluna}>Data de nascimento:
+                                    <label className={style.labelcoluna}>Data de nascimento:
                                         <input type="text" placeholder="" name="dataNascimento" value={formData.dataNascimento} onChange={handleChange}></input>
                                     </label>
-                                    <label className={Styles.labelcoluna}>nº do cc:
+                                    <label className={style.labelcoluna}>nº do cc:
                                         <input type="text" placeholder="" name="cc" value={formData.cc} onChange={handleChange}></input>
                                     </label>
                                 </div>
                                 <div style={{display:"flex", flexDirection:"row"}}>
-                                    <label className={Styles.labelcoluna}>QNQ:{/*criar um menu de opçoes*/}
+                                    <label className={style.labelcoluna}>QNQ:{/*criar um menu de opçoes*/}
                                         <select name="nivelQNQ" onChange={handleChange}>
                                             <option value="">Escolha o seu nível de habilitação</option>
                                             <option value="Nível 1">Nível 1-4ºano do Ensino Básico</option>
@@ -125,29 +124,29 @@ function PaginaCandidatarEstagio(){
                                             <option value="Nível 8">Nível 8-Doutoramento</option>
                                         </select>
                                     </label>
-                                    <label className={Styles.labelcoluna}>Curso:
+                                    <label className={style.labelcoluna}>Curso:
                                         <input type="text" placeholder="" name="curso" value={formData.curso} onChange={handleChange}></input>
                                         {Warnings["curso"] && (
-                                            <p style={{ color: 'red', fontsize:"10px" }}>
+                                            <span className={style.charterror}>
                                             {messageMaxChat}
-                                            </p>
+                                            </span>
                                         )}
                                     </label>
                                 </div>
                                 <div style={{display:"flex", flexDirection:"row"}}>
-                                    <label  className={Styles.labelcoluna}>É estudante:
+                                    <label  className={style.labelcoluna}>É estudante:
                                         <select name="curso" onChange={handleChange}>
                                             <option value="" >------</option>
                                             <option value="Sim">Sim</option>
                                             <option value="Nao" >Não</option>
                                         </select>
                                     </label>
-                                    <label className={Styles.labelcoluna}>Universidade/Entidade Formadora:
+                                    <label className={style.labelcoluna}>Universidade/Entidade Formadora:
                                         <input type="text" placeholder="" name="localEnsino" value={formData.localEnsino} onChange={handleChange}></input>
                                         {Warnings["localEnsino"] && (
-                                            <p style={{ color: 'red', fontsize:"10px" }}>
+                                            <span className={style.charterror}>
                                             {messageMaxChat}
-                                            </p>
+                                            </span>
                                         )}
                                     </label>
                                 </div>
@@ -156,10 +155,10 @@ function PaginaCandidatarEstagio(){
                                 <input type="file" style={{ marginTop:"30px"}}></input> {/*Falta guardar este ficheiro*/}
                             </div>
                             <label style={{marginTop:"30px", width:"100%", textAlign:"left"}}>Escreva a sua carta de Apresentação
-                                <textarea className={Styles.textarea} rows="6" cols="50" name="carta" value={formData.carta} onChange={handleChange}></textarea>
+                                <textarea className={style.textarea} rows="6" cols="50" name="carta" value={formData.carta} onChange={handleChange}></textarea>
                             </label>
                         </div>
-                        <input type="submit" value="Candidatar" className={Styles.submit}></input>
+                        <input type="submit" value="Candidatar" className={style.submit}></input>
                     </form>
                     {console.log(formData)}
                 </div>

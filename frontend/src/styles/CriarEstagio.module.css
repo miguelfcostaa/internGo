@@ -215,3 +215,8 @@ button {
   margin-right: 0;
   gap: 24px; 
 }
+.charterror{
+    color: red;
+    font-size: 15px;
+    text-align: left;
+}
