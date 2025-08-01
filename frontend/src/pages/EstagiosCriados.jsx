@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import NavBar from "../components/NavBar";
 import ButtonGeral from "../components/ButtonGeral";
 import styles from "../styles/EstagiosCriados.module.css";
@@ -9,7 +10,8 @@ const EstagiosCriados = () => {
 
     const [userInfo, setUserInfo] = useState({});
     const [estagios, setEstagios] = useState([]);
-    const estagiosByCompany = useEstagiosByCompany(userInfo._id);
+    const { estagios: estagiosByCompany, loading } = useEstagiosByCompany(userInfo._id);
+
     const [highlightedId, setHighlightedId] = useState(null);
 
     useEffect(() => {
@@ -118,7 +120,7 @@ const EstagiosCriados = () => {
                                         </td>
                                         <td>
                                             <a className={styles.link} href={`/estagio/${estagio._id}`}>[Ver Candidaturas] </a>
-                                            <a className={styles.link} href={`/estagio/${estagio._id}/editar`}>[Editar] </a>
+                                            <Link className={styles.link} to={`/estagio/${estagio._id}/editar`}>[Editar] </Link>
                                             <span className={styles.link} onClick={() => alterarEstado(estagio._id)}>
                                                 [{estagio.status === 'Ativo' ? 'Desativar' : 'Ativar'}]
                                             </span></td>

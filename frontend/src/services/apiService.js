@@ -62,3 +62,35 @@ export const loginUser = async (email, password) => {
     throw err;
   }
 };
+
+// Função para criar um novo estágio
+export const criarEstagio = async (estagioData) => {
+  try {
+    const token = localStorage.getItem("token");
+    
+    if (!token) {
+      throw new Error("Token de autenticação não encontrado");
+    }
+
+    const res = await fetch("http://localhost:5000/api/estagios/create", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
+      body: JSON.stringify(estagioData),
+    });
+    
+    const data = await res.json();
+    
+    if (!res.ok) {
+      const errorMessage = data.message || 'Erro ao criar estágio';
+      throw new Error(errorMessage);
+    }
+    
+    return data;
+  } catch (err) {
+    console.error("Create estagio error:", err);
+    throw err;
+  }
+};

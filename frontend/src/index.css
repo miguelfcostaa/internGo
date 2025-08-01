@@ -5,6 +5,38 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Scrollbar global customizada */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 12px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #c1c1c1, #a8a8a8);
+  border-radius: 12px;
+  border: 2px solid #f1f1f1;
+  transition: all 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #a8a8a8, #8e8e8e);
+  border: 2px solid #e8e8e8;
+}
+
+::-webkit-scrollbar-thumb:active {
+  background: linear-gradient(180deg, #8e8e8e, #757575);
+}
+
+/* Para Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #c1c1c1 #f1f1f1;
+}
+
 /* Background padrão para páginas específicas */
 .page-with-background {
   background-color: #273F4F !important;
