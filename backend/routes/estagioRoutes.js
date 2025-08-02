@@ -6,6 +6,7 @@ const {
     obterEstagios,
     obterEstagiosPorEmpresa,
     obterEstagio,
+    obterEstagioById,
     contarEstagios,
     alterarEstadoEstagio,
     atualizarEstagio,
@@ -17,7 +18,7 @@ const {
 router.get('/', obterEstagios);
 router.get('/filtros/opcoes', obterOpcoesFiltros);
 router.get('/nEstagios/:companyId', contarEstagios);
-router.get('/:id', obterEstagio);
+router.get('/:id', obterEstagioById);
 router.post('/create', verifyToken, criarEstagio);
 router.put('/:id', verifyToken, atualizarEstagio);
 router.delete('/:id', verifyToken, deletarEstagio);

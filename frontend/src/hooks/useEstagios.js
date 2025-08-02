@@ -1,29 +1,41 @@
 import { useState, useEffect } from "react";
 
-export default function useEstagios() {
-    const [estagios, setEstagios] = useState([]);
+export default function useEstagios(id) {
+    const [estagio, setEstagio] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const getEstagios = async () => {
-            const response = await fetch(`http://localhost:5000/api/estagios/`, {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${localStorage.getItem("token")}`
+        const getEstagio = async () => {
+            if (!id) return;
+            
+            setLoading(true);
+            try {
+                const response = await fetch(`http://localhost:5000/api/estagios/${id}`, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    }
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    setEstagio(data);
+                } else {
+                    console.error("Error fetching estagio:", response.statusText);
+                    setEstagio(null);
                 }
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {
-                setEstagios(data);
-            } else {
-                console.error("Error fetching estagios:", response.statusText);
+            } catch (error) {
+                console.error("Error fetching estagio:", error);
+                setEstagio(null);
+            } finally {
+                setLoading(false);
             }
         };
 
-        getEstagios();
-    }, []);
+        getEstagio();
+    }, [id]);
 
-    return estagios;
+    return { estagio, loading };
 }

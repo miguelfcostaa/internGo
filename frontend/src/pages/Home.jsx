@@ -50,14 +50,16 @@ function Home() {
                                     key={index}
                                     NomeEmpresa={estagio.company.name}
                                     NomeEstagio={estagio.title}
-                                TotalVagas={estagio.numeroVagas}
-                                Area={estagio.area}
-                                Inicio={estagio.dataInicio} 
-                                TipoEstagio={estagio.tipoEstagio}
-                                Duracao={estagio.duracao}
-                                Localizacao={estagio.localizacao}
-                            />
-                        ))) : (
+                                    TotalVagas={estagio.numeroVagas}
+                                    Area={estagio.area}
+                                    Inicio={estagio.dataInicio} 
+                                    TipoEstagio={estagio.tipoEstagio}
+                                    Duracao={estagio.duracao}
+                                    Localizacao={estagio.localizacao}
+                                    idEstagio={estagio._id}
+                                />
+                            ))
+                        ) : (
                             <div className={styles.noEstagios}>
                                 <p>Nenhum estágio corresponde aos filtros aplicados.</p>
                             </div>

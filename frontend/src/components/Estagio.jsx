@@ -1,19 +1,21 @@
 import React from "react";
 import Logo from "./Logo";
+import { useNavigate } from "react-router-dom";
 import styles from "../styles/Estagio.module.css";
 
-function Estagio({ NomeEmpresa, NomeEstagio, TotalVagas, Ativas, Area, Inicio, TipoEstagio, Duracao, Localizacao }) {
+function Estagio({ NomeEmpresa, NomeEstagio, TotalVagas, Ativas, Area, Inicio, TipoEstagio, Duracao, Localizacao, idEstagio }) {
+    const navigate = useNavigate();
     
     const handleCandidatarClick = () => {
         const token = localStorage.getItem('token');
         
         if (!token) {
             // Se não estiver logado, redireciona para login
-            window.location.href = '/login';
+            navigate('/login');
         } else {
             // Se estiver logado, implementar lógica de candidatura
             // Por agora, pode mostrar um alert ou navegar para página de candidatura
-            alert('Funcionalidade de candidatura será implementada aqui!');
+            navigate(`/estagio/${idEstagio}`);
         }
     };
 
@@ -25,7 +27,9 @@ function Estagio({ NomeEmpresa, NomeEstagio, TotalVagas, Ativas, Area, Inicio, T
                 flexDirection: "row", 
                 justifyContent: "space-between",
                 gap: "7rem",
+                cursor: "pointer",
             }}
+            onClick={() => navigate(`/estagio/${idEstagio}`)}
         >
             <div className={styles.logoContainer}>
                 <Logo width="120" height="120" />

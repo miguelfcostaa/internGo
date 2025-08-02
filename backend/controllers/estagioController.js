@@ -87,6 +87,19 @@ const createAccentInsensitiveFilter = (fieldName, searchTerms) => {
     return { $or: variations };
 };
 
+// Função para obter um estágio por ID
+const obterEstagioById = async (req, res) => {
+    try {
+        const estagio = await Estagio.findById(req.params.id).populate('company', 'name email');
+        if (!estagio) {
+            return res.status(404).json({ message: 'Estágio não encontrado' });
+        }
+        res.json(estagio);
+    } catch (error) {
+        res.status(500).json({ message: 'Erro ao buscar estágio', error });
+    }
+};
+
 // Função para obter todos os estágios
 const obterEstagios = async (req, res) => {
     try {
@@ -329,6 +342,7 @@ const obterOpcoesFiltros = async (req, res) => {
 module.exports = {
     criarEstagio,
     obterEstagios,
+    obterEstagioById,
     obterEstagiosPorEmpresa,
     obterEstagio,
     contarEstagios,
