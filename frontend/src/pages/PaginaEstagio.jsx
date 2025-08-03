@@ -5,6 +5,7 @@ import Styles from "../styles/PaginaEstagio.module.css";
 import acin from "../assets/acin.png";
 import { useNavigate, useParams } from "react-router-dom";
 import useEstagios from "../hooks/useEstagios";
+import NotFound from "./NotFound404";
 
 function PaginaEstagio() {
 
@@ -29,110 +30,105 @@ function PaginaEstagio() {
         navigate("/candidatar-estagio");
     };
 
+
     if (loading) {
         return <div>Loading...</div>; // Show a loading message or spinner
     }
-    else { return ( 
-    <div>
-        <NavBar />
-        <div className={Styles.voltarWrapper}>
-            <ButtonVoltar />
+    else if (estagio)  { return ( 
+        <div>
+            <NavBar />
+            <div className={Styles.voltarWrapper}>
+                <ButtonVoltar />
+            </div>
+
+            <main className={Styles.background}>
+
+                {/* Encabezado */}
+                <div className={Styles.headerBox}>
+                    <div className={Styles.headerContent}></div>
+                    <div className={Styles.logoTitle}>
+                        <img src={acin} className={Styles.acin} alt="Logo Empresa" />
+                        <div className={Styles.titleTexts}>
+                        <h4 className={Styles.heading}> {estagio.company.name} </h4>
+                        <h4 className={Styles.heading}> {estagio.title} </h4>
+                        </div>
+                        <div className={Styles.contactInfo}>
+                        <strong>Email:</strong> {estagio.company.email} 
+                        </div>
+
+                    </div>
+                    <hr className={Styles.separator} />
+                </div>
+
+                {/* Contenido principal (columna izquierda + sidebar) */}
+                <div className={Styles.mainContent}>
+                {/* Columna izquierda */}
+                    <div className={Styles.leftColumn}>
+                        <ul className={Styles.cleanList}>
+                            <li>
+                                <strong>Área(s) de Atuação:</strong>
+                                <p>{estagio.area}</p>
+                            </li>
+                            <li>
+                                <strong>Habilitações Académicas Mínimas:</strong>
+                                <p>{estagio.habilitacoesMinimas}</p>
+                            </li>
+                            <li>
+                                <strong>Competências Técnicas Essenciais:</strong>
+                                <ul className={Styles.subList}>
+                                    {estagio.competenciasEssenciais.split(',').map(e => (
+                                        <li key={e.trim()}>• {e.trim()}</li>
+                                    ))}
+                                </ul>
+                            </li>
+                            <li>
+                                <strong>Competências Pessoais (Soft Skills):</strong>
+                                <ul className={Styles.subList}>
+                                    {estagio.competenciasPessoais.split(',').map(e => (
+                                        <li key={e.trim()}>• {e.trim()}</li>
+                                    ))}
+                                </ul>
+                            </li>
+                            <li>
+                                <strong>Idiomas:</strong>
+                                <ul className={Styles.subList}>
+                                    {estagio.idiomas.split(',').map(e => (
+                                        <li key={e.trim()}>• {e.trim()}</li>
+                                    ))}
+                                </ul>
+                            </li>
+                            <li>
+                                <strong>Descrição do Estágio:</strong>
+                                <p>
+                                    {estagio.descricao}
+                                </p>
+                            </li>
+                        </ul>
+                    </div>
+
+                    {/* Sidebar + botón */}
+                    <div className={Styles.sidebarWrapper}>
+                        <div className={Styles.sidebar}>
+                            <p><strong>Prazo da Candidatura:</strong> {estagio.prazoCandidatura ? new Date(estagio.prazoCandidatura).toLocaleDateString() : 'Não especificado'}</p>
+                            <p><strong>Local de estágio:</strong> {estagio.localizacao}</p>
+                            <p><strong>Mês de Início do Estágio:</strong> {estagio.dataInicio}</p>
+                            <p><strong>Duração:</strong> {estagio.duracao > 1 ? `${estagio.duracao} Meses` : `${estagio.duracao} Mês`}</p>
+                            <p><strong>Número de Vagas:</strong> {estagio.numeroVagas}</p>
+                            <p><strong>Horário do Estágio:</strong> {estagio.horarioEstagio}</p>
+                            <p><strong>Benefícios oferecidos:</strong> {estagio.beneficios}</p>
+                        </div>
+                        <button className={Styles.customButton} onClick={handleCandidatar}>
+                            Candidatar-se
+                        </button>
+                    </div>
+                </div>
+            </main>
         </div>
-
-        <main className={Styles.background}>
-
-            {/* Encabezado */}
-            <div className={Styles.headerBox}>
-                <div className={Styles.headerContent}></div>
-                <div className={Styles.logoTitle}>
-                    <img src={acin} className={Styles.acin} alt="Logo Empresa" />
-                    <div className={Styles.titleTexts}>
-                    <h4 className={Styles.heading}> {estagio.company.name} </h4>
-                    <h4 className={Styles.heading}> {estagio.title} </h4>
-                    </div>
-                    <div className={Styles.contactInfo}>
-                    <strong>Email:</strong> {estagio.company.email} 
-                    </div>
-
-                </div>
-                <hr className={Styles.separator} />
-            </div>
-
-            {/* Contenido principal (columna izquierda + sidebar) */}
-            <div className={Styles.mainContent}>
-            {/* Columna izquierda */}
-                <div className={Styles.leftColumn}>
-                    <ul className={Styles.cleanList}>
-                        <li>
-                            <strong>Área(s) de Atuação:</strong>
-                            <p>Tecnologia da Informação / Infraestrutura de Sistemas.</p>
-                        </li>
-                        <li>
-                            <strong>Habilitações Académicas Mínimas:</strong>
-                            <p>
-                            Engenharia Informática, Técnico de Sistemas e Redes,
-                            Tecnologias de Informação, Ciência da Computação
-                            </p>
-                        </li>
-                        <li>
-                            <strong>Competências Técnicas Essenciais:</strong>
-                            <ul className={Styles.subList}>
-                            <li>Conhecimentos básicos de redes (TCP/IP, DHCP, DNS)</li>
-                            <li>Familiaridade com sistemas operativos Windows e Linux</li>
-                            <li>Capacidade de resolver problemas técnicos</li>
-                            </ul>
-                        </li>
-                        <li>
-                            <strong>Competências Pessoais (Soft Skills):</strong>
-                            <ul className={Styles.subList}>
-                            <li>Proatividade</li>
-                            <li>Boa comunicação e trabalho em equipa</li>
-                            <li>Gestão de tempo e organização</li>
-                            <li>Responsabilidade e ética profissional</li>
-                            </ul>
-                        </li>
-                        <li>
-                            <strong>Idiomas:</strong>
-                            <ul className={Styles.subList}>
-                            <li>Português</li>
-                            <li>Inglês</li>
-                            <li>Espanhol</li>
-                            <li>Alemão</li>
-                            </ul>
-                        </li>
-                        <li>
-                            <strong>Descrição do Estágio:</strong>
-                            <p>
-                            Este estágio visa proporcionar uma experiência prática em
-                            ambientes de infraestrutura tecnológica, com foco em
-                            instalação, configuração e manutenção de sistemas e redes. O
-                            estagiário irá trabalhar em conjunto com a equipa técnica em
-                            projetos internos e externos, adquirindo experiência real em
-                            operações de TI.
-                            </p>
-                        </li>
-                    </ul>
-                </div>
-
-                {/* Sidebar + botón */}
-                <div className={Styles.sidebarWrapper}>
-                    <div className={Styles.sidebar}>
-                        <p><strong>Prazo da Candidatura:</strong> 10/9/2024</p>
-                        <p><strong>Local de estágio:</strong> Ribeira Brava, Madeira.</p>
-                        <p><strong>Ínicio do Estágio:</strong> 1/10/2024</p>
-                        <p><strong>Duração:</strong> 1 Mês</p>
-                        <p><strong>Número de Vagas:</strong> 10 vagas disponivéis</p>
-                        <p><strong>Horário do Estágio:</strong>10h até 16h</p>
-                        <p><strong>Benefícios oferecidos:</strong> Almoço e Transporte</p>
-                    </div>
-                    <button className={Styles.customButton} onClick={handleCandidatar}>
-                        Candidatar-se
-                    </button>
-                </div>
-            </div>
-        </main>
-    </div>
     )}
+    else {
+        return <NotFound />;
+    }
+
 }
 
 export default PaginaEstagio;

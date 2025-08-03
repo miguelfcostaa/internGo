@@ -30,7 +30,7 @@ const ProfilePage = () => {
     const role = getUserRoleFromToken();
     const [nEstagios, setNEstagios] = useState(0);
     const candidatos = useCandidatos(userInfo._id);
-    const candidaturas = useCandidaturas(userInfo.company);
+    const candidaturas = useCandidaturas(userInfo._id);
     const { estagios: estagiosByCompany, loading: estagiosLoading } = useEstagiosByCompany(userInfo?._id);
 
 
@@ -53,15 +53,13 @@ const ProfilePage = () => {
     };
 
     
-
-
     return (
         <>
             <NavBar />
             {role === 'user' ? (
                 <div className={styles.background}>
                     <div className={styles.flexRow}>
-                        <div className={styles.userInfo + ' shadow'}>{/*Informações do utilizador*/}
+                        <div className={styles.userInfo + ' shadow'}>
                             <div className={styles.userInfoLeft}>
                                 <img src={profilePhoto} alt="Foto de perfil" width={180} height={180} />
                                 <ButtonGeral Name="Ver Detalhes" link={`/edit-profile/${userInfo._id}/`} />
@@ -71,7 +69,7 @@ const ProfilePage = () => {
                                 <p>{userInfo.email}</p>
                             </div>
                         </div>
-                        <div className={styles.estagioAtivo + ' shadow'}>{/*Informações do estágio ativo*/}
+                        <div className={styles.estagioAtivo + ' shadow'}>
                             <div className={styles.estagioAtivoInfo}>
                                 <h2>Estágio Ativo</h2>
                                 <div>
@@ -154,7 +152,7 @@ const ProfilePage = () => {
                         </table>
                     </div>
                     </div>
-                ) : role === 'company' ? (
+            ) : role === 'company' ? (
                 <div className={styles.background}>
                     <div className={styles.flexRow}>
                         <div className={styles.userInfo + ' shadow'}>
@@ -179,22 +177,7 @@ const ProfilePage = () => {
                                             <p>{candidatura.estagio.title}</p>
                                             <p className={styles.verCandidatura}>Ver candidatura</p>
                                     </div>
-                                    ))}
-                                    {/* <div>
-                                        <p>Bad Bunny</p>
-                                        <p>Quim Barreiros</p>
-                                        <p>Tiagovski</p>
-                                    </div>
-                                    <div>
-                                        <p>Estágio de Tecnico</p>
-                                        <p>Estagio de Tecnico</p>
-                                        <p>Estagio Web Development</p>
-                                    </div>
-                                    <div>
-                                        <p className={styles.verCandidatura}>Ver candidatura</p>
-                                        <p className={styles.verCandidatura}>Ver candidatura</p>
-                                        <p className={styles.verCandidatura}>Ver candidatura</p>
-                                    </div> */}
+                                ))}
                             </div>
                         </div>
                     </div>
