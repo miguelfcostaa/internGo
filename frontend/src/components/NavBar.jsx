@@ -125,12 +125,9 @@ const NavBar = () => {
                                 value={searchInput}
                                 onChange={e => setSearchInput(e.target.value)}
                             />
-                            <button className="search-button" type="submit" aria-label="Buscar">
-                              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="search-icon">
-                                <circle cx="11" cy="11" r="8"></circle>
-                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                              </svg>
-                            </button>
+                            <svg className='search-icon' xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="#7c7c7cff" class="bi bi-search" viewBox="0 0 16 16">
+                              <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                            </svg>
                         </form>
                         <div className="navbar-brand position-relative" ref={dropdownRef} style={{ position: 'relative' }}>
                         <div

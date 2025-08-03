@@ -25,7 +25,7 @@ const CriacaoEstagio = () => {
 			area: "",
 			vagas: "",
 			localizacao: "",
-			inicio: "",
+			dataInicio: "",
 			tipo: "",
 			duracao: "",
 			prazo: "",
@@ -45,7 +45,7 @@ const CriacaoEstagio = () => {
 		area: false,
 		vagas: false,
 		localizacao: false,
-		inicio: false,
+		dataInicio: false,
 		tipo: false,
 		duracao: false,
 		prazo: false,
@@ -61,7 +61,7 @@ const CriacaoEstagio = () => {
 	});
 	//maximo de caracteres e mensagem de erro
 	const messageMaxChat = "Atingiu o maximo de caracteres permitido";
-	const maxChars = 10;
+	const maxChars = 20;
 	const handleChange = (e) => {
 		const { name, value } = e.target;
 		if (value.length <= maxChars) {
@@ -91,7 +91,7 @@ const CriacaoEstagio = () => {
 			area: "Área de atuação",
 			vagas: "Número de vagas",
 			localizacao: "Localização",
-			inicio: "Data de início",
+			dataInicio: "Mês de início",
 			tipo: "Tipo de estágio",
 			duracao: "Duração do estágio",
 			prazo: "Prazo limite de candidatura",
@@ -118,7 +118,7 @@ const CriacaoEstagio = () => {
 		const estagioData = {
 			title: formData.titulo,
 			area: formData.area,
-			dataInicio: formData.inicio,
+			dataInicio: formData.dataInicio,
 			tipoEstagio: formData.tipo,
 			duracao: parseInt(formData.duracao.split(" ")[0]), // Extrair número dos meses
 			numeroVagas: parseInt(formData.vagas),
@@ -126,8 +126,7 @@ const CriacaoEstagio = () => {
 			prazoCandidatura: formData.prazo,
 			descricao: formData.descricao,
 			oportunidades:
-			formData.mentoria ||
-			"Oportunidades de aprendizagem e desenvolvimento profissional",
+			formData.oportunidades || "Oportunidades de aprendizagem e desenvolvimento profissional",
 			beneficios: formData.beneficios,
 			habilitacoesMinimas: formData.habilitacoes || "",
 			cursosPreferenciais: "", // Campo não presente no formulário
@@ -166,12 +165,18 @@ const CriacaoEstagio = () => {
 		if (step > 1) setStep(step - 1);
 	};
 
-	const handleCancel = () => {
-		navigate(-1);
-	};
+	// Função para formatar o mês, que vem como //YYYY-MM e retorna o nome do mes e o ano
+    const handleMesInicio = (mes) => { 
+        const meses = [
+            "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
+            "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
+        ];
+        const [ano, mesIndex] = mes.split("-");
+        return `${meses[parseInt(mesIndex) - 1]} de ${ano}`;
+    }
 
 	return (
-		<div style={{ backgroundColor: "#fff", minHeight: "100vh" }}>
+		<div style={{ backgroundColor: "#f5f5f5", minHeight: "100vh", paddingBottom: "2rem" }}>
 		<NavBar />
 		<h6 className={style.titulo}>Publicar Novo Estágio na sua Empresa</h6>
 
@@ -185,15 +190,16 @@ const CriacaoEstagio = () => {
 		)}
 
 		{success && (
-			<div className={`${style.container} ${style.mt4}`}>
-			<Alert variant="success" dismissible onClose={() => setSuccess("")}>
-				{success}
-			</Alert>
+			<div className={`${style.successContainer}`}>
+				<Alert variant="success" dismissible onClose={() => setSuccess("")}>
+					Estágio criado com sucesso!
+				</Alert>
 			</div>
 		)}
+		
 
 		{/* BARRA DE ETAPAS */}
-		<div className={`${style.container} ${style.mt4}`}>
+		<div className={step === 4 ? style.reviewContainer : `${style.container} ${style.mt4}`}>
 			<div className={`${style.mb4} ${style.borderBottom} ${style.pb2}`}>
 			<span className={step === 1 ? style.fwBold : style.textMuted}>
 				1. Informações Básicas
@@ -310,9 +316,9 @@ const CriacaoEstagio = () => {
 						</Form.Label>
 						<Form.Control
 						className={style.smallDate}
-						type="text"
-						name="inicio"
-						value={formData.inicio}
+						type="month"
+						name="dataInicio"
+						value={formData.dataInicio}
 						onChange={handleChange}
 						/>
 					</Form.Group>
@@ -663,37 +669,37 @@ const CriacaoEstagio = () => {
 						</h6>
 						<p>
 						<strong className="text-secondary">Título:</strong>{" "}
-						{formData.titulo || "-"}
+						{formData.titulo || <span style={{ color: "#aaa" }}> Não especificado.</span>}
 						</p>
 						<p>
 						<strong className="text-secondary">Áreas:</strong>{" "}
-						{formData.area || "-"}
+						{formData.area || <span style={{ color: "#aaa" }}> Não especificado.</span>}
 						</p>
 						<p>
 						<strong className="text-secondary">Vagas:</strong>{" "}
-						{formData.vagas || "-"}
+						{formData.vagas || <span style={{ color: "#aaa" }}> Não especificado.</span>}
 						</p>
 						<p>
 						<strong className="text-secondary">Localização:</strong>{" "}
-						{formData.localizacao || "-"}
+						{formData.localizacao || <span style={{ color: "#aaa" }}> Não especificado.</span>}
 						</p>
 						<p>
 						<strong className="text-secondary">Tipo:</strong>{" "}
-						{formData.tipo || "-"}
+						{formData.tipo || <span style={{ color: "#aaa" }}> Não especificado.</span>}
 						</p>
 						<p>
-						<strong className="text-secondary">Início:</strong>{" "}
-						{formData.inicio || "-"}
+						<strong className="text-secondary">Mês de Início:</strong>{" "}
+						{handleMesInicio(formData.dataInicio) || <span style={{ color: "#aaa" }}> Não especificado.</span>}
 						</p>
 						<p>
 						<strong className="text-secondary">Duração:</strong>{" "}
-						{formData.duracao || "-"}
+						{formData.duracao || <span style={{ color: "#aaa" }}> Não especificado.</span>}
 						</p>
 						<p>
 						<strong className="text-secondary">
 							Prazo Candidaturas:
 						</strong>{" "}
-						{formData.prazo || "-"}
+						{formData.prazo || <span style={{ color: "#aaa" }}> Não especificado.</span>}
 						</p>
 					</Card.Body>
 					</Card>
@@ -714,79 +720,79 @@ const CriacaoEstagio = () => {
 						</h6>
 						<p>
 						<strong className="text-secondary">Habilitações:</strong>{" "}
-						{formData.habilitacoes || "-"}
+						{formData.habilitacoes || <span style={{ color: "#aaa" }}> Não especificado.</span>}
 						</p>
 						<p>
 						<strong className="text-secondary">
 							Competências Técnicas:
 						</strong>{" "}
-						{formData.competenciasTecnicas || "-"}
+						{formData.competenciasTecnicas || <span style={{ color: "#aaa" }}> Não especificado.</span>}
 						</p>
 						<p>
 						<strong className="text-secondary">Soft Skills:</strong>{" "}
-						{formData.softSkills || "-"}
+						{formData.softSkills || <span style={{ color: "#aaa" }}> Não especificado.</span>}
 						</p>
 						<p>
 						<strong className="text-secondary">Idiomas:</strong>{" "}
-						{formData.idiomas || "-"}
+						{formData.idiomas || <span style={{ color: "#aaa" }}> Não especificado.</span>}
 						</p>
 						<p>
 						<strong className="text-secondary">
 							Outros Requisitos:
 						</strong>{" "}
-						{formData.outrosRequisitos || "-"}
+						{formData.outrosRequisitos || <span style={{ color: "#aaa" }}> Não especificado.</span>}
 						</p>
 					</Card.Body>
 					</Card>
 				</Col>
 				</Row>
 				<Card className="shadow-sm mb-4">
-				<Card.Body>
-					<h6 className="fw-bold text-dark mb-3">
-					3. Detalhes do Estágio{" "}
-					<span
-						className="text-primary"
-						style={{ cursor: "pointer" }}
-						onClick={() => setStep(2)}
-					>
-						[ Editar ]
-					</span>
-					</h6>
-					<p>
-					<strong className="text-secondary">Descrição:</strong>{" "}
-					{formData.descricao || "-"}
-					</p>
-					<p>
-					<strong className="text-secondary">
-						Mentoria/Aprendizagem:
-					</strong>{" "}
-					{formData.mentoria || "-"}
-					</p>
-					<p>
-					<strong className="text-secondary">Benefícios:</strong>{" "}
-					{formData.beneficios || "-"}
-					</p>
-				</Card.Body>
+					<Card.Body>
+						<h6 className="fw-bold text-dark mb-3">
+							3. Detalhes do Estágio{" "}
+							<span
+								className="text-primary"
+								style={{ cursor: "pointer" }}
+								onClick={() => setStep(2)}
+							>
+								[ Editar ]
+							</span>
+						</h6>
+						<p>
+							<strong className="text-secondary">Descrição:</strong>{" "}
+							{formData.descricao || <span style={{ color: "#aaa" }}> Não especificado.</span>}
+						</p>
+						<p>
+							<strong className="text-secondary">
+								Mentoria/Aprendizagem:
+							</strong>{" "}
+							{formData.oportunidades || <span style={{ color: "#aaa" }}> Não especificado.</span>}
+							</p>
+						<p>
+							<strong className="text-secondary">Benefícios:</strong>{" "}
+							{formData.beneficios || <span style={{ color: "#aaa" }}> Não especificado.</span>}
+						</p>
+					</Card.Body>
 				</Card>
 
 				<div
-				className={`${style.dFlex} ${style.justifyContentBetween} ${style.mt4}`}
+					className={`${style.dFlex} ${style.justifyContentBetween} ${style.mt4}`}
 				>
-				<Button
-					variant="secondary"
-					className={style.btnSecondary}
-					onClick={handleBack}
-				>
-					Voltar
-				</Button>
-				<Button
-					variant="primary"
-					className={style.btnPrimary}
-					onClick={handleNext}
-					disabled={loading}
-				>
-					{loading ? "Publicando..." : "Publicar Estágio"}
-				</Button>
+					<Button
+						variant="secondary"
+						className={style.btnSecondary}
+						onClick={handleBack}
+					>
+						Voltar
+					</Button>
+					<Button
+						variant="primary"
+						className={style.btnPrimary}
+						onClick={handleNext}
+						disabled={loading}
+					>
+						{loading ? "Publicando..." : "Publicar Estágio"}
+					</Button>
 				</div>
 			</Container>
 			)}

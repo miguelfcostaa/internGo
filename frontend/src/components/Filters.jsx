@@ -51,7 +51,6 @@ const Filters = ({ setEstagios, searchTag, setSearchTag, onRemoveSearchTag }) =>
             
             if (response.ok) {
                 const data = await response.json();
-                console.log("Opções de filtro:", data);
                 
                 // Criar array de definições de filtro com dados dinâmicos
                 const dynamicFilterDefinitions = [
@@ -125,13 +124,10 @@ const Filters = ({ setEstagios, searchTag, setSearchTag, onRemoveSearchTag }) =>
                     "Content-Type": "application/json",
                 }
             });
-            console.log(response.url);
             const data = await response.json();
-            console.log(data);
 
             if (response.ok) {
                 setEstagios(data);
-                console.log("Estágios filtrados:", data);
             }
         } catch (error) {
             console.error("Error fetching estagios:", error);

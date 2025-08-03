@@ -27,7 +27,7 @@ const EditarEstagio = () => {
     area: "",
     vagas: "",
     localizacao: "",
-    inicio: "",
+    dataInicio: "",
     tipo: "",
     duracao: "",
     prazo: "",
@@ -393,15 +393,16 @@ return (
               <Col md={6}>
                 <Form.Group className="mb-3">
                   <Form.Label className={style.label}>
-                    Data de Início <RequiredFieldTooltip />
+                    Mês de Início <RequiredFieldTooltip />
                   </Form.Label>
                   <Form.Control
-                    type="date"
-                    name="inicio"
-                    value={formData.inicio}
+                    type="month"
+                    name="dataInicio"
+                    value={formData.dataInicio}
                     onChange={handleChange}
                     className={style.input}
                   />
+                  { console.log(formData.dataInicio)}
                 </Form.Group>
               </Col>
               <Col md={6}>

@@ -18,6 +18,16 @@ function Estagio({ NomeEmpresa, NomeEstagio, TotalVagas, Ativas, Area, Inicio, T
             navigate(`/estagio/${idEstagio}`);
         }
     };
+    
+    // Função para formatar o mês, que vem como //YYYY-MM e retorna o nome do mes e o ano
+    const handleMesInicio = (mes) => { 
+        const meses = [
+            "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
+            "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
+        ];
+        const [ano, mesIndex] = mes.split("-");
+        return `${meses[parseInt(mesIndex) - 1]} ${ano}`;
+    }
 
     return (
         <div 
@@ -43,7 +53,7 @@ function Estagio({ NomeEmpresa, NomeEstagio, TotalVagas, Ativas, Area, Inicio, T
                     overflow: "hidden",
                     textOverflow: "ellipsis",
                     whiteSpace: "nowrap",
-                    maxWidth: "25rem",
+                    justifyContent: "space-between",
                     }}
                 >
                     {NomeEstagio}
@@ -55,7 +65,7 @@ function Estagio({ NomeEmpresa, NomeEstagio, TotalVagas, Ativas, Area, Inicio, T
                         <div><span className={styles.estagioInfoLabel}>Tipo de Estágio: </span> {TipoEstagio}</div>
                     </div>
                     <div className={styles.estagioInfoRight}>
-                        <div><span className={styles.estagioInfoLabel}>Inicio: </span> {Inicio}</div>
+                        <div><span className={styles.estagioInfoLabel}>Inicio: </span> {handleMesInicio(Inicio)}</div>
                         <div><span className={styles.estagioInfoLabel}>Duração: </span> {Duracao} mês</div>
                     </div>
                 </div>

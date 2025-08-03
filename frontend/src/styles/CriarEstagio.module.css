@@ -6,20 +6,21 @@ body,
   color: black;
 }
 
+body {
+  background-color: #f5f5f5;
+  padding-bottom: 2rem;
+}
+
 .container {
   max-width: 1300px;
-  max-height: 100%;
   margin: 2rem auto;
   padding: 2rem 3rem;
-  width: 100%;
+  width: 90%;
   background-color: white;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   border-radius: 0.5rem;
   box-sizing: border-box;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  min-height: 500px;
 }
 
 .mt4 {
@@ -30,6 +31,7 @@ body,
   text-align: center;
   margin-top: 4rem;
   margin-left: 2rem;
+  margin-bottom: 2rem;
   font-size: 1.25rem;
   font-weight: bold;
 }
@@ -193,9 +195,26 @@ body,
   color: #333;
 }
 
+.reviewContainer {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 1.5rem 2.5rem;
+  width: 90%;
+  background-color: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  border-radius: 0.5rem;
+  box-sizing: border-box;
+  min-height: 500px;
+}
+
 .card {
   border: 1px solid #ddd;
   border-radius: 6px;
+  margin-bottom: 1rem;
+}
+
+.card .card-body {
+  padding: 1.25rem;
 }
 
 button {
@@ -219,4 +238,11 @@ button {
     color: red;
     font-size: 15px;
     text-align: left;
+}
+
+.successContainer {
+  max-width: 1300px;
+  margin: 0rem auto;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 0.5rem;
 }

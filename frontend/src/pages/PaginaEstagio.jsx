@@ -30,6 +30,16 @@ function PaginaEstagio() {
         navigate("/candidatar-estagio");
     };
 
+    // Função para formatar o mês, que vem como //YYYY-MM e retorna o nome do mes e o ano
+    const handleMesInicio = (mes) => { 
+        const meses = [
+            "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
+            "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
+        ];
+        const [ano, mesIndex] = mes.split("-");
+        return `${meses[parseInt(mesIndex) - 1]} de ${ano}`;
+    }
+
 
     if (loading) {
         return <div>Loading...</div>; // Show a loading message or spinner
@@ -111,7 +121,7 @@ function PaginaEstagio() {
                         <div className={Styles.sidebar}>
                             <p><strong>Prazo da Candidatura:</strong> {estagio.prazoCandidatura ? new Date(estagio.prazoCandidatura).toLocaleDateString() : 'Não especificado'}</p>
                             <p><strong>Local de estágio:</strong> {estagio.localizacao}</p>
-                            <p><strong>Mês de Início do Estágio:</strong> {estagio.dataInicio}</p>
+                            <p><strong>Mês de Início do Estágio:</strong> {handleMesInicio(estagio.dataInicio)}</p>
                             <p><strong>Duração:</strong> {estagio.duracao > 1 ? `${estagio.duracao} Meses` : `${estagio.duracao} Mês`}</p>
                             <p><strong>Número de Vagas:</strong> {estagio.numeroVagas}</p>
                             <p><strong>Horário do Estágio:</strong> {estagio.horarioEstagio}</p>
