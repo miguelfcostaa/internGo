@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Container, Row, Col, Form, Button, Card, Alert, Modal } from "react-bootstrap";
+import { Container, Row, Col, Form, Button, Alert, Modal } from "react-bootstrap";
 import NavBar from "../components/NavBar";
 import style from "../styles/CriarEstagio.module.css";
 import RequiredFieldTooltip from "../components/RequiredFieldTooltip.jsx";
