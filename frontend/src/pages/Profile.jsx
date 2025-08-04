@@ -107,6 +107,7 @@ const ProfilePage = () => {
                                     <tr key={index}>
                                         <td style={{ textAlign: 'left', paddingLeft: "2rem" }}>{candidato.estagio.title}</td>
                                         <td>{candidato.estagio.company.name}</td>
+                                        {console.log(candidato)}
                                         <td>
                                             {candidato.dataCandidatura
                                             ? new Date(candidato.dataCandidatura)
@@ -116,10 +117,12 @@ const ProfilePage = () => {
                                         <td>{candidato.estagio.duracao === 1 ? `${candidato.estagio.duracao} Mês` : `${candidato.estagio.duracao} Meses`}</td>
                                         <td>{candidato.estagio.tipoEstagio}</td>
                                         <td className={styles.linkIcon} style={{ paddingRight: "2rem" }}>
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#447D9B" className="bi bi-link" viewBox="0 0 16 16">
-                                                <path d="M6.354 5.5H4a3 3 0 0 0 0 6h3a3 3 0 0 0 2.83-4H9q-.13 0-.25.031A2 2 0 0 1 7 10.5H4a2 2 0 1 1 0-4h1.535c.218-.376.495-.714.82-1z"/>
-                                                <path d="M9 5.5a3 3 0 0 0-2.83 4h1.098A2 2 0 0 1 9 6.5h3a2 2 0 1 1 0 4h-1.535a4 4 0 0 1-.82 1H12a3 3 0 1 0 0-6z"/>
-                                            </svg>
+                                            <Link to={`/estagio/${candidato.estagio._id}`} >
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#447D9B" className="bi bi-link" viewBox="0 0 16 16">
+                                                    <path d="M6.354 5.5H4a3 3 0 0 0 0 6h3a3 3 0 0 0 2.83-4H9q-.13 0-.25.031A2 2 0 0 1 7 10.5H4a2 2 0 1 1 0-4h1.535c.218-.376.495-.714.82-1z"/>
+                                                    <path d="M9 5.5a3 3 0 0 0-2.83 4h1.098A2 2 0 0 1 9 6.5h3a2 2 0 1 1 0 4h-1.535a4 4 0 0 1-.82 1H12a3 3 0 1 0 0-6z"/>
+                                                </svg>
+                                            </Link>
                                         </td>
                                     </tr>
                                 ))}
@@ -173,7 +176,7 @@ const ProfilePage = () => {
                             <div className={styles.candidaturasRecebidas + ' shadow'}>
                                 {candidaturas.map((candidatura, index) => (
                                     <div key={index} className={styles.candidaturaItem}>
-                                            <p>{candidatura.user.name}</p>
+                                            <p><Link className={styles.verCandidatura} to={`/estagiario/${candidatura.user._id}`}>{candidatura.user.name}</Link></p>
                                             <p>{candidatura.estagio.title}</p>
                                             <p className={styles.verCandidatura}>Ver candidatura</p>
                                     </div>

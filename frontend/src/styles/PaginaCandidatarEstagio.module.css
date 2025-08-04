@@ -6,36 +6,29 @@
     padding-left: 15%;
 }
 .heading{
-    margin-left: 15%;
+    margin-left: 10%;
     text-align: left;
     font-weight: bold;
+    font-size: 35px;
     margin-top: 30px;
-    margin-bottom: 20px;
 }
 .bigbox{
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     background-color: white;
-    margin-top: 2.5%;
     width: 100%;
     border-radius: 0.5rem;
-}
-.boxheader{
-    display:flex;
+    border: solid rgb(114, 114, 114);
+}.formrow{
+    display: flex;
     flex-direction: row;
-    text-align: left;
-    background-color: #bbbaba;
-    padding: 10px;
-}
-.current{
-    font-weight: bold;
-    margin-left: 10px;
+    margin-top: 10px; 
+    gap:150px;
 }
 .labelcoluna{
     display: flex;
     flex-direction: column;
-    width:80%;
+    width:100%;
     margin-top: 25px;
-    margin-left: 50px;
 }
 .placeholder{
     background-color: white;
@@ -43,13 +36,42 @@
 .textarea{
     margin-top: 10px;
     width: 100%;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 .submit{
+    border-radius: 5px;
+    background-color: #273F4F;
     margin-top: 25px;
     margin-bottom: 25px;
+    width: 150px;
+    height: 35px;
+    color: #ffffff;
+}
+.sumbit:hover{
+    background-color:#ffffff;
+    color: #273F4F;
 }
 .charterror{
     color: red;
     font-size: 15px;
     text-align: left;
+}
+.input{
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+.select{
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    background-color: #F2F2F2
+}
+.inputdate{
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    background-color: #F2F2F2
+}
+.inputfile{
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }

@@ -36,8 +36,7 @@ function PaginaCandidatarEstagio(){
         carta:"",
       });
       const messageMaxChat="Atingiu o maximo de caracteres permitido"
-      const maxChars = 10;
-    const handleChange = (e) => {
+    const handleChange = ( maxChars = 10000 ) => (e)=> {
         const { name, value } = e.target;
         if (value.length <= maxChars) {
             setFormData((prev) => ({ ...prev, [name]: value }));
@@ -53,13 +52,14 @@ function PaginaCandidatarEstagio(){
             <div className={style.background}>
                 <ButtonVoltar/>
                 <h4 className={style.heading}>Estágio Técnico de sistemas</h4>
+                <div style={{marginTop:"40px", textAlign:"left", marginBottom:"10px"}}>Prencha os campos abaixo para se candidatar ao Estágio.</div>{/*Adicionar mensagem, possivelmente, aqui caso os campos nao estejam todos preenchidos*/}
                 <div className={style.bigbox}>
                     <form onSubmit={handlesSubmit}>
-                        <div style={{paddingRight:"5%", paddingLeft:"5%"}}>
+                        <div style={{paddingRight:"10%", paddingLeft:"10%",marginTop:"20px"}}>
                             <div style={{display:"flex", flexDirection:"column"}}>
-                                <div style={{display:"flex", flexDirection:"row"}}>
+                                <div className={style.formrow}>
                                     <label className={style.labelcoluna}>Nome completo:
-                                        <input type="text" placeholder="" name="name" value={formData.name} onChange={handleChange}></input>
+                                        <input  type="text" placeholder="" name="name" value={formData.name} className={style.input} onChange={handleChange(100)}></input>
                                         {/*Mensagem qquando o limite de caracteres é atingindo*/}
                                         {Warnings["name"] && (
                                             <span className={style.charterror}>
@@ -67,42 +67,8 @@ function PaginaCandidatarEstagio(){
                                             </span>
                                         )}
                                     </label>
-                                    <label className={style.labelcoluna}>Sexo:{/*criar um menu de opçoes*/}
-                                        <select name="sexo" value={formData.sexo} onChange={handleChange}>
-                                            <option value="">------</option>
-                                            <option value="Masculino">Masculino</option>
-                                            <option value="femenino">Femenino</option>
-                                            <option value="naoespecifico">Prefiro não especificar</option>
-                                        </select>
-                                    </label>
-                                </div>
-                                <div style={{display:"flex", flexDirection:"row"}}>
-                                    <label className={style.labelcoluna}>Nº de telemóvel:
-                                        <div style={{ display:"flex", flexDirection:"row"}}>
-                                        <select style={{width:"20%"}}>
-                                            <option value="+351">+351</option>
-                                            <option value="+55">+55</option>
-                                            <option value="+1">+1</option>
-                                            <option value="+58">+58</option>
-                                        </select>
-                                        <input type="text" placeholder="" name="telemovel" value={formData.telemovel} onChange={handleChange} style={{width:"100%"}}></input>
-                                        </div>
-                                    </label>
-                                    <label className={style.labelcoluna}>Email:
-                                        <input type="text" placeholder="" name="email" value={formData.email} onChange={handleChange}></input>
-                                    </label>
-                                </div>
-                                <div style={{display:"flex", flexDirection:"row"}}>
-                                    <label className={style.labelcoluna}>Morada:
-                                        <input type="text" placeholder="" name="morada" value={formData.morada} onChange={handleChange}></input>
-                                        {Warnings["morada"] && (
-                                            <span className={style.charterror}>
-                                            {messageMaxChat}
-                                            </span>
-                                        )}
-                                    </label>
                                     <label className={style.labelcoluna}>Nacionalidade:
-                                        <input type="text" placeholder="" name="nacionalidade" value={formData.nacionalidade} onChange={handleChange}></input>
+                                        <input type="text" placeholder="" name="nacionalidade" value={formData.nacionalidade} className={style.input} onChange={handleChange(100)}></input>
                                         {Warnings["nacionalidade"] && (
                                             <span className={style.charterror}>
                                             {messageMaxChat}
@@ -110,17 +76,51 @@ function PaginaCandidatarEstagio(){
                                         )}
                                     </label>
                                 </div>
-                                <div style={{display:"flex", flexDirection:"row"}}>
-                                    <label className={style.labelcoluna}>Data de nascimento:
-                                        <input type="text" placeholder="" name="dataNascimento" value={formData.dataNascimento} onChange={handleChange}></input>
+                                <div className={style.formrow}>
+                                    <label className={style.labelcoluna}>Nº de telemóvel:
+                                        <div style={{ display:"flex", flexDirection:"row"}}>
+                                        <select style={{width:"20%"}} className={style.select}>
+                                            <option value="+351">+351</option>
+                                            <option value="+55">+55</option>
+                                            <option value="+1">+1</option>
+                                            <option value="+58">+58</option>
+                                        </select>
+                                        <input type="text" placeholder="" name="telemovel" value={formData.telemovel} className={style.input} onChange={handleChange()} style={{width:"100%"}}></input>
+                                        </div>
                                     </label>
-                                    <label className={style.labelcoluna}>nº do cc:
-                                        <input type="text" placeholder="" name="cc" value={formData.cc} onChange={handleChange}></input>
+                                    <label className={style.labelcoluna}>Email:
+                                        <input type="text" placeholder="" name="email" value={formData.email} className={style.input} onChange={handleChange()}></input>
                                     </label>
                                 </div>
-                                <div style={{display:"flex", flexDirection:"row"}}>
-                                    <label className={style.labelcoluna}>QNQ:{/*criar um menu de opçoes*/}
-                                        <select name="nivelQNQ" onChange={handleChange}>
+                                <div className={style.formrow}>
+                                    <label className={style.labelcoluna}>Morada:
+                                        <input type="text" placeholder="" name="morada" value={formData.morada} className={style.input} onChange={handleChange(1000)}></input>
+                                        {Warnings["morada"] && (
+                                            <span className={style.charterror}>
+                                            {messageMaxChat}
+                                            </span>
+                                        )}
+                                    </label>
+                                    <label className={style.labelcoluna}>Código postal:
+                                        <input type="text" placeholder="" name="nacionalidade" value={formData.nacionalidade} className={style.input} onChange={handleChange(100)}></input>
+                                        {Warnings["nacionalidade"] && (
+                                            <span className={style.charterror}>
+                                            {messageMaxChat}
+                                            </span>
+                                        )}
+                                    </label>
+                                </div>
+                                <div className={style.formrow}>
+                                    <label className={style.labelcoluna}>Data de nascimento:
+                                        <input type="date" name="dataNascimento" value={formData.dataNascimento} className={style.inputdate} onChange={handleChange()}></input>
+                                    </label>
+                                    <label className={style.labelcoluna}>Nº do CC:
+                                        <input type="text" placeholder="" name="cc" value={formData.cc} className={style.input} onChange={handleChange()}></input>
+                                    </label>
+                                </div>
+                                <div className={style.formrow}>
+                                    <label className={style.labelcoluna}>Nível QNQ:{/*criar um menu de opçoes*/}
+                                        <select name="nivelQNQ" className={style.select} onChange={handleChange()}>
                                             <option value="">Escolha o seu nível de habilitação</option>
                                             <option value="Nível 1">Nível 1-4ºano do Ensino Básico</option>
                                             <option value="Nível 2">Nível 2-6ºano do Ensino Básico</option>
@@ -132,25 +132,8 @@ function PaginaCandidatarEstagio(){
                                             <option value="Nível 8">Nível 8-Doutoramento</option>
                                         </select>
                                     </label>
-                                    <label className={style.labelcoluna}>Curso:
-                                        <input type="text" placeholder="" name="curso" value={formData.curso} onChange={handleChange}></input>
-                                        {Warnings["curso"] && (
-                                            <span className={style.charterror}>
-                                            {messageMaxChat}
-                                            </span>
-                                        )}
-                                    </label>
-                                </div>
-                                <div style={{display:"flex", flexDirection:"row"}}>
-                                    <label  className={style.labelcoluna}>É estudante:
-                                        <select name="curso" onChange={handleChange}>
-                                            <option value="" >------</option>
-                                            <option value="Sim">Sim</option>
-                                            <option value="Nao" >Não</option>
-                                        </select>
-                                    </label>
                                     <label className={style.labelcoluna}>Universidade/Entidade Formadora:
-                                        <input type="text" placeholder="" name="localEnsino" value={formData.localEnsino} onChange={handleChange}></input>
+                                        <input type="text" placeholder="" name="localEnsino" value={formData.localEnsino} className={style.input} onChange={handleChange(100)}></input>
                                         {Warnings["localEnsino"] && (
                                             <span className={style.charterror}>
                                             {messageMaxChat}
@@ -158,12 +141,22 @@ function PaginaCandidatarEstagio(){
                                         )}
                                     </label>
                                 </div>
+                                <div className={style.formrow}>
+                                    <label className={style.labelcoluna}>Curso:
+                                        <input type="text" placeholder="" name="curso" value={formData.curso} className={style.input} onChange={handleChange(100)}></input>
+                                        {Warnings["curso"] && (
+                                            <span className={style.charterror}>
+                                            {messageMaxChat}
+                                            </span>
+                                        )}
+                                    </label>
+                                    <label className={style.labelcoluna}>Adicione o seu CV:
+                                        <input type="file" className={style.inputfile}></input> {/*Falta guardar este ficheiro*/}
+                                    </label>
+                                </div>
                             </div>
-                            <div>
-                                <input type="file" style={{ marginTop:"30px"}}></input> {/*Falta guardar este ficheiro*/}
-                            </div>
-                            <label style={{marginTop:"30px", width:"100%", textAlign:"left"}}>Escreva a sua carta de Apresentação
-                                <textarea className={style.textarea} rows="6" cols="50" name="carta" value={formData.carta} onChange={handleChange}></textarea>
+                            <label style={{marginTop:"30px", width:"100%", textAlign:"left"}}>Escreva a sua carta de Apresentação:
+                                <textarea className={style.textarea} rows="6" cols="50" name="carta" value={formData.carta}  onChange={handleChange()}></textarea>
                             </label>
                         </div>
                         <input type="submit" value="Candidatar" className={style.submit}></input>

@@ -241,8 +241,15 @@ button {
 }
 
 .successContainer {
-  max-width: 1300px;
-  margin: 0rem auto;
+  max-width: 1200px;
+  margin: 2rem auto;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 0.5rem;
+}
+
+.errorContainer {
+  max-width: 1200px;
+  margin: 2rem auto;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   border-radius: 0.5rem;
 }

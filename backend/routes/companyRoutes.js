@@ -13,19 +13,12 @@ router.get('/:id', async (req, res) => {
         if (!company) {
             return res.status(404).json({ message: 'Company not found' });
         }
-        res.json(company);
+        const companyObj = company.toObject();
+        companyObj.role = "company";
+        res.json(companyObj);
     } catch (error) {
         res.status(500).json({ message: 'Error fetching companies', error });
     }
-});
-
-router.get('/register', (req, res) => {
-    res.json({ message: "Company registration route is working!" });
-});
-
-
-router.get('/login', (req, res) => {
-    res.json({ message: "Company login route is working!" });
 });
 
 router.post('/register', async (req, res) => {
