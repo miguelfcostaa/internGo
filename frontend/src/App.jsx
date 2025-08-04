@@ -19,6 +19,7 @@ import EditProfile from './pages/EditProfile.jsx';
 import PaginaEstagio from './pages/PaginaEstagio.jsx';
 import PaginaCandidatarEstagio from './pages/PaginaCandidatarEstagio.jsx';
 import EditarEstagio from './pages/EditarEstagio.jsx';
+import ProfileEstagiario from './pages/ProfileEstagiario.jsx';
  
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
           <Route path='/select-user' element={<SelectUser />}></Route>  {/* Rota para selecionar se é Estagiario ou Empresa */}
           <Route path='/edit-profile/:id' element={<EditProfile/>}></Route>  {/* Rota para Criar Estágio */}
           <Route path='/profile/:id' element={<ProtectedRoute><Profile /></ProtectedRoute>}></Route>  {/*  Rota da Profile Page (protegida) */}
+          <Route path='/estagiario/:id' element={<ProtectedRoute requiredRole="company"><ProfileEstagiario /></ProtectedRoute>}></Route>
           <Route path='/estagios-criados/:id' element={<ProtectedRoute requiredRole="company"><EstagiosCriados /></ProtectedRoute>}></Route>  {/* Rota para Estágios Criados (só empresas) */}
           <Route path='/criar-estagio/' element={<ProtectedRoute requiredRole="company"><CriarEstagio /></ProtectedRoute>}></Route>  {/*  Rota da Criar Estágio Page */}
           <Route path='/estagio/:id/editar' element={<ProtectedRoute requiredRole="company"><EditarEstagio /></ProtectedRoute>}></Route>  {/* Rota para editar um estágio específico */}
