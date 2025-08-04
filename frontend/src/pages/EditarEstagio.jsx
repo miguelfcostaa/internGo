@@ -268,24 +268,22 @@ const messageMaxChat="Atingiu o maximo de caracteres permitido"
 }
 
 return (
-    <>
     <NavBar/>
-      {/* Mensagens de erro e sucesso */}
-    {error && (
-      <div className={`${style.container} ${style.mt4}`}>
-        <Alert variant="danger" dismissible onClose={() => setError("")}>
-          {error}
-        </Alert>
-      </div>
-    )}
+     {error && (
+  <div className={`${style.container} ${style.mt4}`}>
+    <Alert variant="danger" dismissible onClose={() => setError("")}>
+      {error}
+    </Alert>
+  </div>
+)}
 
-    {success && (
-      <div className={`${style.container} ${style.mt4}`}>
-        <Alert variant="success">
-          {success}
-        </Alert>
-      </div>
-    )}
+{success && (
+  <div className={`${style.container} ${style.mt4}`}>
+    <Alert variant="success" dismissible onClose={() => setSuccess("")}>
+      {success}
+    </Alert>
+  </div>
+)}
     
   <Container className="mt-5">
     <div className={`${style.container} ${style.mt4}`}>
@@ -436,20 +434,6 @@ return (
         </Form.Group>
       </Col>
     </Row>
-
-    {/* Botones de acción */}
-    <div className="d-flex justify-content-between mt-4">
-      <Button variant="danger" onClick={() => setShowDeleteModal(true)}>
-        Excluir Estágio
-      </Button>
-      <Button 
-        variant="primary" 
-        onClick={handleNext}
-        disabled={formData.titulo.length > 60 || formData.localizacao.length > 40} 
-      >
-        Próximo
-      </Button>
-    </div>
   </div>
 )}
 {/* Paso 2 */}
@@ -545,40 +529,6 @@ return (
         </small>
       </div>
     </Form.Group>
-
-    {/* Botones de acción */}
-    <div className="d-flex justify-content-between mt-4">
-      {/* Botón de eliminar */}
-      <Button 
-        variant="danger" 
-        onClick={() => setShowDeleteModal(true)}
-      >
-        Excluir Estágio
-      </Button>
-
-      <div>
-        {/* Botón Voltar */}
-        <Button 
-          variant="secondary" 
-          className="me-2"
-          onClick={() => setStep(1)}
-        >
-          Voltar
-        </Button>
-
-        {/* Botón Próximo */}
-        <Button 
-          variant="primary" 
-          onClick={handleNext}
-          disabled={
-            formData.descricao.length > 500 || 
-            formData.beneficios.length > 300
-          }
-        >
-          Próximo
-        </Button>
-      </div>
-    </div>
   </div>
 )}
 
@@ -699,86 +649,40 @@ return (
         </Form.Group>
       </Col>
     </Row>
-
-    {/* Botones de acción */}
-    <div className="d-flex justify-content-between mt-4">
-      {/* Botón Excluir */}
-      <Button 
-        variant="danger" 
-        onClick={() => setShowDeleteModal(true)}
-      >
-        Excluir Estágio
-      </Button>
-
-      <div>
-        {/* Botón Voltar */}
-        <Button 
-          variant="secondary" 
-          className="me-2"
-          onClick={() => setStep(2)}
-        >
-          Voltar
-        </Button>
-
-        {/* Botón Próximo */}
-        <Button 
-          variant="primary" 
-          onClick={handleNext}
-          disabled={
-            formData.habilitacoes.length > 300 ||
-            formData.competenciasTecnicas.length > 300 ||
-            formData.softSkills.length > 200 ||
-            formData.idiomas.length > 150 ||
-            formData.outrosRequisitos.length > 150
-          }
-        >
-          Próximo
-        </Button>
-      </div>
-    </div>
   </div>
 )}
  	{/* Paso 4 */}
 {step === 4 && (
   <div>
     <h5 className={style.stepTitle}>Revisão e Atualização</h5>
-    <div className={style.reviewSection}>
-      <p><strong>Título:</strong> {formData.titulo}</p>
-      <p><strong>Área:</strong> {formData.area}</p>
-      <p><strong>Vagas:</strong> {formData.vagas}</p>
-      <p><strong>Localização:</strong> {formData.localizacao}</p>
-      <p><strong>Tipo:</strong> {formData.tipo}</p>
-      <p><strong>Duração:</strong> {formData.duracao}</p>
-      <p><strong>Início:</strong> {formData.dataInicio}</p>
-      <p><strong>Prazo de Candidatura:</strong> {formData.prazo}</p>
-      <p><strong>Descrição:</strong> {formData.descricao}</p>
-      <p><strong>Benefícios:</strong> {formData.beneficios}</p>
-      <p><strong>Habilitações Mínimas:</strong> {formData.habilitacoes}</p>
-      <p><strong>Competências Técnicas:</strong> {formData.competenciasTecnicas}</p>
-      <p><strong>Soft Skills:</strong> {formData.softSkills}</p>
-      <p><strong>Idiomas:</strong> {formData.idiomas}</p>
-      <p><strong>Outros Requisitos:</strong> {formData.outrosRequisitos}</p>
-    </div>
-
-    {/* Zona de Perigo */}
-    <div className="mt-4 pt-3" style={{ borderTop: "1px solid #dee2e6" }}>
-      <h6 style={{ color: "#dc3545", marginBottom: "15px" }}>Zona de Perigo</h6>
-      <p style={{ fontSize: "0.9rem", color: "#6c757d", marginBottom: "15px" }}>
-        Deletar este estágio irá removê-lo permanentemente da base de dados. Esta ação não pode ser desfeita.
-      </p>
-      <Button
-        variant="danger"
-        onClick={() => setShowDeleteModal(true)}
-        disabled={loadingDelete}
-        style={{ fontSize: "0.9rem" }}
-      >
-        {loadingDelete ? "Deletando..." : "Deletar Estágio"}
-      </Button>
+    <div
+      className={style.reviewSection}
+      style={{ display: "flex", flexWrap: "wrap", gap: "1.5rem", textAlign: "left" }}
+    >
+      <div style={{ flex: "1 1 45%" }}>
+        <p><strong>Título:</strong> {formData.titulo}</p>
+        <p><strong>Área:</strong> {formData.area}</p>
+        <p><strong>Vagas:</strong> {formData.vagas}</p>
+        <p><strong>Localização:</strong> {formData.localizacao}</p>
+        <p><strong>Tipo:</strong> {formData.tipo}</p>
+        <p><strong>Duração:</strong> {formData.duracao}</p>
+        <p><strong>Início:</strong> {formData.dataInicio}</p>
+        <p><strong>Prazo de Candidatura:</strong> {formData.prazo}</p>
+      </div>
+      <div style={{ flex: "1 1 45%" }}>
+        <p><strong>Descrição:</strong> {formData.descricao}</p>
+        <p><strong>Benefícios:</strong> {formData.beneficios}</p>
+        <p><strong>Habilitações Mínimas:</strong> {formData.habilitacoes}</p>
+        <p><strong>Competências Técnicas:</strong> {formData.competenciasTecnicas}</p>
+        <p><strong>Soft Skills:</strong> {formData.softSkills}</p>
+        <p><strong>Idiomas:</strong> {formData.idiomas}</p>
+        <p><strong>Outros Requisitos:</strong> {formData.outrosRequisitos}</p>
+      </div>
     </div>
   </div>
 )}
 
-{/* Botões de navegação */}
+{/* Botones de navegación */}
 <div className={style.buttonContainer}>
   <div className={style.leftButtons}>
     {step > 1 && (
@@ -809,42 +713,37 @@ return (
   </Button>
 </div>
 
-
-      </div>
-    </Container>
-
-    {/* Modal de confirmação para deletar */}
-    <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)} centered>
-      <Modal.Header closeButton>
-        <Modal.Title style={{ color: "#dc3545" }}>Confirmar Eliminação</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <p>Tem a certeza de que deseja deletar este estágio?</p>
-        <p><strong>Título:</strong> {formData.titulo}</p>
-        <p style={{ color: "#dc3545", fontSize: "0.9rem", marginTop: "15px" }}>
-          <strong>Atenção:</strong> Esta ação não pode ser desfeita. O estágio será removido permanentemente da base de dados.
-        </p>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button 
-          variant="secondary" 
-          onClick={() => setShowDeleteModal(false)}
-          disabled={loadingDelete}
-        >
-          Cancelar
-        </Button>
-        <Button 
-          variant="danger" 
-          onClick={handleDeleteEstagio}
-          disabled={loadingDelete}
-        >
-          {loadingDelete ? "Deletando..." : "Deletar Estágio"}
-        </Button>
-      </Modal.Footer>
-    </Modal>
+{/* Modal de confirmação para deletar */}
+<Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)} centered>
+  <Modal.Header closeButton>
+    <Modal.Title style={{ color: "#dc3545" }}>Confirmar Eliminação</Modal.Title>
+  </Modal.Header>
+  <Modal.Body>
+    <p>Tem a certeza de que deseja deletar este estágio?</p>
+    <p><strong>Título:</strong> {formData.titulo}</p>
+    <p style={{ color: "#dc3545", fontSize: "0.9rem", marginTop: "15px" }}>
+      <strong>Atenção:</strong> Esta ação não pode ser desfeita. O estágio será removido permanentemente da base de dados.
+    </p>
+  </Modal.Body>
+  <Modal.Footer>
+    <Button
+      variant="secondary"
+      onClick={() => setShowDeleteModal(false)}
+      disabled={loadingDelete}
+    >
+      Cancelar
+    </Button>
+    <Button
+      variant="danger"
+      onClick={handleDeleteEstagio}
+      disabled={loadingDelete}
+    >
+      {loadingDelete ? "Deletando..." : "Deletar Estágio"}
+    </Button>
+  </Modal.Footer>
+</Modal>
+</Container>
   </>
 );
-
 }
-
 export default EditarEstagio;
