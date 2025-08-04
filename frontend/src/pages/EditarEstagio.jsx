@@ -306,126 +306,510 @@ return (
           4. Revisão
         </span>
       </div>
-       
-       {step === 1 && (
-          <div>
-            <Form.Group className="mb-3">
-              <Form.Label className={style.label}>
-                Título do Estágio <RequiredFieldTooltip />
-              </Form.Label>
-              <Form.Control
-                type="text"
-                name="titulo"
-                value={formData.titulo}
-                onChange={handleChange}
-                placeholder="Ex: Estágio em Desenvolvimento Web"
-                className={style.input}
-              />
-              {Warnings["titulo"] && (
-                <span className={style.charterror}>
-                {messageMaxChat}
-                </span>
-              )}
-            </Form.Group>
 
-            <Form.Group className="mb-3">
-              <Form.Label className={style.label}>
-                Área de Atuação <RequiredFieldTooltip />
-              </Form.Label>
-              <Form.Select
-                name="area"
-                value={formData.area}
-                onChange={handleChange}
-                className={style.select}
-              >
-                <option value="">Selecione uma área</option>
-                <option value="Tecnologia da Informação">Tecnologia da Informação</option>
-                <option value="Marketing Digital">Marketing Digital</option>
-                <option value="Recursos Humanos">Recursos Humanos</option>
-                <option value="Finanças">Finanças</option>
-                <option value="Design">Design</option>
-                <option value="Vendas">Vendas</option>
-                <option value="Gestão">Gestão</option>
-                <option value="Outro">Outro</option>
-              </Form.Select>
-            </Form.Group>
-
-            <Row>
-              <Col md={6}>
-                <Form.Group className="mb-3">
-                  <Form.Label className={style.label}>
-                    Número de Vagas <RequiredFieldTooltip />
-                  </Form.Label>
-                  <Form.Control
-                    type="number"
-                    name="vagas"
-                    value={formData.vagas}
-                    onChange={handleChange}
-                    min="1"
-                    placeholder="1"
-                    className={style.input}
-                  />
-                </Form.Group>
-              </Col>
-              <Col md={6}>
-                <Form.Group className="mb-3">
-                  <Form.Label className={style.label}>
-                    Localização <RequiredFieldTooltip />
-                  </Form.Label>
-                  <Form.Control
-                    type="text"
-                    name="localizacao"
-                    value={formData.localizacao}
-                    onChange={handleChange}
-                    placeholder="Ex: Lisboa, Porto, Remoto"
-                    className={style.input}
-                  />
-              {Warnings["localizacao"] && (
-                <span className={style.charterror}>
-                {messageMaxChat}
-                </span>
-              )}
-                </Form.Group>
-              </Col>
-            </Row>
-
-            <Row>
-              <Col md={6}>
-                <Form.Group className="mb-3">
-                  <Form.Label className={style.label}>
-                    Mês de Início <RequiredFieldTooltip />
-                  </Form.Label>
-                  <Form.Control
-                    type="month"
-                    name="dataInicio"
-                    value={formData.dataInicio}
-                    onChange={handleChange}
-                    className={style.input}
-                  />
-                  { console.log(formData.dataInicio)}
-                </Form.Group>
-              </Col>
-              <Col md={6}>
-                <Form.Group className="mb-3">
-                  <Form.Label className={style.label}>
-                    Tipo de Estágio <RequiredFieldTooltip />
-                  </Form.Label>
-                  <Form.Select
-                    name="tipo"
-                    value={formData.tipo}
-                    onChange={handleChange}
-                    className={style.select}
-                  >
-                    <option value="">Selecione o tipo</option>
-                    <option value="Presencial">Presencial</option>
-                    <option value="Remoto">Remoto</option>
-                    <option value="Híbrido">Híbrido</option>
-                  </Form.Select>
-                </Form.Group>
-              </Col>
-            </Row>
-          </div>
+      {/* Paso 1*/}
+{step === 1 && (
+  <div>
+    {/* Título do Estágio */}
+    <Form.Group className="mb-3">
+      <Form.Label className={style.label}>
+        Título do Estágio <RequiredFieldTooltip />
+      </Form.Label>
+      <Form.Control
+        type="text"
+        name="titulo"
+        value={formData.titulo}
+        onChange={handleChange}
+        placeholder="Ex: Estágio em Desenvolvimento Web"
+        className={`${style.input} ${formData.titulo.length > 60 ? "is-invalid" : ""}`}
+      />
+      <div className="d-flex justify-content-between">
+        {formData.titulo.length > 60 && (
+          <span className={style.charterror}>Máximo de 60 caracteres ultrapassado!</span>
         )}
+        <small className={`ms-auto ${formData.titulo.length > 60 ? "text-danger" : "text-muted"}`}>
+          {formData.titulo.length}/60 caracteres
+        </small>
+      </div>
+    </Form.Group>
+
+    {/* Área de Atuação */}
+    <Form.Group className="mb-3">
+      <Form.Label className={style.label}>
+        Área de Atuação <RequiredFieldTooltip />
+      </Form.Label>
+      <Form.Select
+        name="area"
+        value={formData.area}
+        onChange={handleChange}
+        className={style.select}
+      >
+        <option value="">Selecione uma área</option>
+        <option value="Tecnologia da Informação">Tecnologia da Informação</option>
+        <option value="Marketing Digital">Marketing Digital</option>
+        <option value="Recursos Humanos">Recursos Humanos</option>
+        <option value="Finanças">Finanças</option>
+        <option value="Design">Design</option>
+        <option value="Vendas">Vendas</option>
+        <option value="Gestão">Gestão</option>
+        <option value="Outro">Outro</option>
+      </Form.Select>
+    </Form.Group>
+
+    <Row>
+      {/* Número de Vagas */}
+      <Col md={6}>
+        <Form.Group className="mb-3">
+          <Form.Label className={style.label}>
+            Número de Vagas <RequiredFieldTooltip />
+          </Form.Label>
+          <Form.Control
+            type="number"
+            name="vagas"
+            value={formData.vagas}
+            onChange={handleChange}
+            min="1"
+            placeholder="1"
+            className={style.input}
+          />
+        </Form.Group>
+      </Col>
+
+      {/* Localização */}
+      <Col md={6}>
+        <Form.Group className="mb-3">
+          <Form.Label className={style.label}>
+            Localização <RequiredFieldTooltip />
+          </Form.Label>
+          <Form.Control
+            type="text"
+            name="localizacao"
+            value={formData.localizacao}
+            onChange={handleChange}
+            placeholder="Ex: Lisboa, Porto, Remoto"
+            className={`${style.input} ${formData.localizacao.length > 40 ? "is-invalid" : ""}`}
+          />
+          <div className="d-flex justify-content-between">
+            {formData.localizacao.length > 40 && (
+              <span className={style.charterror}>Máximo de 40 caracteres ultrapassado!</span>
+            )}
+            <small className={`ms-auto ${formData.localizacao.length > 40 ? "text-danger" : "text-muted"}`}>
+              {formData.localizacao.length}/40 caracteres
+            </small>
+          </div>
+        </Form.Group>
+      </Col>
+    </Row>
+
+    {/* Mês de Início e Tipo de Estágio */}
+    <Row>
+      <Col md={6}>
+        <Form.Group className="mb-3">
+          <Form.Label className={style.label}>
+            Mês de Início <RequiredFieldTooltip />
+          </Form.Label>
+          <Form.Control
+            type="month"
+            name="dataInicio"
+            value={formData.dataInicio}
+            onChange={handleChange}
+            className={style.input}
+          />
+        </Form.Group>
+      </Col>
+      <Col md={6}>
+        <Form.Group className="mb-3">
+          <Form.Label className={style.label}>
+            Tipo de Estágio <RequiredFieldTooltip />
+          </Form.Label>
+          <Form.Select
+            name="tipo"
+            value={formData.tipo}
+            onChange={handleChange}
+            className={style.select}
+          >
+            <option value="">Selecione o tipo</option>
+            <option value="Presencial">Presencial</option>
+            <option value="Remoto">Remoto</option>
+            <option value="Híbrido">Híbrido</option>
+          </Form.Select>
+        </Form.Group>
+      </Col>
+    </Row>
+
+    {/* Botones de acción */}
+    <div className="d-flex justify-content-between mt-4">
+      <Button variant="danger" onClick={() => setShowDeleteModal(true)}>
+        Excluir Estágio
+      </Button>
+      <Button 
+        variant="primary" 
+        onClick={handleNext}
+        disabled={formData.titulo.length > 60 || formData.localizacao.length > 40} 
+      >
+        Próximo
+      </Button>
+    </div>
+  </div>
+)}
+{/* Paso 2 */}
+{step === 2 && (
+  <div>
+    <Row>
+      {/* Duração do Estágio */}
+      <Col md={6}>
+        <Form.Group className="mb-3">
+          <Form.Label className={style.label}>
+            Duração do Estágio <RequiredFieldTooltip />
+          </Form.Label>
+          <Form.Select
+            name="duracao"
+            value={formData.duracao}
+            onChange={handleChange}
+            className={style.select}
+          >
+            <option value="">Selecione a duração</option>
+            <option value="1 Mês">1 Mês</option>
+            <option value="2 Meses">2 Meses</option>
+            <option value="3 Meses">3 Meses</option>
+            <option value="4 Meses">4 Meses</option>
+            <option value="5 Meses">5 Meses</option>
+            <option value="6 Meses">6 Meses</option>
+            <option value="9 Meses">9 Meses</option>
+            <option value="12 Meses">12 Meses</option>
+          </Form.Select>
+        </Form.Group>
+      </Col>
+
+      {/* Prazo Limite */}
+      <Col md={6}>
+        <Form.Group className="mb-3">
+          <Form.Label className={style.label}>
+            Prazo Limite de Candidatura <RequiredFieldTooltip />
+          </Form.Label>
+          <Form.Control
+            type="date"
+            name="prazo"
+            value={formData.prazo}
+            onChange={handleChange}
+            className={style.input}
+          />
+        </Form.Group>
+      </Col>
+    </Row>
+
+    {/* Descrição do Estágio */}
+    <Form.Group className="mb-3">
+      <Form.Label className={style.label}>
+        Descrição do Estágio <RequiredFieldTooltip />
+      </Form.Label>
+      <Form.Control
+        as="textarea"
+        rows={4}
+        name="descricao"
+        value={formData.descricao}
+        onChange={handleChange}
+        placeholder="Descreva as principais atividades e responsabilidades..."
+        className={`${style.textarea} ${formData.descricao.length > 500 ? "is-invalid" : ""}`}
+      />
+      <div className="d-flex justify-content-between">
+        {formData.descricao.length > 500 && (
+          <span className={style.charterror}>Máximo de 500 caracteres ultrapassado!</span>
+        )}
+        <small className={`ms-auto ${formData.descricao.length > 500 ? "text-danger" : "text-muted"}`}>
+          {formData.descricao.length}/500 caracteres
+        </small>
+      </div>
+    </Form.Group>
+
+    {/* Benefícios Oferecidos */}
+    <Form.Group className="mb-3">
+      <Form.Label className={style.label}>
+        Benefícios Oferecidos <RequiredFieldTooltip />
+      </Form.Label>
+      <Form.Control
+        as="textarea"
+        rows={3}
+        name="beneficios"
+        value={formData.beneficios}
+        onChange={handleChange}
+        placeholder="Ex: Bolsa de estágio, subsídio de alimentação, seguro..."
+        className={`${style.textarea} ${formData.beneficios.length > 300 ? "is-invalid" : ""}`}
+      />
+      <div className="d-flex justify-content-between">
+        {formData.beneficios.length > 300 && (
+          <span className={style.charterror}>Máximo de 300 caracteres ultrapassado!</span>
+        )}
+        <small className={`ms-auto ${formData.beneficios.length > 300 ? "text-danger" : "text-muted"}`}>
+          {formData.beneficios.length}/300 caracteres
+        </small>
+      </div>
+    </Form.Group>
+
+    {/* Botones de acción */}
+    <div className="d-flex justify-content-between mt-4">
+      {/* Botón de eliminar */}
+      <Button 
+        variant="danger" 
+        onClick={() => setShowDeleteModal(true)}
+      >
+        Excluir Estágio
+      </Button>
+
+      <div>
+        {/* Botón Voltar */}
+        <Button 
+          variant="secondary" 
+          className="me-2"
+          onClick={() => setStep(1)}
+        >
+          Voltar
+        </Button>
+
+        {/* Botón Próximo */}
+        <Button 
+          variant="primary" 
+          onClick={handleNext}
+          disabled={
+            formData.descricao.length > 500 || 
+            formData.beneficios.length > 300
+          }
+        >
+          Próximo
+        </Button>
+      </div>
+    </div>
+  </div>
+)}
+
+{/* Paso 3*/}
+{step === 3 && (
+  <div>
+    <h5 className={style.stepTitle}>Requisitos e Competências</h5>
+
+    {/* Habilitações Mínimas */}
+    <Form.Group className="mb-3">
+      <Form.Label className={style.label}>Habilitações Mínimas</Form.Label>
+      <Form.Control
+        as="textarea"
+        rows={2}
+        name="habilitacoes"
+        value={formData.habilitacoes}
+        onChange={handleChange}
+        placeholder="Ex: Estudante do ensino superior em..."
+        className={`${style.textarea} ${formData.habilitacoes.length > 300 ? "is-invalid" : ""}`}
+      />
+      <div className="d-flex justify-content-between">
+        {formData.habilitacoes.length > 300 && (
+          <span className={style.charterror}>Máximo de 300 caracteres ultrapassado!</span>
+        )}
+        <small className={`ms-auto ${formData.habilitacoes.length > 300 ? "text-danger" : "text-muted"}`}>
+          {formData.habilitacoes.length}/300 caracteres
+        </small>
+      </div>
+    </Form.Group>
+
+    {/* Competências Técnicas */}
+    <Form.Group className="mb-3">
+      <Form.Label className={style.label}>Competências Técnicas</Form.Label>
+      <Form.Control
+        as="textarea"
+        rows={3}
+        name="competenciasTecnicas"
+        value={formData.competenciasTecnicas}
+        onChange={handleChange}
+        placeholder="Ex: JavaScript, Python, HTML/CSS..."
+        className={`${style.textarea} ${formData.competenciasTecnicas.length > 300 ? "is-invalid" : ""}`}
+      />
+      <div className="d-flex justify-content-between">
+        {formData.competenciasTecnicas.length > 300 && (
+          <span className={style.charterror}>Máximo de 300 caracteres ultrapassado!</span>
+        )}
+        <small className={`ms-auto ${formData.competenciasTecnicas.length > 300 ? "text-danger" : "text-muted"}`}>
+          {formData.competenciasTecnicas.length}/300 caracteres
+        </small>
+      </div>
+    </Form.Group>
+
+    {/* Soft Skills */}
+    <Form.Group className="mb-3">
+      <Form.Label className={style.label}>Soft Skills</Form.Label>
+      <Form.Control
+        as="textarea"
+        rows={2}
+        name="softSkills"
+        value={formData.softSkills}
+        onChange={handleChange}
+        placeholder="Ex: Trabalho em equipa, comunicação, proatividade..."
+        className={`${style.textarea} ${formData.softSkills.length > 200 ? "is-invalid" : ""}`}
+      />
+      <div className="d-flex justify-content-between">
+        {formData.softSkills.length > 200 && (
+          <span className={style.charterror}>Máximo de 200 caracteres ultrapassado!</span>
+        )}
+        <small className={`ms-auto ${formData.softSkills.length > 200 ? "text-danger" : "text-muted"}`}>
+          {formData.softSkills.length}/200 caracteres
+        </small>
+      </div>
+    </Form.Group>
+
+    {/* Idiomas y Outros Requisitos */}
+    <Row>
+      <Col md={6}>
+        <Form.Group className="mb-3">
+          <Form.Label className={style.label}>Idiomas</Form.Label>
+          <Form.Control
+            type="text"
+            name="idiomas"
+            value={formData.idiomas}
+            onChange={handleChange}
+            placeholder="Ex: Português (nativo), Inglês (B2)"
+            className={`${style.input} ${formData.idiomas.length > 150 ? "is-invalid" : ""}`}
+          />
+          <div className="d-flex justify-content-between">
+            {formData.idiomas.length > 150 && (
+              <span className={style.charterror}>Máximo de 150 caracteres ultrapassado!</span>
+            )}
+            <small className={`ms-auto ${formData.idiomas.length > 150 ? "text-danger" : "text-muted"}`}>
+              {formData.idiomas.length}/150 caracteres
+            </small>
+          </div>
+        </Form.Group>
+      </Col>
+
+      <Col md={6}>
+        <Form.Group className="mb-3">
+          <Form.Label className={style.label}>Outros Requisitos</Form.Label>
+          <Form.Control
+            type="text"
+            name="outrosRequisitos"
+            value={formData.outrosRequisitos}
+            onChange={handleChange}
+            placeholder="Requisitos adicionais..."
+            className={`${style.input} ${formData.outrosRequisitos.length > 150 ? "is-invalid" : ""}`}
+          />
+          <div className="d-flex justify-content-between">
+            {formData.outrosRequisitos.length > 150 && (
+              <span className={style.charterror}>Máximo de 150 caracteres ultrapassado!</span>
+            )}
+            <small className={`ms-auto ${formData.outrosRequisitos.length > 150 ? "text-danger" : "text-muted"}`}>
+              {formData.outrosRequisitos.length}/150 caracteres
+            </small>
+          </div>
+        </Form.Group>
+      </Col>
+    </Row>
+
+    {/* Botones de acción */}
+    <div className="d-flex justify-content-between mt-4">
+      {/* Botón Excluir */}
+      <Button 
+        variant="danger" 
+        onClick={() => setShowDeleteModal(true)}
+      >
+        Excluir Estágio
+      </Button>
+
+      <div>
+        {/* Botón Voltar */}
+        <Button 
+          variant="secondary" 
+          className="me-2"
+          onClick={() => setStep(2)}
+        >
+          Voltar
+        </Button>
+
+        {/* Botón Próximo */}
+        <Button 
+          variant="primary" 
+          onClick={handleNext}
+          disabled={
+            formData.habilitacoes.length > 300 ||
+            formData.competenciasTecnicas.length > 300 ||
+            formData.softSkills.length > 200 ||
+            formData.idiomas.length > 150 ||
+            formData.outrosRequisitos.length > 150
+          }
+        >
+          Próximo
+        </Button>
+      </div>
+    </div>
+  </div>
+)}
+ 	{/* Paso 4 */}
+{step === 4 && (
+  <div>
+    <h5 className={style.stepTitle}>Revisão e Atualização</h5>
+    <div className={style.reviewSection}>
+      <p><strong>Título:</strong> {formData.titulo}</p>
+      <p><strong>Área:</strong> {formData.area}</p>
+      <p><strong>Vagas:</strong> {formData.vagas}</p>
+      <p><strong>Localização:</strong> {formData.localizacao}</p>
+      <p><strong>Tipo:</strong> {formData.tipo}</p>
+      <p><strong>Duração:</strong> {formData.duracao}</p>
+      <p><strong>Início:</strong> {formData.dataInicio}</p>
+      <p><strong>Prazo de Candidatura:</strong> {formData.prazo}</p>
+      <p><strong>Descrição:</strong> {formData.descricao}</p>
+      <p><strong>Benefícios:</strong> {formData.beneficios}</p>
+      <p><strong>Habilitações Mínimas:</strong> {formData.habilitacoes}</p>
+      <p><strong>Competências Técnicas:</strong> {formData.competenciasTecnicas}</p>
+      <p><strong>Soft Skills:</strong> {formData.softSkills}</p>
+      <p><strong>Idiomas:</strong> {formData.idiomas}</p>
+      <p><strong>Outros Requisitos:</strong> {formData.outrosRequisitos}</p>
+    </div>
+
+    {/* Zona de Perigo */}
+    <div className="mt-4 pt-3" style={{ borderTop: "1px solid #dee2e6" }}>
+      <h6 style={{ color: "#dc3545", marginBottom: "15px" }}>Zona de Perigo</h6>
+      <p style={{ fontSize: "0.9rem", color: "#6c757d", marginBottom: "15px" }}>
+        Deletar este estágio irá removê-lo permanentemente da base de dados. Esta ação não pode ser desfeita.
+      </p>
+      <Button
+        variant="danger"
+        onClick={() => setShowDeleteModal(true)}
+        disabled={loadingDelete}
+        style={{ fontSize: "0.9rem" }}
+      >
+        {loadingDelete ? "Deletando..." : "Deletar Estágio"}
+      </Button>
+    </div>
+  </div>
+)}
+
+{/* Botões de navegação */}
+<div className={style.buttonContainer}>
+  <div className={style.leftButtons}>
+    {step > 1 && (
+      <Button
+        variant="outline-secondary"
+        onClick={handleBack}
+        className={style.backButton}
+      >
+        Voltar
+      </Button>
+    )}
+    <Button
+      variant="outline-danger"
+      onClick={handleCancel}
+      className={style.cancelButton}
+    >
+      Cancelar
+    </Button>
+  </div>
+
+  <Button
+    variant="primary"
+    onClick={handleNext}
+    disabled={loading}
+    className={style.nextButton}
+  >
+    {loading ? "Atualizando..." : step === 4 ? "Atualizar Estágio" : "Próximo"}
+  </Button>
+</div>
+
+
       </div>
     </Container>
 
