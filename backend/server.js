@@ -73,7 +73,7 @@ app.post('/api/login', loginLimiter, async (req, res) => {
     if (company) {
       const isMatch = await bcrypt.compare(password, company.password);
       if (!isMatch) {
-        return res.status(401).json({ message: 'Password incorreta.' });
+        return res.status(401).json({ message: 'Email ou Password incorretos.' });
       }
 
       const token = jwt.sign(
@@ -88,7 +88,7 @@ app.post('/api/login', loginLimiter, async (req, res) => {
     if (user) {
       const isMatch = await bcrypt.compare(password, user.password);
       if (!isMatch) {
-        return res.status(401).json({ message: 'Password incorreta.' });
+        return res.status(401).json({ message: 'Email ou Password incorretos.' });
       }
 
       const token = jwt.sign(

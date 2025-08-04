@@ -19,15 +19,6 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-router.get('/register', (req, res) => {
-    res.json({ message: "Company registration route is working!" });
-});
-
-
-router.get('/login', (req, res) => {
-    res.json({ message: "Company login route is working!" });
-});
-
 router.post('/register', async (req, res) => {
     const errors = await validations.validateCompanyInput(Company, req.body);
 
