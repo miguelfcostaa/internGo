@@ -111,13 +111,34 @@ const EditarEstagio = () => {
       carregarEstagio();
     }
   }, [id]);
-  const messageMaxChat = "Atingiu o maximo de caracteres permitido"
-  const maxChars = 10;
+
+  // Limites específicos para cada campo
+  const fieldLimits = {
+    titulo: 60,
+    localizacao: 40,
+    descricao: 500,
+    beneficios: 300,
+    competenciasTecnicas: 300,
+    softSkills: 200,
+    idiomas: 150,
+    outrosRequisitos: 150,
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if (value.length <= maxChars) {
-      setFormData((prev) => ({ ...prev, [name]: value }));;
-      setWarnings((prev) => ({ ...prev, [name]: value.length === maxChars }));
+    const limit = fieldLimits[name];
+    
+    // Se o campo tem limite específico, aplica a validação
+    if (limit && value.length > limit) {
+      return; // Não permite ultrapassar o limite
+    }
+    
+    // Atualiza o valor
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    
+    // Atualiza os warnings se necessário
+    if (limit) {
+      setWarnings((prev) => ({ ...prev, [name]: value.length === limit }));
     }
   };
 
