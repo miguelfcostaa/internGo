@@ -176,7 +176,7 @@ const ProfilePage = () => {
                             <div className={styles.candidaturasRecebidas + ' shadow'}>
                                 {candidaturas.map((candidatura, index) => (
                                     <div key={index} className={styles.candidaturaItem}>
-                                            <p>{candidatura.user.name}</p>
+                                            <p><Link className={styles.verCandidatura} to={`/estagiario/${candidatura.user._id}`}>{candidatura.user.name}</Link></p>
                                             <p>{candidatura.estagio.title}</p>
                                             <p className={styles.verCandidatura}>Ver candidatura</p>
                                     </div>

@@ -13,7 +13,9 @@ router.get('/:id', async (req, res) => {
         if (!company) {
             return res.status(404).json({ message: 'Company not found' });
         }
-        res.json(company);
+        const companyObj = company.toObject();
+        companyObj.role = "company";
+        res.json(companyObj);
     } catch (error) {
         res.status(500).json({ message: 'Error fetching companies', error });
     }
