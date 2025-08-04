@@ -1,5 +1,4 @@
 import React from 'react';
-import ButtonVoltar from '../components/ButtonVoltar';
 import styles from "../styles/NotFound.module.css";
 
 const NotFound = () => (

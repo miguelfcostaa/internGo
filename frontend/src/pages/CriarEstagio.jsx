@@ -139,7 +139,7 @@ const CriacaoEstagio = () => {
 		console.log("Dados do estágio a serem enviados:", estagioData);
 
 		const response = await criarEstagio(estagioData);
-		setSuccess("Estágio criado com sucesso!");
+		if (response.ok) setSuccess("Estágio criado com sucesso!");
 
 		// Aguardar um pouco para mostrar a mensagem de sucesso
 		setTimeout(() => {
@@ -167,6 +167,7 @@ const CriacaoEstagio = () => {
 
 	// Função para formatar o mês, que vem como //YYYY-MM e retorna o nome do mes e o ano
     const handleMesInicio = (mes) => { 
+		if (!mes) return "";
         const meses = [
             "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
             "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
@@ -182,21 +183,20 @@ const CriacaoEstagio = () => {
 
 		{/* Mensagens de erro e sucesso */}
 		{error && (
-			<div className={`${style.container} ${style.mt4}`}>
-			<Alert variant="danger" dismissible onClose={() => setError("")}>
-				{error}
-			</Alert>
+			<div className={`${style.errorContainer}`}>
+				<Alert  variant="danger" onClose={() => setError("")}>
+					{error}
+				</Alert>
 			</div>
 		)}
 
 		{success && (
 			<div className={`${style.successContainer}`}>
-				<Alert variant="success" dismissible onClose={() => setSuccess("")}>
+				<Alert variant="success" onClose={() => setSuccess("")}>
 					Estágio criado com sucesso!
 				</Alert>
 			</div>
 		)}
-		
 
 		{/* BARRA DE ETAPAS */}
 		<div className={step === 4 ? style.reviewContainer : `${style.container} ${style.mt4}`}>
@@ -536,18 +536,18 @@ const CriacaoEstagio = () => {
 						onChange={handleChange}
 					>
 						<option value="">Selecione o nível de habilitação</option>
-						<option value="1">Nível 1 – 4º ano do Ensino Básico</option>
-						<option value="2">Nível 2 – 6º ano do Ensino Básico</option>
-						<option value="3">Nível 3 – 9º ano do Ensino Básico</option>
+						<option value="1">Nível 1 - 4º ano do Ensino Básico</option>
+						<option value="2">Nível 2 - 6º ano do Ensino Básico</option>
+						<option value="3">Nível 3 - 9º ano do Ensino Básico</option>
 						<option value="4">
-						Nível 4 – Ensino Secundário + Estágio Profissional
+						Nível 4 - Ensino Secundário + Estágio Profissional
 						</option>
 						<option value="5">
-						Nível 5 – Cursos de Especialização Tecnológica (CET)
+						Nível 5 - Cursos de Especialização Tecnológica (CET)
 						</option>
-						<option value="6">Nível 6 – Licenciatura</option>
-						<option value="7">Nível 7 – Mestrado</option>
-						<option value="8">Nível 8 – Doutoramento</option>
+						<option value="6">Nível 6 - Licenciatura</option>
+						<option value="7">Nível 7 - Mestrado</option>
+						<option value="8">Nível 8 - Doutoramento</option>
 					</Form.Select>
 					</Form.Group>
 

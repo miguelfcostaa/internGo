@@ -1,9 +1,9 @@
 // Função para tratar erros de resposta da API
-const handleErrors = (res) => {
-  if (!res.ok) {
-    throw new Error(`HTTP error! status: ${res.status}`);
-  }
-};
+// const handleErrors = (res) => {
+//   if (!res.ok) {
+//     throw new Error(`HTTP error! status: ${res.status}`);
+//   }
+// };
 
 // Função para registrar um novo usuário
 export const signupUser = async (name, email, cc, telefone, password) => {
