@@ -14,6 +14,7 @@ function PaginaCandidatarEstagio(){
     nacionalidade:false,
     nivelQNQ:false,
     carta:false,
+    nif:false,
   });
   //Estado para armazenar dados do formulário
     const [formData, setFormData] = useState({
@@ -222,8 +223,8 @@ function PaginaCandidatarEstagio(){
                                     </div>
                                 </div>
                                 <div className={style.formrow}>
-                                    <label className={style.labelcoluna}>Curso:
-                                        <input type="text" placeholder="" name="curso" value={formData.curso} className={style.input} onChange={handleChange(100)}></input>
+                                    <label className={style.labelcoluna}>NIF:
+                                        <input type="text" placeholder="" name="nif" value={formData.nif} className={style.input} onChange={handleChange(100)}></input>
                                         {Warnings["curso"] && (
                                             <span className={style.charterror}>
                                             {messageMaxChat}
