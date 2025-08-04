@@ -4,6 +4,9 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const { verifyToken } = require('../middleware/auth');
 const validations = require('../utils/validations');
+const upload = require('../middleware/multerConfig');
+const path = require('path');
+const fs = require('fs');
 
 const router = express.Router();
 
@@ -208,6 +211,118 @@ router.put('/:id', verifyToken, async (req, res) => {
     } catch (error) {
         console.error('Error updating user:', error);
         res.status(500).json({ message: 'Error updating user', error });
+    }
+});
+
+// Upload de foto de perfil
+router.post('/:id/profile-photo', verifyToken, upload.single('profilePhoto'), async (req, res) => {
+    try {
+        const userId = req.params.id;
+        
+        // Verificar se o utilizador existe
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ 
+                success: false, 
+                message: 'Utilizador não encontrado' 
+            });
+        }
+
+        // Verificar se foi enviado um ficheiro
+        if (!req.file) {
+            return res.status(400).json({ 
+                success: false, 
+                message: 'Nenhuma imagem foi enviada' 
+            });
+        }
+
+        // Eliminar a foto anterior se existir
+        if (user.profilePhoto) {
+            const oldPhotoPath = path.join(__dirname, '..', 'uploads', 'profile-photos', path.basename(user.profilePhoto));
+            if (fs.existsSync(oldPhotoPath)) {
+                fs.unlinkSync(oldPhotoPath);
+            }
+        }
+
+        // Atualizar o utilizador com o caminho da nova foto
+        const photoUrl = `/uploads/profile-photos/${req.file.filename}`;
+        
+        const updatedUser = await User.findByIdAndUpdate(
+            userId, 
+            { profilePhoto: photoUrl }, 
+            { new: true }
+        ).select('-password');
+
+        res.json({
+            success: true,
+            message: 'Foto de perfil atualizada com sucesso',
+            profilePhoto: photoUrl,
+            user: updatedUser
+        });
+
+    } catch (error) {
+        console.error('Erro ao fazer upload da foto de perfil:', error);
+        
+        // Eliminar o ficheiro se ocorreu um erro
+        if (req.file) {
+            const filePath = req.file.path;
+            if (fs.existsSync(filePath)) {
+                fs.unlinkSync(filePath);
+            }
+        }
+
+        res.status(500).json({ 
+            success: false, 
+            message: 'Erro interno do servidor' 
+        });
+    }
+});
+
+// Eliminar foto de perfil
+router.delete('/:id/profile-photo', verifyToken, async (req, res) => {
+    try {
+        const userId = req.params.id;
+        
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ 
+                success: false, 
+                message: 'Utilizador não encontrado' 
+            });
+        }
+
+        if (!user.profilePhoto) {
+            return res.status(400).json({ 
+                success: false, 
+                message: 'Utilizador não tem foto de perfil' 
+            });
+        }
+
+        // Eliminar o ficheiro do sistema de ficheiros
+        const photoPath = path.join(__dirname, '..', 'uploads', 'profile-photos', path.basename(user.profilePhoto));
+        if (fs.existsSync(photoPath)) {
+            fs.unlinkSync(photoPath);
+        }
+
+        // Atualizar o utilizador removendo a foto
+        const updatedUser = await User.findByIdAndUpdate(
+            userId, 
+            { profilePhoto: null }, 
+            { new: true }
+        ).select('-password');
+
+        res.json({
+            success: true,
+            message: 'Foto de perfil eliminada com sucesso',
+            user: updatedUser
+        });
+
+    } catch (error) {
+        console.error('Erro ao eliminar foto de perfil:', error);
+        res.status(500).json({ 
+            success: false, 
+            message: 'Erro interno do servidor' 
+        });
     }
 });
 

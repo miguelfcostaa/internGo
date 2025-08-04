@@ -74,6 +74,10 @@ const userSchema = new mongoose.Schema({
     competenciasTecnicas: {
         type: Array, 
     },
+    profilePhoto: {
+        type: String,
+        default: null
+    },
 }, {
     timestamps: true
 });
