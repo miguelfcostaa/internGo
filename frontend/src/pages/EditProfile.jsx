@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import ButtonVoltar from "../components/ButtonVoltar"
 import profileicon from "../assets/profile-icon.png"
@@ -16,6 +16,7 @@ function EditUserProfile() {
     const [editedUserInfo, setEditedUserInfo] = useState(userInfo);    
     const [fieldErrors, setFieldErrors] = useState({});
     const role = getUserRoleFromToken();
+    const competenciaRefs = useRef([]);
 
     useEffect(() => {
         setEditedUserInfo(userInfo);
@@ -76,6 +77,32 @@ function EditUserProfile() {
         });
     }
 
+    const handleKeyDown = (e, i) => {
+        const value = e.target.value;
+        if ((e.key === "Enter" || e.key === ",") && value) {
+            e.preventDefault();
+            handleAddCompetencia();
+            setTimeout(() => {
+                if (competenciaRefs.current[i + 1]) {
+                    competenciaRefs.current[i + 1].focus();
+                }
+            }, 0);
+        } else if (e.key === "Backspace" && value === "" && (editedUserInfo.competenciasTecnicas || []).length > 1) {
+            e.preventDefault();
+            const updated = [...(editedUserInfo.competenciasTecnicas || [])];
+            updated.splice(i, 1);
+            setEditedUserInfo({
+                ...editedUserInfo,
+                competenciasTecnicas: updated,
+            });
+            setTimeout(() => {
+                if (competenciaRefs.current[i - 1]) {
+                    competenciaRefs.current[i - 1].focus();
+                }
+            }, 0);
+        }
+    };
+
     const handlePhotoUpdate = (newPhotoPath) => {
         setUserInfo(prev => ({
             ...prev,
@@ -102,6 +129,7 @@ function EditUserProfile() {
                                         userId={id}
                                         currentPhoto={userInfo.profilePhoto}
                                         onPhotoUpdate={handlePhotoUpdate}
+                                        isCompany={false}
                                     />
                                 ) : (
                                     <img 
@@ -137,18 +165,18 @@ function EditUserProfile() {
                                         userInfo.name
                                     )}
                                 </p>
-                                <b>Idade:</b>
+                                <b>Nº de telemóvel:</b>
                                 <p>
                                     {editMode ? (
                                         <input
-                                            name="idade"
-                                            value={editedUserInfo.idade || ""}
+                                            name="telefone"
+                                            value={editedUserInfo.telefone || ""}
                                             onChange={handleChange}
                                             className={styles.invisibleInput}
-                                            placeholder="Ex: 18"
+                                            placeholder="9XX-XXX-XXX"
                                         />
                                     ) : (
-                                        userInfo.idade ? userInfo.idade + " anos" : <span style={{ color: "#aaa" }}>Ex: 18</span>
+                                        userInfo.telefone || <span style={{ color: "#aaa" }}>9XX-XXX-XXX</span>
                                     )}
                                 </p>
                                 <b>Morada:</b>
@@ -163,35 +191,6 @@ function EditUserProfile() {
                                         />
                                     ) : (
                                         userInfo.morada || <span style={{ color: "#aaa" }}>Ex: Rua das Flores, 123</span>
-                                    )}
-                                </p>
-                                <b>Nacionalidade:</b>
-                                <p>
-                                    {editMode ? (
-                                        <input
-                                            name="nacionalidade"
-                                            value={editedUserInfo.nacionalidade || ""}
-                                            onChange={handleChange}
-                                            className={styles.invisibleInput}
-                                            placeholder="Ex: Portuguesa"
-                                        />
-                                    ) : (
-                                        userInfo.nacionalidade || <span style={{ color: "#aaa" }}>Ex: Portuguesa</span>
-                                    )}
-                                </p>
-                            </div>
-                            <div className={styles.infoContainerRight}>
-                                <b>Email:</b>
-                                <p>
-                                    {editMode ? (
-                                        <input
-                                            name="email"
-                                            value={editedUserInfo.email || ""}
-                                            onChange={handleChange}
-                                            className={styles.invisibleInput}
-                                        />
-                                    ) : (
-                                        userInfo.email
                                     )}
                                 </p>
                                 <b>NIF:</b>
@@ -209,18 +208,61 @@ function EditUserProfile() {
                                         userInfo.nif || <span style={{ color: "#aaa" }}>Ex: 123456789</span>
                                     )}
                                 </p>
-                                <b>Nº de telemóvel:</b>
+                                <b>Universidade:</b>
                                 <p>
                                     {editMode ? (
                                         <input
-                                            name="telefone"
-                                            value={editedUserInfo.telefone || ""}
+                                            name="universidade"
+                                            value={editedUserInfo.universidade || ""}
                                             onChange={handleChange}
                                             className={styles.invisibleInput}
-                                            placeholder="9XX-XXX-XXX"
+                                            placeholder="Ex: Universidade de Lisboa"
                                         />
                                     ) : (
-                                        userInfo.telefone || <span style={{ color: "#aaa" }}>9XX-XXX-XXX</span>
+                                        userInfo.universidade || <span style={{ color: "#aaa" }}>Ex: Universidade de Lisboa</span>
+                                    )}
+                                </p>
+                            </div>
+                            <div className={styles.infoContainerRight}>
+                                <b>Email:</b>
+                                <p>
+                                    {editMode ? (
+                                        <input
+                                            name="email"
+                                            value={editedUserInfo.email || ""}
+                                            onChange={handleChange}
+                                            className={styles.invisibleInput}
+                                        />
+                                    ) : (
+                                        userInfo.email
+                                    )}
+                                </p>
+                                <b>Data de Nascimento:</b>
+                                <p>
+                                    {editMode ? (
+                                        <input
+                                            name="dataNascimento"
+                                            value={editedUserInfo.dataNascimento ? editedUserInfo.dataNascimento.slice(0, 10) : ""}
+                                            onChange={handleChange}
+                                            className={styles.invisibleInput}
+                                            placeholder="DD/MM/AAAA"
+                                        />
+                                    ) : (
+                                        userInfo.dataNascimento ? userInfo.dataNascimento.slice(0, 10) : <span style={{ color: "#aaa" }}>AAAA-MM-DD</span>
+                                    )}
+                                </p>
+                                <b>Codigo Postal:</b>
+                                <p>
+                                    {editMode ? (
+                                        <input
+                                            name="codigoPostal"
+                                            value={editedUserInfo.codigoPostal || ""}
+                                            onChange={handleChange}
+                                            className={styles.invisibleInput}
+                                            placeholder="Ex: 1234-567"
+                                        />
+                                    ) : (
+                                        userInfo.codigoPostal || <span style={{ color: "#aaa" }}>Ex: 1234-567</span>
                                     )}
                                 </p>
                                 <b>Nº de CC:</b>
@@ -235,6 +277,21 @@ function EditUserProfile() {
                                         />
                                     ) : (
                                         userInfo.cc || <span style={{ color: "#aaa" }}>Ex: 12345678</span>
+                                    )}
+                                </p>
+                                <b>Curso:</b>
+                                <p>
+                                    {editMode ? (
+                                        <input
+                                        type="text"
+                                        name="curso"
+                                        value={editedUserInfo.curso || ""}
+                                        onChange={handleChange}
+                                        className={styles.invisibleInput}
+                                        placeholder="Ex: Engenharia Informática"
+                                        />  
+                                    ) : (
+                                        userInfo.curso || <span style={{ color: "#aaa" }}>Ex: Engenharia Informática</span>
                                     )}
                                 </p>
                             </div>
@@ -314,6 +371,8 @@ function EditUserProfile() {
                                                 value={competencia}
                                                 onChange={e => handleCompetenciaChange(i, e.target.value)}
                                                 placeholder="Ex: Trabalho em equipa, JavaScript, Python, SQL"
+                                                onKeyDown={e => handleKeyDown(e, i)}
+                                                ref={el => competenciaRefs.current[i] = el}
                                             />
                                         ) : (
                                             <span>{competencia}</span>
@@ -335,6 +394,7 @@ function EditUserProfile() {
                                         userId={id}
                                         currentPhoto={userInfo.profilePhoto}
                                         onPhotoUpdate={handlePhotoUpdate}
+                                        isCompany={true}
                                     />
                                 ) : (
                                     <img 

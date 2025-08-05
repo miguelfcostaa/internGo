@@ -94,3 +94,34 @@ export const criarEstagio = async (estagioData) => {
     throw err;
   }
 };
+
+// Função para obter estágios recomendados
+export const obterEstagiosRecomendados = async (limite = 10) => {
+  try {
+    const token = localStorage.getItem("token");
+    
+    if (!token) {
+      throw new Error("Token de autenticação não encontrado");
+    }
+
+    const res = await fetch(`http://localhost:5000/api/estagios/recomendados?limite=${limite}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      }
+    });
+    
+    const data = await res.json();
+    
+    if (!res.ok) {
+      const errorMessage = data.message || 'Erro ao obter estágios recomendados';
+      throw new Error(errorMessage);
+    }
+    
+    return data;
+  } catch (err) {
+    console.error("Erro ao obter estágios recomendados:", err);
+    throw err;
+  }
+};

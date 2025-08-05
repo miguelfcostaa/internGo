@@ -5,6 +5,10 @@ export default function useEstagios(id) {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        if (!id) {
+            setLoading(false);
+            return;
+        }
         const getEstagio = async () => {
             if (!id) return;
             

@@ -367,7 +367,7 @@ const EditarEstagio = () => {
                   <option value="">Selecione uma área</option>
                   <option value="Tecnologia da Informação">Tecnologia da Informação</option>
                   <option value="Marketing Digital">Marketing Digital</option>
-                  <option value="Recursos Humanos">Recursos Humanos</option>
+                  <option value="Recursos Humanos">Informática</option>
                   <option value="Finanças">Finanças</option>
                   <option value="Design">Design</option>
                   <option value="Vendas">Vendas</option>
@@ -478,11 +478,6 @@ const EditarEstagio = () => {
                       <option value="1 Mês">1 Mês</option>
                       <option value="2 Meses">2 Meses</option>
                       <option value="3 Meses">3 Meses</option>
-                      <option value="4 Meses">4 Meses</option>
-                      <option value="5 Meses">5 Meses</option>
-                      <option value="6 Meses">6 Meses</option>
-                      <option value="9 Meses">9 Meses</option>
-                      <option value="12 Meses">12 Meses</option>
                     </Form.Select>
                   </Form.Group>
                 </Col>

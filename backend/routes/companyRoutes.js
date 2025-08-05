@@ -5,6 +5,9 @@ const jwt = require('jsonwebtoken');
 const Company = require('../models/Company');
 const validations = require('../utils/validations');
 const { verifyToken, verifyRole } = require('../middleware/auth');
+const upload = require('../middleware/multerConfig');
+const path = require('path');
+const fs = require('fs');
 
 
 router.get('/:id', async (req, res) => {
@@ -66,6 +69,115 @@ router.put('/:id', verifyToken, async (req, res) => {
     }
 });
 
+// Upload de foto de perfil para empresa
+router.post('/:id/profile-photo', verifyToken, upload.single('profilePhoto'), async (req, res) => {
+    try {
+        const companyId = req.params.id;
+        
+        // Verificar se a empresa existe
+        const company = await Company.findById(companyId);
+        if (!company) {
+            return res.status(404).json({ 
+                success: false, 
+                message: 'Empresa não encontrada' 
+            });
+        }
 
+        // Verificar se foi enviado um ficheiro
+        if (!req.file) {
+            return res.status(400).json({ 
+                success: false, 
+                message: 'Nenhuma imagem foi enviada' 
+            });
+        }
+
+        // Eliminar a foto anterior se existir
+        if (company.profilePhoto) {
+            const oldPhotoPath = path.join(__dirname, '..', 'uploads', 'profile-photos', path.basename(company.profilePhoto));
+            if (fs.existsSync(oldPhotoPath)) {
+                fs.unlinkSync(oldPhotoPath);
+            }
+        }
+
+        // Atualizar a empresa com o caminho da nova foto
+        const photoUrl = `/uploads/profile-photos/${req.file.filename}`;
+        
+        const updatedCompany = await Company.findByIdAndUpdate(
+            companyId,
+            { profilePhoto: photoUrl },
+            { new: true, runValidators: true }
+        );
+
+        res.json({
+            success: true,
+            message: 'Foto de perfil atualizada com sucesso',
+            profilePhoto: photoUrl,
+            company: updatedCompany
+        });
+
+    } catch (error) {
+        console.error('Erro ao fazer upload da foto:', error);
+        
+        // Eliminar o ficheiro que foi carregado se houve erro
+        if (req.file && fs.existsSync(req.file.path)) {
+            fs.unlinkSync(req.file.path);
+        }
+        
+        res.status(500).json({ 
+            success: false, 
+            message: 'Erro interno do servidor ao fazer upload da foto' 
+        });
+    }
+});
+
+// Eliminar foto de perfil da empresa
+router.delete('/:id/profile-photo', verifyToken, async (req, res) => {
+    try {
+        const companyId = req.params.id;
+        
+        // Verificar se a empresa existe
+        const company = await Company.findById(companyId);
+        if (!company) {
+            return res.status(404).json({ 
+                success: false, 
+                message: 'Empresa não encontrada' 
+            });
+        }
+
+        // Verificar se a empresa tem uma foto de perfil
+        if (!company.profilePhoto) {
+            return res.status(400).json({ 
+                success: false, 
+                message: 'A empresa não tem foto de perfil para eliminar' 
+            });
+        }
+
+        // Eliminar o ficheiro físico
+        const photoPath = path.join(__dirname, '..', 'uploads', 'profile-photos', path.basename(company.profilePhoto));
+        if (fs.existsSync(photoPath)) {
+            fs.unlinkSync(photoPath);
+        }
+
+        // Remover a referência da foto na base de dados
+        const updatedCompany = await Company.findByIdAndUpdate(
+            companyId,
+            { $unset: { profilePhoto: 1 } },
+            { new: true }
+        );
+
+        res.json({
+            success: true,
+            message: 'Foto de perfil eliminada com sucesso',
+            company: updatedCompany
+        });
+
+    } catch (error) {
+        console.error('Erro ao eliminar foto de perfil:', error);
+        res.status(500).json({ 
+            success: false, 
+            message: 'Erro interno do servidor ao eliminar foto' 
+        });
+    }
+});
 
 module.exports = router;
