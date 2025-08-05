@@ -9,36 +9,47 @@
 }
 
 .profileImage {
-    width: 150px;
-    height: 150px;
     border-radius: 50%;
+    width: 180px;
+    height: 180px;
+    position: relative;
     object-fit: cover;
-    border: 3px solid #ddd;
 }
 
 .addPhotoButton {
-    position: absolute;
-    bottom: 5px;
-    right: 5px;
-    width: 35px;
-    height: 35px;
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    min-height: 40px;
     border-radius: 50%;
-    background-color: #4CAF50;
-    color: white;
-    border: 2px solid white;
-    font-size: 20px;
-    font-weight: bold;
-    cursor: pointer;
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    border: 1px solid #d8d8d8;
+    background: #f2f2f2;
+    background-color: #f2f2f2;
+    z-index: 2;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+    cursor: pointer;
+    font-size: 20px;
+    color: #6c757d;
+    transition: all 0.2s ease;
+    outline: none;
+    font-family: inherit;
+    line-height: 1;
+    text-align: center;
+    vertical-align: middle;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
 }
 
 .addPhotoButton:hover {
-    background-color: #45a049;
-    transform: scale(1.05);
+    background-color: #e9ecef;
+    border-color: #c0c0c0;
 }
 
 .modalOverlay {

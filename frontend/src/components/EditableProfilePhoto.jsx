@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import styles from '../styles/EditableProfilePhoto.module.css';
+import profilePhoto from '../assets/profile-icon.png';
+
 
 const EditableProfilePhoto = ({ userId, currentPhoto, onPhotoUpdate }) => {
     const [showUploadModal, setShowUploadModal] = useState(false);
@@ -102,7 +104,7 @@ const EditableProfilePhoto = ({ userId, currentPhoto, onPhotoUpdate }) => {
         <div className={styles.editablePhotoContainer}>
             <div className={styles.photoDisplay}>
                 <img 
-                    src={currentPhoto ? `http://localhost:5000${currentPhoto}` : '/emptyuser.png'} 
+                    src={currentPhoto ? `http://localhost:5000${currentPhoto}` : profilePhoto} 
                     alt="Foto de perfil" 
                     className={styles.profileImage}
                 />
@@ -131,7 +133,7 @@ const EditableProfilePhoto = ({ userId, currentPhoto, onPhotoUpdate }) => {
                         <div style={{ padding: '20px', textAlign: 'center' }}>
                             <div style={{ marginBottom: '20px' }}>
                                 <img 
-                                    src={currentPhoto ? `http://localhost:5000${currentPhoto}` : '/emptyuser.png'} 
+                                    src={currentPhoto ? `http://localhost:5000${currentPhoto}` : profilePhoto} 
                                     alt="Foto de perfil" 
                                     style={{
                                         width: '120px',
