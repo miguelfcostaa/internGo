@@ -37,7 +37,7 @@ const EditableProfilePhoto = ({ userId, currentPhoto, onPhotoUpdate }) => {
 
     const uploadPhoto = async (file) => {
         setUploading(true);
-        
+
         try {
             const formData = new FormData();
             formData.append('profilePhoto', file);
@@ -103,12 +103,12 @@ const EditableProfilePhoto = ({ userId, currentPhoto, onPhotoUpdate }) => {
     return (
         <div className={styles.editablePhotoContainer}>
             <div className={styles.photoDisplay}>
-                <img 
-                    src={currentPhoto ? `http://localhost:5000${currentPhoto}` : profilePhoto} 
-                    alt="Foto de perfil" 
+                <img
+                    src={currentPhoto ? `http://localhost:5000${currentPhoto}` : profilePhoto}
+                    alt="Foto de perfil"
                     className={styles.profileImage}
                 />
-                <button 
+                <button
                     onClick={() => setShowUploadModal(true)}
                     title={currentPhoto ? "Alterar foto" : "Adicionar foto"}
                     className={styles.addPhotoButton}
@@ -122,19 +122,19 @@ const EditableProfilePhoto = ({ userId, currentPhoto, onPhotoUpdate }) => {
                     <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
                         <div className={styles.modalHeader}>
                             <h3>Foto de Perfil</h3>
-                            <button 
+                            <button
                                 className={styles.closeButton}
                                 onClick={handleCloseModal}
                             >
                                 ×
                             </button>
                         </div>
-                        
+
                         <div style={{ padding: '20px', textAlign: 'center' }}>
                             <div style={{ marginBottom: '20px' }}>
-                                <img 
-                                    src={currentPhoto ? `http://localhost:5000${currentPhoto}` : profilePhoto} 
-                                    alt="Foto de perfil" 
+                                <img
+                                    src={currentPhoto ? `http://localhost:5000${currentPhoto}` : profilePhoto}
+                                    alt="Foto de perfil"
                                     style={{
                                         width: '120px',
                                         height: '120px',
@@ -144,57 +144,32 @@ const EditableProfilePhoto = ({ userId, currentPhoto, onPhotoUpdate }) => {
                                     }}
                                 />
                             </div>
-                            
-                            <div style={{ display: 'flex', gap: '10px', justifyContent: 'center', flexWrap: 'wrap' }}>
-                                <label 
-                                    style={{
-                                        backgroundColor: '#007bff',
-                                        color: 'white',
-                                        padding: '10px 20px',
-                                        borderRadius: '4px',
-                                        cursor: uploading ? 'not-allowed' : 'pointer',
-                                        opacity: uploading ? 0.6 : 1
-                                    }}
-                                >
-                                    <input 
-                                        type="file" 
-                                        accept="image/*" 
+                            <div className={styles.buttonContainer}>
+                                <label className={`${styles.button}`}>
+                                    <input
+                                        type="file"
+                                        accept="image/*"
                                         onChange={handleFileSelect}
                                         disabled={uploading}
                                         style={{ display: 'none' }}
                                     />
                                     {uploading ? 'A carregar...' : (currentPhoto ? 'Alterar Foto' : 'Adicionar Foto')}
                                 </label>
-                                
+
                                 {currentPhoto && (
-                                    <button 
+                                    <button
                                         onClick={deletePhoto}
                                         disabled={uploading}
-                                        style={{
-                                            backgroundColor: '#dc3545',
-                                            color: 'white',
-                                            padding: '10px 20px',
-                                            border: 'none',
-                                            borderRadius: '4px',
-                                            cursor: uploading ? 'not-allowed' : 'pointer',
-                                            opacity: uploading ? 0.6 : 1
-                                        }}
+                                        className={`${styles.button} ${styles.primaryButton}`}
                                     >
                                         Eliminar Foto
                                     </button>
                                 )}
-                                
-                                <button 
+
+                                <button
                                     onClick={handleCloseModal}
                                     disabled={uploading}
-                                    style={{
-                                        backgroundColor: '#6c757d',
-                                        color: 'white',
-                                        padding: '10px 20px',
-                                        border: 'none',
-                                        borderRadius: '4px',
-                                        cursor: 'pointer'
-                                    }}
+                                    className={`${styles.button} ${styles.primaryButton}`}
                                 >
                                     Cancelar
                                 </button>
