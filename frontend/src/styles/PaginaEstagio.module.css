@@ -1,36 +1,33 @@
-html,
-body,
-#root {
-  height: 100%;
+html, body {
   margin: 0;
-  font-family: "Segoe UI", Arial, sans-serif;
-  color: #222;
-  background-color: #fff;
+  padding: 0;
+  height: 100%;
+  background-color: #fff !important; 
 }
 
 .background {
   background-color: #fff;
   max-width: 1140px;
   width: 95%;
-  margin: 60px auto;
+  margin: 110px auto 60px auto; 
   min-height: 400px;
   border-radius: 8px;
   padding: 30px 40px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.07); 
 }
-
 
 .voltarWrapper {
   position: absolute;
-  top: 120px;
-  left: 80px;
-  z-index: 1000;
+  top: 150px;
+  left: 500px;
+  z-index: 2000;
+  margin-bottom: 150px;
 }
 
 .logoTitle {
   display: flex;
   align-items: center;
-  gap: 25px;
+  gap: 30px;
 }
 
 .acin {
@@ -41,6 +38,9 @@ body,
 .titleTexts {
   display: flex;
   flex-direction: column;
+  align-items: left; 
+  text-align: left;  
+  flex: 1; 
 }
 
 .heading {
@@ -68,6 +68,8 @@ body,
   gap: 2rem;
   flex-wrap: wrap; 
   padding-top: 20px;
+  background-color: #fff;
+
 }
 
 .leftColumn {
