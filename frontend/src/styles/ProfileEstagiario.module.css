@@ -114,3 +114,19 @@
     justify-content: space-between;
     padding: 1rem;
 }
+
+.verDetalhesButton {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 1rem;
+}
+
+.verDetalhesButton:hover {
+    background-color: #0056b3;
+}

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Teste Upload Foto</title>
+</head>
+<body>
+    <h1>Teste Upload Foto de Perfil</h1>
+    <form id="uploadForm">
+        <input type="text" id="userId" placeholder="User ID" value="6883656728ccc2c754bd1af0">
+        <input type="text" id="token" placeholder="JWT Token">
+        <input type="file" id="photo" accept="image/*">
+        <button type="submit">Upload</button>
+    </form>
+    <div id="result"></div>
+
+    <script>
+        document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const userId = document.getElementById('userId').value;
+            const token = document.getElementById('token').value;
+            const photo = document.getElementById('photo').files[0];
+            
+            if (!userId || !token || !photo) {
+                alert('Preencha todos os campos');
+                return;
+            }
+            
+            const formData = new FormData();
+            formData.append('profilePhoto', photo);
+            
+            try {
+                const response = await fetch(`http://localhost:5000/api/users/${userId}/profile-photo`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: formData
+                });
+                
+                const result = await response.json();
+                document.getElementById('result').innerHTML = `<pre>${JSON.stringify(result, null, 2)}</pre>`;
+                
+                if (result.success) {
+                    // Mostrar a imagem
+                    const img = document.createElement('img');
+                    img.src = `http://localhost:5000${result.profilePhoto}`;
+                    img.style.width = '200px';
+                    img.style.height = '200px';
+                    img.style.objectFit = 'cover';
+                    img.style.borderRadius = '50%';
+                    document.getElementById('result').appendChild(img);
+                }
+            } catch (error) {
+                document.getElementById('result').innerHTML = `Error: ${error.message}`;
+            }
+        });
+    </script>
+</body>
+</html>

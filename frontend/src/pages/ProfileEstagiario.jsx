@@ -1,16 +1,29 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import NavBar from '../components/NavBar.jsx';
 import ButtonVoltar from '../components/ButtonVoltar.jsx';
+import ProfilePhoto from '../components/ProfilePhoto.jsx';
+import EditableProfilePhoto from '../components/EditableProfilePhoto.jsx';
 import styles from '../styles/ProfileEstagiario.module.css';
-import profilePhoto from '../assets/image.png';
-import useUser from '../hooks/useUser.js';
 
 
 function ProfileEstagiario() {
-
     const { id } = useParams();
     const [userInfo, setUserInfo] = useState({});
+    const [showDetails, setShowDetails] = useState(false);
+    
+    // Get current logged in user
+    const [currentUser, setCurrentUser] = useState(null);
+    
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            const payload = JSON.parse(atob(token.split('.')[1]));
+            setCurrentUser({ id: payload.id });
+        }
+    }, []);
+    
+    const isOwnProfile = currentUser && currentUser.id === id; // Verificar se é o próprio perfil
 
     useEffect(() => {
         const fetchUserInfo = async () => {
@@ -32,6 +45,13 @@ function ProfileEstagiario() {
         fetchUserInfo();
     }, [id]);
 
+    const handlePhotoUpdate = (newPhotoUrl) => {
+        setUserInfo(prev => ({
+            ...prev,
+            profilePhoto: newPhotoUrl
+        }));
+    };
+
     return (
     <>
         <NavBar/>
@@ -41,8 +61,28 @@ function ProfileEstagiario() {
                 <div className={styles.topContainer}>
                     <div className={styles.profilePictureContainer}>
                         <div style={{ position: "relative" }}>
-                            <img alt="Imagem de perfil do utilizador" src={profilePhoto} className={styles.profilePicture} />
+                            {showDetails && isOwnProfile ? (
+                                <EditableProfilePhoto 
+                                    userId={id}
+                                    currentPhoto={userInfo.profilePhoto}
+                                    onPhotoUpdate={handlePhotoUpdate}
+                                />
+                            ) : (
+                                <ProfilePhoto 
+                                    photoUrl={userInfo.profilePhoto}
+                                    userName={userInfo.name}
+                                    size="large"
+                                />
+                            )}
                         </div>
+                        {!showDetails && (
+                            <button 
+                                className={styles.verDetalhesButton}
+                                onClick={() => setShowDetails(true)}
+                            >
+                                Ver Detalhes
+                            </button>
+                        )}
                     </div>
                     <div className={styles.infoContainer}>
                         <div className={styles.infoContainerLeft}>

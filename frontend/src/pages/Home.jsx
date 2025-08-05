@@ -3,26 +3,52 @@ import Estagio from "../components/Estagio";
 import NavBar from "../components/NavBar";
 import styles from "../styles/Home.module.css";
 import Filters from "../components/Filters";
-import useEstagios from "../hooks/useEstagios";
 import { useSearch } from "../contexts/SearchContext";
 
 function Home() {
-    const allEstagios = useEstagios();
-    const [estagios, setEstagios] = useState(allEstagios);
+    const [allEstagios, setAllEstagios] = useState([]);
+    const [estagios, setEstagios] = useState([]);
     const { query, setQuery } = useSearch();
     const [searchTag, setSearchTag] = useState(null);
 
+    // Função para carregar todos os estágios
+    const loadAllEstagios = async () => {
+        try {
+            const response = await fetch('http://localhost:5000/api/estagios', {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                }
+            });
+            const data = await response.json();
+
+            if (response.ok) {
+                setAllEstagios(data);
+                setEstagios(data);
+            }
+        } catch (error) {
+            console.error("Error fetching estagios:", error);
+            setAllEstagios([]);
+            setEstagios([]);
+        }
+    };
 
     useEffect(() => {
-        if (query) {
+        loadAllEstagios();
+    }, []);
+
+    useEffect(() => {
+        if (query && allEstagios.length > 0) {
             const filteredEstagios = allEstagios.filter(estagio =>
                 estagio.title.toLowerCase().includes(query.toLowerCase()) ||
-                estagio.company.name.toLowerCase().includes(query.toLowerCase())
+                (estagio.company && estagio.company.name && estagio.company.name.toLowerCase().includes(query.toLowerCase()))
             );
             setEstagios(filteredEstagios);
             setSearchTag(query);
+        } else if (!query) {
+            setEstagios(allEstagios);
+            setSearchTag(null);
         }
-
     }, [query, allEstagios]);
 
     const handleRemoveSearchTag = () => {

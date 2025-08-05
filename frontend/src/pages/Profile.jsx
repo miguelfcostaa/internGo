@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import NavBar from '../components/NavBar';
 import { getUserRoleFromToken } from '../utils/jwtUtils';
 import ButtonGeral from '../components/ButtonGeral';
+import ProfilePhotoUpload from '../components/ProfilePhotoUpload';
 import profilePhoto from '../assets/profile-icon.png';
 import styles from '../styles/Profile.module.css';
 import logo from '../assets/logo.jpg';
@@ -55,6 +56,13 @@ const ProfilePage = () => {
         }
     };
 
+    const handlePhotoUpdate = (newPhotoUrl) => {
+        setUserInfo(prev => ({
+            ...prev,
+            profilePhoto: newPhotoUrl
+        }));
+    };
+
     // Função para formatar o mês, que vem como //YYYY-MM e retorna o nome do mes e o ano
     const handleMesInicio = (mes) => {
         if (!mes) return '';  
@@ -82,7 +90,16 @@ const ProfilePage = () => {
                     <div className={styles.flexRow}>
                         <div className={styles.userInfo + ' shadow'}>
                             <div className={styles.userInfoLeft}>
-                                <img src={profilePhoto} alt="Foto de perfil" width={180} height={180} />
+                                <img 
+                                    src={userInfo.profilePhoto ? `http://localhost:5000${userInfo.profilePhoto}` : profilePhoto} 
+                                    alt="Foto de perfil" 
+                                    width={180} 
+                                    height={180}
+                                    style={{
+                                        borderRadius: '50%',
+                                        objectFit: 'cover'
+                                    }}
+                                />
                                 <ButtonGeral Name="Ver Detalhes" link={`/edit-profile/${userInfo._id}/`} />
                             </div>
                             <div className={styles.userInfoRight}>
@@ -183,7 +200,16 @@ const ProfilePage = () => {
                     <div className={styles.flexRow}>
                         <div className={styles.userInfo + ' shadow'}>
                             <div className={styles.userInfoLeft}>
-                                <img src={profilePhoto} alt="Foto de perfil" width={180} height={180} />
+                                <img 
+                                    src={userInfo.profilePhoto ? `http://localhost:5000${userInfo.profilePhoto}` : profilePhoto} 
+                                    alt="Foto de perfil" 
+                                    width={180} 
+                                    height={180}
+                                    style={{
+                                        borderRadius: '50%',
+                                        objectFit: 'cover'
+                                    }}
+                                />
                                 <ButtonGeral Name="Ver Detalhes" link={`/edit-profile/${userInfo._id}/`} />
                             </div>
 

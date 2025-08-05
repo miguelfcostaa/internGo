@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import ButtonVoltar from "../components/ButtonVoltar"
-import profileicon from "../assets/image.png"
+import profileicon from "../assets/profile-icon.png"
 import NavBar from "../components/NavBar";
+import EditableProfilePhoto from "../components/EditableProfilePhoto";
 import styles from "../styles/EditProfile.module.css"
 import useUser from "../hooks/useUser";
 import { getUserRoleFromToken } from "../utils/jwtUtils";
@@ -75,6 +76,16 @@ function EditUserProfile() {
         });
     }
 
+    const handlePhotoUpdate = (newPhotoPath) => {
+        setUserInfo(prev => ({
+            ...prev,
+            profilePhoto: newPhotoPath
+        }));
+        setEditedUserInfo(prev => ({
+            ...prev,
+            profilePhoto: newPhotoPath
+        }));
+    };
 
     return (
     <>
@@ -86,13 +97,18 @@ function EditUserProfile() {
                     <div className={styles.topContainer}>
                         <div className={styles.profilePictureContainer}>
                             <div style={{ position: "relative" }}>
-                                <img alt="Imagem de perfil do utilizador" src={profileicon} className={styles.profilePicture} />
-                                {editMode && (
-                                    <div className={styles.profilePictureCircle}>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
-                                            <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"/>
-                                        </svg>
-                                    </div>
+                                {editMode ? (
+                                    <EditableProfilePhoto 
+                                        userId={id}
+                                        currentPhoto={userInfo.profilePhoto}
+                                        onPhotoUpdate={handlePhotoUpdate}
+                                    />
+                                ) : (
+                                    <img 
+                                        alt="Imagem de perfil do utilizador" 
+                                        src={userInfo.profilePhoto ? `http://localhost:5000${userInfo.profilePhoto}` : profileicon} 
+                                        className={styles.profilePicture} 
+                                    />
                                 )}
                             </div>
                             <div
@@ -342,13 +358,18 @@ function EditUserProfile() {
                     <div className={styles.topContainer}>
                         <div className={styles.profilePictureContainer}>
                             <div style={{ position: "relative" }}>
-                                <img alt="Imagem de perfil do utilizador" src={profileicon} className={styles.profilePicture} />
-                                {editMode && (
-                                    <div className={styles.profilePictureCircle}>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
-                                            <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"/>
-                                        </svg>
-                                    </div>
+                                {editMode ? (
+                                    <EditableProfilePhoto 
+                                        userId={id}
+                                        currentPhoto={userInfo.profilePhoto}
+                                        onPhotoUpdate={handlePhotoUpdate}
+                                    />
+                                ) : (
+                                    <img 
+                                        alt="Imagem de perfil do utilizador" 
+                                        src={userInfo.profilePhoto ? `http://localhost:5000${userInfo.profilePhoto}` : profileicon} 
+                                        className={styles.profilePicture} 
+                                    />
                                 )}
                             </div>
                             <div

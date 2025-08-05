@@ -17,29 +17,69 @@ function PaginaCandidatarEstagio(){
     const [isLoading, setIsLoading] = useState(false);
     const [fieldErrors, setFieldErrors] = useState({});
     const [Warnings, setWarnings] = useState({
-        name: false,
-        nacionalidade: false,
-        telefone: false,
-        email: false,
-        morada: false,
-        codigoPostal: false,
-        dataNascimento: false,
-        cc: false,
-        formacaoAcademica: false,
-        universidade: false,
-        curso: false,
-        cv: false,
-        cartaDeApresentacao: false,
+    name: false,
+    cc: false,
+    email: false,
+    telemovel: false,
+    dataNascimento: false,
+    morada:false,
+    nacionalidade:false,
+    nivelQNQ:false,
+    carta:false,
+    nif:false,
+  });
+  //Estado para armazenar dados do formulário
+    const [formData, setFormData] = useState({
+        name: "",
+        cc: "",
+        email: "",
+        telemovel: "",
+        dataNascimento: "",
+        morada:"",
+        nacionalidade:"",
+        nivelQNQ:"",
+        nif:"",
+        competenciasTecnicas:[],
+        carta:"",
     });
-    const [formData, setFormData] = useState({});
-    
+
+    const [inputValue, setInputValue] = useState('');//utilizado no input
+    const [skills, setSkills] = useState([]);//utilizado no array competencias tecnicas
     const messageMaxChat="Atingiu o maximo de caracteres permitido"
+
     const handleChange = ( maxChars = 10000 ) => (e)=> {
         const { name, value } = e.target;
         if (value.length <= maxChars) {
             setFormData((prev) => ({ ...prev, [name]: value }));
             setWarnings((prev) => ({ ...prev, [name]: value.length === maxChars }));
         } 
+    };
+    function onChange(newSkills){
+        setFormData((prev) => ({ ...prev, ["competenciasTecnicas"]: newSkills }));
+    }
+  //cria o input competencias tecnicas que adiciona uma a uma e permite deletar skills
+    const handleKeyDown = (e)=>{
+        const value = e.target.value;
+        if (e.key==="Enter" || e.key===","){
+            e.preventDefault();
+            addSkill( value )
+            setInputValue('');
+        }
+    }
+
+    const addSkill = (value) => {
+        const trimmed = value.trim();
+        if (trimmed && !skills.includes(trimmed)) {
+            const newSkills = [...skills, trimmed];
+            setSkills(newSkills);
+            onChange(newSkills); // send to parent form
+        }
+    };
+
+    const removeSkill = (index) => {
+        const newSkills = skills.filter((_, i) => i !== index);
+        setSkills(newSkills);
+        onChange(newSkills);
     };
 
     const handlesSubmit = async (e) => {
@@ -223,31 +263,92 @@ function PaginaCandidatarEstagio(){
                                     </label>
                                 </div>
                                 <div className={style.formrow}>
-                                    
+                                    <label className={style.labelcoluna}>Nível QNQ:{/*criar um menu de opçoes*/}
+                                        <select name="nivelQNQ" className={style.select} onChange={handleChange()}>
+                                            <option value="">Escolha o seu nível de habilitação</option>
+                                            <option value="Nível 1">Nível 1-4ºano do Ensino Básico</option>
+                                            <option value="Nível 2">Nível 2-6ºano do Ensino Básico</option>
+                                            <option value="Nível 3">Nível 3-9ºano do Ensino Básico</option>
+                                            <option value="Nível 4">Nível 4-Ensino Secundário + Estágio Profissional</option>
+                                            <option value="Nível 5">Nível 5-Cursos de Especialização Tecnólogica (CET)</option>
+                                            <option value="Nível 6">Nível 6-Licenciatura</option>
+                                            <option value="Nível 7">Nível 7-Mestrado</option>
+                                            <option value="Nível 8">Nível 8-Doutoramento</option>
+                                        </select>
+                                    </label>
+                                    <div style={{display:"flex", flexDirection:"column", width:"100%",marginTop: "25px"}}>
+                                        <label >Competências Técnicas:</label> 
+                                            <input type="text" placeholder="" name="competenciasTecnicas" value={inputValue} className={style.input}  onChange={(e) => setInputValue(e.target.value)} onKeyDown={handleKeyDown}></input>
+                                        <div style={{ 
+                                        maxHeight: '100px',
+                                        overflowY: 'auto',
+                                        display: 'flex',
+                                        flexWrap: 'wrap',
+                                        gap: '6px',
+                                        padding: '6px',
+                                        border: '1px solid #ccc',
+                                        borderRadius: '5px',
+                                        backgroundColor: '#f9f9f9',
+                                        marginBottom: '8px'
+                                        }}>
+                                        
+                                        {skills.length<1?
+                                            <div
+                                                style={{
+                                                display:"flex",
+                                                flexDirection:"row",
+                                                background: '#e0e0e0',
+                                                borderRadius: '16px',
+                                                padding: '4px 10px',
+                                            }}
+                                            >
+                                                Adicione as suas competências
+                                            </div>
+                                        :
+                                        skills.map((skill, i) => (
+                                            <div
+                                            key={i}
+                                            style={{
+                                                display:"flex",
+                                                flexDirection:"row",
+                                                background: '#e0e0e0',
+                                                borderRadius: '16px',
+                                                padding: '4px 10px',
+                                            }}
+                                            >
+                                            <div
+                                            style={{
+                                                textAlign:"left",
+                                            }}
+                                            >{skill}</div>
+                                            <span
+                                                onClick={() => removeSkill(i)}
+                                                style={{
+                                                border: 'none',
+                                                background: 'transparent',
+                                                cursor: 'pointer',
+                                                fontWeight: 'bold',
+                                                textAlign:"right"
+                                                }}
+                                            >
+                                                ×
+                                            </span>
+                                            </div>
+                                        ))}
+                                        </div>
+                                    </div>
                                     <label className={style.labelcoluna}>Universidade/Entidade Formadora:
-                                        <input 
-                                            type="text" 
-                                            placeholder="Ex: Universidade da Madeira" 
-                                            name="universidade" 
-                                            value={formData.universidade} 
-                                            className={style.input} 
-                                            onChange={handleChange(100)}
-                                        />
+                                        <input type="text" placeholder="" name="universidade" value={formData.universidade} className={style.input} onChange={handleChange(100)}></input>
                                         {Warnings["universidade"] && (
                                             <span className={style.charterror}>
                                             {messageMaxChat}
                                             </span>
                                         )}
                                     </label>
+                                </div>
+                                <div className={style.formrow}>
                                     <label className={style.labelcoluna}>Curso:
-                                        <input 
-                                            type="text" 
-                                            placeholder="Ex: Engenharia Informática" 
-                                            name="curso" 
-                                            value={formData.curso} 
-                                            className={style.input} 
-                                            onChange={handleChange(100)}
-                                        />
+                                        <input type="text" placeholder="" name="curso" value={formData.curso} className={style.input} onChange={handleChange(100)}></input>
                                         {Warnings["curso"] && (
                                             <span className={style.charterror}>
                                             {messageMaxChat}
@@ -268,6 +369,77 @@ function PaginaCandidatarEstagio(){
                                             <option value="7">Nível 7 - Mestrado</option>
                                             <option value="8">Nível 8 - Doutoramento</option>
                                         </select>
+                                    </label>
+                                    <div style={{display:"flex", flexDirection:"column", width:"100%",marginTop: "25px"}}>
+                                        <label >Competências Técnicas:</label> 
+                                            <input type="text" placeholder="" name="competenciasTecnicas" value={inputValue} className={style.input}  onChange={(e) => setInputValue(e.target.value)} onKeyDown={handleKeyDown}></input>
+                                        <div style={{ 
+                                        maxHeight: '100px',
+                                        overflowY: 'auto',
+                                        display: 'flex',
+                                        flexWrap: 'wrap',
+                                        gap: '6px',
+                                        padding: '6px',
+                                        border: '1px solid #ccc',
+                                        borderRadius: '5px',
+                                        backgroundColor: '#f9f9f9',
+                                        marginBottom: '8px'
+                                        }}>
+                                        
+                                        {skills.length<1?
+                                            <div
+                                                style={{
+                                                display:"flex",
+                                                flexDirection:"row",
+                                                background: '#e0e0e0',
+                                                borderRadius: '16px',
+                                                padding: '4px 10px',
+                                            }}
+                                            >
+                                                Adicione as suas competências
+                                            </div>
+                                        :
+                                        skills.map((skill, i) => (
+                                            <div
+                                            key={i}
+                                            style={{
+                                                display:"flex",
+                                                flexDirection:"row",
+                                                background: '#e0e0e0',
+                                                borderRadius: '16px',
+                                                padding: '4px 10px',
+                                            }}
+                                            >
+                                            <div
+                                            style={{
+                                                textAlign:"left",
+                                            }}
+                                            >{skill}</div>
+                                            <span
+                                                onClick={() => removeSkill(i)}
+                                                style={{
+                                                border: 'none',
+                                                background: 'transparent',
+                                                cursor: 'pointer',
+                                                fontWeight: 'bold',
+                                                textAlign:"right"
+                                                }}
+                                            >
+                                                ×
+                                            </span>
+                                            </div>
+                                        ))}
+                                        </div>
+                                    </div>
+                                    <label className={style.labelcoluna}>NIF:
+                                        <input 
+                                            type="text" 
+                                            placeholder="" 
+                                            name="nif" 
+                                            value={formData.nif} 
+                                            className={style.input} 
+                                            onChange={handleChange(100)}
+                                        />
                                     </label>
                                     <label className={style.labelcoluna}>Adicione o seu CV:
                                         <input 

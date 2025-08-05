@@ -89,6 +89,10 @@ const userSchema = new mongoose.Schema({
     cartaDeApresentacao: {
         type: String,
     },
+    profilePhoto: {
+        type: String,
+        default: null
+    },
 }, {
     timestamps: true
 });
