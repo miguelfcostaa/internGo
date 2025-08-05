@@ -2,19 +2,19 @@ const mongoose = require('mongoose');
 
 // Schema para usuário
 const userSchema = new mongoose.Schema({
-    name: {
+    name: { // Nome do usuário
         type: String,
         required: true,
         trim: true
     },
-    email: {
+    email: { // Email do usuário
         type: String,
         required: true,
         unique: true,
         lowercase: true,
         trim: true
     },
-    cc: {
+    cc: { // Número do cartão de cidadão
         type: String,
         required: [true, 'Número do cartão de cidadão é obrigatório'],
         unique: true,
@@ -26,7 +26,7 @@ const userSchema = new mongoose.Schema({
         message: 'Número do cartão de cidadão deve ter exatamente 8 dígitos'
         }
     },
-    telefone: {
+    telefone: { // Número de telemóvel do usuário
         type: String,
         required: [true, 'Número de telemóvel é obrigatório'],
         trim: true,
@@ -39,54 +39,54 @@ const userSchema = new mongoose.Schema({
         message: 'Número de telemóvel deve ter formato válido (9xxxxxxxx ou +351xxxxxxxxx)'
         }
     },
-    password: {
+    password: { // Palavra-passe do usuário
         type: String,
         required: [true, 'Palavra-passe é obrigatória'],
         minlength: [6, 'Palavra-passe deve ter pelo menos 6 caracteres']
     },
-    active: {
+    active: { // Indica se o usuário está ativo
         type: Boolean,
         default: true
     },
-    resetPasswordToken: {
+    resetPasswordToken: { // Token para redefinição de senha
         type: String,
         default: null
     },
-    resetPasswordExpires: {
+    resetPasswordExpires: { // Data de expiração do token de redefinição de senha
         type: Date,
         default: null
     },
-    dataNascimento: {
+    dataNascimento: { // Data de nascimento do utilizador
         type: Date,
     },
-    morada: {
+    morada: { // Morada do utilizador
         type: String,
     },
-    nif: {
+    nif: { // Número de Identificação Fiscal
         type: String,
     },
-    formacaoAcademica: {
+    formacaoAcademica: { // Em niveis
         type: String,
     },
-    competenciasTecnicas: {
+    competenciasTecnicas: { // Competências técnicas do utilizador
         type: Array, 
     },
-    codigoPostal: {
+    codigoPostal: { // Código Postal do utilizador
         type: String,
     },
-    universidade: {
+    universidade: { // Universidade do utilizador
         type: String,
     },
-    curso: {
+    curso: { // Curso do utilizador
         type: String,
     },
-    cv: {
+    cv: { // Curriculum Vitae do utilizador
         type: String,
     },
-    cartaDeApresentacao: {
+    cartaDeApresentacao: { // Carta de apresentação do utilizador
         type: String,
     },
-    profilePhoto: {
+    profilePhoto: { // Foto de perfil do usuário
         type: String,
         default: null
     },

@@ -18,14 +18,10 @@ function PaginaCandidatarEstagio(){
     const [fieldErrors, setFieldErrors] = useState({});
     const [Warnings, setWarnings] = useState({
         name: false,
-        cc: false,
-        email: false,
-        telemovel: false,
-        dataNascimento: false,
         morada:false,
-        formacaoAcademica:false,
+        universidade:false,
+        curso:false,
         carta:false,
-        nif:false,
     });
     const [formData, setFormData] = useState({
         name: '',
@@ -213,7 +209,7 @@ function PaginaCandidatarEstagio(){
                                             type="text" 
                                             placeholder="Escreva aqui o seu número de telemóvel" name="telefone" 
                                             value={formData.telefone} 
-                                            className={style.input} 
+                                            className={style.input}
                                             onChange={handleChange()} 
                                         />
                                     </label>
@@ -236,7 +232,7 @@ function PaginaCandidatarEstagio(){
                                             name="morada" 
                                             value={formData.morada} 
                                             className={style.input} 
-                                            onChange={handleChange(1000)}
+                                            onChange={handleChange(100)}
                                         />
                                         {Warnings["morada"] && (
                                             <span className={style.charterror}>
@@ -251,13 +247,8 @@ function PaginaCandidatarEstagio(){
                                             name="codigoPostal" 
                                             value={formData.codigoPostal} 
                                             className={style.input} 
-                                            onChange={handleChange(100)}
+                                            onChange={handleChange()}
                                         />
-                                        {Warnings["codigoPostal"] && (
-                                            <span className={style.charterror}>
-                                            {messageMaxChat}
-                                            </span>
-                                        )}
                                     </label>
                                 </div>
                                 <div className={style.formrow}>
@@ -268,7 +259,7 @@ function PaginaCandidatarEstagio(){
                                             name="nif" 
                                             value={formData.nif} 
                                             className={style.input} 
-                                            onChange={handleChange(100)}
+                                            onChange={handleChange()}
                                         />
                                     </label>
                                     <label className={style.labelcoluna}>Nº do CC:
@@ -407,7 +398,7 @@ function PaginaCandidatarEstagio(){
                                     cols="50" 
                                     name="cartaDeApresentacao" 
                                     value={formData.cartaDeApresentacao} 
-                                    onChange={handleChange(500)} 
+                                    onChange={handleChange()} 
                                     placeholder="Escreva aqui a sua carta de apresentação..."
                                 />
                             </label>
