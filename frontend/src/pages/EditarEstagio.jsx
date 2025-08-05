@@ -36,6 +36,7 @@ const EditarEstagio = () => {
     horaInicio: "",
     horaFim: "",
     habilitacoes: "",
+    cursosPreferenciais: "",
     competenciasTecnicas: "",
     softSkills: "",
     idiomas: "",
@@ -94,6 +95,7 @@ const EditarEstagio = () => {
           horaInicio: "",
           horaFim: "",
           habilitacoes: estagio.habilitacoesMinimas || "",
+          cursosPreferenciais: estagio.cursosPreferenciais || "",
           competenciasTecnicas: estagio.competenciasEssenciais || "",
           softSkills: estagio.competenciasPessoais || "",
           idiomas: estagio.idiomas || "",
@@ -116,9 +118,11 @@ const EditarEstagio = () => {
   const fieldLimits = {
     titulo: 60,
     localizacao: 40,
+    area: 30,
     descricao: 500,
     beneficios: 300,
     competenciasTecnicas: 300,
+    cursosPreferenciais: 200,
     softSkills: 200,
     idiomas: 150,
     outrosRequisitos: 150,
@@ -193,7 +197,7 @@ const EditarEstagio = () => {
         oportunidades: formData.mentoria || "Oportunidades de aprendizagem e desenvolvimento profissional",
         beneficios: formData.beneficios,
         habilitacoesMinimas: formData.habilitacoes || "",
-        cursosPreferenciais: "",
+        cursosPreferenciais: formData.cursosPreferenciais || "",
         competenciasEssenciais: formData.competenciasTecnicas || "",
         competenciasPessoais: formData.softSkills || "",
         idiomas: formData.idiomas || "",
@@ -358,22 +362,22 @@ const EditarEstagio = () => {
                 <Form.Label className={`${style.label} fw-bold`}>
                   Área de Atuação <RequiredFieldTooltip />
                 </Form.Label>
-                <Form.Select
-                  name="area"
-                  value={formData.area}
-                  onChange={handleChange}
-                  className={style.select}
-                >
-                  <option value="">Selecione uma área</option>
-                  <option value="Tecnologia da Informação">Tecnologia da Informação</option>
-                  <option value="Marketing Digital">Marketing Digital</option>
-                  <option value="Recursos Humanos">Informática</option>
-                  <option value="Finanças">Finanças</option>
-                  <option value="Design">Design</option>
-                  <option value="Vendas">Vendas</option>
-                  <option value="Gestão">Gestão</option>
-                  <option value="Outro">Outro</option>
-                </Form.Select>
+                <Form.Control
+                            className={`${style.formControl} ${formData.area.length > 30 ? "is-invalid" : ""}`}
+                            type="text"
+                            name="area"
+                            value={formData.area}
+                            onChange={handleChange}
+                            placeholder="Ex: Tecnologia da Informação"
+                          />
+                <div className="d-flex justify-content-between">
+                            {formData.area.length > 30 && (
+                              <span className={style.charterror}>Máximo de 30 caracteres ultrapassado!</span>
+                            )}
+                            <small className={`ms-auto ${formData.area.length > 30 ? "text-danger" : "text-muted"}`}>
+                              {formData.area.length}/30 caracteres
+                            </small>
+                          </div>
               </Form.Group>
 
               <Row>
@@ -546,6 +550,29 @@ const EditarEstagio = () => {
                   </small>
                 </div>
               </Form.Group>
+
+              {/* Cursos Preferenciais */}
+              <Form.Group className="mb-3">
+                <Form.Label className={`${style.label} fw-bold`}>
+                  Cursos Preferenciais <RequiredFieldTooltip />
+                </Form.Label>
+                <Form.Control
+                  type="text"
+                  name="cursosPreferenciais"
+                  value={formData.cursosPreferenciais}
+                  onChange={handleChange}
+                  placeholder="Ex: Engenharia Informática, Ciências da Computação, Sistemas de Informação"
+                  className={`${style.input} ${formData.cursosPreferenciais.length > 200 ? "is-invalid" : ""}`}
+                />
+                <div className="d-flex justify-content-between">
+                  {formData.cursosPreferenciais.length > 200 && (
+                    <span className={style.charterror}>Máximo de 200 caracteres ultrapassado!</span>
+                  )}
+                  <small className={`ms-auto ${formData.cursosPreferenciais.length > 200 ? "text-danger" : "text-muted"}`}>
+                    {formData.cursosPreferenciais.length}/200 caracteres
+                  </small>
+                </div>
+              </Form.Group>
             </div>
           )}
 
@@ -693,6 +720,7 @@ const EditarEstagio = () => {
                 <div style={{ flex: "1 1 45%" }}>
                   <p><strong>Descrição:</strong> {formData.descricao}</p>
                   <p><strong>Benefícios:</strong> {formData.beneficios}</p>
+                  <p><strong>Cursos Preferenciais:</strong> {formData.cursosPreferenciais}</p>
                   <p><strong>Habilitações Mínimas:</strong> {formData.habilitacoes}</p>
                   <p><strong>Competências Técnicas:</strong> {formData.competenciasTecnicas}</p>
                   <p><strong>Soft Skills:</strong> {formData.softSkills}</p>

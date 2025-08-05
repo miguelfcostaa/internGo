@@ -34,40 +34,37 @@ const CriacaoEstagio = () => {
 			horaInicio: "",
 			horaFim: "",
 			habilitacoes: "",
+			cursosPreferenciais: "",
 			competenciasTecnicas: "",
 			softSkills: "",
 			idiomas: "",
 			outrosRequisitos: "",
 	});
-	//limite de caracteres
-	const [Warnings, setWarnings] = useState({
-		titulo: false,
-		area: false,
-		vagas: false,
-		localizacao: false,
-		dataInicio: false,
-		tipo: false,
-		duracao: false,
-		prazo: false,
-		descricao: false,
-		beneficios: false,
-		horaInicio: false,
-		horaFim: false,
-		habilitacoes: false,
-		competenciasTecnicas: false,
-		softSkills: false,
-		idiomas: false,
-		outrosRequisitos: false,
-	});
-	//maximo de caracteres e mensagem de erro
-	const messageMaxChat = "Atingiu o maximo de caracteres permitido";
-	const maxChars = 20;
+	// Limites específicos para cada campo
+	const fieldLimits = {
+		titulo: 60,
+		localizacao: 40,
+		area: 30,
+		descricao: 500,
+		beneficios: 300,
+		competenciasTecnicas: 300,
+		cursosPreferenciais: 200,
+		softSkills: 200,
+		idiomas: 150,
+		outrosRequisitos: 150,
+	};
+
 	const handleChange = (e) => {
 		const { name, value } = e.target;
-		if (value.length <= maxChars) {
-		setFormData((prev) => ({ ...prev, [name]: value }));
-		setWarnings((prev) => ({ ...prev, [name]: value.length === maxChars }));
+		const limit = fieldLimits[name];
+		
+		// Se o campo tem limite específico, aplica a validação
+		if (limit && value.length > limit) {
+			return; // Não permite ultrapassar o limite
 		}
+		
+		// Atualiza o valor
+		setFormData((prev) => ({ ...prev, [name]: value }));
 	};
 
 	const handleNext = async () => {
@@ -129,7 +126,7 @@ const CriacaoEstagio = () => {
 			formData.oportunidades || "Oportunidades de aprendizagem e desenvolvimento profissional",
 			beneficios: formData.beneficios,
 			habilitacoesMinimas: formData.habilitacoes || "",
-			cursosPreferenciais: "", // Campo não presente no formulário
+			cursosPreferenciais: formData.cursosPreferenciais || "",
 			competenciasEssenciais: formData.competenciasTecnicas || "",
 			competenciasPessoais: formData.softSkills || "",
 			idiomas: formData.idiomas || "",
@@ -241,33 +238,43 @@ const CriacaoEstagio = () => {
 						Título do Estágio <RequiredFieldTooltip />
 					</Form.Label>
 					<Form.Control
-						className={style.formControl}
+						className={`${style.formControl} ${formData.titulo.length > 60 ? "is-invalid" : ""}`}
 						type="text"
 						name="titulo"
 						value={formData.titulo}
 						onChange={handleChange}
 						placeholder="Ex: Estágio em Desenvolvimento de Software"
 					/>
-					{Warnings["titulo"] && (
-						<span className={style.charterror}>{messageMaxChat}</span>
-					)}
+					<div className="d-flex justify-content-between">
+						{formData.titulo.length > 60 && (
+							<span className={style.charterror}>Máximo de 60 caracteres ultrapassado!</span>
+						)}
+						<small className={` ${formData.titulo.length > 60 ? "text-danger" : "text-muted"}`}>
+							{formData.titulo.length}/60 caracteres
+						</small>
+					</div>
 					</Form.Group>
 
 					<Form.Group className={`${style.mb3} d-flex flex-column`}>
 					<Form.Label className={style.formLabel}>
-						Área(s) de Atuação <RequiredFieldTooltip />
+						Área de Atuação <RequiredFieldTooltip />
 					</Form.Label>
 					<Form.Control
-						className={style.formControl}
+						className={`${style.formControl} ${formData.area.length > 30 ? "is-invalid" : ""}`}
 						type="text"
 						name="area"
 						value={formData.area}
 						onChange={handleChange}
 						placeholder="Ex: Tecnologia da Informação"
 					/>
-					{Warnings["area"] && (
-						<span className={style.charterror}>{messageMaxChat}</span>
-					)}
+					<div className="d-flex justify-content-between">
+						{formData.area.length > 30 && (
+							<span className={style.charterror}>Máximo de 30 caracteres ultrapassado!</span>
+						)}
+						<small className={` ${formData.area.length > 30 ? "text-danger" : "text-muted"}`}>
+							{formData.area.length}/30 caracteres
+						</small>
+					</div>
 					</Form.Group>
 
 					<Form.Group className={`${style.mb3} ${style.inlineField}`}>
@@ -292,16 +299,21 @@ const CriacaoEstagio = () => {
 						Localização <RequiredFieldTooltip />
 					</Form.Label>
 					<Form.Control
-						className={style.formControl}
+						className={`${style.formControl} ${formData.localizacao.length > 40 ? "is-invalid" : ""}`}
 						type="text"
 						name="localizacao"
 						value={formData.localizacao}
 						onChange={handleChange}
 						placeholder="Ex: Funchal"
 					/>
-					{Warnings["localizacao"] && (
-						<span className={style.charterror}>{messageMaxChat}</span>
-					)}
+					<div className="d-flex justify-content-between">
+						{formData.localizacao.length > 40 && (
+							<span className={style.charterror}>Máximo de 40 caracteres ultrapassado!</span>
+						)}
+						<small className={` ${formData.localizacao.length > 40 ? "text-danger" : "text-muted"}`}>
+							{formData.localizacao.length}/40 caracteres
+						</small>
+					</div>
 					</Form.Group>
 				</Col>
 
@@ -384,9 +396,9 @@ const CriacaoEstagio = () => {
 						onChange={handleChange}
 						>
 						<option value="">Duração</option>
+						<option value="1 mes">1 meses</option>
+						<option value="2 meses">2 meses</option>
 						<option value="3 meses">3 meses</option>
-						<option value="6 meses">6 meses</option>
-						<option value="12 meses">12 meses</option>
 						</Form.Select>
 					</Form.Group>
 
@@ -442,15 +454,20 @@ const CriacaoEstagio = () => {
 					<Form.Control
 						as="textarea"
 						rows={4}
-						className={`${style.formControl} w-100`}
+						className={`${style.formControl} w-100 ${formData.descricao.length > 500 ? "is-invalid" : ""}`}
 						placeholder="Descreva brevemente as atividades do estágio"
 						name="descricao"
 						value={formData.descricao}
 						onChange={handleChange}
 					/>
-					{Warnings["descricao"] && (
-						<span className={style.charterror}>{messageMaxChat}</span>
-					)}
+					<div className="d-flex justify-content-between">
+						{formData.descricao.length > 500 && (
+							<span className={style.charterror}>Máximo de 500 caracteres ultrapassado!</span>
+						)}
+						<small className={`ms-auto ${formData.descricao.length > 500 ? "text-danger" : "text-muted"}`}>
+							{formData.descricao.length}/500 caracteres
+						</small>
+					</div>
 					</Form.Group>
 
 					<Form.Group className={style.mb3}>
@@ -458,16 +475,43 @@ const CriacaoEstagio = () => {
 						Benefícios Oferecidos <RequiredFieldTooltip />
 					</Form.Label>
 					<Form.Control
-						className={`${style.formControl} w-100`}
+						className={`${style.formControl} w-100 ${formData.beneficios.length > 300 ? "is-invalid" : ""}`}
 						type="text"
 						placeholder="Ex: Bolsa, Vale-transporte"
 						name="beneficios"
 						value={formData.beneficios}
 						onChange={handleChange}
 					/>
-					{Warnings["beneficios"] && (
-						<span className={style.charterror}>{messageMaxChat}</span>
-					)}
+					<div className="d-flex justify-content-between">
+						{formData.beneficios.length > 300 && (
+							<span className={style.charterror}>Máximo de 300 caracteres ultrapassado!</span>
+						)}
+						<small className={`ms-auto ${formData.beneficios.length > 300 ? "text-danger" : "text-muted"}`}>
+							{formData.beneficios.length}/300 caracteres
+						</small>
+					</div>
+					</Form.Group>
+
+					<Form.Group className={style.mb3}>
+					<Form.Label className={style.formLabel}>
+						Cursos Preferenciais <RequiredFieldTooltip />
+					</Form.Label>
+					<Form.Control
+						className={`${style.formControl} w-100 ${formData.cursosPreferenciais.length > 200 ? "is-invalid" : ""}`}
+						type="text"
+						placeholder="Ex: Engenharia Informática, Ciências da Computação, Sistemas de Informação"
+						name="cursosPreferenciais"
+						value={formData.cursosPreferenciais || ""}
+						onChange={handleChange}
+					/>
+					<div className="d-flex justify-content-between">
+						{formData.cursosPreferenciais.length > 200 && (
+							<span className={style.charterror}>Máximo de 200 caracteres ultrapassado!</span>
+						)}
+						<small className={`ms-auto ${formData.cursosPreferenciais.length > 200 ? "text-danger" : "text-muted"}`}>
+							{formData.cursosPreferenciais.length}/200 caracteres
+						</small>
+					</div>
 					</Form.Group>
 
 					<Form.Group
@@ -556,16 +600,21 @@ const CriacaoEstagio = () => {
 						Competências Técnicas Essenciais <RequiredFieldTooltip />
 					</Form.Label>
 					<Form.Control
-						className="w-100"
+						className={`w-100 ${formData.competenciasTecnicas.length > 300 ? "is-invalid" : ""}`}
 						type="text"
 						placeholder="Liste ferramentas e aptidões técnicas essenciais"
 						name="competenciasTecnicas"
 						value={formData.competenciasTecnicas || ""}
 						onChange={handleChange}
 					/>
-					{Warnings["competenciasTecnicas"] && (
-						<span className={style.charterror}>{messageMaxChat}</span>
-					)}
+					<div className="d-flex justify-content-between">
+						{formData.competenciasTecnicas.length > 300 && (
+							<span className={style.charterror}>Máximo de 300 caracteres ultrapassado!</span>
+						)}
+						<small className={`ms-auto ${formData.competenciasTecnicas.length > 300 ? "text-danger" : "text-muted"}`}>
+							{formData.competenciasTecnicas.length}/300 caracteres
+						</small>
+					</div>
 					</Form.Group>
 
 					<Form.Group className={style.mb3}>
@@ -573,31 +622,41 @@ const CriacaoEstagio = () => {
 						Competências Pessoais (Soft Skills)
 					</Form.Label>
 					<Form.Control
-						className="w-100"
+						className={`w-100 ${formData.softSkills.length > 200 ? "is-invalid" : ""}`}
 						type="text"
 						placeholder="Ex: Que qualidades pessoais são importantes para este estágio"
 						name="softSkills"
 						value={formData.softSkills || ""}
 						onChange={handleChange}
 					/>
-					{Warnings["softSkills"] && (
-						<span className={style.charterror}>{messageMaxChat}</span>
-					)}
+					<div className="d-flex justify-content-between">
+						{formData.softSkills.length > 200 && (
+							<span className={style.charterror}>Máximo de 200 caracteres ultrapassado!</span>
+						)}
+						<small className={`ms-auto ${formData.softSkills.length > 200 ? "text-danger" : "text-muted"}`}>
+							{formData.softSkills.length}/200 caracteres
+						</small>
+					</div>
 					</Form.Group>
 
 					<Form.Group className={style.mb3}>
 					<Form.Label className={style.formLabel}>Idiomas</Form.Label>
 					<Form.Control
-						className="w-100"
+						className={`w-100 ${formData.idiomas.length > 150 ? "is-invalid" : ""}`}
 						type="text"
 						placeholder="Indique os idiomas exigidos (Ex: Inglês avançado, Espanhol básico)"
 						name="idiomas"
 						value={formData.idiomas || ""}
 						onChange={handleChange}
 					/>
-					{Warnings["idiomas"] && (
-						<span className={style.charterror}>{messageMaxChat}</span>
-					)}
+					<div className="d-flex justify-content-between">
+						{formData.idiomas.length > 150 && (
+							<span className={style.charterror}>Máximo de 150 caracteres ultrapassado!</span>
+						)}
+						<small className={`ms-auto ${formData.idiomas.length > 150 ? "text-danger" : "text-muted"}`}>
+							{formData.idiomas.length}/150 caracteres
+						</small>
+					</div>
 					</Form.Group>
 
 					<Form.Group className={style.mb3}>
@@ -607,15 +666,20 @@ const CriacaoEstagio = () => {
 					<Form.Control
 						as="textarea"
 						rows={3}
-						className="w-100"
+						className={`w-100 ${formData.outrosRequisitos.length > 150 ? "is-invalid" : ""}`}
 						placeholder="Ex: Algum requisito adicional não coberto acima"
 						name="outrosRequisitos"
 						value={formData.outrosRequisitos || ""}
 						onChange={handleChange}
 					/>
-					{Warnings["outrosRequisitos"] && (
-						<span className={style.charterror}>{messageMaxChat}</span>
-					)}
+					<div className="d-flex justify-content-between">
+						{formData.outrosRequisitos.length > 150 && (
+							<span className={style.charterror}>Máximo de 150 caracteres ultrapassado!</span>
+						)}
+						<small className={`ms-auto ${formData.outrosRequisitos.length > 150 ? "text-danger" : "text-muted"}`}>
+							{formData.outrosRequisitos.length}/150 caracteres
+						</small>
+					</div>
 					</Form.Group>
 				</Col>
 				</Row>
@@ -709,39 +773,34 @@ const CriacaoEstagio = () => {
 					<Card className="shadow-sm h-100">
 					<Card.Body>
 						<h6 className="fw-bold text-dark mb-3">
-						2. Requisitos do Candidato{" "}
+						2. Detalhes do Estágio{" "}
 						<span
 							className="text-primary"
 							style={{ cursor: "pointer" }}
-							onClick={() => setStep(3)}
+							onClick={() => setStep(2)}
 						>
 							[ Editar ]
 						</span>
 						</h6>
 						<p>
-						<strong className="text-secondary">Habilitações:</strong>{" "}
-						{formData.habilitacoes || <span style={{ color: "#aaa" }}> Não especificado.</span>}
+						<strong className="text-secondary">Descrição:</strong>{" "}
+						{formData.descricao || <span style={{ color: "#aaa" }}> Não especificado.</span>}
 						</p>
 						<p>
-						<strong className="text-secondary">
-							Competências Técnicas:
-						</strong>{" "}
-						{formData.competenciasTecnicas || <span style={{ color: "#aaa" }}> Não especificado.</span>}
+						<strong className="text-secondary">Benefícios Oferecidos:</strong>{" "}
+						{formData.beneficios || <span style={{ color: "#aaa" }}> Não especificado.</span>}
 						</p>
 						<p>
-						<strong className="text-secondary">Soft Skills:</strong>{" "}
-						{formData.softSkills || <span style={{ color: "#aaa" }}> Não especificado.</span>}
+						<strong className="text-secondary">Cursos Preferenciais:</strong>{" "}
+						{formData.cursosPreferenciais || <span style={{ color: "#aaa" }}> Não especificado.</span>}
 						</p>
 						<p>
-						<strong className="text-secondary">Idiomas:</strong>{" "}
-						{formData.idiomas || <span style={{ color: "#aaa" }}> Não especificado.</span>}
+						<strong className="text-secondary">Horário do Estágio:</strong>{" "}
+						{(formData.horaInicio && formData.horaFim) 
+							? `${formData.horaInicio} até ${formData.horaFim}` 
+							: <span style={{ color: "#aaa" }}> Não especificado.</span>}
 						</p>
-						<p>
-						<strong className="text-secondary">
-							Outros Requisitos:
-						</strong>{" "}
-						{formData.outrosRequisitos || <span style={{ color: "#aaa" }}> Não especificado.</span>}
-						</p>
+						
 					</Card.Body>
 					</Card>
 				</Col>
@@ -749,28 +808,34 @@ const CriacaoEstagio = () => {
 				<Card className="shadow-sm mb-4">
 					<Card.Body>
 						<h6 className="fw-bold text-dark mb-3">
-							3. Detalhes do Estágio{" "}
+							3. Requisitos do Candidato{" "}
 							<span
 								className="text-primary"
 								style={{ cursor: "pointer" }}
-								onClick={() => setStep(2)}
+								onClick={() => setStep(3)}
 							>
 								[ Editar ]
 							</span>
 						</h6>
 						<p>
-							<strong className="text-secondary">Descrição:</strong>{" "}
-							{formData.descricao || <span style={{ color: "#aaa" }}> Não especificado.</span>}
+							<strong className="text-secondary">Habilitações Académicas:</strong>{" "}
+							{formData.habilitacoes || <span style={{ color: "#aaa" }}> Não especificado.</span>}
 						</p>
 						<p>
-							<strong className="text-secondary">
-								Mentoria/Aprendizagem:
-							</strong>{" "}
-							{formData.oportunidades || <span style={{ color: "#aaa" }}> Não especificado.</span>}
-							</p>
+							<strong className="text-secondary">Competências Técnicas Essenciais:</strong>{" "}
+							{formData.competenciasTecnicas || <span style={{ color: "#aaa" }}> Não especificado.</span>}
+						</p>
 						<p>
-							<strong className="text-secondary">Benefícios:</strong>{" "}
-							{formData.beneficios || <span style={{ color: "#aaa" }}> Não especificado.</span>}
+							<strong className="text-secondary">Competências Pessoais:</strong>{" "}
+							{formData.softSkills || <span style={{ color: "#aaa" }}> Não especificado.</span>}
+						</p>
+						<p>
+							<strong className="text-secondary">Idiomas:</strong>{" "}
+							{formData.idiomas || <span style={{ color: "#aaa" }}> Não especificado.</span>}
+						</p>
+						<p>
+							<strong className="text-secondary">Outros Requisitos Específicos:</strong>{" "}
+							{formData.outrosRequisitos || <span style={{ color: "#aaa" }}> Não especificado.</span>}
 						</p>
 					</Card.Body>
 				</Card>
