@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import ButtonVoltar from "../components/ButtonVoltar"
 import profileicon from "../assets/profile-icon.png"
@@ -16,6 +16,7 @@ function EditUserProfile() {
     const [editedUserInfo, setEditedUserInfo] = useState(userInfo);    
     const [fieldErrors, setFieldErrors] = useState({});
     const role = getUserRoleFromToken();
+    const competenciaRefs = useRef([]);
 
     useEffect(() => {
         setEditedUserInfo(userInfo);
@@ -75,6 +76,32 @@ function EditUserProfile() {
             competenciasTecnicas: [...(editedUserInfo.competenciasTecnicas || []), ""],
         });
     }
+
+    const handleKeyDown = (e, i) => {
+        const value = e.target.value;
+        if ((e.key === "Enter" || e.key === ",") && value) {
+            e.preventDefault();
+            handleAddCompetencia();
+            setTimeout(() => {
+                if (competenciaRefs.current[i + 1]) {
+                    competenciaRefs.current[i + 1].focus();
+                }
+            }, 0);
+        } else if (e.key === "Backspace" && value === "" && (editedUserInfo.competenciasTecnicas || []).length > 1) {
+            e.preventDefault();
+            const updated = [...(editedUserInfo.competenciasTecnicas || [])];
+            updated.splice(i, 1);
+            setEditedUserInfo({
+                ...editedUserInfo,
+                competenciasTecnicas: updated,
+            });
+            setTimeout(() => {
+                if (competenciaRefs.current[i - 1]) {
+                    competenciaRefs.current[i - 1].focus();
+                }
+            }, 0);
+        }
+    };
 
     const handlePhotoUpdate = (newPhotoPath) => {
         setUserInfo(prev => ({
@@ -344,6 +371,8 @@ function EditUserProfile() {
                                                 value={competencia}
                                                 onChange={e => handleCompetenciaChange(i, e.target.value)}
                                                 placeholder="Ex: Trabalho em equipa, JavaScript, Python, SQL"
+                                                onKeyDown={e => handleKeyDown(e, i)}
+                                                ref={el => competenciaRefs.current[i] = el}
                                             />
                                         ) : (
                                             <span>{competencia}</span>
