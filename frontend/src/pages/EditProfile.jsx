@@ -102,6 +102,7 @@ function EditUserProfile() {
                                         userId={id}
                                         currentPhoto={userInfo.profilePhoto}
                                         onPhotoUpdate={handlePhotoUpdate}
+                                        isCompany={false}
                                     />
                                 ) : (
                                     <img 
@@ -335,6 +336,7 @@ function EditUserProfile() {
                                         userId={id}
                                         currentPhoto={userInfo.profilePhoto}
                                         onPhotoUpdate={handlePhotoUpdate}
+                                        isCompany={true}
                                     />
                                 ) : (
                                     <img 

@@ -3,7 +3,7 @@ import styles from '../styles/EditableProfilePhoto.module.css';
 import profilePhoto from '../assets/profile-icon.png';
 
 
-const EditableProfilePhoto = ({ userId, currentPhoto, onPhotoUpdate }) => {
+const EditableProfilePhoto = ({ userId, currentPhoto, onPhotoUpdate, isCompany = false }) => {
     const [showUploadModal, setShowUploadModal] = useState(false);
     const [uploading, setUploading] = useState(false);
 
@@ -42,7 +42,11 @@ const EditableProfilePhoto = ({ userId, currentPhoto, onPhotoUpdate }) => {
             const formData = new FormData();
             formData.append('profilePhoto', file);
 
-            const response = await fetch(`http://localhost:5000/api/users/${userId}/profile-photo`, {
+            const apiEndpoint = isCompany 
+                ? `http://localhost:5000/api/companies/${userId}/profile-photo`
+                : `http://localhost:5000/api/users/${userId}/profile-photo`;
+
+            const response = await fetch(apiEndpoint, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -76,7 +80,11 @@ const EditableProfilePhoto = ({ userId, currentPhoto, onPhotoUpdate }) => {
         setUploading(true);
 
         try {
-            const response = await fetch(`http://localhost:5000/api/users/${userId}/profile-photo`, {
+            const apiEndpoint = isCompany 
+                ? `http://localhost:5000/api/companies/${userId}/profile-photo`
+                : `http://localhost:5000/api/users/${userId}/profile-photo`;
+
+            const response = await fetch(apiEndpoint, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
