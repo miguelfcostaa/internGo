@@ -11,6 +11,7 @@ import useEstagiosByCompany from '../hooks/useEstagiosByCompany';
 import useCandidaturasFeitas from '../hooks/useCandidaturasFeitas';
 import useCandidaturas from '../hooks/useCandidaturas';
 import useUser from '../hooks/useUser';
+import useEstagiosRecomendados from '../hooks/useEstagiosRecomendados';
 
 const ProfilePage = () => {
 
@@ -24,6 +25,7 @@ const ProfilePage = () => {
     console.log("Candidaturas Feitas:", candidaturasFeitas);
     const candidaturas = useCandidaturas(userInfo._id);
     const { estagios: estagiosByCompany, loading: estagiosLoading } = useEstagiosByCompany(userInfo?._id);
+    const { estagiosRecomendados, loading: loadingRecomendados } = useEstagiosRecomendados(3, role === 'user'); // Máximo 3 para o perfil, só para users
 
 
     useEffect(() => {
@@ -73,11 +75,21 @@ const ProfilePage = () => {
         return `${meses[parseInt(mesIndex) - 1]} ${ano}`;
     }
 
-    
-    if (estagiosLoading) {
-        return <div>Loading...</div>;
+    // Função para formatar a pontuação de recomendação
+    const formatarPontuacao = (pontuacao) => {
+        return Math.round(pontuacao);
     }
-    else if (!userInfo) {
+
+    // Função para obter cor da pontuação
+    const getCorPontuacao = (pontuacao) => {
+        if (pontuacao >= 70) return '#4CAF50'; // Verde
+        if (pontuacao >= 40) return '#FF9800'; // Laranja
+        return '#9E9E9E'; // Cinza
+    }
+
+    
+    
+     if (!userInfo) {
         return <NotFound />;
     }
     else {
@@ -169,29 +181,84 @@ const ProfilePage = () => {
                         </table>
                     </div>
                     <div className='mt-5'>
-                        <div className='mb-4'>
+                        <div className='mb-4' style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                             <h2 className={styles.titulo}>
                                 Estágios Recomendados
                             </h2>
+                            {estagiosRecomendados.length > 0 && (
+                                <Link to="/recomendacoes" style={{ textDecoration: 'none', color: '#447D9B', fontSize: '0.9rem' }}>
+                                    Ver todas as recomendações →
+                                </Link>
+                            )}
                         </div>
-                        <table className="table table-hover shadow align-middle" >
-                            <tbody>
-                                <tr>
-                                    <td><img src={logo} alt="Company" width={50} height={50}/></td>
-                                    <td style={{ textAlign: 'left', paddingLeft: "4rem" }}>Estagio de Tecnico</td>
-                                    <td style={{ paddingRight: "4rem" }}>Acin</td>
-                                    <td style={{ paddingRight: "4rem" }}>Julho</td>
-                                    <td style={{ paddingRight: "4rem" }}>1 Mês</td>
-                                    <td style={{ paddingRight: "4rem" }}>Hybrido</td>
-                                    <td className={styles.linkIcon} style={{ paddingRight: "2rem" }}>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#447D9B" className="bi bi-link" viewBox="0 0 16 16">
-                                            <path d="M6.354 5.5H4a3 3 0 0 0 0 6h3a3 3 0 0 0 2.83-4H9q-.13 0-.25.031A2 2 0 0 1 7 10.5H4a2 2 0 1 1 0-4h1.535c.218-.376.495-.714.82-1z"/>
-                                            <path d="M9 5.5a3 3 0 0 0-2.83 4h1.098A2 2 0 0 1 9 6.5h3a2 2 0 1 1 0 4h-1.535a4 4 0 0 1-.82 1H12a3 3 0 1 0 0-6z"/>
-                                        </svg>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        
+                        {loadingRecomendados ? (
+                            <div className="table table-hover shadow align-middle" style={{ textAlign: 'center', padding: '2rem' }}>
+                                <p>Carregando recomendações...</p>
+                            </div>
+                        ) : estagiosRecomendados.length > 0 ? (
+                            <table className="table table-hover shadow align-middle">
+                                <thead>
+                                    <tr>
+                                        <th style={{ backgroundColor: '#273F4F', color: 'white', width: "8%" }} scope="col">Match</th>
+                                        <th style={{ backgroundColor: '#273F4F', color: 'white', textAlign: 'left', paddingLeft: "2rem" }} scope="col">Estágio</th>
+                                        <th style={{ backgroundColor: '#273F4F', color: 'white' }} scope="col">Empresa</th>
+                                        <th style={{ backgroundColor: '#273F4F', color: 'white' }} scope="col">Mês de Início</th>
+                                        <th style={{ backgroundColor: '#273F4F', color: 'white' }} scope="col">Duração</th>
+                                        <th style={{ backgroundColor: '#273F4F', color: 'white' }} scope="col">Tipo</th>
+                                        <th style={{ backgroundColor: '#273F4F', color: 'white', width: "5%" }} scope="col">#</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {estagiosRecomendados.map((estagio, index) => (
+                                        <tr key={estagio._id}>
+                                            <td style={{ textAlign: 'center' }}>
+                                                <span 
+                                                    style={{ 
+                                                        backgroundColor: getCorPontuacao(estagio.pontuacaoRecomendacao),
+                                                        color: 'white',
+                                                        padding: '4px 8px',
+                                                        borderRadius: '12px',
+                                                        fontSize: '0.8rem',
+                                                        fontWeight: 'bold'
+                                                    }}
+                                                >
+                                                    {formatarPontuacao(estagio.pontuacaoRecomendacao)}%
+                                                </span>
+                                            </td>
+                                            <td style={{ textAlign: 'left', paddingLeft: "2rem", maxWidth: "200px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                                                {estagio.title}
+                                            </td>
+                                            <td>{estagio.company?.name}</td>
+                                            <td>{handleMesInicio(estagio.dataInicio)}</td>
+                                            <td>{estagio.duracao === 1 ? `${estagio.duracao} Mês` : `${estagio.duracao} Meses`}</td>
+                                            <td>{estagio.tipoEstagio}</td>
+                                            <td className={styles.linkIcon} style={{ paddingRight: "2rem" }}>
+                                                <Link to={`/estagio/${estagio._id}`}>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#447D9B" className="bi bi-link" viewBox="0 0 16 16">
+                                                        <path d="M6.354 5.5H4a3 3 0 0 0 0 6h3a3 3 0 0 0 2.83-4H9q-.13 0-.25.031A2 2 0 0 1 7 10.5H4a2 2 0 1 1 0-4h1.535c.218-.376.495-.714.82-1z"/>
+                                                        <path d="M9 5.5a3 3 0 0 0-2.83 4h1.098A2 2 0 0 1 9 6.5h3a2 2 0 1 1 0 4h-1.535a4 4 0 0 1-.82 1H12a3 3 0 1 0 0-6z"/>
+                                                    </svg>
+                                                </Link>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        ) : (
+                            <div className="alert alert-info" style={{ textAlign: 'center', margin: '2rem 0' }}>
+                                <h5>📊 Sem recomendações disponíveis</h5>
+                                <p style={{ marginBottom: '1rem' }}>Complete o seu perfil para receber estágios personalizados!</p>
+                                <div style={{ marginBottom: '1rem' }}>
+                                    <small>
+                                        <strong>Adicione:</strong> Curso • Formação Académica • Competências Técnicas • Código Postal
+                                    </small>
+                                </div>
+                                <Link to={`/edit-profile/${userInfo._id}`} className="btn btn-primary btn-sm">
+                                    Completar Perfil
+                                </Link>
+                            </div>
+                        )}
                     </div>
                     </div>
             ) : role === 'company' ? (

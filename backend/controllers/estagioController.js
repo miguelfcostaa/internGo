@@ -1,5 +1,7 @@
 const Estagio = require('../models/Estagio');
 const Company = require('../models/Company');
+const User = require('../models/User');
+const Candidatura = require('../models/Candidatura');
 const { verifyToken, verifyRole } = require('../middleware/auth');
 
 // Função para criar um novo estágio
@@ -414,6 +416,126 @@ const buscarEstagios = async (req, res) => {
     }
 };
 
+// Função para calcular similaridade de texto (simples)
+const calcularSimilaridade = (texto1, texto2) => {
+    if (!texto1 || !texto2) return 0;
+    
+    const palavras1 = texto1.toLowerCase().split(/\s+/);
+    const palavras2 = texto2.toLowerCase().split(/\s+/);
+    
+    const palavrasComuns = palavras1.filter(palavra => 
+        palavras2.some(p => p.includes(palavra) || palavra.includes(p))
+    );
+    
+    return palavrasComuns.length / Math.max(palavras1.length, palavras2.length);
+};
+
+// Função para normalizar código postal (extrair os primeiros dígitos)
+const normalizarCodigoPostal = (codigoPostal) => {
+    if (!codigoPostal) return '';
+    return codigoPostal.split('-')[0] || codigoPostal.substring(0, 4);
+};
+
+// Função para calcular pontuação de recomendação
+const calcularPontuacaoRecomendacao = (usuario, estagio) => {
+    let pontuacao = 0;
+    
+    // 1. Correspondência de curso (peso: 30%)
+    if (usuario.curso && estagio.cursosPreferenciais) {
+        const similaridadeCurso = calcularSimilaridade(usuario.curso, estagio.cursosPreferenciais);
+        pontuacao += similaridadeCurso * 30;
+    }
+    
+    // 2. Correspondência de área com formação acadêmica (peso: 25%)
+    if (usuario.formacaoAcademica && estagio.area) {
+        const similaridadeArea = calcularSimilaridade(usuario.formacaoAcademica, estagio.area);
+        pontuacao += similaridadeArea * 25;
+    }
+    
+    // 3. Competências técnicas (peso: 25%)
+    if (usuario.competenciasTecnicas && usuario.competenciasTecnicas.length > 0 && estagio.competenciasEssenciais) {
+        const competenciasUsuario = usuario.competenciasTecnicas.join(' ');
+        const similaridadeCompetencias = calcularSimilaridade(competenciasUsuario, estagio.competenciasEssenciais);
+        pontuacao += similaridadeCompetencias * 25;
+    }
+    
+    // 4. Proximidade geográfica (peso: 15%)
+    if (usuario.codigoPostal && estagio.localizacao) {
+        const cpUsuario = normalizarCodigoPostal(usuario.codigoPostal);
+        const localizacaoEstagio = estagio.localizacao.toLowerCase();
+        
+        // Verificar se a localização contém referência ao código postal
+        if (cpUsuario && localizacaoEstagio.includes(cpUsuario)) {
+            pontuacao += 15;
+        } else if (cpUsuario) {
+            // Bonificação menor para códigos postais próximos (diferença de 1 dígito)
+            const cpSimilar = cpUsuario.substring(0, 3);
+            if (localizacaoEstagio.includes(cpSimilar)) {
+                pontuacao += 7;
+            }
+        }
+    }
+    
+    // 5. Bonificação para estágios remotos (peso: 5%)
+    if (estagio.tipoEstagio && estagio.tipoEstagio.toLowerCase().includes('remoto')) {
+        pontuacao += 5;
+    }
+    
+    return Math.min(pontuacao, 100); // Máximo de 100 pontos
+};
+
+// Função para obter estágios recomendados baseado no perfil do usuário
+const obterEstagiosRecomendados = async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const limite = parseInt(req.query.limite) || 10; // Limite padrão de 10 recomendações
+        
+        // Obter o usuário
+        const usuario = await User.findById(userId);
+        
+        if (!usuario) {
+            return res.status(404).json({ message: 'Usuário não encontrado' });
+        }
+        
+        // Obter candidaturas do usuário para excluir estágios já candidatados
+        const candidaturas = await Candidatura.find({ user: userId });
+        const idsEstagiosCandidatados = candidaturas.map(c => c.estagio.toString());
+        
+        // Buscar todos os estágios ativos (exceto os já candidatados)
+        const estagiosDisponiveis = await Estagio.find({
+            _id: { $nin: idsEstagiosCandidatados },
+            status: 'Ativo',
+            prazoCandidatura: { $gte: new Date() } // Prazo ainda válido
+        }).populate('company', 'name');
+        
+        // Calcular pontuação para cada estágio
+        const estagiosComPontuacao = estagiosDisponiveis.map(estagio => ({
+            ...estagio.toObject(),
+            pontuacaoRecomendacao: calcularPontuacaoRecomendacao(usuario, estagio)
+        }));
+        
+        // Ordenar por pontuação (decrescente) e limitar resultados
+        const estagiosRecomendados = estagiosComPontuacao
+            .sort((a, b) => b.pontuacaoRecomendacao - a.pontuacaoRecomendacao)
+            .slice(0, limite);
+        
+        res.json({
+            message: 'Estágios recomendados obtidos com sucesso',
+            total: estagiosRecomendados.length,
+            estagios: estagiosRecomendados,
+            criterios: {
+                curso: usuario.curso,
+                formacaoAcademica: usuario.formacaoAcademica,
+                competenciasTecnicas: usuario.competenciasTecnicas,
+                codigoPostal: usuario.codigoPostal
+            }
+        });
+    } catch (error) {
+        console.error('Erro ao obter estágios recomendados:', error);
+        res.status(500).json({ message: 'Erro ao obter estágios recomendados', error: error.message });
+    }
+};
+
 module.exports = {
     criarEstagio,
     obterEstagios,
@@ -425,5 +547,6 @@ module.exports = {
     atualizarEstagio,
     deletarEstagio,
     obterOpcoesFiltros,
-    buscarEstagios
+    buscarEstagios,
+    obterEstagiosRecomendados
 };
