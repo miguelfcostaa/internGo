@@ -4,6 +4,7 @@ const Candidatura = require('../models/Candidatura');
 const Estagio = require('../models/Estagio');
 const { verifyToken, verifyRole } = require('../middleware/auth');
 const Company = require('../models/Company');
+const validations = require('../utils/validations');
 
 
 router.get('/', verifyToken, async (req, res) => {
@@ -96,10 +97,16 @@ router.get('/estagio/:estagioId', async (req, res) => {
 });
 
 // Rota para candidatar-se a um estágio
-router.post('/candidatar', verifyToken, async (req, res) => {
+router.post('/candidatar/:estagioId', verifyToken, async (req, res) => {
+    const errors = await validations.validateCandidatura(req.body);
+    
+    if (Object.keys(errors).length > 0) {
+        return res.status(400).json({ message: errors });
+    }
+
     try {
-        const estagioId = req.body.estagio;
-        const userId = req.user.id; 
+        const estagioId = req.params.estagioId;
+        const userId = req.user.id;
 
         // Verifica se já existe candidatura
         const existe = await Candidatura.findOne({ user: userId, estagio: estagioId });

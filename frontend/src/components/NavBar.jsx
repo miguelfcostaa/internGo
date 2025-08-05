@@ -96,14 +96,17 @@ const NavBar = () => {
     setShowLogoutModal(false);
     window.location.href = '/home';
   };
+   const handleCancelLogout = () => {
+    setShowLogoutModal(false);
+  };  
 
   const LogoutModal = () => (
     <div className="modal-overlay">
       <div className="container bg-white rounded shadow" style={{ width: 500, padding: 20, textAlign: 'center' }}>
-        <h4>Are you sure you want to logout?</h4>
+        <h5>Tem a certeza que pretende sair da sessão?</h5>
         <div style={{ display: 'flex', justifyContent: 'center', gap: 10, marginTop: 20 }}>
-          <button className="btn btn-danger" onClick={handleConfirmLogout}>Logout</button>
-          <button className="btn btn-secondary" onClick={() => setShowLogoutModal(false)}>Cancel</button>
+          <button className="btn btn-logout" onClick={handleConfirmLogout}>Logout</button>
+          <button className="btn btn-secondary" onClick={() => setShowLogoutModal(false)}>Cancelar</button>
         </div>
       </div>
     </div>
@@ -125,10 +128,19 @@ const NavBar = () => {
                                 value={searchInput}
                                 onChange={e => setSearchInput(e.target.value)}
                             />
-                            <svg className='search-icon' xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="#7c7c7cff" viewBox="0 0 16 16">
+                            <button type='submit'  className="search-button" aria-label="Buscar"></button>
+                            <svg 
+                            className='search-icon' 
+                            xmlns="http://www.w3.org/2000/svg" 
+                            width="18" 
+                            height="18" 
+                            fill="#7c7c7cff" 
+                            viewBox="0 0 16 16"
+                            >
                               <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
                             </svg>
                         </form>
+                        
                         <div className="navbar-brand position-relative" ref={dropdownRef} style={{ position: 'relative' }}>
                         <div
                           className="d-flex align-items-center"
