@@ -2,7 +2,7 @@ import React from 'react';
 import styles from '../styles/ProfilePhoto.module.css';
 
 const ProfilePhoto = ({ photoUrl, userName, size = 'medium' }) => {
-    const defaultPhoto = '/emptyuser.png';
+    const defaultPhoto = '/profile-icon.png';
     const displayPhoto = photoUrl ? `http://localhost:5000${photoUrl}` : defaultPhoto;
 
     return (

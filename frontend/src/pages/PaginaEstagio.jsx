@@ -79,7 +79,8 @@ function PaginaEstagio() {
                         <h4 className={Styles.heading}> {estagio.title} </h4>
                         </div>
                         <div className={Styles.contactInfo}>
-                        <strong>Email:</strong> {estagio.company.email} 
+                        <strong>Email:</strong> {estagio.company.email} <br/>
+                        <strong>Contacto:</strong> 
                         </div>
 
                     </div>

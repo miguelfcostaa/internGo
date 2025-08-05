@@ -3,7 +3,6 @@ import { useParams, Link } from 'react-router-dom';
 import NavBar from '../components/NavBar';
 import { getUserRoleFromToken } from '../utils/jwtUtils';
 import ButtonGeral from '../components/ButtonGeral';
-import ProfilePhotoUpload from '../components/ProfilePhotoUpload';
 import profilePhoto from '../assets/profile-icon.png';
 import styles from '../styles/Profile.module.css';
 import logo from '../assets/logo.jpg';
