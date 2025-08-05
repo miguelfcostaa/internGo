@@ -27,10 +27,24 @@ function PaginaCandidatarEstagio(){
         carta:false,
         nif:false,
     });
-    const [formData, setFormData] = useState({});
+    const [formData, setFormData] = useState({
+        name: '',
+        telefone: '',
+        email: '',
+        morada: '',
+        codigoPostal: '',
+        dataNascimento: '',
+        nif: '',
+        competenciasTecnicas: [],
+        formacaoAcademica: '',
+        cc: '',
+        universidade: '',
+        curso: '',
+        cv: '',
+        cartaDeApresentacao: ''
+    });
 
     const [inputValue, setInputValue] = useState(''); //utilizado no input
-    const [skills, setSkills] = useState([]); //utilizado no array competencias tecnicas
 
     const messageMaxChat = "Atingiu o maximo de caracteres permitido";
 
@@ -48,7 +62,7 @@ function PaginaCandidatarEstagio(){
     //cria o input competencias tecnicas que adiciona uma a uma e permite deletar skills
     const handleKeyDown = (e)=>{
         const value = e.target.value;
-        if (e.key==="Enter" || e.key===","){
+        if (e.key === "Enter" || e.key === ",") {
             e.preventDefault();
             addSkill( value )
             setInputValue('');
@@ -57,17 +71,15 @@ function PaginaCandidatarEstagio(){
 
     const addSkill = (value) => {
         const trimmed = value.trim();
-        if (trimmed && !skills.includes(trimmed)) {
-            const newSkills = [...skills, trimmed];
-            setSkills(newSkills);
-            onChange(newSkills); // send to parent form
+        if (trimmed && !formData.competenciasTecnicas.includes(trimmed)) {
+            const newSkills = [...formData.competenciasTecnicas, trimmed];
+            setFormData((prev) => ({ ...prev, competenciasTecnicas: newSkills }));
         }
     };
 
     const removeSkill = (index) => {
-        const newSkills = skills.filter((_, i) => i !== index);
-        setSkills(newSkills);
-        onChange(newSkills);
+        const newSkills = formData.competenciasTecnicas.filter((_, i) => i !== index);
+        setFormData((prev) => ({ ...prev, competenciasTecnicas: newSkills }));
     };
 
     const handlesSubmit = async (e) => {
@@ -106,6 +118,9 @@ function PaginaCandidatarEstagio(){
 
                 if (responseUser.ok) {
                     setSuccess(true);
+                    setTimeout(() => {
+                        navigate(`/estagios/${id}`);
+                    }, 2000); 
                     setFormData({});
                     setFieldErrors({});
                 } else {
@@ -301,73 +316,59 @@ function PaginaCandidatarEstagio(){
                                 </div>
                                 <div className={style.formrow}>
                                     <div style={{display:"flex", flexDirection:"column", width:"100%",marginTop: "25px"}}>
-                                        <label >Competências Técnicas:</label> 
-                                            <input 
-                                                type="text" 
-                                                placeholder="Ex: Trabalho em Equipa, Design Gráfico..." 
-                                                name="competenciasTecnicas" 
-                                                value={inputValue} 
-                                                className={style.input}  
-                                                onChange={(e) => setInputValue(e.target.value)} 
-                                                onKeyDown={handleKeyDown}
-                                            />
-                                        <div style={{ 
-                                        maxHeight: '100px',
-                                        overflowY: 'auto',
-                                        display: 'flex',
-                                        flexWrap: 'wrap',
-                                        gap: '6px',
-                                        padding: '6px',
-                                        border: '1px solid #ccc',
-                                        borderRadius: '5px',
-                                        backgroundColor: '#f9f9f9',
-                                        marginBottom: '8px'
-                                        }}>
-                                        
-                                        {skills.length<1?
-                                            <div
-                                                style={{
-                                                display:"flex",
-                                                flexDirection:"row",
-                                                background: '#e0e0e0',
-                                                borderRadius: '16px',
-                                                padding: '4px 10px',
-                                            }}
-                                            >
-                                                Adicione as suas competências
+                                        <label className={style.labelcoluna}>Competências Técnicas:</label> 
+                                        <input 
+                                            type="text" 
+                                            placeholder="Ex: Trabalho em Equipa, Design Gráfico..." 
+                                            name="competenciasTecnicas" 
+                                            value={inputValue} 
+                                            className={style.input}  
+                                            onChange={(e) => setInputValue(e.target.value)} 
+                                            onKeyDown={handleKeyDown}
+                                        />
+
+                                        {formData.competenciasTecnicas && formData.competenciasTecnicas.length > 0 ? (
+                                            <div style={{ 
+                                                overflowY: 'auto',
+                                                display: 'flex',
+                                                flexDirection: 'row',
+                                                flexWrap: 'wrap',
+                                                backgroundColor: '#f9f9f9',
+                                                paddingTop: '8px',
+                                                gap: '8px',
+                                            }}>
+                                                {formData.competenciasTecnicas.map((skill, i) => (
+                                                    <div
+                                                        key={i}
+                                                        style={{
+                                                            display:"flex",
+                                                            alignItems: 'center',
+                                                            background: '#e6e6e6ff',
+                                                            borderRadius: '8px',
+                                                            gap: '8px',
+                                                            paddingTop: '8px',
+                                                            paddingBottom: '8px',
+                                                            paddingLeft: '12px',
+                                                            paddingRight: '12px',
+                                                        }}
+                                                    >
+                                                        {skill} 
+                                                        <svg 
+                                                            xmlns="http://www.w3.org/2000/svg" 
+                                                            width="22" 
+                                                            height="22" 
+                                                            fill="red" 
+                                                            class="bi bi-x" 
+                                                            viewBox="0 0 16 16"
+                                                            onClick={() => removeSkill(i)}
+                                                            style={{ cursor: 'pointer' }}
+                                                        >
+                                                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+                                                        </svg>
+                                                    </div>
+                                                ))}
                                             </div>
-                                        :
-                                        skills.map((skill, i) => (
-                                            <div
-                                            key={i}
-                                            style={{
-                                                display:"flex",
-                                                flexDirection:"row",
-                                                background: '#e0e0e0',
-                                                borderRadius: '16px',
-                                                padding: '4px 10px',
-                                            }}
-                                            >
-                                            <div
-                                            style={{
-                                                textAlign:"left",
-                                            }}
-                                            >{skill}</div>
-                                            <span
-                                                onClick={() => removeSkill(i)}
-                                                style={{
-                                                border: 'none',
-                                                background: 'transparent',
-                                                cursor: 'pointer',
-                                                fontWeight: 'bold',
-                                                textAlign:"right"
-                                                }}
-                                            >
-                                                ×
-                                            </span>
-                                            </div>
-                                        ))}
-                                        </div>
+                                        ) : null}                                        
                                     </div>
                                     <label className={style.labelcoluna}>Formação Académica:{/*criar um menu de opçoes*/}
                                         <select 
