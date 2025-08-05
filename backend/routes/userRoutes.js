@@ -191,12 +191,7 @@ router.post('/login', async (req, res) => {
 
 
 router.put('/:id', verifyToken, async (req, res) => {
-    try {
-        if (!req.body.idade && !req.body.nif && !req.body.morada && !req.body.telefone && !req.body.nacionalidade && !req.body.formacaoAcademica && !req.body.competenciasTecnicas && !req.body.aniversario) {
-          return;
-        }
-
-        req.body.aniversario = req.body.aniversario ? req.body.aniversario.slice(0, 10) : null; 
+    try {          
         const errors = await validations.validateUserUpdate(req.body);
         
         if (Object.keys(errors).length > 0) {

@@ -137,18 +137,18 @@ function EditUserProfile() {
                                         userInfo.name
                                     )}
                                 </p>
-                                <b>Data de Nascimento:</b>
+                                <b>Nº de telemóvel:</b>
                                 <p>
                                     {editMode ? (
                                         <input
-                                            name="dataNascimento"
-                                            value={editedUserInfo.dataNascimento ? editedUserInfo.dataNascimento.slice(0, 10) : ""}
+                                            name="telefone"
+                                            value={editedUserInfo.telefone || ""}
                                             onChange={handleChange}
                                             className={styles.invisibleInput}
-                                            placeholder="DD/MM/AAAA"
+                                            placeholder="9XX-XXX-XXX"
                                         />
                                     ) : (
-                                        userInfo.dataNascimento ? userInfo.dataNascimento.slice(0, 10) : <span style={{ color: "#aaa" }}>AAAA-MM-DD</span>
+                                        userInfo.telefone || <span style={{ color: "#aaa" }}>9XX-XXX-XXX</span>
                                     )}
                                 </p>
                                 <b>Morada:</b>
@@ -165,18 +165,33 @@ function EditUserProfile() {
                                         userInfo.morada || <span style={{ color: "#aaa" }}>Ex: Rua das Flores, 123</span>
                                     )}
                                 </p>
-                                <b>Nacionalidade:</b>
+                                <b>NIF:</b>
                                 <p>
                                     {editMode ? (
                                         <input
-                                            name="nacionalidade"
-                                            value={editedUserInfo.nacionalidade || ""}
+                                        type="text"
+                                        name="nif"
+                                        value={editedUserInfo.nif || ""}
+                                        onChange={handleChange}
+                                        className={styles.invisibleInput}
+                                        placeholder="Ex: 123456789"
+                                        />  
+                                    ) : (
+                                        userInfo.nif || <span style={{ color: "#aaa" }}>Ex: 123456789</span>
+                                    )}
+                                </p>
+                                <b>Universidade:</b>
+                                <p>
+                                    {editMode ? (
+                                        <input
+                                            name="universidade"
+                                            value={editedUserInfo.universidade || ""}
                                             onChange={handleChange}
                                             className={styles.invisibleInput}
-                                            placeholder="Ex: Portuguesa"
+                                            placeholder="Ex: Universidade de Lisboa"
                                         />
                                     ) : (
-                                        userInfo.nacionalidade || <span style={{ color: "#aaa" }}>Ex: Portuguesa</span>
+                                        userInfo.universidade || <span style={{ color: "#aaa" }}>Ex: Universidade de Lisboa</span>
                                     )}
                                 </p>
                             </div>
@@ -222,35 +237,6 @@ function EditUserProfile() {
                                         userInfo.codigoPostal || <span style={{ color: "#aaa" }}>Ex: 1234-567</span>
                                     )}
                                 </p>
-                                <b>NIF:</b>
-                                <p>
-                                    {editMode ? (
-                                        <input
-                                        type="text"
-                                        name="nif"
-                                        value={editedUserInfo.nif || ""}
-                                        onChange={handleChange}
-                                        className={styles.invisibleInput}
-                                        placeholder="Ex: 123456789"
-                                        />  
-                                    ) : (
-                                        userInfo.nif || <span style={{ color: "#aaa" }}>Ex: 123456789</span>
-                                    )}
-                                </p>
-                                <b>Nº de telemóvel:</b>
-                                <p>
-                                    {editMode ? (
-                                        <input
-                                            name="telefone"
-                                            value={editedUserInfo.telefone || ""}
-                                            onChange={handleChange}
-                                            className={styles.invisibleInput}
-                                            placeholder="9XX-XXX-XXX"
-                                        />
-                                    ) : (
-                                        userInfo.telefone || <span style={{ color: "#aaa" }}>9XX-XXX-XXX</span>
-                                    )}
-                                </p>
                                 <b>Nº de CC:</b>
                                 <p>
                                     {editMode ? (
@@ -263,6 +249,21 @@ function EditUserProfile() {
                                         />
                                     ) : (
                                         userInfo.cc || <span style={{ color: "#aaa" }}>Ex: 12345678</span>
+                                    )}
+                                </p>
+                                <b>Curso:</b>
+                                <p>
+                                    {editMode ? (
+                                        <input
+                                        type="text"
+                                        name="curso"
+                                        value={editedUserInfo.curso || ""}
+                                        onChange={handleChange}
+                                        className={styles.invisibleInput}
+                                        placeholder="Ex: Engenharia Informática"
+                                        />  
+                                    ) : (
+                                        userInfo.curso || <span style={{ color: "#aaa" }}>Ex: Engenharia Informática</span>
                                     )}
                                 </p>
                             </div>

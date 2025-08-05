@@ -123,44 +123,54 @@ async function validateCompanyInput(Company ,data) {
 const validateUserUpdate = async (data) => {
     const errors = {};
 
-    // Valida nome
+    // Valida Nome
     if (!validateName(data.name)) {
         errors.name = 'Nome deve ter entre 3 e 50 caracteres.';
     }
-
-    // Valida email (formato)
+    
+    // Valida Email
     if (!validateEmail(data.email)) {
         errors.email = 'Email deve ter formato válido.';
     }
 
-    // Valida Idade
-    if (data.idade && (isNaN(data.idade) || data.idade < 0 || data.idade > 120)) {
-        errors.idade = 'Idade deve ser um número válido entre 0 e 120.';
+    // Valida NIF
+    if (!validateNIF(data.nif)) {
+        errors.nif = 'NIF deve ter exatamente 9 dígitos.';
     }
 
-    // Valida telefone
+    // Valida Telefone
     if (data.telefone.length !== 9) {
         errors.telefone = 'Número de telefone deve conter no minimo 9 digitos.';
     }
 
-    // Valida morada
+    // Valida Morada
     if (data.morada.length < 3 || data.morada.length > 100) {
         errors.morada = 'Morada deve ter entre 3 e 100 caracteres.';
     }
 
-    // Valida NIF
-    if (data.nif && data.nif !== "" && !/^\d{9}$/.test(data.nif)) {
-        errors.nif = 'NIF deve ter exatamente 9 dígitos.';
+    // Valida Código Postal fomato: "1234-567"
+    if (!/^\d{4}-\d{3}$/.test(data.codigoPostal)) {
+        errors.codigoPostal = 'Código Postal deve ter o formato XXXX-XXX.';
     }
 
-    // Valida Nacionalidade
-    if (!listaNacionalidades.includes(data.nacionalidade)) {
-        errors.nacionalidade = 'Escreva uma nacionalidade válida.';
+    // Valida Data de Nascimento
+    if (isNaN(new Date(data.dataNascimento).getTime())) { 
+        errors.dataNascimento = 'Data de Nascimento deve ter um formato válido.';
     }
 
-    // Valida CC
-    if (!data.cc || data.cc.length !== 8 || !/^\d{8}$/.test(data.cc)) {
+    // Valida Cartão de Cidadão
+    if (data.cc.length !== 8 || !/^\d{8}$/.test(data.cc)) {
         errors.cc = 'Cartão de Cidadão deve ter exatamente 8 dígitos.';
+    }
+
+    // Valida Universidade
+    if (data.universidade.length < 3 || data.universidade.length > 50) {
+        errors.universidade = 'Universidade deve ter entre 3 e 50 caracteres.';
+    }
+
+    // Valida Curso
+    if (data.curso.length < 3 || data.curso.length > 50) {
+        errors.curso = 'Curso deve ter entre 3 e 50 caracteres.';
     }
 
     return errors;
@@ -170,7 +180,7 @@ const validateUserUpdate = async (data) => {
 function validateCandidatura(data) {
     const errors = {};
 
-    if (!data.name || !data.nacionalidade || !data.telefone || !data.email || !data.morada || !data.codigoPostal || !data.dataNascimento || !data.cc || !data.formacaoAcademica || !data.universidade || !data.curso || !data.cartaDeApresentacao) {
+    if (!data.name || !data.email || !data.nif || !data.telefone || !data.morada || !data.codigoPostal || !data.dataNascimento || !data.cc || !data.universidade || !data.curso || !data.cartaDeApresentacao) {
         errors.general = 'Todos os campos são obrigatórios.';
         return errors;
     }
@@ -180,19 +190,19 @@ function validateCandidatura(data) {
         errors.name = 'Nome deve ter entre 3 e 50 caracteres.';
     }
     
-    // Valida Nacionalidade
-    if (!listaNacionalidades.includes(data.nacionalidade)) {
-        errors.nacionalidade = 'Escreva uma nacionalidade válida.';
+    // Valida Email
+    if (!validateEmail(data.email)) {
+        errors.email = 'Email deve ter formato válido.';
+    }
+
+    // Valida NIF
+    if (!validateNIF(data.nif)) {
+        errors.nif = 'NIF deve ter exatamente 9 dígitos.';
     }
 
     // Valida Telefone
     if (data.telefone.length !== 9) {
         errors.telefone = 'Número de telefone deve conter no minimo 9 digitos.';
-    }
-
-    // Valida Email
-    if (!validateEmail(data.email)) {
-        errors.email = 'Email deve ter formato válido.';
     }
 
     // Valida Morada

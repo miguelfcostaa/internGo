@@ -62,9 +62,6 @@ const userSchema = new mongoose.Schema({
     morada: {
         type: String,
     },
-    nacionalidade: {
-        type: String,
-    },
     nif: {
         type: String,
     },
