@@ -27,7 +27,8 @@ function PaginaEstagio() {
     }, [estagio, loading, navigate]);
 
     const handleCandidatar = () => {
-        navigate("/candidatar-estagio");
+        navigate("/candidatar-estagio/" + id); // Redirect to the candidatar page with the estagio ID
+        window.scrollTo(0, 0); // Scroll to the top of the page
     };
 
     // Função para formatar o mês, que vem como //YYYY-MM e retorna o nome do mes e o ano
@@ -92,40 +93,40 @@ function PaginaEstagio() {
                         <ul className={Styles.cleanList}>
                             <li>
                                 <strong>Área(s) de Atuação:</strong>
-                                <p>{estagio.area}</p>
+                                <p>{estagio.area || <span style={{ color: '#888' }}>Não especificado..</span>}</p>
                             </li>
                             <li>
                                 <strong>Habilitações Académicas Mínimas:</strong>
-                                <p>{estagio.habilitacoesMinimas}</p>
+                                <p>{handleHabilitacoes(estagio.habilitacoesMinimas) || <span style={{ color: '#888' }}>Não especificado.</span>}</p>
                             </li>
                             <li>
                                 <strong>Competências Técnicas Essenciais:</strong>
                                 <ul className={Styles.subList}>
-                                    {estagio.competenciasEssenciais.split(',').map(e => (
+                                    {estagio.competenciasEssenciais ? estagio.competenciasEssenciais.split(',').map(e => (
                                         <li key={e.trim()}>• {e.trim()}</li>
-                                    ))}
+                                    )) :  <span style={{ color: '#888' }}>Não especificado.</span>}
                                 </ul>
                             </li>
                             <li>
                                 <strong>Competências Pessoais (Soft Skills):</strong>
                                 <ul className={Styles.subList}>
-                                    {estagio.competenciasPessoais.split(',').map(e => (
+                                    {estagio.competenciasPessoais ? estagio.competenciasPessoais.split(',').map(e => (
                                         <li key={e.trim()}>• {e.trim()}</li>
-                                    ))}
+                                    )) :  <span style={{ color: '#888' }}>Não especificado.</span>}
                                 </ul>
                             </li>
                             <li>
                                 <strong>Idiomas:</strong>
                                 <ul className={Styles.subList}>
-                                    {estagio.idiomas.split(',').map(e => (
+                                    {estagio.idiomas ? estagio.idiomas.split(',').map(e => (
                                         <li key={e.trim()}>• {e.trim()}</li>
-                                    ))}
+                                    )) :  <span style={{ color: '#888' }}>Não especificado.</span>}
                                 </ul>
                             </li>
                             <li>
                                 <strong>Descrição do Estágio:</strong>
                                 <p>
-                                    {estagio.descricao}
+                                    {estagio.descricao || <span style={{ color: '#888' }}>Não especificado.</span>}
                                 </p>
                             </li>
                         </ul>
@@ -134,13 +135,13 @@ function PaginaEstagio() {
                     {/* Sidebar + botón */}
                     <div className={Styles.sidebarWrapper}>
                         <div className={Styles.sidebar}>
-                            <p><strong>Prazo da Candidatura:</strong> {estagio.prazoCandidatura ? new Date(estagio.prazoCandidatura).toLocaleDateString() : 'Não especificado'}</p>
-                            <p><strong>Local de estágio:</strong> {estagio.localizacao}</p>
-                            <p><strong>Mês de Início do Estágio:</strong> {handleMesInicio(estagio.dataInicio)}</p>
-                            <p><strong>Duração:</strong> {estagio.duracao > 1 ? `${estagio.duracao} Meses` : `${estagio.duracao} Mês`}</p>
-                            <p><strong>Número de Vagas:</strong> {estagio.numeroVagas}</p>
-                            <p><strong>Horário do Estágio:</strong> {estagio.horarioEstagio}</p>
-                            <p><strong>Benefícios oferecidos:</strong> {estagio.beneficios}</p>
+                            <p><strong>Prazo da Candidatura:</strong> {estagio.prazoCandidatura ? new Date(estagio.prazoCandidatura).toLocaleDateString() : <span style={{ color: '#888' }}>Não especificado.</span>}</p>
+                            <p><strong>Local de estágio:</strong> {estagio.localizacao || <span style={{ color: '#888' }}>Não especificado.</span>}</p>
+                            <p><strong>Mês de Início do Estágio:</strong> {handleMesInicio(estagio.dataInicio) || <span style={{ color: '#888' }}>Não especificado.</span>}</p>
+                            <p><strong>Duração:</strong> {estagio.duracao ? (estagio.duracao > 1 ? `${estagio.duracao} Meses` : `${estagio.duracao} Mês`) : <span style={{ color: '#888' }}>Não especificado.</span>}</p>
+                            <p><strong>Número de Vagas:</strong> {estagio.numeroVagas || <span style={{ color: '#888' }}>Não especificado.</span>}</p>
+                            <p><strong>Horário do Estágio:</strong> {estagio.horarioEstagio || <span style={{ color: '#888' }}>Não especificado.</span>}</p>
+                            <p><strong>Benefícios oferecidos:</strong> {estagio.beneficios || <span style={{ color: '#888' }}>Não especificado.</span>}</p>
                         </div>
                         <button className={Styles.customButton} onClick={handleCandidatar}>
                             Candidatar-se

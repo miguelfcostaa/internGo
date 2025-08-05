@@ -1,3 +1,9 @@
+const listaNacionalidades = [
+    'Portuguesa', 'Espanhola', 'Francesa', 'Alemã', 'Italiana', 'Britânica',
+    'Americana', 'Brasileira', 'Argelina', 'Angolana', 'Moçambicana'
+];
+
+
 function validateName(name) {
     return name.length >= 3 && name.length <= 50; // Nome deve ter entre 3 e 50 caracteres
 }
@@ -7,7 +13,7 @@ function validateEmail(email) {
 }
 
 function validatePhoneNumber(phone) {
-    return /^(\+351)?9\d{8}$/.test(phone);  // Aceita formatos: 9xxxxxxxx ou +351xxxxxxxxx
+    return /^9\d{8}$/.test(phone); // Aceita formatos: 9xxxxxxxx
 }
 
 function validateNIF(nif) {
@@ -117,11 +123,6 @@ async function validateCompanyInput(Company ,data) {
 const validateUserUpdate = async (data) => {
     const errors = {};
 
-    const listaNacionalidades = [
-        'Portuguesa', 'Espanhola', 'Francesa', 'Alemã', 'Italiana', 'Britânica',
-        'Americana', 'Brasileira', 'Argelina', 'Angolana', 'Moçambicana'
-    ];
-
     // Valida nome
     if (!validateName(data.name)) {
         errors.name = 'Nome deve ter entre 3 e 50 caracteres.';
@@ -153,7 +154,7 @@ const validateUserUpdate = async (data) => {
     }
 
     // Valida Nacionalidade
-    if (!validateName(data.nacionalidade) || !listaNacionalidades.includes(data.nacionalidade)) {
+    if (!listaNacionalidades.includes(data.nacionalidade)) {
         errors.nacionalidade = 'Escreva uma nacionalidade válida.';
     }
 
@@ -166,8 +167,76 @@ const validateUserUpdate = async (data) => {
 }
 
 
+function validateCandidatura(data) {
+    const errors = {};
+
+    if (!data.name || !data.nacionalidade || !data.telefone || !data.email || !data.morada || !data.codigoPostal || !data.dataNascimento || !data.cc || !data.formacaoAcademica || !data.universidade || !data.curso || !data.cartaDeApresentacao) {
+        errors.general = 'Todos os campos são obrigatórios.';
+        return errors;
+    }
+
+    // Valida Nome
+    if (!validateName(data.name)) {
+        errors.name = 'Nome deve ter entre 3 e 50 caracteres.';
+    }
+    
+    // Valida Nacionalidade
+    if (!listaNacionalidades.includes(data.nacionalidade)) {
+        errors.nacionalidade = 'Escreva uma nacionalidade válida.';
+    }
+
+    // Valida Telefone
+    if (data.telefone.length !== 9) {
+        errors.telefone = 'Número de telefone deve conter no minimo 9 digitos.';
+    }
+
+    // Valida Email
+    if (!validateEmail(data.email)) {
+        errors.email = 'Email deve ter formato válido.';
+    }
+
+    // Valida Morada
+    if (data.morada.length < 3 || data.morada.length > 100) {
+        errors.morada = 'Morada deve ter entre 3 e 100 caracteres.';
+    }
+
+    // Valida Código Postal fomato: "1234-567"
+    if (!/^\d{4}-\d{3}$/.test(data.codigoPostal)) {
+        errors.codigoPostal = 'Código Postal deve ter o formato XXXX-XXX.';
+    }
+
+    // Valida Data de Nascimento
+    if (isNaN(new Date(data.dataNascimento).getTime())) { 
+        errors.dataNascimento = 'Data de Nascimento deve ter um formato válido.';
+    }
+
+    // Valida Cartão de Cidadão
+    if (data.cc.length !== 8 || !/^\d{8}$/.test(data.cc)) {
+        errors.cc = 'Cartão de Cidadão deve ter exatamente 8 dígitos.';
+    }
+
+    // Valida Universidade
+    if (data.universidade.length < 3 || data.universidade.length > 50) {
+        errors.universidade = 'Universidade deve ter entre 3 e 50 caracteres.';
+    }
+
+    // Valida Curso
+    if (data.curso.length < 3 || data.curso.length > 50) {
+        errors.curso = 'Curso deve ter entre 3 e 50 caracteres.';
+    }
+
+    // Valida Carta de Apresentação
+    if (data.cartaDeApresentacao.length < 10 || data.cartaDeApresentacao.length > 500) {
+        errors.cartaDeApresentacao = 'Carta de Apresentação deve ter entre 10 e 500 caracteres.';
+    }
+
+    return errors;
+}
+
+
 
 module.exports = {
+    validateCandidatura,
     validateUserUpdate,
     validateCompanyInput,
     validateName,

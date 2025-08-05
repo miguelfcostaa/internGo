@@ -56,8 +56,8 @@ const userSchema = new mongoose.Schema({
         type: Date,
         default: null
     },
-    idade: {
-        type: Number,
+    dataNascimento: {
+        type: Date,
     },
     morada: {
         type: String,
@@ -73,6 +73,21 @@ const userSchema = new mongoose.Schema({
     },
     competenciasTecnicas: {
         type: Array, 
+    },
+    codigoPostal: {
+        type: String,
+    },
+    universidade: {
+        type: String,
+    },
+    curso: {
+        type: String,
+    },
+    cv: {
+        type: String,
+    },
+    cartaDeApresentacao: {
+        type: String,
     },
 }, {
     timestamps: true

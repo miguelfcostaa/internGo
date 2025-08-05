@@ -1,57 +1,114 @@
-import {React, useState} from "react";
+import {React, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import ButtonVoltar from "../components/ButtonVoltar";
 import NavBar from "../components/NavBar";
 import style from"../styles/PaginaCandidatarEstagio.module.css";
+import useUser from "../hooks/useUser.js";
+import useEstagios from "../hooks/useEstagios.js";
+import { useNavigate } from "react-router-dom";
 
 function PaginaCandidatarEstagio(){
+    const navigate = useNavigate();
+
+    const { id } = useParams();
+    const { estagio } = useEstagios(id);
+    const [user] = useUser();
+    const [success, setSuccess] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [fieldErrors, setFieldErrors] = useState({});
     const [Warnings, setWarnings] = useState({
-    name: false,
-    cc: false,
-    email: false,
-    telemovel: false,
-    dataNascimento: false,
-    sexo: false,
-    morada:false,
-    nacionalidade:false,
-    nivelQNQ:false,
-    curso:false,
-    localEnsino:false,
-    apresentacao:false,
-    carta:false,
-  });
-  //Estado para armazenar dados do formulário
-    const [formData, setFormData] = useState({
-        name: "",
-        cc: "",
-        email: "",
-        telemovel: "",
-        dataNascimento: "",
-        sexo: "",
-        morada:"",
-        nacionalidade:"",
-        nivelQNQ:"",
-        curso:"",
-        localEnsino:"",
-        apresentacao:"",
-        carta:"",
-      });
-      const messageMaxChat="Atingiu o maximo de caracteres permitido"
+        name: false,
+        nacionalidade: false,
+        telefone: false,
+        email: false,
+        morada: false,
+        codigoPostal: false,
+        dataNascimento: false,
+        cc: false,
+        formacaoAcademica: false,
+        universidade: false,
+        curso: false,
+        cv: false,
+        cartaDeApresentacao: false,
+    });
+    const [formData, setFormData] = useState({});
+    
+    const messageMaxChat="Atingiu o maximo de caracteres permitido"
     const handleChange = ( maxChars = 10000 ) => (e)=> {
         const { name, value } = e.target;
         if (value.length <= maxChars) {
             setFormData((prev) => ({ ...prev, [name]: value }));
             setWarnings((prev) => ({ ...prev, [name]: value.length === maxChars }));
         } 
-  };
-    const handlesSubmit = (e) => {
+    };
+
+    const handlesSubmit = async (e) => {
         e.preventDefault();
+        setIsLoading(true);
+        setSuccess(false);
+        setFieldErrors({});
+        try {
+            const request = await fetch(`http://localhost:5000/api/candidaturas/candidatar/${id}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${localStorage.getItem('token')}`
+                },
+                body: JSON.stringify({
+                    ...formData,
+                    estagio: id,
+                    user: user._id
+                })
+            });
+
+            const response = await request.json();
+            if (request.ok) {
+                setSuccess(true);
+                setFieldErrors({});
+                setFormData({});
+                navigate(`/profile/${id}`);
+            } else {
+                if (response.message && typeof response.message === 'object') {
+                    setFieldErrors(response.message);
+                } else if (typeof response.message === 'string') {
+                    setFieldErrors({ general: response.message });
+                } 
+            }
+        } catch (err) {
+            setFieldErrors({ general: "Erro inesperado ao submeter candidatura." });
+        } finally {
+            setIsLoading(false);
+        }
     }
+
+
+    useEffect(() => {
+        if (user && user._id) {
+            setFormData({
+                name: user.name || '',
+                nacionalidade: user.nacionalidade || '',
+                telefone: user.telefone || '',
+                email: user.email || '',
+                morada: user.morada || '',
+                codigoPostal: user.codigoPostal || '',
+                dataNascimento: user.dataNascimento || '',
+                cc: user.cc || '',
+                formacaoAcademica: user.formacaoAcademica || '',
+                universidade: user.universidade || '',
+                curso: user.curso || '',
+                cv: user.cv || '',
+                cartaDeApresentacao: ''
+            });
+        }
+    }, [user]);
+
+
     return(
-        <div>
+        <>
             <NavBar/>
             <div className={style.background}>
                 <ButtonVoltar/>
-                <h4 className={style.heading}>Estágio Técnico de sistemas</h4>
+                <h4 className={style.heading}> {estagio?.title} </h4>
                 <div style={{marginTop:"40px", textAlign:"left", marginBottom:"10px"}}>Prencha os campos abaixo para se candidatar ao Estágio.</div>{/*Adicionar mensagem, possivelmente, aqui caso os campos nao estejam todos preenchidos*/}
                 <div className={style.bigbox}>
                     <form onSubmit={handlesSubmit}>
@@ -59,7 +116,14 @@ function PaginaCandidatarEstagio(){
                             <div style={{display:"flex", flexDirection:"column"}}>
                                 <div className={style.formrow}>
                                     <label className={style.labelcoluna}>Nome completo:
-                                        <input  type="text" placeholder="" name="name" value={formData.name} className={style.input} onChange={handleChange(100)}></input>
+                                        <input 
+                                            type="text" 
+                                            placeholder="Escreva aqui o seu nome completo" 
+                                            name="name" 
+                                            value={formData.name} 
+                                            className={style.input} 
+                                            onChange={handleChange(100)} 
+                                        />
                                         {/*Mensagem qquando o limite de caracteres é atingindo*/}
                                         {Warnings["name"] && (
                                             <span className={style.charterror}>
@@ -67,9 +131,70 @@ function PaginaCandidatarEstagio(){
                                             </span>
                                         )}
                                     </label>
+                                    <label className={style.labelcoluna}>Email:
+                                        <input 
+                                            type="text" 
+                                            placeholder="Escreva aqui o seu email" 
+                                            name="email" 
+                                            value={formData.email} 
+                                            className={style.input} 
+                                            onChange={handleChange()}
+                                        />
+                                    </label>
+                                </div>
+                                <div className={style.formrow}>
                                     <label className={style.labelcoluna}>Nacionalidade:
-                                        <input type="text" placeholder="" name="nacionalidade" value={formData.nacionalidade} className={style.input} onChange={handleChange(100)}></input>
+                                        <input 
+                                            type="text" 
+                                            placeholder="Ex: Portuguesa" 
+                                            name="nacionalidade" 
+                                            value={formData.nacionalidade} 
+                                            className={style.input} 
+                                            onChange={handleChange(100)} 
+                                        />
                                         {Warnings["nacionalidade"] && (
+                                            <span className={style.charterror}>
+                                            {messageMaxChat}
+                                            </span>
+                                        )}
+                                    </label>
+                                    <label className={style.labelcoluna}>Data de nascimento:
+                                        <input 
+                                            type="text"
+                                            placeholder="AAAA-MM-DD" 
+                                            name="dataNascimento" 
+                                            value={formData.dataNascimento ? formData.dataNascimento.slice(0, 10) : ''} 
+                                            className={style.inputdate} 
+                                            onChange={handleChange()}
+                                        />
+                                    </label>
+                                </div>
+                                <div className={style.formrow}>
+                                    <label className={style.labelcoluna}>Morada:
+                                        <input 
+                                            type="text" 
+                                            placeholder="Escreva aqui a sua morada" 
+                                            name="morada" 
+                                            value={formData.morada} 
+                                            className={style.input} 
+                                            onChange={handleChange(1000)}
+                                        />
+                                        {Warnings["morada"] && (
+                                            <span className={style.charterror}>
+                                            {messageMaxChat}
+                                            </span>
+                                        )}
+                                    </label>
+                                    <label className={style.labelcoluna}>Código postal:
+                                        <input 
+                                            type="text" 
+                                            placeholder="Escreva aqui o seu código postal" 
+                                            name="codigoPostal" 
+                                            value={formData.codigoPostal} 
+                                            className={style.input} 
+                                            onChange={handleChange(100)}
+                                        />
+                                        {Warnings["codigoPostal"] && (
                                             <span className={style.charterror}>
                                             {messageMaxChat}
                                             </span>
@@ -78,92 +203,123 @@ function PaginaCandidatarEstagio(){
                                 </div>
                                 <div className={style.formrow}>
                                     <label className={style.labelcoluna}>Nº de telemóvel:
-                                        <div style={{ display:"flex", flexDirection:"row"}}>
-                                        <select style={{width:"20%"}} className={style.select}>
-                                            <option value="+351">+351</option>
-                                            <option value="+55">+55</option>
-                                            <option value="+1">+1</option>
-                                            <option value="+58">+58</option>
-                                        </select>
-                                        <input type="text" placeholder="" name="telemovel" value={formData.telemovel} className={style.input} onChange={handleChange()} style={{width:"100%"}}></input>
-                                        </div>
-                                    </label>
-                                    <label className={style.labelcoluna}>Email:
-                                        <input type="text" placeholder="" name="email" value={formData.email} className={style.input} onChange={handleChange()}></input>
-                                    </label>
-                                </div>
-                                <div className={style.formrow}>
-                                    <label className={style.labelcoluna}>Morada:
-                                        <input type="text" placeholder="" name="morada" value={formData.morada} className={style.input} onChange={handleChange(1000)}></input>
-                                        {Warnings["morada"] && (
-                                            <span className={style.charterror}>
-                                            {messageMaxChat}
-                                            </span>
-                                        )}
-                                    </label>
-                                    <label className={style.labelcoluna}>Código postal:
-                                        <input type="text" placeholder="" name="nacionalidade" value={formData.nacionalidade} className={style.input} onChange={handleChange(100)}></input>
-                                        {Warnings["nacionalidade"] && (
-                                            <span className={style.charterror}>
-                                            {messageMaxChat}
-                                            </span>
-                                        )}
-                                    </label>
-                                </div>
-                                <div className={style.formrow}>
-                                    <label className={style.labelcoluna}>Data de nascimento:
-                                        <input type="date" name="dataNascimento" value={formData.dataNascimento} className={style.inputdate} onChange={handleChange()}></input>
+                                        <input 
+                                            type="text" 
+                                            placeholder="Escreva aqui o seu número de telemóvel" name="telefone" 
+                                            value={formData.telefone} 
+                                            className={style.input} 
+                                            onChange={handleChange()} 
+                                        />
                                     </label>
                                     <label className={style.labelcoluna}>Nº do CC:
-                                        <input type="text" placeholder="" name="cc" value={formData.cc} className={style.input} onChange={handleChange()}></input>
+                                        <input 
+                                            type="text" 
+                                            placeholder="Escreva aqui o seu número do Cartão de Cidadão" 
+                                            name="cc" 
+                                            value={formData.cc} 
+                                            className={style.input} 
+                                            onChange={handleChange()}
+                                        />
                                     </label>
                                 </div>
                                 <div className={style.formrow}>
-                                    <label className={style.labelcoluna}>Nível QNQ:{/*criar um menu de opçoes*/}
-                                        <select name="nivelQNQ" className={style.select} onChange={handleChange()}>
-                                            <option value="">Escolha o seu nível de habilitação</option>
-                                            <option value="Nível 1">Nível 1-4ºano do Ensino Básico</option>
-                                            <option value="Nível 2">Nível 2-6ºano do Ensino Básico</option>
-                                            <option value="Nível 3">Nível 3-9ºano do Ensino Básico</option>
-                                            <option value="Nível 4">Nível 4-Ensino Secundário + Estágio Profissional</option>
-                                            <option value="Nível 5">Nível 5-Cursos de Especialização Tecnólogica (CET)</option>
-                                            <option value="Nível 6">Nível 6-Licenciatura</option>
-                                            <option value="Nível 7">Nível 7-Mestrado</option>
-                                            <option value="Nível 8">Nível 8-Doutoramento</option>
-                                        </select>
-                                    </label>
+                                    
                                     <label className={style.labelcoluna}>Universidade/Entidade Formadora:
-                                        <input type="text" placeholder="" name="localEnsino" value={formData.localEnsino} className={style.input} onChange={handleChange(100)}></input>
-                                        {Warnings["localEnsino"] && (
+                                        <input 
+                                            type="text" 
+                                            placeholder="Ex: Universidade da Madeira" 
+                                            name="universidade" 
+                                            value={formData.universidade} 
+                                            className={style.input} 
+                                            onChange={handleChange(100)}
+                                        />
+                                        {Warnings["universidade"] && (
                                             <span className={style.charterror}>
                                             {messageMaxChat}
                                             </span>
                                         )}
                                     </label>
-                                </div>
-                                <div className={style.formrow}>
                                     <label className={style.labelcoluna}>Curso:
-                                        <input type="text" placeholder="" name="curso" value={formData.curso} className={style.input} onChange={handleChange(100)}></input>
+                                        <input 
+                                            type="text" 
+                                            placeholder="Ex: Engenharia Informática" 
+                                            name="curso" 
+                                            value={formData.curso} 
+                                            className={style.input} 
+                                            onChange={handleChange(100)}
+                                        />
                                         {Warnings["curso"] && (
                                             <span className={style.charterror}>
                                             {messageMaxChat}
                                             </span>
                                         )}
                                     </label>
+                                </div>
+                                <div className={style.formrow}>
+                                    <label className={style.labelcoluna}>Formação Académica:{/*criar um menu de opçoes*/}
+                                        <select name="formacaoAcademica" className={style.select} onChange={handleChange()}>
+                                            <option value="">Escolha o seu nível de habilitação</option>
+                                            <option value="1">Nível 1 - 4º Ano do Ensino Básico</option>
+                                            <option value="2">Nível 2 - 6º Ano do Ensino Básico</option>
+                                            <option value="3">Nível 3 - 9º Ano do Ensino Básico</option>
+                                            <option value="4">Nível 4 - Ensino Secundário + Estágio Profissional</option>
+                                            <option value="5">Nível 5 - Cursos de Especialização Tecnólogica (CET)</option>
+                                            <option value="6">Nível 6 - Licenciatura</option>
+                                            <option value="7">Nível 7 - Mestrado</option>
+                                            <option value="8">Nível 8 - Doutoramento</option>
+                                        </select>
+                                    </label>
                                     <label className={style.labelcoluna}>Adicione o seu CV:
-                                        <input type="file" className={style.inputfile}></input> {/*Falta guardar este ficheiro*/}
+                                        <input 
+                                            type="file" 
+                                            name="cv" 
+                                            className={style.inputfile}
+                                        />
                                     </label>
                                 </div>
                             </div>
-                            <label style={{marginTop:"30px", width:"100%", textAlign:"left"}}>Escreva a sua carta de Apresentação:
-                                <textarea className={style.textarea} rows="6" cols="50" name="carta" value={formData.carta}  onChange={handleChange()}></textarea>
+                            <label className={style.labelcoluna}>Escreva a sua carta de Apresentação:
+                                <textarea 
+                                    className={style.textarea} 
+                                    rows="6" 
+                                    cols="50" 
+                                    name="cartaDeApresentacao" 
+                                    value={formData.cartaDeApresentacao} 
+                                    onChange={handleChange(500)} 
+                                    placeholder="Escreva aqui a sua carta de apresentação..."
+                                />
                             </label>
+                            {Warnings["cartaDeApresentacao"] && (
+                                <span className={style.charterror}>
+                                {messageMaxChat}
+                                </span>
+                            )}
+
+                            <div>
+                                {Object.keys(fieldErrors).length > 0 && (
+                                    <div className={`alert ${style.alertDanger}`}>
+                                        <ul className="mb-0">
+                                            {Object.values(fieldErrors).map((error, index) => (
+                                                <li key={index}>{error}</li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                )}
+                                {success && (
+                                    <div className={`alert ${style.alertSuccess}`}>
+                                        <ul className="mb-0">
+                                            <li>Candidatura enviada com sucesso!</li>
+                                        </ul>
+                                    </div>
+                                )}
+                            </div>
+
                         </div>
-                        <input type="submit" value="Candidatar" className={style.submit}></input>
+                        <input type="submit" value={isLoading ? "A enviar..." : "Candidatar"} className={style.submit} disabled={isLoading} />
                     </form>
                 </div>
             </div>
-        </div>
+        </>
     )
 }
 export default PaginaCandidatarEstagio

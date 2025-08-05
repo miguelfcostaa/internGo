@@ -8,11 +8,23 @@ import styles from '../styles/Profile.module.css';
 import logo from '../assets/logo.jpg';
 import NotFound from './NotFound404';
 import useEstagiosByCompany from '../hooks/useEstagiosByCompany';
-import useCandidatos from '../hooks/useCandidatos';
+import useCandidaturasFeitas from '../hooks/useCandidaturasFeitas';
 import useCandidaturas from '../hooks/useCandidaturas';
 import useUser from '../hooks/useUser';
 
 const ProfilePage = () => {
+
+
+
+    const { id } = useParams();
+    const [userInfo, setUserInfo] = useUser(id);
+    const role = getUserRoleFromToken();
+    const [nEstagios, setNEstagios] = useState(0);
+    const candidaturasFeitas = useCandidaturasFeitas(id);
+    console.log("Candidaturas Feitas:", candidaturasFeitas);
+    const candidaturas = useCandidaturas(userInfo._id);
+    const { estagios: estagiosByCompany, loading: estagiosLoading } = useEstagiosByCompany(userInfo?._id);
+
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -24,15 +36,6 @@ const ProfilePage = () => {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);    
-
-    const { id } = useParams();
-    const [userInfo, setUserInfo] = useUser(id);
-    const role = getUserRoleFromToken();
-    const [nEstagios, setNEstagios] = useState(0);
-    const candidatos = useCandidatos(userInfo._id);
-    const candidaturas = useCandidaturas(userInfo._id);
-    const { estagios: estagiosByCompany, loading: estagiosLoading } = useEstagiosByCompany(userInfo?._id);
-
 
     const getNumberOfEstagios = async (id) => {
         const request = await fetch(`http://localhost:5000/api/estagios/nEstagios/${id}`, {
@@ -52,7 +55,25 @@ const ProfilePage = () => {
         }
     };
 
+    // Função para formatar o mês, que vem como //YYYY-MM e retorna o nome do mes e o ano
+    const handleMesInicio = (mes) => {
+        if (!mes) return '';  
+        const meses = [
+            "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
+            "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
+        ];
+        const [ano, mesIndex] = mes.split("-");
+        return `${meses[parseInt(mesIndex) - 1]} ${ano}`;
+    }
+
     
+    if (estagiosLoading) {
+        return <div>Loading...</div>;
+    }
+    else if (!userInfo) {
+        return <NotFound />;
+    }
+    else {
     return (
         <>
             <NavBar />
@@ -102,30 +123,32 @@ const ProfilePage = () => {
                                     <th style={{ backgroundColor: '#273F4F', color: 'white', paddingRight: "2rem" }} scope="col">#</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                {candidatos.map((candidato, index) => (
-                                    <tr key={index}>
-                                        <td style={{ textAlign: 'left', paddingLeft: "2rem" }}>{candidato.estagio.title}</td>
-                                        <td>{candidato.estagio.company.name}</td>
-                                        {console.log(candidato)}
-                                        <td>
-                                            {candidato.dataCandidatura
-                                            ? new Date(candidato.dataCandidatura)
-                                                .toLocaleDateString('pt-PT', { day: '2-digit', month: '2-digit', year: 'numeric' })
-                                            : ''}
-                                        </td>
-                                        <td>{candidato.estagio.duracao === 1 ? `${candidato.estagio.duracao} Mês` : `${candidato.estagio.duracao} Meses`}</td>
-                                        <td>{candidato.estagio.tipoEstagio}</td>
-                                        <td className={styles.linkIcon} style={{ paddingRight: "2rem" }}>
-                                            <Link to={`/estagio/${candidato.estagio._id}`} >
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#447D9B" className="bi bi-link" viewBox="0 0 16 16">
-                                                    <path d="M6.354 5.5H4a3 3 0 0 0 0 6h3a3 3 0 0 0 2.83-4H9q-.13 0-.25.031A2 2 0 0 1 7 10.5H4a2 2 0 1 1 0-4h1.535c.218-.376.495-.714.82-1z"/>
-                                                    <path d="M9 5.5a3 3 0 0 0-2.83 4h1.098A2 2 0 0 1 9 6.5h3a2 2 0 1 1 0 4h-1.535a4 4 0 0 1-.82 1H12a3 3 0 1 0 0-6z"/>
-                                                </svg>
-                                            </Link>
-                                        </td>
+                           <tbody>
+                                {Array.isArray(candidaturasFeitas) && candidaturasFeitas.length > 0 ? (
+                                    candidaturasFeitas.map((candidatura) => (
+                                        <tr key={candidatura._id}>
+                                            <td style={{ textAlign: 'left', paddingLeft: "2rem" }}>
+                                                {candidatura?.estagio?.title}
+                                            </td>
+                                            <td>{candidatura?.estagio?.company?.name}</td>
+                                            <td>{handleMesInicio(candidatura?.estagio?.dataInicio)}</td>
+                                            <td>{candidatura?.estagio?.duracao === 1 ? `${candidatura?.estagio?.duracao} Mês` : `${candidatura?.estagio?.duracao} Meses`}</td>
+                                            <td>{candidatura?.estagio?.tipoEstagio}</td>
+                                            <td className={styles.linkIcon} style={{ paddingRight: "2rem" }}>
+                                                <Link to={`/estagio/${candidatura?.estagio?._id}`} >
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#447D9B" className="bi bi-link" viewBox="0 0 16 16">
+                                                        <path d="M6.354 5.5H4a3 3 0 0 0 0 6h3a3 3 0 0 0 2.83-4H9q-.13 0-.25.031A2 2 0 0 1 7 10.5H4a2 2 0 1 1 0-4h1.535c.218-.376.495-.714.82-1z"/>
+                                                        <path d="M9 5.5a3 3 0 0 0-2.83 4h1.098A2 2 0 0 1 9 6.5h3a2 2 0 1 1 0 4h-1.535a4 4 0 0 1-.82 1H12a3 3 0 1 0 0-6z"/>
+                                                    </svg>
+                                                </Link>
+                                            </td>
+                                        </tr>
+                                    ))
+                                ) : (
+                                    <tr>
+                                        <td colSpan={6} style={{ textAlign: 'center' }}>Nenhuma candidatura encontrada.</td>
                                     </tr>
-                                ))}
+                                )}
                             </tbody>
                         </table>
                     </div>
@@ -251,7 +274,7 @@ const ProfilePage = () => {
             )}
             
         </>
-    );
+    )};
 };
 
 export default ProfilePage;

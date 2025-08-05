@@ -121,18 +121,18 @@ function EditUserProfile() {
                                         userInfo.name
                                     )}
                                 </p>
-                                <b>Idade:</b>
+                                <b>Data de Nascimento:</b>
                                 <p>
                                     {editMode ? (
                                         <input
-                                            name="idade"
-                                            value={editedUserInfo.idade || ""}
+                                            name="dataNascimento"
+                                            value={editedUserInfo.dataNascimento ? editedUserInfo.dataNascimento.slice(0, 10) : ""}
                                             onChange={handleChange}
                                             className={styles.invisibleInput}
-                                            placeholder="Ex: 18"
+                                            placeholder="DD/MM/AAAA"
                                         />
                                     ) : (
-                                        userInfo.idade ? userInfo.idade + " anos" : <span style={{ color: "#aaa" }}>Ex: 18</span>
+                                        userInfo.dataNascimento ? userInfo.dataNascimento.slice(0, 10) : <span style={{ color: "#aaa" }}>AAAA-MM-DD</span>
                                     )}
                                 </p>
                                 <b>Morada:</b>
@@ -176,6 +176,34 @@ function EditUserProfile() {
                                         />
                                     ) : (
                                         userInfo.email
+                                    )}
+                                </p>
+                                <b>Data de Nascimento:</b>
+                                <p>
+                                    {editMode ? (
+                                        <input
+                                            name="dataNascimento"
+                                            value={editedUserInfo.dataNascimento ? editedUserInfo.dataNascimento.slice(0, 10) : ""}
+                                            onChange={handleChange}
+                                            className={styles.invisibleInput}
+                                            placeholder="DD/MM/AAAA"
+                                        />
+                                    ) : (
+                                        userInfo.dataNascimento ? userInfo.dataNascimento.slice(0, 10) : <span style={{ color: "#aaa" }}>AAAA-MM-DD</span>
+                                    )}
+                                </p>
+                                <b>Codigo Postal:</b>
+                                <p>
+                                    {editMode ? (
+                                        <input
+                                            name="codigoPostal"
+                                            value={editedUserInfo.codigoPostal || ""}
+                                            onChange={handleChange}
+                                            className={styles.invisibleInput}
+                                            placeholder="Ex: 1234-567"
+                                        />
+                                    ) : (
+                                        userInfo.codigoPostal || <span style={{ color: "#aaa" }}>Ex: 1234-567</span>
                                     )}
                                 </p>
                                 <b>NIF:</b>
