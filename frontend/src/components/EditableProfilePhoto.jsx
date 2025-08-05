@@ -153,7 +153,7 @@ const EditableProfilePhoto = ({ userId, currentPhoto, onPhotoUpdate, isCompany =
                                 />
                             </div>
                             <div className={styles.buttonContainer}>
-                                <label className={`${styles.button}`}>
+                                  <label className={styles.button} style={{ cursor: uploading ? 'default' : 'pointer' }}>
                                     <input
                                         type="file"
                                         accept="image/*"
@@ -168,7 +168,7 @@ const EditableProfilePhoto = ({ userId, currentPhoto, onPhotoUpdate, isCompany =
                                     <button
                                         onClick={deletePhoto}
                                         disabled={uploading}
-                                        className={`${styles.button} ${styles.primaryButton}`}
+                                        className={`${styles.button} ${styles.deleteButton}`}
                                     >
                                         Eliminar Foto
                                     </button>

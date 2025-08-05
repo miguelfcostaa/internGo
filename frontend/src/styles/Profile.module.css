@@ -119,3 +119,16 @@
     cursor: pointer;
 }
 
+.button-geral {
+  background-color: #273F4F;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
