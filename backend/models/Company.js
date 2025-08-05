@@ -28,6 +28,9 @@ const companySchema = new Schema({
     image: {
         type: String,
     },
+    profilePhoto: {
+        type: String,
+    },
     resetPasswordToken: {
         type: String,
         default: null
