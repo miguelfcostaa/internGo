@@ -85,7 +85,7 @@ function ProfileEstagiario() {
                         )}
                     </div>
                     <div className={styles.infoContainer}>
-                        <div className={styles.infoContainerLeft}>
+                        <div className={styles.infoContainerLeft}> 
                             <b>Nome:</b>
                             <p>
                                 {userInfo.name}
