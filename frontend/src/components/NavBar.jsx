@@ -170,7 +170,8 @@ const NavBar = () => {
                 boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
                 borderRadius: 5,
                 zIndex: 1000,
-                minWidth: 140,
+                minWidth: 100,
+                fontSize: '1.2rem',
               }}
             >
               <a

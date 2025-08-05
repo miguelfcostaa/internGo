@@ -13,17 +13,23 @@ function EditUserProfile() {
     const { id } = useParams();
     const [userInfo, setUserInfo]  = useUser(id);
     const [editMode, setEditMode] = useState(false);
-    const [editedUserInfo, setEditedUserInfo] = useState(userInfo);    
+    const [editedUserInfo, setEditedUserInfo] = useState(userInfo);
+    const [editedCompanyInfo, setEditedCompanyInfo] = useState(userInfo);  
     const [fieldErrors, setFieldErrors] = useState({});
     const role = getUserRoleFromToken();
     const competenciaRefs = useRef([]);
 
     useEffect(() => {
         setEditedUserInfo(userInfo);
+        setEditedCompanyInfo(userInfo);
     }, [userInfo]);
 
     const handleChange = (e) => {
         setEditedUserInfo({ ...editedUserInfo, [e.target.name]: e.target.value });
+    };
+
+    const handleCompanyChange = (e) => {
+        setEditedCompanyInfo({ ...editedCompanyInfo, [e.target.name]: e.target.value });
     };
 
     // Atualize o handleChange para lidar com arrays de competências
@@ -39,32 +45,61 @@ function EditUserProfile() {
     const handleSave = async () => {
         try {
             setFieldErrors({});
-            const response = await fetch(`http://localhost:5000/api/users/${id}`, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${localStorage.getItem("token")}`
-                },
-                body: JSON.stringify(editedUserInfo),
-            });
+            if ( role === "user" ) {
+                const response = await fetch(`http://localhost:5000/api/users/${userInfo._id}`, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    },
+                    body: JSON.stringify(editedUserInfo),
+                });
 
-            const result = await response.json();
+                const result = await response.json();
 
-            if (response.ok) {
-                console.log("Perfil atualizado com sucesso:", result);
-                setEditMode(false);
-                setEditedUserInfo(result);
-                setUserInfo(result);
-            } else {
-                if (result.message && typeof result.message === 'object') {
-                    setFieldErrors(result.message);
-                } else if (typeof result.message === 'string') {
-                    setFieldErrors({ general: result.message });
+                if (response.ok) {
+                    console.log("Perfil atualizado com sucesso:", result);
+                    setEditMode(false);
+                    setEditedUserInfo(result);
+                    setUserInfo(result);
                 } else {
-                    setFieldErrors({ general: "Erro desconhecido ao registar." });
+                    if (result.message && typeof result.message === 'object') {
+                        setFieldErrors(result.message);
+                    } else if (typeof result.message === 'string') {
+                        setFieldErrors({ general: result.message });
+                    } else {
+                        setFieldErrors({ general: "Erro desconhecido ao registar." });
+                    }
                 }
             }
-        } catch (error) {            
+            else if ( role === "company" ) {
+                const response = await fetch(`http://localhost:5000/api/companies/${userInfo._id}`, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    },
+                    body: JSON.stringify(editedCompanyInfo),
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    console.log("Perfil atualizado com sucesso:", result);
+                    setEditMode(false);
+                    setEditedCompanyInfo(result);
+                    setUserInfo(result);
+                } else {
+                    if (result.message && typeof result.message === 'object') {
+                        setFieldErrors(result.message);
+                    } else if (typeof result.message === 'string') {
+                        setFieldErrors({ general: result.message });
+                    } else {
+                        setFieldErrors({ general: "Erro desconhecido ao registar." });
+                    }
+                }
+            }
+        } catch (error) {
             console.error("Erro ao atualizar perfil:", error);
         }
     };
@@ -422,8 +457,8 @@ function EditUserProfile() {
                                     {editMode ? (
                                         <input
                                             name="name"
-                                            value={editedUserInfo.name || ""}
-                                            onChange={handleChange}
+                                            value={editedCompanyInfo.name || ""}
+                                            onChange={handleCompanyChange}
                                             className={styles.invisibleInput}
                                         />
                                     ) : (
@@ -435,8 +470,8 @@ function EditUserProfile() {
                                     {editMode ? (
                                         <input
                                             name="morada"
-                                            value={editedUserInfo.morada || ""}
-                                            onChange={handleChange}
+                                            value={editedCompanyInfo.morada || ""}
+                                            onChange={handleCompanyChange}
                                             className={styles.invisibleInput}
                                             placeholder="Ex: Rua das Flores, 123"
                                         />
@@ -449,8 +484,8 @@ function EditUserProfile() {
                                     {editMode ? (
                                         <input
                                             name="codigoPostal"
-                                            value={editedUserInfo.codigoPostal || ""}
-                                            onChange={handleChange}
+                                            value={editedCompanyInfo.codigoPostal || ""}
+                                            onChange={handleCompanyChange}
                                             className={styles.invisibleInput}
                                             placeholder="Ex: 9XXX-XXX"
                                         />
@@ -465,8 +500,8 @@ function EditUserProfile() {
                                     {editMode ? (
                                         <input
                                             name="email"
-                                            value={editedUserInfo.email || ""}
-                                            onChange={handleChange}
+                                            value={editedCompanyInfo.email || ""}
+                                            onChange={handleCompanyChange}
                                             className={styles.invisibleInput}
                                         />
                                     ) : (
@@ -478,8 +513,8 @@ function EditUserProfile() {
                                     {editMode ? (
                                         <input
                                             name="phone"
-                                            value={editedUserInfo.phone || ""}
-                                            onChange={handleChange}
+                                            value={editedCompanyInfo.phone || ""}
+                                            onChange={handleCompanyChange}
                                             className={styles.invisibleInput}
                                             placeholder="9XX-XXX-XXX"
                                         />
@@ -492,8 +527,8 @@ function EditUserProfile() {
                                     {editMode ? (
                                         <input
                                             name="nif"
-                                            value={editedUserInfo.nif || ""}
-                                            onChange={handleChange}
+                                            value={editedCompanyInfo.nif || ""}
+                                            onChange={handleCompanyChange}
                                             className={styles.invisibleInput}
                                             placeholder="Ex: 12345678"
                                         />

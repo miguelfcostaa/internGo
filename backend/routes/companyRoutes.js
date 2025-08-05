@@ -47,25 +47,21 @@ router.post('/register', async (req, res) => {
 // Atualizar informações do perfil da empresa 
 router.put('/:id', verifyToken, async (req, res) => {
     try {
-        if (!req.body.morada && !req.body.codigoPostal)
-        {
-          return;
-        }
         
-        const errors = await validations.validateUserUpdate(req.body);
+        const errors = await validations.validateCompanyUpdate(req.body);
         
         if (Object.keys(errors).length > 0) {
             return res.status(400).json({ message: errors });
         }
 
-        const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, { new: true });
-        if (!updatedUser) {
-            return res.status(404).json({ message: 'User not found' });
+        const updatedCompany = await Company.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        if (!updatedCompany) {
+            return res.status(404).json({ message: 'Company not found' });
         }
-        res.json(updatedUser);
+        res.json(updatedCompany);
     } catch (error) {
-        console.error('Error updating user:', error);
-        res.status(500).json({ message: 'Error updating user', error });
+        console.error('Error updating company:', error);
+        res.status(500).json({ message: 'Error updating company', error });
     }
 });
 

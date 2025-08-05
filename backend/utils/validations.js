@@ -139,7 +139,7 @@ const validateUserUpdate = async (data) => {
     }
 
     // Valida Telefone
-    if (data.telefone.length !== 9) {
+    if (data.telefone && data.telefone.length !== 9) {
         errors.telefone = 'Número de telefone deve conter no minimo 9 digitos.';
     }
 
@@ -201,52 +201,87 @@ function validateCandidatura(data) {
     }
 
     // Valida Telefone
-    if (data.telefone.length !== 9) {
+    if (data.telefone && data.telefone.length !== 9) {
         errors.telefone = 'Número de telefone deve conter no minimo 9 digitos.';
     }
 
     // Valida Morada
-    if (data.morada.length < 3 || data.morada.length > 100) {
+    if (data.morada && (data.morada.length < 3 || data.morada.length > 100)) {
         errors.morada = 'Morada deve ter entre 3 e 100 caracteres.';
     }
 
     // Valida Código Postal fomato: "1234-567"
-    if (!/^\d{4}-\d{3}$/.test(data.codigoPostal)) {
+    if (data.codigoPostal && !/^\d{4}-\d{3}$/.test(data.codigoPostal)) {
         errors.codigoPostal = 'Código Postal deve ter o formato XXXX-XXX.';
     }
 
     // Valida Data de Nascimento
-    if (isNaN(new Date(data.dataNascimento).getTime())) { 
+    if (data.dataNascimento && isNaN(new Date(data.dataNascimento).getTime())) { 
         errors.dataNascimento = 'Data de Nascimento deve ter um formato válido.';
     }
 
     // Valida Cartão de Cidadão
-    if (data.cc.length !== 8 || !/^\d{8}$/.test(data.cc)) {
+    if (data.cc && (data.cc.length !== 8 || !/^\d{8}$/.test(data.cc))) {
         errors.cc = 'Cartão de Cidadão deve ter exatamente 8 dígitos.';
     }
 
     // Valida Universidade
-    if (data.universidade.length < 3 || data.universidade.length > 50) {
+    if (data.universidade && (data.universidade.length < 3 || data.universidade.length > 50)) {
         errors.universidade = 'Universidade deve ter entre 3 e 50 caracteres.';
     }
 
     // Valida Curso
-    if (data.curso.length < 3 || data.curso.length > 50) {
+    if (data.curso && (data.curso.length < 3 || data.curso.length > 50)) {
         errors.curso = 'Curso deve ter entre 3 e 50 caracteres.';
     }
 
     // Valida Carta de Apresentação
-    if (data.cartaDeApresentacao.length < 10 || data.cartaDeApresentacao.length > 500) {
+    if (data.cartaDeApresentacao && (data.cartaDeApresentacao.length < 10 || data.cartaDeApresentacao.length > 500)) {
         errors.cartaDeApresentacao = 'Carta de Apresentação deve ter entre 10 e 500 caracteres.';
     }
 
     return errors;
 }
 
+function validateCompanyUpdate(data) {
+    const errors = {};
 
+    // Valida Nome
+    if (data.name && !validateName(data.name)) {
+        errors.name = 'Nome deve ter entre 3 e 50 caracteres.';
+    }
+
+    // Valida Email
+    if (data.email && !validateEmail(data.email)) {
+        errors.email = 'Email deve ter formato válido.';
+    }
+
+    // Valida Telefone
+    if (data.telefone && data.telefone.length !== 9) {
+        errors.telefone = 'Número de telefone deve conter exatamente 9 dígitos.';
+    }
+
+    // Valida NIF
+    if (data.nif && !validateNIF(data.nif)) {
+        errors.nif = 'NIF deve ter exatamente 9 dígitos.';
+    }
+
+    // Valida Morada
+    if (data.morada && data.morada.length < 3 || (data.morada && data.morada.length > 100)) {
+        errors.morada = 'Morada deve ter entre 3 e 100 caracteres.';
+    }
+
+    // Valida Código Postal fomato: "1234-567"
+    if (data.codigoPostal && !/^\d{4}-\d{3}$/.test(data.codigoPostal)) {
+        errors.codigoPostal = 'Código Postal deve ter o formato XXXX-XXX.';
+    }
+
+    return errors;
+}
 
 module.exports = {
     validateCandidatura,
+    validateCompanyUpdate,
     validateUserUpdate,
     validateCompanyInput,
     validateName,
