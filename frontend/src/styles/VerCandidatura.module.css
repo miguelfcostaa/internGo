@@ -1,0 +1,64 @@
+.background{
+    background-color: #F2F2F2;
+    height: 120vh;
+    padding-top: 2rem;
+    padding-right: 15%;
+    padding-left: 15%;
+}
+.heading{
+    color: #273F4F;
+    font-weight: bold;
+    text-align: center;
+    font-size: 30px;
+    margin-bottom: 40px;
+}
+.bigbox{
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    width: 100%;
+    border-radius: 0.5rem;
+    margin-bottom: 80px;
+}
+.column{
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+.row{
+    display: flex;
+    flex-direction: row;
+    gap:15%
+}
+.rowelement{
+    font-family: Open Sans;
+    font-size: 16px;
+    font-weight:800;
+    width: 50%;
+    text-align: left;
+    margin-bottom: 10px;
+    color: rgb(49, 48, 48);
+}
+.span{
+    font-weight: normal;
+    margin-left: 5px;
+}
+.link{
+    font-weight: normal;
+    margin-left: 5px;
+    color: rgb(49, 48, 48);
+}
+.carta{
+    color: rgb(49, 48, 48);
+    text-align: left;
+}
+.bigboxcarta{
+    font-family: Open Sans;
+    font-size: 16px;
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    width: 100%;
+    border-radius: 0.5rem;
+    padding-bottom: 20px;
+    padding-top: 20px;
+    line-height: 1.8;
+}
