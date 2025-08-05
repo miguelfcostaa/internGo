@@ -48,7 +48,7 @@ router.post('/register', async (req, res) => {
 router.put('/:id', verifyToken, async (req, res) => {
     try {
         
-        const errors = await validations.validateCompanyUpdate(req.body);
+        const errors = await validations.validateCompanyUpdate(Company, req.body);
         
         if (Object.keys(errors).length > 0) {
             return res.status(400).json({ message: errors });
