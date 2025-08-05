@@ -20,6 +20,7 @@ import PaginaEstagio from './pages/PaginaEstagio.jsx';
 import PaginaCandidatarEstagio from './pages/PaginaCandidatarEstagio.jsx';
 import EditarEstagio from './pages/EditarEstagio.jsx';
 import ProfileEstagiario from './pages/ProfileEstagiario.jsx';
+import VerCandidatura from './pages/VerCandidatura.jsx';
  
 function App() {
   return (
@@ -44,7 +45,8 @@ function App() {
           <Route path='/estagio/:id/editar' element={<ProtectedRoute requiredRole="company"><EditarEstagio /></ProtectedRoute>}></Route>  {/* Rota para editar um estágio específico */}
           <Route path='/estagio/:id' element={<PaginaEstagio />}></Route>   {/*  Rota info completa de estagio page */}
           <Route path='/candidatar-estagio/:id' element={<PaginaCandidatarEstagio/>}></Route>   {/*  Rota info completa de estagio page */}
-          <Route path='/editar-estagio/' element={<EditarEstagio/>}></Route>   
+          <Route path='/editar-estagio/' element={<EditarEstagio/>}></Route>
+          <Route path='/ver-candidatura/' element={<VerCandidatura/>}></Route>     
           <Route path='*' element={<NotFound />}> </Route>  {/* Rota 404 para páginas não encontradas */}
           </Routes>
         <Footer />
