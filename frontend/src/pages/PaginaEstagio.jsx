@@ -151,13 +151,8 @@ function PaginaEstagio() {
                         </button>
                     </div>
                 </div>
-            </main>
-        </div>
+        </>
     )}
-    else {
-        return <NotFound />;
-    }
 
-}
 
 export default PaginaEstagio;
