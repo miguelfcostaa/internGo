@@ -11,7 +11,6 @@ import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
 function PaginaCandidatarEstagio() {
     const navigate = useNavigate();
-    const [sidebarOpen, setSidebarOpen] = useState(false);
 
     const { id } = useParams();
     const { estagio } = useEstagios(id);
@@ -176,52 +175,17 @@ function PaginaCandidatarEstagio() {
     return (
         <>
             <NavBar />
-            <div className={style.background}>
+            <div style={{ display: 'flex' }}>
+                <div className={style.sidebar}>
+                    {estagio && <Sidebar estagio={estagio} handleMesInicio={handleMesInicio} />}
+                </div>
+
+                <div className={style.background} style={{ marginLeft: '250px', width: 'calc(100% - 250px)' }}>
                 <ButtonVoltar />
                 <h4 className={style.heading}> {estagio?.title} </h4>
-                <div style={{ marginTop: "40px", textAlign: "left", marginBottom: "10px" }}>Prencha os campos abaixo para se candidatar ao Estágio.</div>{/*Adicionar mensagem, possivelmente, aqui caso os campos nao estejam todos preenchidos*/}
-                <div className={style.bigbox} style={{ display: 'flex', gap: '20px', position: 'relative' }}>
-                    <button
-                        type="button"
-                        onClick={() => setSidebarOpen(!sidebarOpen)}
-                    style={{
-  position: 'absolute',
-  top: 0,
-  left: 0,
-  width: '250px',
-  height: '100%',
-  backgroundColor: '#f5f5f5',
-  padding: '20px',
-  boxShadow: '2px 0 5px rgba(0,0,0,0.1)',
-  zIndex: 9999, // aumenta mucho el zIndex
-  overflowY: 'auto',
-  borderRadius: '0 8px 8px 0',
-}}
-                    >
-                        {sidebarOpen ? <FaChevronLeft /> : <FaChevronRight />}
-                    </button>
-                    {/* Aquí renderiza el Sidebar solo si está abierto */}
-          {sidebarOpen && (
-            <div
-              style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                width: '250px',
-                height: '100%',
-                backgroundColor: '#f5f5f5',
-                padding: '20px',
-                boxShadow: '2px 0 5px rgba(0,0,0,0.1)',
-                zIndex: 9,
-                overflowY: 'auto',
-                borderRadius: '0 8px 8px 0',
-              }}
-            >
-              <Sidebar estagio={estagio} handleMesInicio={handleMesInicio} />
-            </div>
-          )}
+                <div style={{ marginTop: "40px", textAlign: "left", marginBottom: "10px" }}>Prencha os campos abaixo para se candidatar ao Estágio.</div>
 
-
+                  <div className={style.bigbox} style={{ display: 'flex', position: 'relative' }}>
                     <form onSubmit={handlesSubmit} style={{ flex: 1, minWidth: 0 }}>
                         <div style={{ paddingRight: "10%", paddingLeft: "10%", marginTop: "20px" }}>
                             <div style={{ display: "flex", flexDirection: "column" }}>
@@ -476,10 +440,10 @@ function PaginaCandidatarEstagio() {
                                     </div>
                                 )}
                             </div>
-
                         </div>
                         <input type="submit" value={isLoading ? "A enviar..." : "Candidatar"} className={style.submit} disabled={isLoading} />
                     </form>
+                    </div>
                 </div>
             </div>
         </>
