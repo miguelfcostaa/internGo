@@ -16,13 +16,6 @@ html, body {
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.07); 
 }
 
-.voltarWrapper {
-  position: absolute;
-  top: 150px;
-  left: 500px;
-  z-index: 2000;
-  margin-bottom: 150px;
-}
 
 .logoTitle {
   display: flex;
@@ -60,7 +53,13 @@ html, body {
    max-width: none;   
 }
 
-
+.pageWrapper {
+  position: relative; /* para referencia */
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* centra horizontalmente mainContent y el botón */
+}
 .mainContent {
   display: flex;
   justify-content: space-between;
@@ -69,7 +68,7 @@ html, body {
   flex-wrap: wrap; 
   padding-top: 20px;
   background-color: #fff;
-
+  width: 80%; /* o el ancho que uses */
 }
 
 .leftColumn {
@@ -168,4 +167,13 @@ strong {
   display: flex;
   justify-content: space-between; 
   align-items: flex-start;
+}
+
+.voltarWrapper {
+  position:fixed;
+  width: 80%;            /* Igual que el mainContent */
+  margin: 0 auto;         /* Centra el contenedor en la página */
+  display: flex;
+  justify-content: flex-start; /* Lo mantiene alineado a la izquierda */
+  padding-top: 10px;      /* Opcional, ajusta la separación vertical */
 }

@@ -109,7 +109,7 @@ const ProfilePage = () => {
                                     style={{
                                         borderRadius: '50%',
                                         objectFit: 'cover',
-                                        backgroundColor: 'rgb(185, 185, 185, 0.40)',
+                                        backgroundColor: 'rgb(185, 185, 185, 0.40)', 
                                     }}
                                 />
                                 <ButtonGeral Name="Ver Detalhes" link={`/edit-profile/${userInfo._id}/`} />
@@ -117,20 +117,6 @@ const ProfilePage = () => {
                             <div className={styles.userInfoRight}>
                                 <p>{userInfo.name}</p>
                                 <p>{userInfo.email}</p>
-                            </div>
-                        </div>
-                        <div className={styles.estagioAtivo + ' shadow'}>
-                            <div className={styles.estagioAtivoInfo}>
-                                <h2>Estágio Ativo</h2>
-                                <div>
-                                    <p>Estágio Técnico de Sistemas</p>
-                                    <p>Empresa: Acin group</p>
-                                    <p>Data de início: Junho 2025</p>
-                                </div>
-                                
-                            </div>
-                            <div className={styles.estagioAtivoDetalhes}>
-                                <span>Ver Detalhes</span>    
                             </div>
                         </div>
                     </div>

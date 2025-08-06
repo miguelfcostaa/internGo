@@ -402,10 +402,13 @@ const CriacaoEstagio = () => {
 						</Form.Select>
 					</Form.Group>
 
-					<Form.Group className={`${style.mb3} ${style.inlineField}`}>
+					<Form.Group
+					 className={`${style.mb3} prazoGroup`}
+					  style={{ alignItems: "center" }}
+					 >
 						<Form.Label
 						className={style.formLabel}
-						style={{ minWidth: "140px" }}
+						style={{ marginBottom: "0.25rem" }}
 						>
 						Prazo Limite de Candidatura <RequiredFieldTooltip />
 						</Form.Label>

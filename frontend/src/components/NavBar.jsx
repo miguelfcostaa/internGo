@@ -102,9 +102,9 @@ const NavBar = () => {
 
   const LogoutModal = () => (
     <div className="modal-overlay">
-      <div className="container bg-white rounded shadow" style={{ width: 500, padding: 20, textAlign: 'center' }}>
+      <div className="container bg-white rounded shadow" style={{ width: 700, padding: 30, textAlign: 'center' }}>
         <h5>Tem a certeza que pretende sair da sessão?</h5>
-        <div style={{ display: 'flex', justifyContent: 'center', gap: 10, marginTop: 20 }}>
+        <div style={{ display: 'flex', justifyContent: 'center', gap: 10, marginTop: 40 }}>
           <button className="btn btn-logout" onClick={handleConfirmLogout}>Logout</button>
           <button className="btn btn-secondary" onClick={() => setShowLogoutModal(false)}>Cancelar</button>
         </div>
@@ -170,7 +170,8 @@ const NavBar = () => {
                 boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
                 borderRadius: 5,
                 zIndex: 1000,
-                minWidth: 140,
+                minWidth: 100,
+                fontSize: '1.2rem',
               }}
             >
               <a

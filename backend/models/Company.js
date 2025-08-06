@@ -15,7 +15,7 @@ const companySchema = new Schema({
         type: String,
         required: true,
     },
-    phone: {
+    telefone: {
         type: String,
         required: true,
         unique: true,
@@ -24,6 +24,12 @@ const companySchema = new Schema({
         type: String,
         required: true,
         unique: true,
+    },
+    morada: {
+        type: String,
+    },
+    codigoPostal: {
+        type: String,
     },
     image: {
         type: String,
@@ -38,9 +44,6 @@ const companySchema = new Schema({
     resetPasswordExpires: {
         type: Date,
         default: null
-    },
-    codigoPostal: {
-        type: String,
     },
 }, {
     timestamps: true // Adiciona createdAt e updatedAt automaticamente

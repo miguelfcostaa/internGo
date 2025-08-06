@@ -192,7 +192,7 @@ router.post('/login', async (req, res) => {
 
 router.put('/:id', verifyToken, async (req, res) => {
     try {          
-        const errors = await validations.validateUserUpdate(req.body);
+        const errors = await validations.validateUserUpdate(User, req.body);
         
         if (Object.keys(errors).length > 0) {
             return res.status(400).json({ message: errors });
