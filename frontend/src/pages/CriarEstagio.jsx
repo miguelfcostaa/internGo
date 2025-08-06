@@ -61,8 +61,7 @@ const CriacaoEstagio = () => {
 	});
 	//maximo de caracteres e mensagem de erro
 	const messageMaxChat = "Atingiu o maximo de caracteres permitido";
-	const maxChars = 20;
-	const handleChange = (e) => {
+	const handleChange = ( maxChars = 10000 ) => (e) => {
 		const { name, value } = e.target;
 		if (value.length <= maxChars) {
 		setFormData((prev) => ({ ...prev, [name]: value }));
@@ -245,7 +244,7 @@ const CriacaoEstagio = () => {
 						type="text"
 						name="titulo"
 						value={formData.titulo}
-						onChange={handleChange}
+						onChange={handleChange(100)}
 						placeholder="Ex: Estágio em Desenvolvimento de Software"
 					/>
 					{Warnings["titulo"] && (
@@ -262,7 +261,7 @@ const CriacaoEstagio = () => {
 						type="text"
 						name="area"
 						value={formData.area}
-						onChange={handleChange}
+						onChange={handleChange(100)}
 						placeholder="Ex: Tecnologia da Informação"
 					/>
 					{Warnings["area"] && (
@@ -282,8 +281,9 @@ const CriacaoEstagio = () => {
 						type="number"
 						name="vagas"
 						value={formData.vagas}
-						onChange={handleChange}
+						onChange={handleChange()}
 						placeholder="1"
+						min="1"
 					/>
 					</Form.Group>
 
@@ -296,7 +296,7 @@ const CriacaoEstagio = () => {
 						type="text"
 						name="localizacao"
 						value={formData.localizacao}
-						onChange={handleChange}
+						onChange={handleChange(100)}
 						placeholder="Ex: Funchal"
 					/>
 					{Warnings["localizacao"] && (
@@ -319,7 +319,7 @@ const CriacaoEstagio = () => {
 						type="month"
 						name="dataInicio"
 						value={formData.dataInicio}
-						onChange={handleChange}
+						onChange={handleChange(100)}
 						/>
 					</Form.Group>
 
@@ -340,7 +340,7 @@ const CriacaoEstagio = () => {
 							name="tipo"
 							value="Presencial"
 							checked={formData.tipo === "Presencial"}
-							onChange={handleChange}
+							onChange={handleChange()}
 						/>
 						<Form.Check
 							inline
@@ -349,7 +349,7 @@ const CriacaoEstagio = () => {
 							name="tipo"
 							value="Remoto"
 							checked={formData.tipo === "Remoto"}
-							onChange={handleChange}
+							onChange={handleChange()}
 						/>
 						<Form.Check
 							inline
@@ -358,7 +358,7 @@ const CriacaoEstagio = () => {
 							name="tipo"
 							value="Híbrido"
 							checked={formData.tipo === "Híbrido"}
-							onChange={handleChange}
+							onChange={handleChange()}
 						/>
 						</div>
 					</Form.Group>
@@ -381,7 +381,7 @@ const CriacaoEstagio = () => {
 						className={style.smallSelect}
 						name="duracao"
 						value={formData.duracao}
-						onChange={handleChange}
+						onChange={handleChange()}
 						>
 						<option value="">Duração</option>
 						<option value="3 meses">3 meses</option>
@@ -405,7 +405,7 @@ const CriacaoEstagio = () => {
 						type="date"
 						name="prazo"
 						value={formData.prazo}
-						onChange={handleChange}
+						onChange={handleChange()}
 						/>
 					</Form.Group>
 					</div>
@@ -449,7 +449,7 @@ const CriacaoEstagio = () => {
 						placeholder="Descreva brevemente as atividades do estágio"
 						name="descricao"
 						value={formData.descricao}
-						onChange={handleChange}
+						onChange={handleChange()}
 					/>
 					{Warnings["descricao"] && (
 						<span className={style.charterror}>{messageMaxChat}</span>
@@ -466,7 +466,7 @@ const CriacaoEstagio = () => {
 						placeholder="Ex: Bolsa, Vale-transporte"
 						name="beneficios"
 						value={formData.beneficios}
-						onChange={handleChange}
+						onChange={handleChange(1000)}
 					/>
 					{Warnings["beneficios"] && (
 						<span className={style.charterror}>{messageMaxChat}</span>
@@ -484,7 +484,7 @@ const CriacaoEstagio = () => {
 						type="time"
 						name="horaInicio"
 						value={formData.horaInicio}
-						onChange={handleChange}
+						onChange={handleChange()}
 						className="w-auto"
 						required
 						/>
@@ -493,7 +493,7 @@ const CriacaoEstagio = () => {
 						type="time"
 						name="horaFim"
 						value={formData.horaFim}
-						onChange={handleChange}
+						onChange={handleChange()}
 						className="w-auto"
 						required
 						/>
@@ -536,7 +536,7 @@ const CriacaoEstagio = () => {
 						className="w-100"
 						name="habilitacoes"
 						value={formData.habilitacoes || ""}
-						onChange={handleChange}
+						onChange={handleChange()}
 					>
 						<option value="">Selecione o nível de habilitação</option>
 						<option value="1">Nível 1 - 4º ano do Ensino Básico</option>
@@ -564,7 +564,7 @@ const CriacaoEstagio = () => {
 						placeholder="Liste ferramentas e aptidões técnicas essenciais"
 						name="competenciasTecnicas"
 						value={formData.competenciasTecnicas || ""}
-						onChange={handleChange}
+						onChange={handleChange(1000)}
 					/>
 					{Warnings["competenciasTecnicas"] && (
 						<span className={style.charterror}>{messageMaxChat}</span>
@@ -581,7 +581,7 @@ const CriacaoEstagio = () => {
 						placeholder="Ex: Que qualidades pessoais são importantes para este estágio"
 						name="softSkills"
 						value={formData.softSkills || ""}
-						onChange={handleChange}
+						onChange={handleChange(1000)}
 					/>
 					{Warnings["softSkills"] && (
 						<span className={style.charterror}>{messageMaxChat}</span>
@@ -596,7 +596,7 @@ const CriacaoEstagio = () => {
 						placeholder="Indique os idiomas exigidos (Ex: Inglês avançado, Espanhol básico)"
 						name="idiomas"
 						value={formData.idiomas || ""}
-						onChange={handleChange}
+						onChange={handleChange(1000)}
 					/>
 					{Warnings["idiomas"] && (
 						<span className={style.charterror}>{messageMaxChat}</span>
@@ -614,7 +614,7 @@ const CriacaoEstagio = () => {
 						placeholder="Ex: Algum requisito adicional não coberto acima"
 						name="outrosRequisitos"
 						value={formData.outrosRequisitos || ""}
-						onChange={handleChange}
+						onChange={handleChange(1000)}
 					/>
 					{Warnings["outrosRequisitos"] && (
 						<span className={style.charterror}>{messageMaxChat}</span>
