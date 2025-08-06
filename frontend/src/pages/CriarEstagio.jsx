@@ -675,11 +675,11 @@ const CriacaoEstagio = () => {
 							placeholder="Escreva as competências pessoais (Ex: Trabalho em equipe, Comunicação, Resolução de problemas)"
 						/>
 					<div className="d-flex justify-content-between">
-						{formData.softSkills.length > 200 && (
+						{formData.competenciasPessoais.length > 200 && (
 							<span className={style.charterror}>Máximo de 200 caracteres ultrapassado!</span>
 						)}
-						<small className={`ms-auto ${formData.softSkills.length > 200 ? "text-danger" : "text-muted"}`}>
-							{formData.softSkills.length}/200 caracteres
+						<small className={`ms-auto ${formData.competenciasPessoais.length > 200 ? "text-danger" : "text-muted"}`}>
+							{formData.competenciasPessoais.length}/200 caracteres
 						</small>
 					</div>
 					</Form.Group>
