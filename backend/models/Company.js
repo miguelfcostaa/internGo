@@ -15,7 +15,7 @@ const companySchema = new Schema({
         type: String,
         required: true,
     },
-    telefone: {
+    phone: {
         type: String,
         required: true,
         unique: true,

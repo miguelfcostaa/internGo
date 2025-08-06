@@ -41,29 +41,7 @@ const CriacaoEstagio = () => {
 			idiomas: [],
 			outrosRequisitos: "",
 	});
-	//limite de caracteres
-	const [Warnings, setWarnings] = useState({
-		titulo: false,
-		area: false,
-		vagas: false,
-		localizacao: false,
-		dataInicio: false,
-		tipo: false,
-		duracao: false,
-		prazo: false,
-		descricao: false,
-		beneficios: false,
-		horaInicio: false,
-		horaFim: false,
-		habilitacoes: false,
-		competenciasTecnicas: false,
-		competenciasPessoais: false,
-		idiomas: false,
-		outrosRequisitos: false,
-	});
-	//maximo de caracteres e mensagem de erro
-	const messageMaxChat = "Atingiu o maximo de caracteres permitido";
-	const maxChars = 20;
+	
 	// Limites específicos para cada campo
 	const fieldLimits = {
 		titulo: 60,
@@ -135,8 +113,15 @@ const CriacaoEstagio = () => {
 
 		const camposFaltando = [];
 		for (const [campo, nome] of Object.entries(camposObrigatorios)) {
-			if (!formData[campo] || formData[campo].trim() === "") {
-			camposFaltando.push(nome);
+			const valor = formData[campo];
+			// Check if the field is empty based on its type
+			const isEmpty = !valor || 
+				(typeof valor === 'string' && valor.trim() === "") ||
+				(Array.isArray(valor) && valor.length === 0) ||
+				(typeof valor !== 'string' && !Array.isArray(valor) && valor === "");
+			
+			if (isEmpty) {
+				camposFaltando.push(nome);
 			}
 		}
 

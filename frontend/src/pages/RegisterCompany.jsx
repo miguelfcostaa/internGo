@@ -18,7 +18,7 @@ function RegisterCompany() {
     name: "",
     nif: "",
     email: "",
-    telefone: "",
+    phone: "",
     password: "",
     confirmPassword: ""
   });
@@ -44,7 +44,7 @@ function RegisterCompany() {
       name: formData.name,
       nif: formData.nif,
       email: formData.email,
-      telefone: formData.telefone,
+      phone: formData.phone,
       password: formData.password,
       confirmPassword: formData.confirmPassword
     };
@@ -69,14 +69,14 @@ function RegisterCompany() {
           name: "",
           nif: "",
           email: "",
-          telefone: "",
+          phone: "",
           password: "",
           confirmPassword: ""
         });
 
         // Redirecionar após 2 segundos
         setTimeout(() => {
-          navigate("/home");
+          navigate("/login");
         }, 2000);
       } else {
         if (result.message && typeof result.message === 'object') {
@@ -195,7 +195,7 @@ function RegisterCompany() {
           </div>
 
           <div className="mb-3">
-            <label className={`form-label ${styles.formLabel}`}>Telefone</label>
+            <label className={`form-label ${styles.formLabel}`}>phone</label>
             <div className={`input-group ${styles.inputGroup}`}>
               <select className={`form-select ${styles.formSelect}`} name="prefix" disabled={loading}>
                 <option value="+351">+351</option>
@@ -205,11 +205,11 @@ function RegisterCompany() {
               </select>
               <input
                 type="text"
-                name="telefone"
+                name="phone"
                 className={`form-control ${styles.formControl}`}
                 placeholder="9 dígitos (ex: 123456789)"
                 maxLength="9"
-                value={formData.telefone}
+                value={formData.phone}
                 onChange={handleChange}
                 disabled={loading}
               />
