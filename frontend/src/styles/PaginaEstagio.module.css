@@ -172,9 +172,9 @@ strong {
 
 .voltarWrapper {
   position:fixed;
-  width: 80%;            /* Igual que el mainContent */
-  margin: 0 auto;         /* Centra el contenedor en la página */
+  width: 80%;            
+  margin: 0 auto;         
   display: flex;
-  justify-content: flex-start; /* Lo mantiene alineado a la izquierda */
-  padding-top: 10px;      /* Opcional, ajusta la separación vertical */
+  justify-content: flex-start; 
+  padding-top: 10px;      /*fjgfj*/
 }

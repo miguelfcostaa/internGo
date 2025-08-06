@@ -130,7 +130,8 @@ function PaginaEstagio() {
                         </ul>
                     </div>
 
-                    {/* Sidebar + botón */}
+                    {/* Sidebar 
+                     */}
                     <div className={Styles.sidebarWrapper}>
                         <div className={Styles.sidebar}>
                             <p><strong>Prazo da Candidatura:</strong> {estagio.prazoCandidatura ? new Date(estagio.prazoCandidatura).toLocaleDateString() : <span style={{ color: '#888' }}>Não especificado.</span>}</p>
