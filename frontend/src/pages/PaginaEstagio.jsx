@@ -62,9 +62,10 @@ function PaginaEstagio() {
     return (
         <>
             <NavBar />
-            <div className={Styles.background}>
+            <div style={{ margin: "2rem 17% 2rem 23%" }}>
                 <ButtonVoltar />
             </div>
+            <div className={Styles.background}>
 
             {/* Encabezado */}
             <div className={Styles.headerBox}>
@@ -129,7 +130,8 @@ function PaginaEstagio() {
                         </ul>
                     </div>
 
-                    {/* Sidebar + botón */}
+                    {/* Sidebar 
+                     */}
                     <div className={Styles.sidebarWrapper}>
                         <div className={Styles.sidebar}>
                             <p><strong>Prazo da Candidatura:</strong> {estagio.prazoCandidatura ? new Date(estagio.prazoCandidatura).toLocaleDateString() : <span style={{ color: '#888' }}>Não especificado.</span>}</p>
@@ -151,6 +153,7 @@ function PaginaEstagio() {
                         </button>
                     </div>
                 </div>
+            </div>
         </>
     )}
 

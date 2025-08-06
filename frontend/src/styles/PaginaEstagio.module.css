@@ -9,7 +9,7 @@ html, body {
   background-color: #fff;
   max-width: 1140px;
   width: 95%;
-  margin: 110px auto 60px auto; 
+  margin: 2rem auto 60px auto; 
   min-height: 400px;
   border-radius: 8px;
   padding: 30px 40px;
@@ -172,9 +172,9 @@ strong {
 
 .voltarWrapper {
   position:fixed;
-  width: 80%;            /* Igual que el mainContent */
-  margin: 0 auto;         /* Centra el contenedor en la página */
+  width: 80%;            
+  margin: 0 auto;         
   display: flex;
-  justify-content: flex-start; /* Lo mantiene alineado a la izquierda */
-  padding-top: 10px;      /* Opcional, ajusta la separación vertical */
+  justify-content: flex-start; 
+  padding-top: 10px;      /*fjgfj*/
 }
