@@ -54,6 +54,7 @@ function Estagio({ NomeEmpresa, NomeEstagio, TotalVagas, Ativas, Area, Inicio, T
                     textOverflow: "ellipsis",
                     whiteSpace: "nowrap",
                     justifyContent: "space-between",
+                    maxWidth: "350px",
                     }}
                 >
                     {NomeEstagio}
@@ -61,7 +62,7 @@ function Estagio({ NomeEmpresa, NomeEstagio, TotalVagas, Ativas, Area, Inicio, T
                 <div className={styles.estagioInfo}>
                     <div className={styles.estagioInfoLeft}>
                         <div><span className={styles.estagioInfoLabel}>Vagas Total: </span> {TotalVagas}</div>
-                        <div><span className={styles.estagioInfoLabel}>Area: </span> {Area}</div>
+                        <div><span className={styles.estagioInfoLabel}>Area: </span> {Area.join(", ")}</div>
                         <div><span className={styles.estagioInfoLabel}>Tipo de Estágio: </span> {TipoEstagio}</div>
                     </div>
                     <div className={styles.estagioInfoRight}>

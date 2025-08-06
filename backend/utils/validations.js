@@ -314,7 +314,39 @@ async function validateCompanyUpdate(Company, data) {
     return errors;
 }
 
+function validateCriarEstagio(Estagio, data) {
+    const errors = {};
+
+    if (
+        !data.title || 
+        !data.area || 
+        !data.dataInicio || 
+        !data.tipoEstagio || 
+        !data.duracao || 
+        !data.numeroVagas || 
+        !data.localizacao ||
+        !data.prazoCandidatura ||
+        !data.descricao ||
+        !data.beneficios ||
+        !data.habilitacoesMinimas
+    ) {
+        errors.general = 'Todos os campos são obrigatórios.';
+    }
+
+    // Verifica se todos os campos obrigatórios estão preenchidos
+    if (!data.tipoEstagio) {
+        errors.tipoEstagio = 'Tipo de Estágio é obrigatório.';
+    }
+    if (!data.numeroVagas) {
+        errors.numeroVagas = 'Número de Vagas é obrigatório.';
+    }
+    
+
+    return errors;
+}
+
 module.exports = {
+    validateCriarEstagio,
     validateCandidatura,
     validateCompanyUpdate,
     validateUserUpdate,

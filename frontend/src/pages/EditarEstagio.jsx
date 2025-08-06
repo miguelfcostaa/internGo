@@ -4,6 +4,7 @@ import { Container, Row, Col, Form, Button, Alert, Modal } from "react-bootstrap
 import NavBar from "../components/NavBar";
 import style from "../styles/EditarEstagio.module.css";
 import RequiredFieldTooltip from "../components/RequiredFieldTooltip.jsx";
+import TagInput from "../components/TagInput.jsx";
 
 const STEPS = {
   BASICO: 1,
@@ -24,7 +25,7 @@ const EditarEstagio = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [formData, setFormData] = useState({
     titulo: "",
-    area: "",
+    area: [],
     vagas: "",
     localizacao: "",
     dataInicio: "",
@@ -32,14 +33,14 @@ const EditarEstagio = () => {
     duracao: "",
     prazo: "",
     descricao: "",
-    beneficios: "",
+    beneficios: [],
     horaInicio: "",
     horaFim: "",
     habilitacoes: "",
-    cursosPreferenciais: "",
-    competenciasTecnicas: "",
-    softSkills: "",
-    idiomas: "",
+    cursosPreferenciais: [],
+    competenciasTecnicas: [],
+    competenciasPessoais: [],
+    idiomas: [],
     outrosRequisitos: "",
   });
   //limite de cratcteres
@@ -58,7 +59,7 @@ const EditarEstagio = () => {
     horaFim: false,
     habilitacoes: false,
     competenciasTecnicas: false,
-    softSkills: false,
+    competenciasPessoais: false,
     idiomas: false,
     outrosRequisitos: false,
   });
@@ -82,24 +83,24 @@ const EditarEstagio = () => {
         const estagio = await response.json();
 
         setFormData({
-          titulo: estagio.title || "",
-          area: estagio.area || "",
-          vagas: estagio.numeroVagas?.toString() || "",
-          localizacao: estagio.localizacao || "",
-          dataInicio: estagio.dataInicio || "",
-          tipo: estagio.tipoEstagio || "",
+          titulo: estagio.title,
+          area: estagio.area,
+          vagas: estagio.numeroVagas?.toString(),
+          localizacao: estagio.localizacao,
+          dataInicio: estagio.dataInicio,
+          tipo: estagio.tipoEstagio,
           duracao: estagio.duracao ? `${estagio.duracao} ${estagio.duracao === 1 ? "Mês" : "Meses"}` : "",
-          prazo: estagio.prazoCandidatura || "",
-          descricao: estagio.descricao || "",
-          beneficios: estagio.beneficios || "",
-          horaInicio: "",
-          horaFim: "",
-          habilitacoes: estagio.habilitacoesMinimas || "",
-          cursosPreferenciais: estagio.cursosPreferenciais || "",
-          competenciasTecnicas: estagio.competenciasEssenciais || "",
-          softSkills: estagio.competenciasPessoais || "",
-          idiomas: estagio.idiomas || "",
-          outrosRequisitos: estagio.observacoes || "",
+          prazo: estagio.prazoCandidatura,
+          descricao: estagio.descricao,
+          beneficios: estagio.beneficios,
+          horaInicio: estagio.horaInicio,
+          horaFim: estagio.horaFim,
+          habilitacoes: estagio.habilitacoesMinimas,
+          cursosPreferenciais: estagio.cursosPreferenciais,
+          competenciasTecnicas: estagio.competenciasEssenciais,
+          competenciasPessoais: estagio.competenciasPessoais,
+          idiomas: estagio.idiomas,
+          outrosRequisitos: estagio.observacoes,
         });
       } catch (error) {
         console.error("Erro ao carregar estágio:", error);
@@ -123,7 +124,7 @@ const EditarEstagio = () => {
     beneficios: 300,
     competenciasTecnicas: 300,
     cursosPreferenciais: 200,
-    softSkills: 200,
+    competenciasPessoais: 200,
     idiomas: 150,
     outrosRequisitos: 150,
   };
@@ -175,7 +176,7 @@ const EditarEstagio = () => {
 
       const camposFaltando = [];
       for (const [campo, nome] of Object.entries(camposObrigatorios)) {
-        if (!formData[campo] || formData[campo].trim() === "") {
+        if (!formData[campo] || (Array.isArray(formData[campo]) && formData[campo].length === 0)) {
           camposFaltando.push(nome);
         }
       }
@@ -186,7 +187,7 @@ const EditarEstagio = () => {
 
       const estagioData = {
         title: formData.titulo,
-        area: formData.area,
+        area: formData.area || [],
         dataInicio: formData.dataInicio,
         tipoEstagio: formData.tipo,
         duracao: parseInt(formData.duracao.split(" ")[0]),
@@ -194,13 +195,12 @@ const EditarEstagio = () => {
         localizacao: formData.localizacao,
         prazoCandidatura: formData.prazo,
         descricao: formData.descricao,
-        oportunidades: formData.mentoria || "Oportunidades de aprendizagem e desenvolvimento profissional",
         beneficios: formData.beneficios,
         habilitacoesMinimas: formData.habilitacoes || "",
-        cursosPreferenciais: formData.cursosPreferenciais || "",
-        competenciasEssenciais: formData.competenciasTecnicas || "",
-        competenciasPessoais: formData.softSkills || "",
-        idiomas: formData.idiomas || "",
+        cursosPreferenciais: formData.cursosPreferenciais || [],
+        competenciasEssenciais: formData.competenciasTecnicas || [],
+        competenciasPessoais: formData.competenciasPessoais || [],
+        idiomas: formData.idiomas || [],
         observacoes: formData.outrosRequisitos || "",
       };
 
@@ -362,22 +362,21 @@ const EditarEstagio = () => {
                 <Form.Label className={`${style.label} fw-bold`}>
                   Área de Atuação <RequiredFieldTooltip />
                 </Form.Label>
-                <Form.Control
-                            className={`${style.formControl} ${formData.area.length > 30 ? "is-invalid" : ""}`}
-                            type="text"
-                            name="area"
-                            value={formData.area}
-                            onChange={handleChange}
-                            placeholder="Ex: Tecnologia da Informação"
-                          />
+                <TagInput
+                  value={formData.area}
+                  onChange={(tags) =>
+                    setFormData((prev) => ({ ...prev, area: tags }))
+                  }
+                  placeholder="Escreva áreas de atuação (Ex: Desenvolvimento, Marketing, Design)"
+                />
                 <div className="d-flex justify-content-between">
-                            {formData.area.length > 30 && (
-                              <span className={style.charterror}>Máximo de 30 caracteres ultrapassado!</span>
-                            )}
-                            <small className={`ms-auto ${formData.area.length > 30 ? "text-danger" : "text-muted"}`}>
-                              {formData.area.length}/30 caracteres
-                            </small>
-                          </div>
+                  {formData.area.length > 30 && (
+                    <span className={style.charterror}>Máximo de 30 caracteres ultrapassado!</span>
+                  )}
+                  <small className={`ms-auto ${formData.area.length > 30 ? "text-danger" : "text-muted"}`}>
+                    {formData.area.length}/30 caracteres
+                  </small>
+                </div>
               </Form.Group>
 
               <Row>
@@ -532,14 +531,12 @@ const EditarEstagio = () => {
                 <Form.Label className={`${style.label} fw-bold`}>
                   Benefícios Oferecidos <RequiredFieldTooltip />
                 </Form.Label>
-                <Form.Control
-                  as="textarea"
-                  rows={3}
-                  name="beneficios"
+                <TagInput
                   value={formData.beneficios}
-                  onChange={handleChange}
-                  placeholder="Ex: Bolsa de estágio, subsídio de alimentação, seguro..."
-                  className={`${style.textarea} ${formData.beneficios.length > 300 ? "is-invalid" : ""}`}
+                  onChange={(tags) =>
+                  setFormData((prev) => ({ ...prev, beneficios: tags }))
+                  }
+                  placeholder="Escreva os benefícios oferecidos (Ex: Vale transporte, Vale refeição, Seguro de saúde)"
                 />
                 <div className="d-flex justify-content-between">
                   {formData.beneficios.length > 300 && (
@@ -556,13 +553,12 @@ const EditarEstagio = () => {
                 <Form.Label className={`${style.label} fw-bold`}>
                   Cursos Preferenciais <RequiredFieldTooltip />
                 </Form.Label>
-                <Form.Control
-                  type="text"
-                  name="cursosPreferenciais"
+                <TagInput
                   value={formData.cursosPreferenciais}
-                  onChange={handleChange}
-                  placeholder="Ex: Engenharia Informática, Ciências da Computação, Sistemas de Informação"
-                  className={`${style.input} ${formData.cursosPreferenciais.length > 200 ? "is-invalid" : ""}`}
+                  onChange={(tags) =>
+                    setFormData((prev) => ({ ...prev, cursosPreferenciais: tags }))
+                  }
+                  placeholder="Escreva os cursos preferenciais (Ex: Engenharia Informática, Ciências da Computação)"
                 />
                 <div className="d-flex justify-content-between">
                   {formData.cursosPreferenciais.length > 200 && (
@@ -607,14 +603,12 @@ const EditarEstagio = () => {
               <Form.Group className="mb-3">
                 <Form.Label className={`${style.label} fw-bold`}>
                   Competências Técnicas</Form.Label>
-                <Form.Control
-                  as="textarea"
-                  rows={3}
-                  name="competenciasTecnicas"
+                <TagInput
                   value={formData.competenciasTecnicas}
-                  onChange={handleChange}
-                  placeholder="Ex: JavaScript, Python, HTML/CSS..."
-                  className={`${style.textarea} ${formData.competenciasTecnicas.length > 300 ? "is-invalid" : ""}`}
+                  onChange={(tags) =>
+                    setFormData((prev) => ({ ...prev, competenciasTecnicas: tags }))
+                  }
+                  placeholder="Escreva as competências técnicas essenciais (Ex: Programação, Design Gráfico, Marketing Digital)"
                 />
                 <div className="d-flex justify-content-between">
                   {formData.competenciasTecnicas.length > 300 && (
@@ -628,23 +622,22 @@ const EditarEstagio = () => {
 
               {/* Soft Skills */}
               <Form.Group className="mb-3">
-              <Form.Label className={`${style.label} fw-bold`}>
-                  Soft Skills</Form.Label>
-                <Form.Control
-                  as="textarea"
-                  rows={2}
-                  name="softSkills"
-                  value={formData.softSkills}
-                  onChange={handleChange}
-                  placeholder="Ex: Trabalho em equipa, comunicação, proatividade..."
-                  className={`${style.textarea} ${formData.softSkills.length > 200 ? "is-invalid" : ""}`}
+                <Form.Label className={`${style.label} fw-bold`}>
+                  Competências Pessoais (Soft Skills)
+                </Form.Label> 
+                <TagInput
+                  value={formData.competenciasPessoais}
+                  onChange={(tags) =>
+                  setFormData((prev) => ({ ...prev, competenciasPessoais: tags }))
+                  }
+                  placeholder="Escreva as competências pessoais (Ex: Trabalho em equipe, Comunicação, Resolução de problemas)"
                 />
                 <div className="d-flex justify-content-between">
-                  {formData.softSkills.length > 200 && (
+                  {formData.competenciasPessoais.length > 200 && (
                     <span className={style.charterror}>Máximo de 200 caracteres ultrapassado!</span>
                   )}
-                  <small className={`ms-auto ${formData.softSkills.length > 200 ? "text-danger" : "text-muted"}`}>
-                    {formData.softSkills.length}/200 caracteres
+                  <small className={`ms-auto ${formData.competenciasPessoais.length > 200 ? "text-danger" : "text-muted"}`}>
+                    {formData.competenciasPessoais.length}/200 caracteres
                   </small>
                 </div>
               </Form.Group>
@@ -655,13 +648,12 @@ const EditarEstagio = () => {
                   <Form.Group className="mb-3">
                     <Form.Label className={`${style.label} fw-bold`}>
                       Idiomas</Form.Label>
-                    <Form.Control
-                      type="text"
-                      name="idiomas"
+                    <TagInput
                       value={formData.idiomas}
-                      onChange={handleChange}
-                      placeholder="Ex: Português (nativo), Inglês (B2)"
-                      className={`${style.input} ${formData.idiomas.length > 150 ? "is-invalid" : ""}`}
+                      onChange={(tags) =>
+                      setFormData((prev) => ({ ...prev, idiomas: tags }))
+                      }
+                      placeholder="Escreva os idiomas (Ex: Inglês, Português, Espanhol)"
                     />
                     <div className="d-flex justify-content-between">
                       {formData.idiomas.length > 150 && (
@@ -708,24 +700,24 @@ const EditarEstagio = () => {
                 style={{ display: "flex", flexWrap: "wrap", gap: "1.5rem", textAlign: "left" }}
               >
                 <div style={{ flex: "1 1 45%" }}>
-                  <p><strong>Título:</strong> {formData.titulo}</p>
-                  <p><strong>Área:</strong> {formData.area}</p>
-                  <p><strong>Vagas:</strong> {formData.vagas}</p>
-                  <p><strong>Localização:</strong> {formData.localizacao}</p>
-                  <p><strong>Tipo:</strong> {formData.tipo}</p>
-                  <p><strong>Duração:</strong> {formData.duracao}</p>
-                  <p><strong>Início:</strong> {formData.dataInicio}</p>
-                  <p><strong>Prazo de Candidatura:</strong> {formData.prazo}</p>
+                  <p><strong>Título:</strong> {formData.titulo || <span style={{ color: "#aaa" }}> Não especificado.</span>}</p>
+                  <p><strong>Área:</strong> {formData.area ?  formData.area.join(", ") : <span style={{ color: "#aaa" }}> Não especificado.</span>}</p>
+                  <p><strong>Vagas:</strong> {formData.vagas || <span style={{ color: "#aaa" }}> Não especificado.</span>}</p>
+                  <p><strong>Localização:</strong> {formData.localizacao || <span style={{ color: "#aaa" }}> Não especificado.</span>}</p>
+                  <p><strong>Tipo:</strong> {formData.tipo || <span style={{ color: "#aaa" }}> Não especificado.</span>}</p>
+                  <p><strong>Duração:</strong> {formData.duracao || <span style={{ color: "#aaa" }}> Não especificado.</span>}</p>
+                  <p><strong>Início:</strong> {formData.dataInicio || <span style={{ color: "#aaa" }}> Não especificado.</span>}</p>
+                  <p><strong>Prazo de Candidatura:</strong> {formData.prazo || <span style={{ color: "#aaa" }}> Não especificado.</span>}</p>
                 </div>
                 <div style={{ flex: "1 1 45%" }}>
-                  <p><strong>Descrição:</strong> {formData.descricao}</p>
-                  <p><strong>Benefícios:</strong> {formData.beneficios}</p>
-                  <p><strong>Cursos Preferenciais:</strong> {formData.cursosPreferenciais}</p>
-                  <p><strong>Habilitações Mínimas:</strong> {formData.habilitacoes}</p>
-                  <p><strong>Competências Técnicas:</strong> {formData.competenciasTecnicas}</p>
-                  <p><strong>Soft Skills:</strong> {formData.softSkills}</p>
-                  <p><strong>Idiomas:</strong> {formData.idiomas}</p>
-                  <p><strong>Outros Requisitos:</strong> {formData.outrosRequisitos}</p>
+                  <p><strong>Descrição:</strong> {formData.descricao || <span style={{ color: "#aaa" }}> Não especificado.</span>}</p>
+                  <p><strong>Benefícios:</strong> {formData.beneficios ? formData.beneficios.join(", ") : <span style={{ color: "#aaa" }}> Não especificado.</span>}</p>
+                  <p><strong>Cursos Preferenciais:</strong> {formData.cursosPreferenciais ? formData.cursosPreferenciais.join(", ") : <span style={{ color: "#aaa" }}> Não especificado.</span>}</p>
+                  <p><strong>Habilitações Mínimas:</strong> {formData.habilitacoes || <span style={{ color: "#aaa" }}> Não especificado.</span>}</p>
+                  <p><strong>Competências Técnicas:</strong> {formData.competenciasTecnicas ? formData.competenciasTecnicas.join(", ") : <span style={{ color: "#aaa" }}> Não especificado.</span>}</p>
+                  <p><strong>Competências Pessoais:</strong> {formData.competenciasPessoais ? formData.competenciasPessoais.join(", ") : <span style={{ color: "#aaa" }}> Não especificado.</span>}</p>
+                  <p><strong>Idiomas:</strong> {formData.idiomas ? formData.idiomas.join(", ") : <span style={{ color: "#aaa" }}> Não especificado.</span>}</p>
+                  <p><strong>Outros Requisitos:</strong> {formData.outrosRequisitos || <span style={{ color: "#aaa" }}> Não especificado.</span>}</p>
                 </div>
               </div>
             </div>

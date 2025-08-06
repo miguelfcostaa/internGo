@@ -10,7 +10,7 @@ const estagioSchema = new Schema({
         required: true,
     },
     area: { // Área do estágio
-        type: String,
+        type: Array,
         required: true,
     },
     dataInicio: { // Data de início do estágio
@@ -41,10 +41,6 @@ const estagioSchema = new Schema({
         type: String,
         required: true,
     },
-    oportunidades: { // Oportunidades de desenvolvimento
-        type: String,
-        required: true,
-    },
     beneficios:{ // Benefícios oferecidos
         type: Array,
         required: true,
@@ -54,7 +50,7 @@ const estagioSchema = new Schema({
         required: true,
     },
     cursosPreferenciais: { // Cursos preferenciais para o estágio
-        type: String,
+        type: Array,
     },
     competenciasTecnicas: {   // Competências técnicas para o estágio
         type: Array,

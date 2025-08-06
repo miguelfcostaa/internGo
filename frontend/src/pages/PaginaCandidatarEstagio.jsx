@@ -184,19 +184,19 @@ function PaginaCandidatarEstagio() {
                     <button
                         type="button"
                         onClick={() => setSidebarOpen(!sidebarOpen)}
-                    style={{
-  position: 'absolute',
-  top: 0,
-  left: 0,
-  width: '250px',
-  height: '100%',
-  backgroundColor: '#f5f5f5',
-  padding: '20px',
-  boxShadow: '2px 0 5px rgba(0,0,0,0.1)',
-  zIndex: 9999, // aumenta mucho el zIndex
-  overflowY: 'auto',
-  borderRadius: '0 8px 8px 0',
-}}
+                        style={{
+                            position: 'absolute',
+                            top: 0,
+                            left: 0,
+                            width: '250px',
+                            height: '100%',
+                            backgroundColor: '#f5f5f5',
+                            padding: '20px',
+                            boxShadow: '2px 0 5px rgba(0,0,0,0.1)',
+                            zIndex: 9999, // aumenta mucho el zIndex
+                            overflowY: 'auto',
+                            borderRadius: '0 8px 8px 0',
+                        }}
                     >
                         {sidebarOpen ? <FaChevronLeft /> : <FaChevronRight />}
                     </button>

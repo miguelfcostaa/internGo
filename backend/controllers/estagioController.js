@@ -3,11 +3,26 @@ const Company = require('../models/Company');
 const User = require('../models/User');
 const Candidatura = require('../models/Candidatura');
 const { verifyToken, verifyRole } = require('../middleware/auth');
+const validations = require('../utils/validations');
 
 // Função para criar um novo estágio
 const criarEstagio = async (req, res) => {
+
+    const errors = await validations.validateCriarEstagio(Estagio, req.body);
+    
+    if (Object.keys(errors).length > 0) {
+        return res.status(400).json({ message: errors });
+    }
+
     try {
         const estagioData = req.body;
+        if (!estagioData) {
+            return res.status(400).json({ message: 'Dados do estágio são obrigatórios' });
+        }
+        // Verificar se o usuário está autenticado
+        if (!req.user || !req.user.id) {
+            return res.status(401).json({ message: 'Usuário não autenticado' });
+        }
         
         // Verificar se o usuário é uma empresa
         const company = await Company.findById(req.user.id);

@@ -67,7 +67,6 @@ export const loginUser = async (email, password) => {
 export const criarEstagio = async (estagioData) => {
   try {
     const token = localStorage.getItem("token");
-    
     if (!token) {
       throw new Error("Token de autenticação não encontrado");
     }
@@ -80,14 +79,14 @@ export const criarEstagio = async (estagioData) => {
       },
       body: JSON.stringify(estagioData),
     });
-    
+
     const data = await res.json();
-    
+
     if (!res.ok) {
-      const errorMessage = data.message || 'Erro ao criar estágio';
-      throw new Error(errorMessage);
+      // Jogue o objeto inteiro, não só a string
+      throw data;
     }
-    
+
     return data;
   } catch (err) {
     console.error("Create estagio error:", err);
