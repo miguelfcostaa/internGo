@@ -258,7 +258,7 @@ input[type="file"] {
   display: inline-block;
   text-align: center;
   user-select: none;
-  white-space: nowrap; /* evita que el texto del botón se rompa en varias líneas */
+  white-space: nowrap; 
 }
 
 .btn:hover {

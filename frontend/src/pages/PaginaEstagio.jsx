@@ -8,7 +8,6 @@ import useEstagios from "../hooks/useEstagios";
 import NotFound from "./NotFound404";
 
 function PaginaEstagio() {
-
     const navigate = useNavigate();
     const { id } = useParams();
     const { estagio, loading } = useEstagios(id);
@@ -16,32 +15,28 @@ function PaginaEstagio() {
 
     useEffect(() => {
         if (loading) {
-            // Optionally, you can show a loading spinner or message here
             return;
         }
         if (!estagio) {
-            // Handle the case where the estagio is not found
             console.error("Estágio not found");
-            navigate("/not-found"); // Redirect to a not found page or handle accordingly
+            navigate("/not-found");
         }
     }, [estagio, loading, navigate]);
 
     const handleCandidatar = () => {
-        navigate("/candidatar-estagio/" + id); // Redirect to the candidatar page with the estagio ID
-        window.scrollTo(0, 0); // Scroll to the top of the page
+        navigate("/candidatar-estagio/" + id);
+        window.scrollTo(0, 0);
     };
 
-    // Função para formatar o mês, que vem como //YYYY-MM e retorna o nome do mes e o ano
     const handleMesInicio = (mes) => { 
         const meses = [
             "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
             "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
         ];
         const [ano, mesIndex] = mes.split("-");
-        return `${meses[parseInt(mesIndex) - 1]} de ${ano}`;
-    }
+        return `${meses[parseInt(mesIndex, 10) - 1]} de ${ano}`;
+    };
 
-    // Função para formatar as habilitações mínimas
     const handleHabilitacoes = (habilitacoes) => {
         const habilitacoesMap = {
             "1": "Nível 1 - 4º ano do Ensino Básico",
@@ -54,41 +49,42 @@ function PaginaEstagio() {
             "8": "Nível 8 - Doutoramento"
         };
         return habilitacoesMap[habilitacoes] || habilitacoes;
-    }
-
+    };
 
     if (loading) {
-        return <div>Loading...</div>; // Show a loading message or spinner
+        return <div>Loading...</div>;
     }
-    else if (estagio)  { return ( 
-        <div>
+
+    if (!estagio) {
+        return <NotFound />;
+    }
+
+    return (
+        <>
             <NavBar />
-            <div className={Styles.voltarWrapper}>
+            <div className={Styles.background}>
                 <ButtonVoltar />
             </div>
 
-            <main className={Styles.background}>
-
-                {/* Encabezado */}
-                <div className={Styles.headerBox}>
-                    <div className={Styles.headerContent}></div>
-                    <div className={Styles.logoTitle}>
-                        <img src={acin} className={Styles.acin} alt="Logo Empresa" />
-                        <div className={Styles.titleTexts}>
-                        <h4 className={Styles.heading}> {estagio.company.name} </h4>
-                        <h4 className={Styles.heading}> {estagio.title} </h4>
-                        </div>
-                        <div className={Styles.contactInfo}>
-                        <strong>Email:</strong> {estagio.company.email} <br/>
-                        <strong>Contacto:</strong> 
-                        </div>
-
+            {/* Encabezado */}
+            <div className={Styles.headerBox}>
+                <div className={Styles.headerContent}></div>
+                <div className={Styles.logoTitle}>
+                    <img src={acin} className={Styles.acin} alt="Logo Empresa" />
+                    <div className={Styles.titleTexts}>
+                        <h4 className={Styles.heading}>{estagio.company.name}</h4>
+                        <h4 className={Styles.heading}>{estagio.title}</h4>
                     </div>
-                    <hr className={Styles.separator} />
+                    <div className={Styles.contactInfo}>
+                        <strong>Email:</strong> {estagio.company.email} <br />
+                        <strong>Contacto:</strong>
+                    </div>
                 </div>
+                <hr className={Styles.separator} />
+            </div>
 
-                {/* Contenido principal (columna izquierda + sidebar) */}
-                <div className={Styles.mainContent}>
+            {/* Contenido principal (columna izquierda + sidebar) */}
+            <div className={Styles.mainContent}>
                 {/* Columna izquierda */}
                     <div className={Styles.leftColumn}>
                         <ul className={Styles.cleanList}>

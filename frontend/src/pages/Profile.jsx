@@ -103,12 +103,13 @@ const ProfilePage = () => {
                             <div className={styles.userInfoLeft}>
                                 <img 
                                     src={userInfo.profilePhoto ? `http://localhost:5000${userInfo.profilePhoto}` : profilePhoto} 
-                                    alt="Foto de perfil" 
+                                    alt=" " 
                                     width={180} 
                                     height={180}
                                     style={{
                                         borderRadius: '50%',
-                                        objectFit: 'cover' ,
+                                        objectFit: 'cover',
+                                        backgroundColor: 'rgb(185, 185, 185, 0.40)', 
                                     }}
                                 />
                                 <ButtonGeral Name="Ver Detalhes" link={`/edit-profile/${userInfo._id}/`} />
@@ -172,7 +173,7 @@ const ProfilePage = () => {
                                 Estágios Recomendados
                             </h2>
                             {estagiosRecomendados.length > 0 && (
-                                <Link to="/recomendacoes" style={{ textDecoration: 'none', color: '#447D9B', fontSize: '0.9rem' }}>
+                                <Link to="/recomendacoes/:id" style={{ textDecoration: 'none', color: '#447D9B', fontSize: '0.9rem' }}>
                                     Ver todas as recomendações →
                                 </Link>
                             )}
@@ -254,12 +255,13 @@ const ProfilePage = () => {
                             <div className={styles.userInfoLeft}>
                                 <img 
                                     src={userInfo.profilePhoto ? `http://localhost:5000${userInfo.profilePhoto}` : profilePhoto} 
-                                    alt="Foto de perfil" 
+                                    alt=" " 
                                     width={180} 
                                     height={180}
                                     style={{
                                         borderRadius: '50%',
-                                        objectFit: 'cover'
+                                        objectFit: 'cover',
+                                        backgroundColor: 'rgb(185, 185, 185, 0.40)',
                                     }}
                                 />
                                 <ButtonGeral Name="Ver Detalhes" link={`/edit-profile/${userInfo._id}/`} />
