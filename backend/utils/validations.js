@@ -55,7 +55,7 @@ async function validateCompanyInput(Company ,data) {
     const errors = {};
 
     // 0. Verifica se todos os campos estão preenchidos
-    if (!data.name || !data.email || !data.telefone || !data.nif || !data.password || !data.confirmPassword) {
+    if (!data.name || !data.email || !data.phone || !data.nif || !data.password || !data.confirmPassword) {
         errors.general = 'Todos os campos são obrigatórios.';
         return errors;
     }
@@ -83,14 +83,14 @@ async function validateCompanyInput(Company ,data) {
     }
 
     // 3. Valida telefone
-    if (data.telefone && !validatePhoneNumber(data.telefone)) {
-        errors.telefone = 'Número de telefone deve ter formato válido (9xxxxxxxx ou +351xxxxxxxxx).';
+    if (data.phone && !validatePhoneNumber(data.phone)) {
+        errors.phone = 'Número de telefone deve ter formato válido (9xxxxxxxx ou +351xxxxxxxxx).';
     }
     else {
         // Verifica se telefone já existe (await)
-        const existingCompany = await Company.findOne({ telefone: data.telefone });
+        const existingCompany = await Company.findOne({ phone: data.phone });
         if (existingCompany) {
-            errors.telefone = 'Número de telefone já está em uso.';
+            errors.phone = 'Número de telefone já está em uso.';
         }
     }
 
