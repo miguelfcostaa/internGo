@@ -46,7 +46,7 @@ const estagioSchema = new Schema({
         required: true,
     },
     beneficios:{ // Benefícios oferecidos
-        type: String,
+        type: Array,
         required: true,
     },
     habilitacoesMinimas: { // Habilitações mínimas exigidas
@@ -56,14 +56,14 @@ const estagioSchema = new Schema({
     cursosPreferenciais: { // Cursos preferenciais para o estágio
         type: String,
     },
-    competenciasEssenciais: {   // Competências essenciais para o estágio
-        type: String,
+    competenciasTecnicas: {   // Competências técnicas para o estágio
+        type: Array,
     },
     competenciasPessoais: { // Competências pessoais valorizadas
-        type: String,
+        type: Array,
     },
     idiomas: {  // Idiomas exigidos ou valorizados
-        type: String,
+        type: Array,
     },
     observacoes: { // Observações adicionais sobre o estágio
         type: String,
@@ -71,6 +71,12 @@ const estagioSchema = new Schema({
     company: { // Referência à empresa que oferece o estágio
         type: Schema.Types.ObjectId,
         ref: 'Company',
+    },
+    horaInicio: { // Hora de início do estágio
+        type: String,
+    },
+    horaFim: { // Hora de fim do estágio
+        type: String,
     },
 });
 

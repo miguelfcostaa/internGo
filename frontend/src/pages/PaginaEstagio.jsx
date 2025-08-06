@@ -86,65 +86,73 @@ function PaginaEstagio() {
             {/* Contenido principal (columna izquierda + sidebar) */}
             <div className={Styles.mainContent}>
                 {/* Columna izquierda */}
-                <div className={Styles.leftColumn}>
-                    <ul className={Styles.cleanList}>
-                        <li>
-                            <strong>Área(s) de Atuação:</strong>
-                            <p>{estagio.area || <span style={{ color: '#888' }}>Não especificado..</span>}</p>
-                        </li>
-                        <li>
-                            <strong>Habilitações Académicas Mínimas:</strong>
-                            <p>{handleHabilitacoes(estagio.habilitacoesMinimas) || <span style={{ color: '#888' }}>Não especificado.</span>}</p>
-                        </li>
-                        <li>
-                            <strong>Competências Técnicas Essenciais:</strong>
-                            <ul className={Styles.subList}>
-                                {estagio.competenciasEssenciais ? estagio.competenciasEssenciais.split(',').map(e => (
-                                    <li key={e.trim()}>• {e.trim()}</li>
-                                )) : <span style={{ color: '#888' }}>Não especificado.</span>}
-                            </ul>
-                        </li>
-                        <li>
-                            <strong>Competências Pessoais (Soft Skills):</strong>
-                            <ul className={Styles.subList}>
-                                {estagio.competenciasPessoais ? estagio.competenciasPessoais.split(',').map(e => (
-                                    <li key={e.trim()}>• {e.trim()}</li>
-                                )) : <span style={{ color: '#888' }}>Não especificado.</span>}
-                            </ul>
-                        </li>
-                        <li>
-                            <strong>Idiomas:</strong>
-                            <ul className={Styles.subList}>
-                                {estagio.idiomas ? estagio.idiomas.split(',').map(e => (
-                                    <li key={e.trim()}>• {e.trim()}</li>
-                                )) : <span style={{ color: '#888' }}>Não especificado.</span>}
-                            </ul>
-                        </li>
-                        <li>
-                            <strong>Descrição do Estágio:</strong>
-                            <p>{estagio.descricao || <span style={{ color: '#888' }}>Não especificado.</span>}</p>
-                        </li>
-                    </ul>
-                </div>
-
-                {/* Sidebar + botón */}
-                <div className={Styles.sidebarWrapper}>
-                    <div className={Styles.sidebar}>
-                        <p><strong>Prazo da Candidatura:</strong> {estagio.prazoCandidatura ? new Date(estagio.prazoCandidatura).toLocaleDateString() : <span style={{ color: '#888' }}>Não especificado.</span>}</p>
-                        <p><strong>Local de estágio:</strong> {estagio.localizacao || <span style={{ color: '#888' }}>Não especificado.</span>}</p>
-                        <p><strong>Mês de Início do Estágio:</strong> {handleMesInicio(estagio.dataInicio) || <span style={{ color: '#888' }}>Não especificado.</span>}</p>
-                        <p><strong>Duração:</strong> {estagio.duracao ? (estagio.duracao > 1 ? `${estagio.duracao} Meses` : `${estagio.duracao} Mês`) : <span style={{ color: '#888' }}>Não especificado.</span>}</p>
-                        <p><strong>Número de Vagas:</strong> {estagio.numeroVagas || <span style={{ color: '#888' }}>Não especificado.</span>}</p>
-                        <p><strong>Horário do Estágio:</strong> {estagio.horarioEstagio || <span style={{ color: '#888' }}>Não especificado.</span>}</p>
-                        <p><strong>Benefícios oferecidos:</strong> {estagio.beneficios || <span style={{ color: '#888' }}>Não especificado.</span>}</p>
+                    <div className={Styles.leftColumn}>
+                        <ul className={Styles.cleanList}>
+                            <li>
+                                <strong>Área(s) de Atuação:</strong>
+                                <p>{estagio.area || <span style={{ color: '#888' }}>Não especificado..</span>}</p>
+                            </li>
+                            <li>
+                                <strong>Habilitações Académicas Mínimas:</strong>
+                                <p>{handleHabilitacoes(estagio.habilitacoesMinimas) || <span style={{ color: '#888' }}>Não especificado.</span>}</p>
+                            </li>
+                            <li>
+                                <strong>Competências Técnicas Essenciais:</strong>
+                                <ul className={Styles.subList}>
+                                    {estagio.competenciasTecnicas ? estagio.competenciasTecnicas.map((e, index) => (
+                                        <li key={index}>• {e}</li>
+                                    )) : <span style={{ color: '#888' }}>Não especificado.</span>}
+                                </ul>
+                            </li>
+                            <li>
+                                <strong>Competências Pessoais (Soft Skills):</strong>
+                                <ul className={Styles.subList}>
+                                    {estagio.competenciasPessoais ? estagio.competenciasPessoais.map((e, index) => (
+                                        <li key={index}>• {e}</li>
+                                    )) : <span style={{ color: '#888' }}>Não especificado.</span>}
+                                </ul>
+                            </li>
+                            <li>
+                                <strong>Idiomas:</strong>
+                                <ul className={Styles.subList}>
+                                    {estagio.idiomas ? estagio.idiomas.map((e, index) => (
+                                        <li key={index}>• {e}</li>
+                                    )) :  <span style={{ color: '#888' }}>Não especificado.</span>}
+                                </ul>
+                            </li>
+                            <li>
+                                <strong>Descrição do Estágio:</strong>
+                                <p>
+                                    {estagio.descricao || <span style={{ color: '#888' }}>Não especificado.</span>}
+                                </p>
+                            </li>
+                        </ul>
                     </div>
-                    <button className={Styles.customButton} onClick={handleCandidatar}>
-                        Candidatar-se
-                    </button>
+
+                    {/* Sidebar + botón */}
+                    <div className={Styles.sidebarWrapper}>
+                        <div className={Styles.sidebar}>
+                            <p><strong>Prazo da Candidatura:</strong> {estagio.prazoCandidatura ? new Date(estagio.prazoCandidatura).toLocaleDateString() : <span style={{ color: '#888' }}>Não especificado.</span>}</p>
+                            <p><strong>Local de estágio:</strong> {estagio.localizacao || <span style={{ color: '#888' }}>Não especificado.</span>}</p>
+                            <p><strong>Mês de Início do Estágio:</strong> {handleMesInicio(estagio.dataInicio) || <span style={{ color: '#888' }}>Não especificado.</span>}</p>
+                            <p><strong>Duração:</strong> {estagio.duracao ? (estagio.duracao > 1 ? `${estagio.duracao} Meses` : `${estagio.duracao} Mês`) : <span style={{ color: '#888' }}>Não especificado.</span>}</p>
+                            <p><strong>Número de Vagas:</strong> {estagio.numeroVagas || <span style={{ color: '#888' }}>Não especificado.</span>}</p>
+                            <p><strong>Horário do Estágio:</strong> {estagio.horaInicio && estagio.horaFim ? `${estagio.horaInicio} - ${estagio.horaFim}` : <span style={{ color: '#888' }}>Não especificado.</span>}</p>
+                            <p><strong>Benefícios oferecidos:</strong> 
+                                <ul className={Styles.subList} style={{ textAlign: 'left' }}>
+                                {estagio.beneficios.length > 0 ? estagio.beneficios.map((e, index) => (
+                                    <li key={index}>• {e}</li>
+                                )) : <span style={{ color: '#888' }}>Não especificado.</span>}
+                                </ul>
+                            </p>
+                        </div>
+                        <button className={Styles.customButton} onClick={handleCandidatar}>
+                            Candidatar-se
+                        </button>
+                    </div>
                 </div>
-            </div>
         </>
-    );
-}
+    )}
+
 
 export default PaginaEstagio;

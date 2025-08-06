@@ -13,6 +13,7 @@ import NavBar from "../components/NavBar";
 import style from "../styles/CriarEstagio.module.css";
 import RequiredFieldTooltip from "../components/RequiredFieldTooltip.jsx";
 import { criarEstagio } from "../services/apiService";
+import TagInput from "../components/TagInput.jsx";
 
 const CriacaoEstagio = () => {
 	const navigate = useNavigate();
@@ -30,16 +31,39 @@ const CriacaoEstagio = () => {
 			duracao: "",
 			prazo: "",
 			descricao: "",
-			beneficios: "",
+			beneficios: [],
 			horaInicio: "",
 			horaFim: "",
 			habilitacoes: "",
-			cursosPreferenciais: "",
-			competenciasTecnicas: "",
-			softSkills: "",
-			idiomas: "",
+			cursosPreferenciais: [],
+			competenciasTecnicas: [],
+			competenciasPessoais: [],
+			idiomas: [],
 			outrosRequisitos: "",
 	});
+	//limite de caracteres
+	const [Warnings, setWarnings] = useState({
+		titulo: false,
+		area: false,
+		vagas: false,
+		localizacao: false,
+		dataInicio: false,
+		tipo: false,
+		duracao: false,
+		prazo: false,
+		descricao: false,
+		beneficios: false,
+		horaInicio: false,
+		horaFim: false,
+		habilitacoes: false,
+		competenciasTecnicas: false,
+		competenciasPessoais: false,
+		idiomas: false,
+		outrosRequisitos: false,
+	});
+	//maximo de caracteres e mensagem de erro
+	const messageMaxChat = "Atingiu o maximo de caracteres permitido";
+	const maxChars = 20;
 	// Limites específicos para cada campo
 	const fieldLimits = {
 		titulo: 60,
@@ -137,12 +161,13 @@ const CriacaoEstagio = () => {
 			descricao: formData.descricao,
 			oportunidades:
 			formData.oportunidades || "Oportunidades de aprendizagem e desenvolvimento profissional",
-			beneficios: formData.beneficios,
+			beneficios: transformarParaArray(formData.beneficios),
 			habilitacoesMinimas: formData.habilitacoes || "",
-			cursosPreferenciais: formData.cursosPreferenciais || "",
-			competenciasEssenciais: formData.competenciasTecnicas || "",
-			competenciasPessoais: formData.softSkills || "",
-			idiomas: formData.idiomas || "",
+			cursosPreferenciais: transformarParaArray(formData.cursosPreferenciais),
+			competenciasTecnicas: transformarParaArray(formData.competenciasTecnicas),
+			// Transformar competências pessoais e idiomas em arrays
+			competenciasPessoais: transformarParaArray(formData.competenciasPessoais),
+			idiomas: transformarParaArray(formData.idiomas),
 			observacoes: formData.outrosRequisitos || "",
 		};
 
@@ -185,6 +210,15 @@ const CriacaoEstagio = () => {
         const [ano, mesIndex] = mes.split("-");
         return `${meses[parseInt(mesIndex) - 1]} de ${ano}`;
     }
+
+	const transformarParaArray = (valor) => {
+		if (!valor) return [];
+		return valor
+			.split(",")
+			.map((item) => item.trim())
+			.filter((item) => item !== "");
+	};
+
 
 	return (
 		<div style={{ backgroundColor: "#f5f5f5", minHeight: "100vh", paddingBottom: "2rem" }}>
@@ -427,11 +461,12 @@ const CriacaoEstagio = () => {
 						Prazo Limite de Candidatura <RequiredFieldTooltip />
 						</Form.Label>
 						<Form.Control
-						className={style.smallDate}
-						type="date"
-						name="prazo"
-						value={formData.prazo}
-						onChange={handleChange}
+							className={style.smallDate}
+							style={{ width: "180px" }}
+							type="date"
+							name="prazo"
+							value={formData.prazo}
+							onChange={handleChange}
 						/>
 					</Form.Group>
 					</div>
@@ -491,13 +526,12 @@ const CriacaoEstagio = () => {
 					<Form.Label className={style.formLabel}>
 						Benefícios Oferecidos <RequiredFieldTooltip />
 					</Form.Label>
-					<Form.Control
-						className={`${style.formControl} w-100 ${formData.beneficios.length > 300 ? "is-invalid" : ""}`}
-						type="text"
-						placeholder="Ex: Bolsa, Vale-transporte"
-						name="beneficios"
-						value={formData.beneficios}
-						onChange={handleChange}
+					<TagInput
+							value={formData.beneficios}
+							onChange={(tags) =>
+							setFormData((prev) => ({ ...prev, beneficios: tags }))
+						}
+						placeholder="Escreva os benefícios oferecidos (Ex: Vale transporte, Vale refeição, Seguro de saúde)"
 					/>
 					<div className="d-flex justify-content-between">
 						{formData.beneficios.length > 300 && (
@@ -539,21 +573,21 @@ const CriacaoEstagio = () => {
 					</Form.Label>
 					<div className="d-flex align-items-center gap-2">
 						<Form.Control
-						type="time"
-						name="horaInicio"
-						value={formData.horaInicio}
-						onChange={handleChange}
-						className="w-auto"
-						required
+							type="time"
+							name="horaInicio"
+							value={formData.horaInicio}
+							onChange={handleChange}
+							className="w-auto"
+							required
 						/>
-						<span>até</span>
+						<span> até</span>
 						<Form.Control
-						type="time"
-						name="horaFim"
-						value={formData.horaFim}
-						onChange={handleChange}
-						className="w-auto"
-						required
+							type="time"
+							name="horaFim"
+							value={formData.horaFim}
+							onChange={handleChange}
+							className="w-auto"
+							required
 						/>
 					</div>
 					</Form.Group>
@@ -587,42 +621,37 @@ const CriacaoEstagio = () => {
 				<Row className={style.mb3}>
 				<Col md={12}>
 					<Form.Group className={style.mb3}>
-					<Form.Label className={style.formLabel}>
-						Habilitações Académicas Mínimas <RequiredFieldTooltip />
-					</Form.Label>
-					<Form.Select
-						className="w-100"
-						name="habilitacoes"
-						value={formData.habilitacoes || ""}
-						onChange={handleChange}
-					>
-						<option value="">Selecione o nível de habilitação</option>
-						<option value="1">Nível 1 - 4º ano do Ensino Básico</option>
-						<option value="2">Nível 2 - 6º ano do Ensino Básico</option>
-						<option value="3">Nível 3 - 9º ano do Ensino Básico</option>
-						<option value="4">
-						Nível 4 - Ensino Secundário + Estágio Profissional
-						</option>
-						<option value="5">
-						Nível 5 - Cursos de Especialização Tecnológica (CET)
-						</option>
-						<option value="6">Nível 6 - Licenciatura</option>
-						<option value="7">Nível 7 - Mestrado</option>
-						<option value="8">Nível 8 - Doutoramento</option>
-					</Form.Select>
+						<Form.Label className={style.formLabel}>
+							Habilitações Académicas Mínimas <RequiredFieldTooltip />
+						</Form.Label>
+						<Form.Select
+							className="w-100"
+							name="habilitacoes"
+							value={formData.habilitacoes || ""}
+							onChange={handleChange}
+						>
+							<option value="">Selecione o nível de habilitação</option>
+							<option value="1">Nível 1 - 4º ano do Ensino Básico</option>
+							<option value="2">Nível 2 - 6º ano do Ensino Básico</option>
+							<option value="3">Nível 3 - 9º ano do Ensino Básico</option>
+							<option value="4">Nível 4 - Ensino Secundário + Estágio Profissional</option>
+							<option value="5">Nível 5 - Cursos de Especialização Tecnológica (CET)</option>
+							<option value="6">Nível 6 - Licenciatura</option>
+							<option value="7">Nível 7 - Mestrado</option>
+							<option value="8">Nível 8 - Doutoramento</option>
+						</Form.Select>
 					</Form.Group>
 
 					<Form.Group className={style.mb3}>
 					<Form.Label className={style.formLabel}>
 						Competências Técnicas Essenciais <RequiredFieldTooltip />
 					</Form.Label>
-					<Form.Control
-						className={`w-100 ${formData.competenciasTecnicas.length > 300 ? "is-invalid" : ""}`}
-						type="text"
-						placeholder="Liste ferramentas e aptidões técnicas essenciais"
-						name="competenciasTecnicas"
-						value={formData.competenciasTecnicas || ""}
-						onChange={handleChange}
+					<TagInput
+						value={formData.competenciasTecnicas}
+						onChange={(tags) =>
+							setFormData((prev) => ({ ...prev, competenciasTecnicas: tags }))
+						}
+						placeholder="Escreva as competências técnicas essenciais (Ex: Programação, Design Gráfico, Marketing Digital)"
 					/>
 					<div className="d-flex justify-content-between">
 						{formData.competenciasTecnicas.length > 300 && (
@@ -638,14 +667,13 @@ const CriacaoEstagio = () => {
 					<Form.Label className={style.formLabel}>
 						Competências Pessoais (Soft Skills)
 					</Form.Label>
-					<Form.Control
-						className={`w-100 ${formData.softSkills.length > 200 ? "is-invalid" : ""}`}
-						type="text"
-						placeholder="Ex: Que qualidades pessoais são importantes para este estágio"
-						name="softSkills"
-						value={formData.softSkills || ""}
-						onChange={handleChange}
-					/>
+					<TagInput
+							value={formData.competenciasPessoais}
+							onChange={(tags) =>
+							setFormData((prev) => ({ ...prev, competenciasPessoais: tags }))
+							}
+							placeholder="Escreva as competências pessoais (Ex: Trabalho em equipe, Comunicação, Resolução de problemas)"
+						/>
 					<div className="d-flex justify-content-between">
 						{formData.softSkills.length > 200 && (
 							<span className={style.charterror}>Máximo de 200 caracteres ultrapassado!</span>
@@ -658,13 +686,12 @@ const CriacaoEstagio = () => {
 
 					<Form.Group className={style.mb3}>
 					<Form.Label className={style.formLabel}>Idiomas</Form.Label>
-					<Form.Control
-						className={`w-100 ${formData.idiomas.length > 150 ? "is-invalid" : ""}`}
-						type="text"
-						placeholder="Indique os idiomas exigidos (Ex: Inglês avançado, Espanhol básico)"
-						name="idiomas"
-						value={formData.idiomas || ""}
-						onChange={handleChange}
+					<TagInput
+						value={formData.idiomas}
+						onChange={(tags) =>
+						setFormData((prev) => ({ ...prev, idiomas: tags }))
+						}
+						placeholder="Escreva os idiomas (Ex: Inglês, Português, Espanhol)"
 					/>
 					<div className="d-flex justify-content-between">
 						{formData.idiomas.length > 150 && (
@@ -806,6 +833,10 @@ const CriacaoEstagio = () => {
 						<p>
 						<strong className="text-secondary">Benefícios Oferecidos:</strong>{" "}
 						{formData.beneficios || <span style={{ color: "#aaa" }}> Não especificado.</span>}
+						</p>
+						<p>
+						<strong className="text-secondary">Competências Pessoais:</strong>{" "}
+						{formData.competenciasPessoais || <span style={{ color: "#aaa" }}> Não especificado.</span>}
 						</p>
 						<p>
 						<strong className="text-secondary">Cursos Preferenciais:</strong>{" "}

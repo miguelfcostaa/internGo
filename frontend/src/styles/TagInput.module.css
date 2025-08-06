@@ -1,0 +1,34 @@
+.tagInputContainer {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 5px;
+	padding: 8px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	background: white;
+}
+
+.tags {
+	display: flex;
+	flex-wrap: wrap;
+    align-items: center;
+    gap: 5px;
+}
+
+.tag {
+    color: #000 !important;
+    background: #cccccc !important;
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.1)!important;
+    cursor: pointer;
+	padding: 8px 16px;
+	font-size: 1rem;
+    font-weight: 400;
+	display: inline-block;
+}
+
+.input {
+	border: none;
+	flex: 1;
+	min-width: 150px;
+	outline: none;
+}
