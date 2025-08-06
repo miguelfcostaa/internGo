@@ -121,10 +121,18 @@ const forgotPassword = async (req, res) => {
     const resetToken = generateResetToken();
     const resetExpires = new Date(Date.now() + 3600000); // 1 hora
 
-    // Salvar token no usuário
-    user.resetPasswordToken = resetToken;
-    user.resetPasswordExpires = resetExpires;
-    await user.save();
+    // Salvar token no usuário (sem validação para evitar problemas com campos required)
+    if (userType === 'user') {
+      await User.findByIdAndUpdate(user._id, {
+        resetPasswordToken: resetToken,
+        resetPasswordExpires: resetExpires
+      });
+    } else {
+      await Company.findByIdAndUpdate(user._id, {
+        resetPasswordToken: resetToken,
+        resetPasswordExpires: resetExpires
+      });
+    }
 
     // Enviar email
     await sendPasswordResetEmail(email, resetToken, userType);
@@ -163,11 +171,13 @@ const resetPassword = async (req, res) => {
       resetPasswordExpires: { $gt: Date.now() }
     });
 
+    let userType = 'user';
     if (!user) {
       user = await Company.findOne({
         resetPasswordToken: token,
         resetPasswordExpires: { $gt: Date.now() }
       });
+      userType = 'company';
     }
 
     if (!user) {
@@ -177,11 +187,20 @@ const resetPassword = async (req, res) => {
     // Hash da nova password
     const hashedPassword = await bcrypt.hash(newPassword, 10);
 
-    // Atualizar password e limpar token
-    user.password = hashedPassword;
-    user.resetPasswordToken = null;
-    user.resetPasswordExpires = null;
-    await user.save();
+    // Atualizar password e limpar token (sem validação para evitar problemas com campos required)
+    if (userType === 'user') {
+      await User.findByIdAndUpdate(user._id, {
+        password: hashedPassword,
+        resetPasswordToken: null,
+        resetPasswordExpires: null
+      });
+    } else {
+      await Company.findByIdAndUpdate(user._id, {
+        password: hashedPassword,
+        resetPasswordToken: null,
+        resetPasswordExpires: null
+      });
+    }
 
     res.status(200).json({ message: 'Password redefinida com sucesso' });
 

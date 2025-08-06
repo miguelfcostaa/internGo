@@ -76,7 +76,7 @@ function RegisterCompany() {
 
         // Redirecionar após 2 segundos
         setTimeout(() => {
-          navigate("/home");
+          navigate("/login");
         }, 2000);
       } else {
         if (result.message && typeof result.message === 'object') {
