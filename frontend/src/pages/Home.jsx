@@ -74,6 +74,7 @@ function Home() {
                             estagios.map((estagio, index) => (
                                 <Estagio
                                     key={index}
+                                    profilePhoto={estagio.company.profilePhoto}
                                     NomeEmpresa={estagio.company.name}
                                     NomeEstagio={estagio.title}
                                     TotalVagas={estagio.numeroVagas}

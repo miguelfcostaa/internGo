@@ -280,7 +280,7 @@ function EditUserProfile() {
                                             value={editedUserInfo.dataNascimento ? editedUserInfo.dataNascimento.slice(0, 10) : ""}
                                             onChange={handleChange}
                                             className={styles.invisibleInput}
-                                            placeholder="DD/MM/AAAA"
+                                            placeholder="AAAA-MM-DD"
                                         />
                                     ) : (
                                         userInfo.dataNascimento ? userInfo.dataNascimento.slice(0, 10) : <span style={{ color: "#aaa" }}>AAAA-MM-DD</span>

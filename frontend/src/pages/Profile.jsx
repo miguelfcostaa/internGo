@@ -323,7 +323,7 @@ const ProfilePage = () => {
                                             <td>{index + 1}</td>
                                             <td style={{ maxWidth: "200px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{estagio.title}</td>
                                             <td>{estagio.status}</td>
-                                            <td>{estagio.dataInicio}</td>
+                                            <td>{handleMesInicio(estagio.dataInicio)}</td>
                                             <td>{estagio.duracao === 1 ? `${estagio.duracao} Mês` : `${estagio.duracao} Meses`}</td>
                                             <td>{estagio.tipoEstagio}</td>
                                             <td className={styles.linkIcon} style={{ paddingRight: "2rem" }}>

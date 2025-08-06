@@ -3,7 +3,7 @@ import Logo from "./Logo";
 import { useNavigate } from "react-router-dom";
 import styles from "../styles/Estagio.module.css";
 
-function Estagio({ NomeEmpresa, NomeEstagio, TotalVagas, Ativas, Area, Inicio, TipoEstagio, Duracao, Localizacao, idEstagio }) {
+function Estagio({ NomeEmpresa, NomeEstagio, TotalVagas, Ativas, Area, Inicio, TipoEstagio, Duracao, Localizacao, idEstagio, profilePhoto }) {
     const navigate = useNavigate();
     
     const handleCandidatarClick = () => {
@@ -36,13 +36,25 @@ function Estagio({ NomeEmpresa, NomeEstagio, TotalVagas, Ativas, Area, Inicio, T
                 display: "flex", 
                 flexDirection: "row", 
                 justifyContent: "space-between",
-                gap: "7rem",
+                gap: "4rem",
                 cursor: "pointer",
             }}
             onClick={() => navigate(`/estagio/${idEstagio}`)}
         >
             <div className={styles.logoContainer}>
-                <Logo width="120" height="120" />
+                <div style={{ width: "120px", height: "120px", display: "flex", alignSelf: "center" }}>
+                    <img 
+                        src={profilePhoto ? `http://localhost:5000${profilePhoto}` : profilePhoto} 
+                        alt=" " 
+                        width={120} 
+                        height={120}
+                        style={{
+                            borderRadius: '50%',
+                            objectFit: 'cover',
+                            backgroundColor: 'rgb(185, 185, 185, 0.40)', 
+                        }}
+                    />
+                </div>
                 <div style={{ fontSize: "1.4rem", fontWeight: "500" }}>{NomeEmpresa}</div>
             </div>
             <div className={styles.estagioContainer}>
@@ -54,7 +66,7 @@ function Estagio({ NomeEmpresa, NomeEstagio, TotalVagas, Ativas, Area, Inicio, T
                     textOverflow: "ellipsis",
                     whiteSpace: "nowrap",
                     justifyContent: "space-between",
-                    maxWidth: "350px",
+                    maxWidth: "450px",
                     }}
                 >
                     {NomeEstagio}

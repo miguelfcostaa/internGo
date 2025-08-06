@@ -131,7 +131,7 @@ const obterEstagios = async (req, res) => {
         }
 
         const finalFilter = andConditions.length > 1 ? { $and: andConditions } : filtros;
-        const estagios = await Estagio.find(finalFilter).populate('company', 'name');
+        const estagios = await Estagio.find(finalFilter).populate('company', 'name profilePhoto');
         res.json(estagios);
     } catch (error) {
         res.status(500).json({ message: 'Erro ao buscar estágios', error });

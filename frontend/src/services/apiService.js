@@ -83,14 +83,13 @@ export const criarEstagio = async (estagioData) => {
     const data = await res.json();
 
     if (!res.ok) {
-      // Jogue o objeto inteiro, não só a string
-      throw data;
+      
+      
     }
 
     return data;
   } catch (err) {
     console.error("Create estagio error:", err);
-    throw err;
   }
 };
 

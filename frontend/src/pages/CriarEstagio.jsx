@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
 	Container,
@@ -7,45 +7,42 @@ import {
 	Form,
 	Button,
 	Card,
-	Alert,
 } from "react-bootstrap";
 import NavBar from "../components/NavBar";
 import style from "../styles/CriarEstagio.module.css";
 import RequiredFieldTooltip from "../components/RequiredFieldTooltip.jsx";
-import { criarEstagio } from "../services/apiService";
 import TagInput from "../components/TagInput.jsx";
+import useUser from "../hooks/useUser.js";
 
 const CriacaoEstagio = () => {
 	const navigate = useNavigate();
+	const [id, setId] = useState("");
 	const [step, setStep] = useState(1);
 	const [loading, setLoading] = useState(false);
 	const [fieldErrors, setFieldErrors] = useState({});
-	const [error, setError] = useState("");
 	const [success, setSuccess] = useState("");
 	const [formData, setFormData] = useState({
-			titulo: "",
+			title: "",
 			area: [],
-			vagas: "",
+			numeroVagas: 0,
 			localizacao: "",
 			dataInicio: "",
-			tipo: "",
-			duracao: "",
-			prazo: "",
+			tipoEstagio: "",
+			duracao: 0,
+			prazoCandidatura: "",
 			descricao: "",
 			beneficios: [],
 			horaInicio: "",
 			horaFim: "",
-			habilitacoes: "",
+			habilitacoesMinimas: "",
 			cursosPreferenciais: [],
 			competenciasTecnicas: [],
 			competenciasPessoais: [],
 			idiomas: [],
-			outrosRequisitos: "",
+			observacoes: "",
 	});
-	
-	// Limites específicos para cada campo
 	const fieldLimits = {
-		titulo: 60,
+		title: 60,
 		localizacao: 40,
 		area: 30,
 		descricao: 500,
@@ -54,8 +51,18 @@ const CriacaoEstagio = () => {
 		cursosPreferenciais: 200,
 		competenciasPessoais: 200,
 		idiomas: 150,
-		outrosRequisitos: 150,
+		observacoes: 150,
 	};
+
+	useEffect(() => {
+			const token = localStorage.getItem('token');
+			if (token) {
+				const payload = JSON.parse(atob(token.split('.')[1]));
+				const id = payload.id;
+				setId(id);
+			}
+			// eslint-disable-next-line react-hooks/exhaustive-deps
+		}, []);
 
 	const handleChange = (e) => {
 		// Verificar se o evento existe
@@ -87,7 +94,7 @@ const CriacaoEstagio = () => {
 		if (step < 4) {
 			setStep(step + 1);
 		} else if (step === 4) {
-			// Publicar estágio
+			// Publicar estágio			
 			handlePublicarEstagio();
 		}
 	};
@@ -98,45 +105,20 @@ const CriacaoEstagio = () => {
         setFieldErrors({});
 		try {
 		
-			const estagioData = {
-			 	title: formData.titulo,
-			 	area: formData.area, 
-			 	dataInicio: formData.dataInicio,
-			 	tipoEstagio: formData.tipo,
-			 	duracao: formData.duracao || 0,  
-			 	numeroVagas: formData.vagas || 0,
-			 	localizacao: formData.localizacao,
-			 	prazoCandidatura: formData.prazo,
-			 	descricao: formData.descricao,
-			 	beneficios: formData.beneficios, 
-			 	habilitacoesMinimas: formData.habilitacoes || "",
-			 	cursosPreferenciais: formData.cursosPreferenciais, 
-			 	competenciasTecnicas: formData.competenciasTecnicas,
-			 	competenciasPessoais: formData.competenciasPessoais, 
-			 	idiomas: formData.idiomas, 
-			 	observacoes: formData.outrosRequisitos || "",
-			 	horaInicio: formData.horaInicio,
-				horaFim: formData.horaFim,
-			};
-			console.log("Dados do estágio:", estagioData);
+			const request = await fetch("http://localhost:5000/api/estagios/create", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					"Authorization": `Bearer ${localStorage.getItem("token")}`
+				},
+				body: JSON.stringify(formData),
+			});
 
-
-			const request = await criarEstagio(estagioData);
-			console.log("Resposta do servidor:", request);
 			const response = await request.json();
-			console.log("Resposta do servidor:", response);
 			if (request.ok) {
 				setSuccess(true);
 				setTimeout(() => {
-					// Obter o ID do usuário logado para redirecionar corretamente
-					const userInfo = JSON.parse(localStorage.getItem("userInfo") || "{}");
-					const userId = userInfo.id || userInfo._id;
-
-					if (userId) {
-						navigate(`/estagios-criados/${userId}`);
-					} else {
-						navigate("/profile/:id");
-					}
+					navigate(`/profile/${id}`);
 				}, 2000);
 				setFormData({});
 				setFieldErrors({});
@@ -148,11 +130,7 @@ const CriacaoEstagio = () => {
                 }
 			}	
 		} catch (error) {
-            if (error.response && typeof error.response.data.message === 'object') {
-                setFieldErrors(error.response.data.message);
-            } else if (typeof error.response.data.message === 'string') {
-                setFieldErrors({ general: error.response.data.message });
-            }
+            console.error("Erro ao publicar estágio:", error);
         } finally {
             setLoading(false);
         }
@@ -161,7 +139,7 @@ const CriacaoEstagio = () => {
 	const handleBack = () => {
 		if (step > 1) setStep(step - 1);
 	};
-
+ 
 	// Função para formatar o mês, que vem como //YYYY-MM e retorna o nome do mes e o ano
     const handleMesInicio = (mes) => { 
 		if (!mes) return "";
@@ -182,13 +160,13 @@ const CriacaoEstagio = () => {
 			<div className={`alert ${style.alertDanger}`}>
 				<ul className="mb-0">
 					{Object.values(fieldErrors).map((error, index) => (
-						<li key={index}>{error}</li>
+						<span key={index}>{error} <br /></span>
 					))}
 				</ul>
 			</div>
 		)}
 		{success && (
-			<div className={`alert ${style.successContainer}`}>
+			<div className={`alert ${style.alertSuccess}`}>
 				<ul className="mb-0">
 					<li>Candidatura enviada com sucesso!</li>
 				</ul>
@@ -238,19 +216,19 @@ const CriacaoEstagio = () => {
 						Título do Estágio <RequiredFieldTooltip />
 					</Form.Label>
 					<Form.Control
-						className={`${style.formControl} ${formData.titulo.length > 60 ? "is-invalid" : ""} `}
+						className={`${style.formControl} ${formData.title.length > 60 ? "is-invalid" : ""} `}
 						type="text"
-						name="titulo"
-						value={formData.titulo}
+						name="title"
+						value={formData.title}
 						onChange={handleChange}
 						placeholder="Ex: Estágio em Desenvolvimento de Software"
 					/>
 					<div className="d-flex justify-content-between">
-						{formData.titulo.length > 60 && (
+						{formData.title.length > 60 && (
 							<span className={style.charterror}>Máximo de 60 caracteres ultrapassado!</span>
 						)}
-						<small className={` ${formData.titulo.length > 60 ? "text-danger" : "text-muted"}`}>
-							{formData.titulo.length}/60 caracteres
+						<small className={` ${formData.title.length > 60 ? "text-danger" : "text-muted"}`}>
+							{formData.title.length}/60 caracteres
 						</small>
 					</div>
 					</Form.Group>
@@ -287,8 +265,8 @@ const CriacaoEstagio = () => {
 					<Form.Control
 						className={style.smallInput}
 						type="number"
-						name="vagas"
-						value={formData.vagas}
+						name="numeroVagas"
+						value={formData.numeroVagas}
 						onChange={handleChange}
 						placeholder="1"
 						min="1"
@@ -350,27 +328,27 @@ const CriacaoEstagio = () => {
 							inline
 							label="Presencial"
 							type="radio"
-							name="tipo"
+							name="tipoEstagio"
 							value="Presencial"
-							checked={formData.tipo === "Presencial"}
+							checked={formData.tipoEstagio === "Presencial"}
 							onChange={handleChange}
 						/>
 						<Form.Check
 							inline
 							label="Remoto"
 							type="radio"
-							name="tipo"
+							name="tipoEstagio"
 							value="Remoto"
-							checked={formData.tipo === "Remoto"}
+							checked={formData.tipoEstagio === "Remoto"}
 							onChange={handleChange}
 						/>
 						<Form.Check
 							inline
 							label="Híbrido"
 							type="radio"
-							name="tipo"
+							name="tipoEstagio"
 							value="Híbrido"
-							checked={formData.tipo === "Híbrido"}
+							checked={formData.tipoEstagio === "Híbrido"}
 							onChange={handleChange}
 						/>
 						</div>
@@ -390,17 +368,19 @@ const CriacaoEstagio = () => {
 						>
 						Duração do Estágio <RequiredFieldTooltip />
 						</Form.Label>
-						<Form.Select
-						className={style.smallSelect}
-						name="duracao"
-						value={formData.duracao}
-						onChange={handleChange}
-						>
-						<option value="">Duração</option>
-						<option value="1 mes">1 meses</option>
-						<option value="2 meses">2 meses</option>
-						<option value="3 meses">3 meses</option>
-						</Form.Select>
+						<Form.Control
+							className={`${style.formControl}  `}
+							type="number"
+							name="duracao"
+							value={formData.duracao}
+							onChange={handleChange}
+							placeholder="Ex: 1"
+							defaultValue={1}
+							min="1"
+							max="12"
+							style={{ width: "80px" }}
+						/>
+						Mes(es)
 					</Form.Group>
 
 					<Form.Group
@@ -417,8 +397,8 @@ const CriacaoEstagio = () => {
 							className={style.smallDate}
 							style={{ width: "180px" }}
 							type="date"
-							name="prazo"
-							value={formData.prazo}
+							name="prazoCandidatura"
+							value={formData.prazoCandidatura}
 							onChange={handleChange}
 						/>
 					</Form.Group>
@@ -580,8 +560,8 @@ const CriacaoEstagio = () => {
 						</Form.Label>
 						<Form.Select
 							className="w-100"
-							name="habilitacoes"
-							value={formData.habilitacoes || ""}
+							name="habilitacoesMinimas"
+							value={formData.habilitacoesMinimas || ""}
 							onChange={handleChange}
 						>
 							<option value="">Selecione o nível de habilitação</option>
@@ -659,23 +639,23 @@ const CriacaoEstagio = () => {
 
 					<Form.Group className={style.mb3}>
 					<Form.Label className={style.formLabel}>
-						Outros Requisitos Específicos
+						 Observações:
 					</Form.Label>
 					<Form.Control
 						as="textarea"
 						rows={3}
-						className={`w-100 ${formData.outrosRequisitos.length > 150 ? "is-invalid" : ""}`}
+						className={`w-100 ${formData.observacoes.length > 150 ? "is-invalid" : ""}`}
 						placeholder="Ex: Algum requisito adicional não coberto acima"
-						name="outrosRequisitos"
-						value={formData.outrosRequisitos || ""}
+						name="observacoes"
+						value={formData.observacoes || ""}
 						onChange={handleChange}
 					/>
 					<div className="d-flex justify-content-between">
-						{formData.outrosRequisitos.length > 150 && (
+						{formData.observacoes.length > 150 && (
 							<span className={style.charterror}>Máximo de 150 caracteres ultrapassado!</span>
 						)}
-						<small className={`ms-auto ${formData.outrosRequisitos.length > 150 ? "text-danger" : "text-muted"}`}>
-							{formData.outrosRequisitos.length}/150 caracteres
+						<small className={`ms-auto ${formData.observacoes.length > 150 ? "text-danger" : "text-muted"}`}>
+							{formData.observacoes.length}/150 caracteres
 						</small>
 					</div>
 					</Form.Group>
@@ -731,15 +711,15 @@ const CriacaoEstagio = () => {
 						</h6>
 						<p>
 						<strong className="text-secondary">Título:</strong>{" "}
-						{formData.titulo || <span style={{ color: "#aaa" }}> Não especificado.</span>}
+						{formData.title || <span style={{ color: "#aaa" }}> Não especificado.</span>}
 						</p>
 						<p>
 						<strong className="text-secondary">Áreas:</strong>{" "}
-						{formData.area.length > 0 ?  formData.area.join(", ") : <span style={{ color: "#aaa" }}> Não especificado.</span>}
+						{formData.area?.length > 0 ?  formData.area.join(", ") : <span style={{ color: "#aaa" }}> Não especificado.</span>}
 						</p>
 						<p>
 						<strong className="text-secondary">Vagas:</strong>{" "}
-						{formData.vagas || <span style={{ color: "#aaa" }}> Não especificado.</span>}
+						{formData.numeroVagas || <span style={{ color: "#aaa" }}> Não especificado.</span>}
 						</p>
 						<p>
 						<strong className="text-secondary">Localização:</strong>{" "}
@@ -747,7 +727,7 @@ const CriacaoEstagio = () => {
 						</p>
 						<p>
 						<strong className="text-secondary">Tipo:</strong>{" "}
-						{formData.tipo || <span style={{ color: "#aaa" }}> Não especificado.</span>}
+						{formData.tipoEstagio || <span style={{ color: "#aaa" }}> Não especificado.</span>}
 						</p>
 						<p>
 						<strong className="text-secondary">Mês de Início:</strong>{" "}
@@ -761,7 +741,7 @@ const CriacaoEstagio = () => {
 						<strong className="text-secondary">
 							Prazo Candidaturas:
 						</strong>{" "}
-						{formData.prazo || <span style={{ color: "#aaa" }}> Não especificado.</span>}
+						{formData.prazoCandidatura || <span style={{ color: "#aaa" }}> Não especificado.</span>}
 						</p>
 					</Card.Body>
 					</Card>
@@ -786,15 +766,15 @@ const CriacaoEstagio = () => {
 						</p>
 						<p>
 						<strong className="text-secondary">Benefícios Oferecidos:</strong>{" "}
-						{formData.beneficios.length > 0 ?  formData.beneficios.join(", ") : <span style={{ color: "#aaa" }}> Não especificado.</span>}
+						{formData.beneficios?.length > 0 ?  formData.beneficios.join(", ") : <span style={{ color: "#aaa" }}> Não especificado.</span>}
 						</p>
 						<p>
 						<strong className="text-secondary">Competências Pessoais:</strong>{" "}
-						{formData.competenciasPessoais.length > 0 ?  formData.competenciasPessoais.join(", ") : <span style={{ color: "#aaa" }}> Não especificado.</span>}
+						{formData.competenciasPessoais?.length > 0 ?  formData.competenciasPessoais.join(", ") : <span style={{ color: "#aaa" }}> Não especificado.</span>}
 						</p>
 						<p>
 						<strong className="text-secondary">Cursos Preferenciais:</strong>{" "}
-						{formData.cursosPreferenciais.length > 0 ?  formData.cursosPreferenciais.join(", ") : <span style={{ color: "#aaa" }}> Não especificado.</span>}
+						{formData.cursosPreferenciais?.length > 0 ?  formData.cursosPreferenciais.join(", ") : <span style={{ color: "#aaa" }}> Não especificado.</span>}
 						</p>
 						<p>
 						<strong className="text-secondary">Horário do Estágio:</strong>{" "}
@@ -821,23 +801,23 @@ const CriacaoEstagio = () => {
 						</h6>
 						<p>
 							<strong className="text-secondary">Habilitações Académicas:</strong>{" "}
-							{formData.habilitacoes || <span style={{ color: "#aaa" }}> Não especificado.</span>}
+							{formData.habilitacoesMinimas || <span style={{ color: "#aaa" }}> Não especificado.</span>}
 						</p>
 						<p>
 							<strong className="text-secondary">Competências Técnicas Essenciais:</strong>{" "}
-							{formData.competenciasTecnicas.length > 0 ?  formData.competenciasTecnicas.join(", ") : <span style={{ color: "#aaa" }}> Não especificado.</span>}
+							{formData.competenciasTecnicas?.length > 0 ?  formData.competenciasTecnicas.join(", ") : <span style={{ color: "#aaa" }}> Não especificado.</span>}
 						</p>
 						<p>
 							<strong className="text-secondary">Competências Pessoais:</strong>{" "}
-							{formData.competenciasPessoais.length > 0 ?  formData.competenciasPessoais.join(", ") : <span style={{ color: "#aaa" }}> Não especificado.</span>}
+							{formData.competenciasPessoais?.length > 0 ?  formData.competenciasPessoais.join(", ") : <span style={{ color: "#aaa" }}> Não especificado.</span>}
 						</p>
 						<p>
 							<strong className="text-secondary">Idiomas:</strong>{" "}
-							{formData.idiomas.length > 0 ?  formData.idiomas.join(", ") : <span style={{ color: "#aaa" }}> Não especificado.</span>}
+							{formData.idiomas?.length > 0 ?  formData.idiomas.join(", ") : <span style={{ color: "#aaa" }}> Não especificado.</span>}
 						</p>
 						<p>
-							<strong className="text-secondary">Outros Requisitos Específicos:</strong>{" "}
-							{formData.outrosRequisitos || <span style={{ color: "#aaa" }}> Não especificado.</span>}
+							<strong className="text-secondary">Observações:</strong>{" "}
+							{formData.observacoes || <span style={{ color: "#aaa" }}> Não especificado.</span>}
 						</p>
 					</Card.Body>
 				</Card>
@@ -855,7 +835,7 @@ const CriacaoEstagio = () => {
 					<Button
 						variant="primary"
 						className={style.btnPrimary}
-						onClick={handleNext}
+						onClick={() => { handleNext();}}
 						disabled={loading}
 					>
 						{loading ? "Publicando..." : "Publicar Estágio"}
