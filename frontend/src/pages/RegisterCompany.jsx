@@ -18,7 +18,7 @@ function RegisterCompany() {
     name: "",
     nif: "",
     email: "",
-    phone: "",
+    telefone: "",
     password: "",
     confirmPassword: ""
   });
@@ -44,7 +44,7 @@ function RegisterCompany() {
       name: formData.name,
       nif: formData.nif,
       email: formData.email,
-      phone: formData.phone,
+      telefone: formData.telefone,
       password: formData.password,
       confirmPassword: formData.confirmPassword
     };
@@ -69,7 +69,7 @@ function RegisterCompany() {
           name: "",
           nif: "",
           email: "",
-          phone: "",
+          telefone: "",
           password: "",
           confirmPassword: ""
         });
@@ -205,11 +205,11 @@ function RegisterCompany() {
               </select>
               <input
                 type="text"
-                name="phone"
+                name="telefone"
                 className={`form-control ${styles.formControl}`}
                 placeholder="9 dígitos (ex: 123456789)"
                 maxLength="9"
-                value={formData.phone}
+                value={formData.telefone}
                 onChange={handleChange}
                 disabled={loading}
               />
