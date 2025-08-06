@@ -272,18 +272,20 @@ const ProfilePage = () => {
                                 <p style={{ fontSize: '1.2rem' }}>{userInfo.email}</p>
                             </div>
                         </div>
-                        <div className={styles.candidaturasContainer}>
+                        <div className={styles.candidaturasContainer}> 
                             <h2 className={styles.titulo}>
                                     Candidaturas Recebidas
                             </h2>
-                            <div className={styles.candidaturasRecebidas + ' shadow'}>
-                                {candidaturas.map((candidatura, index) => (
+                            <div className={styles.candidaturasRecebidas + ' shadow'} style={{ maxHeight: '100%', overflowY: 'auto' }}>
+                                {candidaturas.length > 0 ? candidaturas.map((candidatura, index) => (
                                     <div key={index} className={styles.candidaturaItem}>
                                             <p><Link className={styles.verCandidatura} to={`/estagiario/${candidatura.user._id}`}>{candidatura.user.name}</Link></p>
                                             <p>{candidatura.estagio.title}</p>
                                             <p className={styles.verCandidatura}>Ver candidatura</p>
                                     </div>
-                                ))}
+                                )) : (
+                                    <div style={{textAlign: 'left'}}>Nenhuma candidatura recebida.</div>
+                                )}
                             </div>
                         </div>
                     </div>
