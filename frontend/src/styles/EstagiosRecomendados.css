@@ -20,25 +20,11 @@
   font-weight: 600;
 }
 
-.btn-refresh {
-  background: #3498db;
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  transition: background-color 0.3s ease;
-}
-
-.btn-refresh:hover {
-  background: #2980b9;
-}
 
 .criterios-info {
   margin-bottom: 1rem;
   padding: 0.5rem;
-  background: rgba(52, 152, 219, 0.1);
+  background: rgba(68, 125, 150, 0.25);
   border-radius: 6px;
 }
 
@@ -59,19 +45,6 @@
   color: #e74c3c;
 }
 
-.btn-recarregar {
-  background: #e74c3c;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 6px;
-  cursor: pointer;
-  margin-top: 1rem;
-}
-
-.btn-recarregar:hover {
-  background: #c0392b;
-}
 
 .no-recommendations {
   text-align: center;
@@ -86,7 +59,7 @@
 }
 
 .btn-completar-perfil {
-  background: #27ae60;
+  background: #2c3e50;
   color: white;
   border: none;
   padding: 12px 24px;
@@ -96,9 +69,6 @@
   margin-top: 1rem;
 }
 
-.btn-completar-perfil:hover {
-  background: #229954;
-}
 
 .recommendations-grid {
   display: grid;
@@ -123,7 +93,7 @@
 .card-header {
   position: relative;
   padding: 1rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+background: linear-gradient(125deg, #2E5C7A 0%, #447D9B 50%, #6A9CCF 100%);
   color: white;
 }
 
@@ -153,7 +123,7 @@
 }
 
 .company-name {
-  color: #3498db;
+  color: #2c3e50;
   margin: 0 0 1rem 0;
   font-size: 1rem;
 }
@@ -172,7 +142,7 @@
 }
 
 .detail-label {
-  color: #7f8c8d;
+  color: #6A6A6A;
   font-weight: 500;
   margin-bottom: 2px;
 }
@@ -184,20 +154,19 @@
 
 .card-description {
   margin-bottom: 1rem;
-  color: #5d6d7e;
+  color: #6A6A6A;
   font-size: 0.9rem;
   line-height: 1.5;
 }
 
 .card-footer {
   padding: 1rem 1.5rem;
-  background: #f8f9fa;
-  border-top: 1px solid #ecf0f1;
+  border-top: 0.5px solid #ecf0f1;
 }
 
 .btn-ver-estagio {
   width: 100%;
-  background: #3498db;
+  background: #273F4F;
   color: white;
   border: none;
   padding: 12px 20px;
@@ -208,64 +177,4 @@
   transition: background-color 0.3s ease;
 }
 
-.btn-ver-estagio:hover {
-  background: #2980b9;
-}
 
-.view-more-section {
-  text-align: center;
-  margin-top: 2rem;
-}
-
-.btn-ver-mais {
-  background: #9b59b6;
-  color: white;
-  border: none;
-  padding: 12px 30px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 1rem;
-  font-weight: 500;
-  transition: background-color 0.3s ease;
-}
-
-.btn-ver-mais:hover {
-  background: #8e44ad;
-}
-
-/* Responsividade */
-@media (max-width: 768px) {
-  .estagios-recomendados {
-    margin: 1rem 0;
-    padding: 1rem;
-  }
-  
-  .recommendations-grid {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-  
-  .section-header {
-    flex-direction: column;
-    gap: 1rem;
-    text-align: center;
-  }
-  
-  .estagio-details {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 480px) {
-  .recommendation-card {
-    margin: 0;
-  }
-  
-  .card-content {
-    padding: 1rem;
-  }
-  
-  .card-footer {
-    padding: 1rem;
-  }
-}

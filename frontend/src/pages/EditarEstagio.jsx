@@ -176,7 +176,8 @@ const EditarEstagio = () => {
 
       const camposFaltando = [];
       for (const [campo, nome] of Object.entries(camposObrigatorios)) {
-        if (!formData[campo] || (Array.isArray(formData[campo]) && formData[campo].length === 0)) {
+        const valor = formData[campo];
+        if (!valor || (typeof valor === 'string' && valor.trim() === "") || (typeof valor !== 'string' && valor === "")) {
           camposFaltando.push(nome);
         }
       }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styles from '../styles/Login.module.css';
 import ButtonSubmit from "../components/ButtonSubmit";
@@ -9,6 +9,32 @@ function Login() {
     const [fieldErrors, setFieldErrors] = useState({});
     const [done, setDone] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [rememberMe, setRememberMe] = useState(false);
+    const [savedEmail, setSavedEmail] = useState('');
+
+    // Carregar email salvo quando o componente montar
+    useEffect(() => {
+        const savedEmailFromStorage = localStorage.getItem('savedEmail');
+        const isRememberMeEnabled = localStorage.getItem('rememberMe') === 'true';
+        
+        if (savedEmailFromStorage && isRememberMeEnabled) {
+            setSavedEmail(savedEmailFromStorage);
+            setRememberMe(true);
+        }
+    }, []);
+
+    // Função para lidar com a mudança do checkbox
+    const handleRememberMeChange = (event) => {
+        const isChecked = event.target.checked;
+        setRememberMe(isChecked);
+        
+        if (!isChecked) {
+            // Se desmarcar, remover email salvo
+            localStorage.removeItem('savedEmail');
+            localStorage.removeItem('rememberMe');
+            setSavedEmail('');
+        }
+    };
 
     const handleLogin = async (event) => {
         event.preventDefault();
@@ -20,7 +46,7 @@ function Login() {
 
         const formData = new FormData(event.target);
         const data = {
-            email: formData.get("email"),
+            email: savedEmail || formData.get("email"),
             password: formData.get("password")
         };
 
@@ -44,6 +70,12 @@ function Login() {
                 setDone(true);
                 setFieldErrors({});
                 localStorage.setItem("token", result.token);
+                
+                // Salvar email se "manter-me logado" estiver marcado
+                if (rememberMe) {
+                    localStorage.setItem('savedEmail', data.email);
+                    localStorage.setItem('rememberMe', 'true');
+                }
                 
                 // Simular um pequeno delay para mostrar o loading
                 setTimeout(() => {
@@ -86,6 +118,8 @@ function Login() {
                             className={styles.inputField}
                             name="email" 
                             placeholder="Digite seu email"
+                            value={savedEmail}
+                            onChange={(e) => setSavedEmail(e.target.value)}
                             disabled={loading}
                         />
                     </div>
@@ -106,6 +140,8 @@ function Login() {
                             <input 
                                 type="checkbox" 
                                 id="remember"
+                                checked={rememberMe}
+                                onChange={handleRememberMeChange}
                                 disabled={loading}
                             />
                             <span className={styles.checkmark}></span>

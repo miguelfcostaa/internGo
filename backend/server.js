@@ -5,6 +5,10 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const path = require('path');
 
+// Carregar variáveis de ambiente
+require('dotenv').config({ path: path.join(__dirname, '.env') });
+{/*Algo para ver se funciona*/}
+
 const candidaturaRoutes = require('./routes/candidaturaRoutes');
 const userRoutes = require('./routes/userRoutes');
 const estagioRoutes = require('./routes/estagioRoutes');

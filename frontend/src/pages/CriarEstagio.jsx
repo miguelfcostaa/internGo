@@ -42,6 +42,8 @@ const CriacaoEstagio = () => {
 			idiomas: [],
 			outrosRequisitos: "",
 	});
+	
+	// Limites específicos para cada campo
 	const fieldLimits = {
 		titulo: 60,
 		localizacao: 40,
