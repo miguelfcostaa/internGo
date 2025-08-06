@@ -342,11 +342,13 @@ const ProfilePage = () => {
                                         </td>
                                     </tr>
                                 )}
-                                <tr>
-                                    <td colSpan={7} style={{ textAlign: 'center', verticalAlign: 'middle', cursor: 'pointer', fontWeight: '600' }} onClick={() => window.location.href = `/estagios-criados/${userInfo._id}`}>
-                                        <a href={`/estagios-criados/${userInfo._id}`} style={{ textDecoration: 'none', color: '#000' }}> Mostrar todos ({nEstagios}) </a>
-                                    </td>
-                                </tr>
+                                {nEstagios > 0 && (
+                                    <tr>
+                                        <td colSpan={7} style={{ textAlign: 'center', verticalAlign: 'middle', cursor: 'pointer', fontWeight: '600' }} onClick={() => window.location.href = `/estagios-criados/${userInfo._id}`}>
+                                            <a href={`/estagios-criados/${userInfo._id}`} style={{ textDecoration: 'none', color: '#000' }}> Mostrar todos ({nEstagios}) </a>
+                                        </td>
+                                    </tr>
+                                )}
                             </tbody>
                         </table>
                     </div>
