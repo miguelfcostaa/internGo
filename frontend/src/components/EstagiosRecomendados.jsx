@@ -77,22 +77,33 @@ const EstagiosRecomendados = ({ limite = 5, showTitle = true, showViewMore = fal
     <div className="estagios-recomendados">
       {showTitle && (
         <div className="section-header">
-          <h2>Estágios Recomendados para Si</h2>
-          <button onClick={recarregar} className="btn-refresh">
-            🔄 Atualizar
-          </button>
+          <h2>Estágios Recomendados para si</h2>
         </div>
       )}
       
-      {criterios && (
-        <div className="criterios-info">
-          <p><small>Baseado no seu perfil: {criterios.curso || 'Curso não definido'}, {criterios.formacaoAcademica || 'Formação não definida'}</small></p>
-        </div>
-      )}
+   
 
-      <div className="recommendations-grid">
+      <div
+      className="recommendations-grid"
+      style={{
+        display: "flex",
+        flexDirection: "row",
+        overflowX: "auto",
+        gap: "1rem",
+        padding: "1rem 0",
+      }}
+    >
+
         {estagiosRecomendados.map((estagio) => (
-          <div key={estagio._id} className="recommendation-card">
+             <div
+          key={estagio._id}
+          className="recommendation-card"
+          style={{
+            flexShrink: 0,
+            minWidth: "300px",  // Ajusta el ancho mínimo que quieras para cada card
+            boxSizing: "border-box",
+          }}
+        >
             <div className="card-header">
               <div className="pontuacao-badge" style={{ backgroundColor: getCorPontuacao(estagio.pontuacaoRecomendacao) }}>
                 {formatarPontuacao(estagio.pontuacaoRecomendacao)}% match
@@ -130,10 +141,6 @@ const EstagiosRecomendados = ({ limite = 5, showTitle = true, showViewMore = fal
                   <span className="detail-label">Prazo:</span>
                   <span className="detail-value">{formatarData(estagio.prazoCandidatura)}</span>
                 </div>
-              </div>
-              
-              <div className="card-description">
-                <p>{estagio.descricao.substring(0, 150)}...</p>
               </div>
             </div>
             

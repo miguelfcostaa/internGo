@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import NavBar from '../components/NavBar';
 import EstagiosRecomendados from '../components/EstagiosRecomendados';
 import '../styles/PaginaRecomendacoes.css';
+import ButtonVoltar from '../components/ButtonVoltar';
 
 const PaginaRecomendacoes = () => {
   const navigate = useNavigate();
@@ -11,19 +12,27 @@ const PaginaRecomendacoes = () => {
     <>
       <NavBar />
       <div className="pagina-recomendacoes">
-        <div className="container">
-          <div className="header-section">
-            <button 
-              onClick={() => navigate(-1)} 
-              className="btn-voltar"
-            >
-              ← Voltar
-            </button>
-            <h1>Estágios Recomendados para Si</h1>
-            <p className="subtitle">
-              Baseado no seu perfil, encontrámos estágios que podem ser do seu interesse
-            </p>
+          <ButtonVoltar onClick={() => navigate(-1)} 
+            style={{ position: 'absolute', top: 'rem', left: '1rem' }} />
+         <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            padding: '2rem 2rem 1rem',
+            textAlign: 'center',
+            gap: '0.5rem',
+          }}
+        >
+          <div>
+             <h1 style={{ fontSize: '2rem', fontWeight: 600, color: '#2c3e50', margin: 0 }}>
+            Estágios Recomendados para si
+          </h1>
+              <p className="subtitle" style={{ margin: 0, maxWidth: '600px' }}>
+            Baseado no seu perfil, encontrámos estágios que podem ser do seu interesse
+          </p>
           </div>
+        </div>
 
           <EstagiosRecomendados limite={20} showTitle={false} />
           
@@ -39,14 +48,13 @@ const PaginaRecomendacoes = () => {
               </button>
               <button 
                 onClick={() => navigate('/home')} 
-                className="btn-explorar"
+                className="btn-completar-perfil"
               >
-                Explorar Todos os Estágios
+                Explorar 
               </button>
             </div>
           </div>
         </div>
-      </div>
     </>
   );
 };
