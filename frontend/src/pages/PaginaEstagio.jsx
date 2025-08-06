@@ -103,24 +103,24 @@ function PaginaEstagio() {
                             <li>
                                 <strong>Competências Técnicas Essenciais:</strong>
                                 <ul className={Styles.subList}>
-                                    {estagio.competenciasEssenciais ? estagio.competenciasEssenciais.split(',').map(e => (
-                                        <li key={e.trim()}>• {e.trim()}</li>
-                                    )) :  <span style={{ color: '#888' }}>Não especificado.</span>}
+                                    {estagio.competenciasTecnicas ? estagio.competenciasTecnicas.map((e, index) => (
+                                        <li key={index}>• {e}</li>
+                                    )) : <span style={{ color: '#888' }}>Não especificado.</span>}
                                 </ul>
                             </li>
                             <li>
                                 <strong>Competências Pessoais (Soft Skills):</strong>
                                 <ul className={Styles.subList}>
-                                    {estagio.competenciasPessoais ? estagio.competenciasPessoais.split(',').map(e => (
-                                        <li key={e.trim()}>• {e.trim()}</li>
-                                    )) :  <span style={{ color: '#888' }}>Não especificado.</span>}
+                                    {estagio.competenciasPessoais ? estagio.competenciasPessoais.map((e, index) => (
+                                        <li key={index}>• {e}</li>
+                                    )) : <span style={{ color: '#888' }}>Não especificado.</span>}
                                 </ul>
                             </li>
                             <li>
                                 <strong>Idiomas:</strong>
                                 <ul className={Styles.subList}>
-                                    {estagio.idiomas ? estagio.idiomas.split(',').map(e => (
-                                        <li key={e.trim()}>• {e.trim()}</li>
+                                    {estagio.idiomas ? estagio.idiomas.map((e, index) => (
+                                        <li key={index}>• {e}</li>
                                     )) :  <span style={{ color: '#888' }}>Não especificado.</span>}
                                 </ul>
                             </li>
@@ -141,8 +141,14 @@ function PaginaEstagio() {
                             <p><strong>Mês de Início do Estágio:</strong> {handleMesInicio(estagio.dataInicio) || <span style={{ color: '#888' }}>Não especificado.</span>}</p>
                             <p><strong>Duração:</strong> {estagio.duracao ? (estagio.duracao > 1 ? `${estagio.duracao} Meses` : `${estagio.duracao} Mês`) : <span style={{ color: '#888' }}>Não especificado.</span>}</p>
                             <p><strong>Número de Vagas:</strong> {estagio.numeroVagas || <span style={{ color: '#888' }}>Não especificado.</span>}</p>
-                            <p><strong>Horário do Estágio:</strong> {estagio.horarioEstagio || <span style={{ color: '#888' }}>Não especificado.</span>}</p>
-                            <p><strong>Benefícios oferecidos:</strong> {estagio.beneficios || <span style={{ color: '#888' }}>Não especificado.</span>}</p>
+                            <p><strong>Horário do Estágio:</strong> {estagio.horaInicio && estagio.horaFim ? `${estagio.horaInicio} - ${estagio.horaFim}` : <span style={{ color: '#888' }}>Não especificado.</span>}</p>
+                            <p><strong>Benefícios oferecidos:</strong> 
+                                <ul className={Styles.subList} style={{ textAlign: 'left' }}>
+                                {estagio.beneficios.length > 0 ? estagio.beneficios.map((e, index) => (
+                                    <li key={index}>• {e}</li>
+                                )) : <span style={{ color: '#888' }}>Não especificado.</span>}
+                                </ul>
+                            </p>
                         </div>
                         <button className={Styles.customButton} onClick={handleCandidatar}>
                             Candidatar-se
