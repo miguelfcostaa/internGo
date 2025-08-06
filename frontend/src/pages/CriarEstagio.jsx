@@ -242,7 +242,7 @@ const CriacaoEstagio = () => {
 						type="text"
 						name="titulo"
 						value={formData.titulo}
-						onChange={handleChange}
+						onChange={handleChange(100)}
 						placeholder="Ex: Estágio em Desenvolvimento de Software"
 					/>
 					<div className="d-flex justify-content-between">
@@ -264,7 +264,7 @@ const CriacaoEstagio = () => {
 						type="text"
 						name="area"
 						value={formData.area}
-						onChange={handleChange}
+						onChange={handleChange(100)}
 						placeholder="Ex: Tecnologia da Informação"
 					/>
 					<div className="d-flex justify-content-between">
@@ -289,8 +289,9 @@ const CriacaoEstagio = () => {
 						type="number"
 						name="vagas"
 						value={formData.vagas}
-						onChange={handleChange}
+						onChange={handleChange()}
 						placeholder="1"
+						min="1"
 					/>
 					</Form.Group>
 
@@ -303,7 +304,7 @@ const CriacaoEstagio = () => {
 						type="text"
 						name="localizacao"
 						value={formData.localizacao}
-						onChange={handleChange}
+						onChange={handleChange(100)}
 						placeholder="Ex: Funchal"
 					/>
 					<div className="d-flex justify-content-between">
@@ -331,7 +332,7 @@ const CriacaoEstagio = () => {
 						type="month"
 						name="dataInicio"
 						value={formData.dataInicio}
-						onChange={handleChange}
+						onChange={handleChange(100)}
 						/>
 					</Form.Group>
 
@@ -352,7 +353,7 @@ const CriacaoEstagio = () => {
 							name="tipo"
 							value="Presencial"
 							checked={formData.tipo === "Presencial"}
-							onChange={handleChange}
+							onChange={handleChange()}
 						/>
 						<Form.Check
 							inline
@@ -361,7 +362,7 @@ const CriacaoEstagio = () => {
 							name="tipo"
 							value="Remoto"
 							checked={formData.tipo === "Remoto"}
-							onChange={handleChange}
+							onChange={handleChange()}
 						/>
 						<Form.Check
 							inline
@@ -370,7 +371,7 @@ const CriacaoEstagio = () => {
 							name="tipo"
 							value="Híbrido"
 							checked={formData.tipo === "Híbrido"}
-							onChange={handleChange}
+							onChange={handleChange()}
 						/>
 						</div>
 					</Form.Group>
@@ -393,7 +394,7 @@ const CriacaoEstagio = () => {
 						className={style.smallSelect}
 						name="duracao"
 						value={formData.duracao}
-						onChange={handleChange}
+						onChange={handleChange()}
 						>
 						<option value="">Duração</option>
 						<option value="1 mes">1 meses</option>
@@ -417,7 +418,7 @@ const CriacaoEstagio = () => {
 						type="date"
 						name="prazo"
 						value={formData.prazo}
-						onChange={handleChange}
+						onChange={handleChange()}
 						/>
 					</Form.Group>
 					</div>
@@ -461,7 +462,7 @@ const CriacaoEstagio = () => {
 						placeholder="Descreva brevemente as atividades do estágio"
 						name="descricao"
 						value={formData.descricao}
-						onChange={handleChange}
+						onChange={handleChange()}
 					/>
 					<div className="d-flex justify-content-between">
 						{formData.descricao.length > 500 && (
@@ -528,7 +529,7 @@ const CriacaoEstagio = () => {
 						type="time"
 						name="horaInicio"
 						value={formData.horaInicio}
-						onChange={handleChange}
+						onChange={handleChange()}
 						className="w-auto"
 						required
 						/>
@@ -537,7 +538,7 @@ const CriacaoEstagio = () => {
 						type="time"
 						name="horaFim"
 						value={formData.horaFim}
-						onChange={handleChange}
+						onChange={handleChange()}
 						className="w-auto"
 						required
 						/>
@@ -580,7 +581,7 @@ const CriacaoEstagio = () => {
 						className="w-100"
 						name="habilitacoes"
 						value={formData.habilitacoes || ""}
-						onChange={handleChange}
+						onChange={handleChange()}
 					>
 						<option value="">Selecione o nível de habilitação</option>
 						<option value="1">Nível 1 - 4º ano do Ensino Básico</option>
@@ -608,7 +609,7 @@ const CriacaoEstagio = () => {
 						placeholder="Liste ferramentas e aptidões técnicas essenciais"
 						name="competenciasTecnicas"
 						value={formData.competenciasTecnicas || ""}
-						onChange={handleChange}
+						onChange={handleChange(1000)}
 					/>
 					<div className="d-flex justify-content-between">
 						{formData.competenciasTecnicas.length > 300 && (
@@ -630,7 +631,7 @@ const CriacaoEstagio = () => {
 						placeholder="Ex: Que qualidades pessoais são importantes para este estágio"
 						name="softSkills"
 						value={formData.softSkills || ""}
-						onChange={handleChange}
+						onChange={handleChange(1000)}
 					/>
 					<div className="d-flex justify-content-between">
 						{formData.softSkills.length > 200 && (
@@ -650,7 +651,7 @@ const CriacaoEstagio = () => {
 						placeholder="Indique os idiomas exigidos (Ex: Inglês avançado, Espanhol básico)"
 						name="idiomas"
 						value={formData.idiomas || ""}
-						onChange={handleChange}
+						onChange={handleChange(1000)}
 					/>
 					<div className="d-flex justify-content-between">
 						{formData.idiomas.length > 150 && (
@@ -673,7 +674,7 @@ const CriacaoEstagio = () => {
 						placeholder="Ex: Algum requisito adicional não coberto acima"
 						name="outrosRequisitos"
 						value={formData.outrosRequisitos || ""}
-						onChange={handleChange}
+						onChange={handleChange(1000)}
 					/>
 					<div className="d-flex justify-content-between">
 						{formData.outrosRequisitos.length > 150 && (
