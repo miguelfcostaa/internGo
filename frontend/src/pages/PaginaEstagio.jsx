@@ -62,9 +62,10 @@ function PaginaEstagio() {
     return (
         <>
             <NavBar />
-            <div className={Styles.background}>
+            <div style={{ margin: "2rem 17% 2rem 23%" }}>
                 <ButtonVoltar />
             </div>
+            <div className={Styles.background}>
 
             {/* Encabezado */}
             <div className={Styles.headerBox}>
@@ -151,6 +152,7 @@ function PaginaEstagio() {
                         </button>
                     </div>
                 </div>
+            </div>
         </>
     )}
 
