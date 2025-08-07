@@ -56,31 +56,59 @@ const createAccentInsensitiveFilter = (fieldName, searchTerms) => {
     searchTerms.forEach(term => {
         const escapedTerm = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
         
-        // 1. Busca exata pelo termo original
-        variations.push({ [fieldName]: { $regex: new RegExp(`^${escapedTerm}$`, 'i') } });
-        
-        // 2. Busca pelo termo normalizado (sem acentos)
-        const normalized = term.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-        if (normalized !== term) {
-            const escapedNormalized = normalized.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-            variations.push({ [fieldName]: { $regex: new RegExp(`^${escapedNormalized}$`, 'i') } });
+        if (fieldName === 'area') {
+            // Para o campo area que é um array, usar $elemMatch ou $in
+            // 1. Busca exata pelo termo original no array
+            variations.push({ [fieldName]: { $in: [term] } });
+            
+            // 2. Busca pelo termo normalizado (sem acentos) no array
+            const normalized = term.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+            if (normalized !== term) {
+                variations.push({ [fieldName]: { $in: [normalized] } });
+            }
+            
+            // 3. Busca com regex para variações de acentos no array
+            const flexiblePattern = term
+                .replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+                .replace(/[aáàâãä]/gi, '[aáàâãä]')
+                .replace(/[eéèêë]/gi, '[eéèêë]')
+                .replace(/[iíìîï]/gi, '[iíìîï]')
+                .replace(/[oóòôõö]/gi, '[oóòôõö]')
+                .replace(/[uúùûü]/gi, '[uúùûü]')
+                .replace(/[cç]/gi, '[cç]');
+                
+            variations.push({ [fieldName]: { $elemMatch: { $regex: new RegExp(`^${flexiblePattern}$`, 'i') } } });
+        } else {
+            // Para campos string, comportamento original
+            // 1. Busca exata pelo termo original
+            variations.push({ [fieldName]: { $regex: new RegExp(`^${escapedTerm}$`, 'i') } });
+            
+            // 2. Busca pelo termo normalizado (sem acentos)
+            const normalized = term.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+            if (normalized !== term) {
+                const escapedNormalized = normalized.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                variations.push({ [fieldName]: { $regex: new RegExp(`^${escapedNormalized}$`, 'i') } });
+            }
+            
+            // 3. Busca com variações de acentos (funciona para ambos os sentidos)
+            const flexiblePattern = term
+                .replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+                .replace(/[aáàâãä]/gi, '[aáàâãä]')
+                .replace(/[eéèêë]/gi, '[eéèêë]')
+                .replace(/[iíìîï]/gi, '[iíìîï]')
+                .replace(/[oóòôõö]/gi, '[oóòôõö]')
+                .replace(/[uúùûü]/gi, '[uúùûü]')
+                .replace(/[cç]/gi, '[cç]');
+                
+            variations.push({ [fieldName]: { $regex: new RegExp(`^${flexiblePattern}$`, 'i') } });
         }
         
-        // 3. Busca com variações de acentos (funciona para ambos os sentidos)
-        const flexiblePattern = term
-            .replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-            .replace(/[aáàâãä]/gi, '[aáàâãä]')
-            .replace(/[eéèêë]/gi, '[eéèêë]')
-            .replace(/[iíìîï]/gi, '[iíìîï]')
-            .replace(/[oóòôõö]/gi, '[oóòôõö]')
-            .replace(/[uúùûü]/gi, '[uúùûü]')
-            .replace(/[cç]/gi, '[cç]');
-            
-        variations.push({ [fieldName]: { $regex: new RegExp(`^${flexiblePattern}$`, 'i') } });
-        
-        // 4. Para localizações com vírgula, também fazer busca por substring
+        // 4. Para localizações com vírgula, também fazer busca por substring (só para strings)
         if (fieldName === 'localizacao' && !term.includes(',')) {
+            const escapedTerm = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
             variations.push({ [fieldName]: { $regex: new RegExp(`^${escapedTerm}\\b`, 'i') } });
+            
+            const normalized = term.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
             if (normalized !== term) {
                 const escapedNormalized = normalized.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
                 variations.push({ [fieldName]: { $regex: new RegExp(`^${escapedNormalized}\\b`, 'i') } });
@@ -304,55 +332,67 @@ const deletarEstagio = async (req, res) => {
 
 // Função para normalizar strings removendo acentos e convertendo para lowercase
 const normalizeString = (str) => {
-    if (typeof str !== 'string') return '';
-    return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+    if(typeof str !== 'string') return '';
+    return str.trim().normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
 };
 
 // Função para obter valores únicos baseados na normalização
 const getUniqueNormalizedValues = (values, isLocation = false) => {
-    const seen = new Map();
-    const processedValues = [];
+    const seenNormalized = new Set();
+    const result = [];
+    
+    // Primeiro, coletar todas as versões de cada valor normalizado
+    const groupedValues = new Map();
     
     values.forEach(value => {
-        if (value) {
+        if (value && typeof value === 'string') {
             const normalized = normalizeString(value);
             
-            if (isLocation) {
-                // Para localizações, dar prioridade à versão mais específica (com vírgula)
-                const existingEntry = Array.from(seen.entries()).find(([key, val]) => {
-                    const currentNorm = normalizeString(val);
-                    // Verificar se uma é substring da outra
-                    return currentNorm.includes(normalized) || normalized.includes(currentNorm);
-                });
-                
-                if (existingEntry) {
-                    const [existingKey, existingValue] = existingEntry;
-                    // Manter a versão mais específica (normalmente a que tem vírgula)
-                    if (value.includes(',') && !existingValue.includes(',')) {
-                        // Substituir pela versão mais específica
-                        seen.delete(existingKey);
-                        seen.set(normalized, value);
-                    } else if (!value.includes(',') && existingValue.includes(',')) {
-                        // Manter a versão mais específica que já existe
-                        return;
-                    } else if (value.length > existingValue.length) {
-                        // Se ambas têm ou não têm vírgula, manter a mais longa
-                        seen.delete(existingKey);
-                        seen.set(normalized, value);
-                    }
-                } else {
-                    seen.set(normalized, value);
-                }
-            } else {
-                // Para outros campos, comportamento normal
-                if (!seen.has(normalized)) {
-                    seen.set(normalized, value);
-                }
+            if (!groupedValues.has(normalized)) {
+                groupedValues.set(normalized, []);
             }
+            groupedValues.get(normalized).push(value);
         }
     });
     
-    return Array.from(seen.values()).sort();
+    // Para cada grupo, escolher a melhor versão
+    groupedValues.forEach((versions, normalized) => {
+        if (isLocation) {
+            // Para localizações, priorizar versões com vírgula (mais específicas)
+            const withComma = versions.filter(v => v.includes(','));
+            const withoutComma = versions.filter(v => !v.includes(','));
+            
+            if (withComma.length > 0) {
+                // Escolher a versão com vírgula mais longa
+                result.push(withComma.reduce((longest, current) => 
+                    current.length > longest.length ? current : longest
+                ));
+            } else if (withoutComma.length > 0) {
+                // Se não há versões com vírgula, escolher a mais longa sem vírgula
+                result.push(withoutComma.reduce((longest, current) => 
+                    current.length > longest.length ? current : longest
+                ));
+            }
+        } else {
+            // Para outros campos, priorizar versões com acentos corretos
+            // Ordenar por: 1) tem acentos apropriados, 2) comprimento
+            const sorted = versions.sort((a, b) => {
+                // Verificar se tem acentos apropriados (diferente da versão normalizada)
+                const aHasAccents = a !== normalized;
+                const bHasAccents = b !== normalized;
+                
+                if (aHasAccents && !bHasAccents) return -1;
+                if (!aHasAccents && bHasAccents) return 1;
+                
+                // Se ambos têm ou não têm acentos, ordenar por comprimento
+                return b.length - a.length;
+            });
+            
+            result.push(sorted[0]);
+        }
+    });
+    
+    return result.sort();
 };
 
 // Função para obter opções de filtro dinâmicas
@@ -362,7 +402,9 @@ const obterOpcoesFiltros = async (req, res) => {
         const estagiosAtivos = await Estagio.find({ status: 'Ativo' });
         
         // Extrair valores únicos para cada campo de filtro, tratando acentos como equivalentes
-        const areas = getUniqueNormalizedValues(estagiosAtivos.map(estagio => estagio.area));
+        // Para areas, agora é um array, então precisamos flatten os arrays
+        const allAreas = estagiosAtivos.flatMap(estagio => estagio.area || []);
+        const areas = getUniqueNormalizedValues(allAreas);
         const localizacoes = getUniqueNormalizedValues(estagiosAtivos.map(estagio => estagio.localizacao), true);
         const duracoes = [...new Set(estagiosAtivos.map(estagio => estagio.duracao))].filter(Boolean).sort((a, b) => a - b);
         const tiposEstagio = getUniqueNormalizedValues(estagiosAtivos.map(estagio => estagio.tipoEstagio));
@@ -453,6 +495,85 @@ const calcularSimilaridade = (texto1, texto2) => {
     return palavrasComuns.length / Math.max(palavras1.length, palavras2.length);
 };
 
+// Função para calcular similaridade de cursos (tratamento especial)
+const calcularSimilaridadeCursos = (cursoUsuario, cursosEstagio) => {
+    if (!cursoUsuario || !cursosEstagio) return 0;
+    
+    const cursoUsuarioLower = cursoUsuario.toLowerCase().trim();
+    
+    // Se cursosEstagio é um array, verificar se o curso do usuário está exatamente em um deles
+    if (Array.isArray(cursosEstagio)) {
+        const cursoEncontrado = cursosEstagio.some(curso => 
+            curso.toLowerCase().trim() === cursoUsuarioLower
+        );
+        
+        if (cursoEncontrado) {
+            return 1.0; // Correspondência total se encontrou o curso exato
+        }
+        
+        // Se não encontrou correspondência exata, usar similaridade normal
+        const cursosString = cursosEstagio.join(' ');
+        return calcularSimilaridade(cursoUsuario, cursosString);
+    }
+    
+    // Se é string, converter para array e aplicar a mesma lógica
+    const cursosArray = cursosEstagio.split(/[,;]/).map(c => c.trim());
+    return calcularSimilaridadeCursos(cursoUsuario, cursosArray);
+};
+
+// Função para extrair código postal de uma localização
+const extrairCodigoPostalDaLocalizacao = (localizacao) => {
+    if (!localizacao) return '';
+    
+    // Padrões para códigos postais portugueses (XXXX-XXX ou XXXX)
+    const padroes = [
+        /\b(\d{4}-\d{3})\b/g,  // Formato completo: 9350-200
+        /\b(\d{4})\b/g         // Formato abreviado: 9350
+    ];
+    
+    for (const padrao of padroes) {
+        const matches = localizacao.match(padrao);
+        if (matches && matches.length > 0) {
+            return matches[0]; // Retorna o primeiro código postal encontrado
+        }
+    }
+    
+    // Lista de códigos postais conhecidos por localização
+    const codigosPostaisPorLocalidade = {
+        'ribeira brava': '9350',
+        'funchal': '9000',
+        'lisboa': '1000',
+        'porto': '4000',
+        'coimbra': '3000',
+        'braga': '4700',
+        'faro': '8000',
+        'aveiro': '3800',
+        'viseu': '3500',
+        'santarém': '2000',
+        'leiria': '2400',
+        'castelo branco': '6000',
+        'bragança': '5300',
+        'vila real': '5000',
+        'viana do castelo': '4900',
+        'setúbal': '2900',
+        'évora': '7000',
+        'beja': '7800',
+        'portalegre': '7300',
+        'guarda': '6300'
+    };
+    
+    const localizacaoLower = localizacao.toLowerCase().trim();
+    
+    // Procurar por correspondência exata ou parcial
+    for (const [localidade, codigo] of Object.entries(codigosPostaisPorLocalidade)) {
+        if (localizacaoLower.includes(localidade) || localidade.includes(localizacaoLower)) {
+            return codigo;
+        }
+    }
+    
+    return '';
+};
+
 // Função para normalizar código postal (extrair os primeiros dígitos)
 const normalizarCodigoPostal = (codigoPostal) => {
     if (!codigoPostal) return '';
@@ -465,36 +586,51 @@ const calcularPontuacaoRecomendacao = (usuario, estagio) => {
     
     // 1. Correspondência de curso (peso: 30%)
     if (usuario.curso && estagio.cursosPreferenciais) {
-        const similaridadeCurso = calcularSimilaridade(usuario.curso, estagio.cursosPreferenciais);
+        const cursoUsuario = usuario.curso;
+        const cursosEstagio = estagio.cursosPreferenciais;
+        const similaridadeCurso = calcularSimilaridadeCursos(cursoUsuario, cursosEstagio);
         pontuacao += similaridadeCurso * 30;
     }
     
-    // 2. Correspondência de área com formação acadêmica (peso: 25%)
+    // 2. Correspondência de área com habilitações mínimas (peso: 25%)
     if (usuario.formacaoAcademica && estagio.habilitacoesMinimas) {
-        const similaridadeArea = calcularSimilaridade(usuario.formacaoAcademica, estagio.habilitacoesMinimas);
-        pontuacao += similaridadeArea * 25;
+        const formacaoUsuario = usuario.formacaoAcademica;
+        const habilitacoesEstagio = Array.isArray(estagio.habilitacoesMinimas) 
+            ? estagio.habilitacoesMinimas.join(' ') 
+            : estagio.habilitacoesMinimas;
+        const similaridadeHabilitacoes = calcularSimilaridade(formacaoUsuario, habilitacoesEstagio);
+        pontuacao += similaridadeHabilitacoes * 25;
     }
     
     // 3. Competências técnicas (peso: 25%)
-    if (usuario.competenciasTecnicas && Array.isArray(usuario.competenciasTecnicas) && usuario.competenciasTecnicas.length > 0) {
-        const competenciasUsuario = usuario.competenciasTecnicas.join(' ');
-        const similaridadeCompetencias = calcularSimilaridade(competenciasUsuario, estagio.competenciasEssenciais);
+    if (usuario.competenciasTecnicas && usuario.competenciasTecnicas.length > 0 && estagio.competenciasTecnicas) {
+        const competenciasUsuario = Array.isArray(usuario.competenciasTecnicas) 
+            ? usuario.competenciasTecnicas.join(' ') 
+            : usuario.competenciasTecnicas;
+        const competenciasEstagio = Array.isArray(estagio.competenciasTecnicas) 
+            ? estagio.competenciasTecnicas.join(' ') 
+            : estagio.competenciasTecnicas;
+        const similaridadeCompetencias = calcularSimilaridade(competenciasUsuario, competenciasEstagio);
         pontuacao += similaridadeCompetencias * 25;
     }
     
     // 4. Proximidade geográfica (peso: 15%)
     if (usuario.codigoPostal && estagio.localizacao) {
         const cpUsuario = normalizarCodigoPostal(usuario.codigoPostal);
-        const localizacaoEstagio = estagio.localizacao.toLowerCase();
+        const cpEstagio = extrairCodigoPostalDaLocalizacao(estagio.localizacao);
+        const cpEstagioNormalizado = normalizarCodigoPostal(cpEstagio);
         
-        // Verificar se a localização contém referência ao código postal
-        if (cpUsuario && localizacaoEstagio.includes(cpUsuario)) {
-            pontuacao += 15;
-        } else if (cpUsuario) {
-            // Bonificação menor para códigos postais próximos (diferença de 1 dígito)
-            const cpSimilar = cpUsuario.substring(0, 3);
-            if (localizacaoEstagio.includes(cpSimilar)) {
-                pontuacao += 7;
+        if (cpUsuario && cpEstagioNormalizado) {
+            if (cpUsuario === cpEstagioNormalizado) {
+                pontuacao += 15; // Correspondência exata de código postal
+            } else {
+                // Verificar proximidade (primeiros 3 dígitos)
+                const cpUsuarioParcial = cpUsuario.substring(0, 3);
+                const cpEstagioParcial = cpEstagioNormalizado.substring(0, 3);
+                
+                if (cpUsuarioParcial === cpEstagioParcial) {
+                    pontuacao += 7; // Correspondência parcial de código postal
+                }
             }
         }
     }
