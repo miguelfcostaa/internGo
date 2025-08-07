@@ -434,6 +434,13 @@ function validateCriarEstagio(Estagio, data) {
     if (data.horaFim && !horaRegex.test(data.horaFim)) {
         errors.horaFim = 'Hora de fim inválida, use o formato HH:mm.';
     }
+    if (data.horaInicio && data.horaFim && new Date(`1970-01-01T${data.horaFim}:00`) <= new Date(`1970-01-01T${data.horaInicio}:00`)) {
+        errors.horaFim = 'A hora de fim deve ser depois da hora de início.';
+    } 
+    else if (data.horaInicio && data.horaFim && new Date(`1970-01-01T${data.horaFim}:00`) - new Date(`1970-01-01T${data.horaInicio}:00`) < 25200000) {
+        errors.horaFim = 'A diferença entre a hora de início e a hora de fim deve ser de pelo menos 7 horas.';
+    }
+
 
     return errors;
 }
