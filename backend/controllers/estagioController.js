@@ -56,31 +56,59 @@ const createAccentInsensitiveFilter = (fieldName, searchTerms) => {
     searchTerms.forEach(term => {
         const escapedTerm = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
         
-        // 1. Busca exata pelo termo original
-        variations.push({ [fieldName]: { $regex: new RegExp(`^${escapedTerm}$`, 'i') } });
-        
-        // 2. Busca pelo termo normalizado (sem acentos)
-        const normalized = term.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-        if (normalized !== term) {
-            const escapedNormalized = normalized.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-            variations.push({ [fieldName]: { $regex: new RegExp(`^${escapedNormalized}$`, 'i') } });
+        if (fieldName === 'area') {
+            // Para o campo area que é um array, usar $elemMatch ou $in
+            // 1. Busca exata pelo termo original no array
+            variations.push({ [fieldName]: { $in: [term] } });
+            
+            // 2. Busca pelo termo normalizado (sem acentos) no array
+            const normalized = term.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+            if (normalized !== term) {
+                variations.push({ [fieldName]: { $in: [normalized] } });
+            }
+            
+            // 3. Busca com regex para variações de acentos no array
+            const flexiblePattern = term
+                .replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+                .replace(/[aáàâãä]/gi, '[aáàâãä]')
+                .replace(/[eéèêë]/gi, '[eéèêë]')
+                .replace(/[iíìîï]/gi, '[iíìîï]')
+                .replace(/[oóòôõö]/gi, '[oóòôõö]')
+                .replace(/[uúùûü]/gi, '[uúùûü]')
+                .replace(/[cç]/gi, '[cç]');
+                
+            variations.push({ [fieldName]: { $elemMatch: { $regex: new RegExp(`^${flexiblePattern}$`, 'i') } } });
+        } else {
+            // Para campos string, comportamento original
+            // 1. Busca exata pelo termo original
+            variations.push({ [fieldName]: { $regex: new RegExp(`^${escapedTerm}$`, 'i') } });
+            
+            // 2. Busca pelo termo normalizado (sem acentos)
+            const normalized = term.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+            if (normalized !== term) {
+                const escapedNormalized = normalized.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                variations.push({ [fieldName]: { $regex: new RegExp(`^${escapedNormalized}$`, 'i') } });
+            }
+            
+            // 3. Busca com variações de acentos (funciona para ambos os sentidos)
+            const flexiblePattern = term
+                .replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+                .replace(/[aáàâãä]/gi, '[aáàâãä]')
+                .replace(/[eéèêë]/gi, '[eéèêë]')
+                .replace(/[iíìîï]/gi, '[iíìîï]')
+                .replace(/[oóòôõö]/gi, '[oóòôõö]')
+                .replace(/[uúùûü]/gi, '[uúùûü]')
+                .replace(/[cç]/gi, '[cç]');
+                
+            variations.push({ [fieldName]: { $regex: new RegExp(`^${flexiblePattern}$`, 'i') } });
         }
         
-        // 3. Busca com variações de acentos (funciona para ambos os sentidos)
-        const flexiblePattern = term
-            .replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-            .replace(/[aáàâãä]/gi, '[aáàâãä]')
-            .replace(/[eéèêë]/gi, '[eéèêë]')
-            .replace(/[iíìîï]/gi, '[iíìîï]')
-            .replace(/[oóòôõö]/gi, '[oóòôõö]')
-            .replace(/[uúùûü]/gi, '[uúùûü]')
-            .replace(/[cç]/gi, '[cç]');
-            
-        variations.push({ [fieldName]: { $regex: new RegExp(`^${flexiblePattern}$`, 'i') } });
-        
-        // 4. Para localizações com vírgula, também fazer busca por substring
+        // 4. Para localizações com vírgula, também fazer busca por substring (só para strings)
         if (fieldName === 'localizacao' && !term.includes(',')) {
+            const escapedTerm = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
             variations.push({ [fieldName]: { $regex: new RegExp(`^${escapedTerm}\\b`, 'i') } });
+            
+            const normalized = term.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
             if (normalized !== term) {
                 const escapedNormalized = normalized.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
                 variations.push({ [fieldName]: { $regex: new RegExp(`^${escapedNormalized}\\b`, 'i') } });
@@ -305,54 +333,66 @@ const deletarEstagio = async (req, res) => {
 // Função para normalizar strings removendo acentos e convertendo para lowercase
 const normalizeString = (str) => {
     if(typeof str !== 'string') return '';
-    return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+    return str.trim().normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
 };
 
 // Função para obter valores únicos baseados na normalização
 const getUniqueNormalizedValues = (values, isLocation = false) => {
-    const seen = new Map();
-    const processedValues = [];
+    const seenNormalized = new Set();
+    const result = [];
+    
+    // Primeiro, coletar todas as versões de cada valor normalizado
+    const groupedValues = new Map();
     
     values.forEach(value => {
-        if (value) {
+        if (value && typeof value === 'string') {
             const normalized = normalizeString(value);
             
-            if (isLocation) {
-                // Para localizações, dar prioridade à versão mais específica (com vírgula)
-                const existingEntry = Array.from(seen.entries()).find(([key, val]) => {
-                    const currentNorm = normalizeString(val);
-                    // Verificar se uma é substring da outra
-                    return currentNorm.includes(normalized) || normalized.includes(currentNorm);
-                });
-                
-                if (existingEntry) {
-                    const [existingKey, existingValue] = existingEntry;
-                    // Manter a versão mais específica (normalmente a que tem vírgula)
-                    if (value.includes(',') && !existingValue.includes(',')) {
-                        // Substituir pela versão mais específica
-                        seen.delete(existingKey);
-                        seen.set(normalized, value);
-                    } else if (!value.includes(',') && existingValue.includes(',')) {
-                        // Manter a versão mais específica que já existe
-                        return;
-                    } else if (value.length > existingValue.length) {
-                        // Se ambas têm ou não têm vírgula, manter a mais longa
-                        seen.delete(existingKey);
-                        seen.set(normalized, value);
-                    }
-                } else {
-                    seen.set(normalized, value);
-                }
-            } else {
-                // Para outros campos, comportamento normal
-                if (!seen.has(normalized)) {
-                    seen.set(normalized, value);
-                }
+            if (!groupedValues.has(normalized)) {
+                groupedValues.set(normalized, []);
             }
+            groupedValues.get(normalized).push(value);
         }
     });
     
-    return Array.from(seen.values()).sort();
+    // Para cada grupo, escolher a melhor versão
+    groupedValues.forEach((versions, normalized) => {
+        if (isLocation) {
+            // Para localizações, priorizar versões com vírgula (mais específicas)
+            const withComma = versions.filter(v => v.includes(','));
+            const withoutComma = versions.filter(v => !v.includes(','));
+            
+            if (withComma.length > 0) {
+                // Escolher a versão com vírgula mais longa
+                result.push(withComma.reduce((longest, current) => 
+                    current.length > longest.length ? current : longest
+                ));
+            } else if (withoutComma.length > 0) {
+                // Se não há versões com vírgula, escolher a mais longa sem vírgula
+                result.push(withoutComma.reduce((longest, current) => 
+                    current.length > longest.length ? current : longest
+                ));
+            }
+        } else {
+            // Para outros campos, priorizar versões com acentos corretos
+            // Ordenar por: 1) tem acentos apropriados, 2) comprimento
+            const sorted = versions.sort((a, b) => {
+                // Verificar se tem acentos apropriados (diferente da versão normalizada)
+                const aHasAccents = a !== normalized;
+                const bHasAccents = b !== normalized;
+                
+                if (aHasAccents && !bHasAccents) return -1;
+                if (!aHasAccents && bHasAccents) return 1;
+                
+                // Se ambos têm ou não têm acentos, ordenar por comprimento
+                return b.length - a.length;
+            });
+            
+            result.push(sorted[0]);
+        }
+    });
+    
+    return result.sort();
 };
 
 // Função para obter opções de filtro dinâmicas
@@ -362,7 +402,9 @@ const obterOpcoesFiltros = async (req, res) => {
         const estagiosAtivos = await Estagio.find({ status: 'Ativo' });
         
         // Extrair valores únicos para cada campo de filtro, tratando acentos como equivalentes
-        const areas = getUniqueNormalizedValues(estagiosAtivos.map(estagio => estagio.area));
+        // Para areas, agora é um array, então precisamos flatten os arrays
+        const allAreas = estagiosAtivos.flatMap(estagio => estagio.area || []);
+        const areas = getUniqueNormalizedValues(allAreas);
         const localizacoes = getUniqueNormalizedValues(estagiosAtivos.map(estagio => estagio.localizacao), true);
         const duracoes = [...new Set(estagiosAtivos.map(estagio => estagio.duracao))].filter(Boolean).sort((a, b) => a - b);
         const tiposEstagio = getUniqueNormalizedValues(estagiosAtivos.map(estagio => estagio.tipoEstagio));
