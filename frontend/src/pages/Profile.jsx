@@ -22,7 +22,6 @@ const ProfilePage = () => {
     const role = getUserRoleFromToken();
     const [nEstagios, setNEstagios] = useState(0);
     const candidaturasFeitas = useCandidaturasFeitas(id);
-    console.log("Candidaturas Feitas:", candidaturasFeitas);
     const candidaturas = useCandidaturas(userInfo._id);
     const { estagios: estagiosByCompany, loading: estagiosLoading } = useEstagiosByCompany(userInfo?._id);
     const { estagiosRecomendados, loading: loadingRecomendados } = useEstagiosRecomendados(3, role === 'user'); // Máximo 3 para o perfil, só para users

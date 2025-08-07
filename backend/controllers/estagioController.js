@@ -188,6 +188,13 @@ const alterarEstadoEstagio = async (req, res) => {
 
 // Função para atualizar um estágio
 const atualizarEstagio = async (req, res) => {
+    const errors = await validations.validateCriarEstagio(Estagio, req.body);
+    
+    if (Object.keys(errors).length > 0) {
+        return res.status(400).json({ message: errors });
+    }
+
+
     try {
         const estagioId = req.params.id;
         const estagioData = req.body;

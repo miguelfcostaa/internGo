@@ -168,7 +168,7 @@ const CriacaoEstagio = () => {
 		{success && (
 			<div className={`alert ${style.alertSuccess}`}>
 				<ul className="mb-0">
-					<li>Candidatura enviada com sucesso!</li>
+					<span>Estágio criado com sucesso!</span>
 				</ul>
 			</div>
 		)}

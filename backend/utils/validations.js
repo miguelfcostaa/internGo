@@ -330,7 +330,7 @@ function validateCriarEstagio(Estagio, data) {
     // Todos os campos obrigatórios são precisos
     if (!data.title || !data.area || !data.dataInicio || !data.tipoEstagio || !data.duracao ||
         !data.numeroVagas || !data.localizacao || !data.prazoCandidatura || !data.descricao ||
-        !data.beneficios || !data.habilitacoesMinimas) {
+        !data.beneficios || !data.habilitacoesMinimas || !data.horaFim || !data.horaInicio) {
         errors.general = 'Todos os campos obrigatórios devem ser preenchidos.';
         return errors;
     }
@@ -437,8 +437,8 @@ function validateCriarEstagio(Estagio, data) {
     if (data.horaInicio && data.horaFim && new Date(`1970-01-01T${data.horaFim}:00`) <= new Date(`1970-01-01T${data.horaInicio}:00`)) {
         errors.horaFim = 'A hora de fim deve ser depois da hora de início.';
     } 
-    else if (data.horaInicio && data.horaFim && new Date(`1970-01-01T${data.horaFim}:00`) - new Date(`1970-01-01T${data.horaInicio}:00`) < 25200000) {
-        errors.horaFim = 'A diferença entre a hora de início e a hora de fim deve ser de pelo menos 7 horas.';
+    else if (data.horaInicio && data.horaFim && new Date(`1970-01-01T${data.horaFim}:00`) - new Date(`1970-01-01T${data.horaInicio}:00`) < 18000000) {
+        errors.horaFim = 'A diferença entre a hora de início e a hora de fim deve ser de pelo menos 5 horas.';
     }
 
 

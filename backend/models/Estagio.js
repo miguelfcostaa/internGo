@@ -70,9 +70,11 @@ const estagioSchema = new Schema({
     },
     horaInicio: { // Hora de início do estágio
         type: String,
+        required: true,
     },
     horaFim: { // Hora de fim do estágio
         type: String,
+        required: true,
     },
 });
 
