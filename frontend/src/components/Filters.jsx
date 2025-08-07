@@ -11,10 +11,10 @@ const Filters = ({ setEstagios, searchTag, setSearchTag, onRemoveSearchTag }) =>
     });
 
     const [isOpen, setIsOpen] = useState({
-        area: true,
+        area: false,
         localizacao: false,
         duracao: false,
-        tipoEstagio: true
+        tipoEstagio: false
     });
 
     const toggleDropdown = (key) => {
