@@ -21,8 +21,8 @@ const ProfilePage = () => {
     const [userInfo, setUserInfo] = useUser(id);
     const role = getUserRoleFromToken();
     const [nEstagios, setNEstagios] = useState(0);
-    const candidaturasFeitas = useCandidaturasFeitas(id);
-    const candidaturas = useCandidaturas(userInfo._id);
+    const candidaturasFeitas = useCandidaturasFeitas(id, role);
+    const candidaturas = useCandidaturas(role === 'company' ? userInfo?._id : null);
     const { estagios: estagiosByCompany, loading: estagiosLoading } = useEstagiosByCompany(userInfo?._id);
     const { estagiosRecomendados, loading: loadingRecomendados } = useEstagiosRecomendados(3, role === 'user'); // Máximo 3 para o perfil, só para users
 
@@ -280,7 +280,7 @@ const ProfilePage = () => {
                                     <div key={index} className={styles.candidaturaItem}>
                                             <p><Link className={styles.verCandidatura} to={`/estagiario/${candidatura.user._id}`}>{candidatura.user.name}</Link></p>
                                             <p>{candidatura.estagio.title}</p>
-                                            <p className={styles.verCandidatura}>Ver candidatura</p>
+                                            <p className={styles.verCandidatura}><Link to={`/ver-candidatura/${candidatura._id}`}>Ver candidatura</Link></p>
                                     </div>
                                 )) : (
                                     <div style={{textAlign: 'left'}}>Nenhuma candidatura recebida.</div>

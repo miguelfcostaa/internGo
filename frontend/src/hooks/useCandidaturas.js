@@ -4,7 +4,7 @@ export default function useCandidaturas(companyId) {
     const [candidaturas, setCandidaturas] = useState([]);
 
     useEffect(() => {
-        if (!companyId) return;
+        if (companyId === null || companyId === undefined) return ;
         const getCandidaturas = async () => {
             const response = await fetch(`http://localhost:5000/api/candidaturas/empresa/${companyId}`, {
                 method: "GET",

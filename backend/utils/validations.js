@@ -136,12 +136,7 @@ const validateUserUpdate = async (User, data) => {
     // Valida Email
     if (data.email && !validateEmail(data.email)) {
         errors.email = 'Email deve ter formato válido.';
-    } else {
-        const existingUser = await User.findOne({ email: data.email });
-        if (existingUser && existingUser._id.toString() !== data._id) {
-            errors.email = 'Email já está em uso.';
-        }
-    }
+    } 
 
     // Valida NIF
     if (data.nif && data.nif.length !== 9) {

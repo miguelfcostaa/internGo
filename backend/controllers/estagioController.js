@@ -94,7 +94,7 @@ const createAccentInsensitiveFilter = (fieldName, searchTerms) => {
 // Função para obter um estágio por ID
 const obterEstagioById = async (req, res) => {
     try {
-        const estagio = await Estagio.findById(req.params.id).populate('company', 'name email');
+        const estagio = await Estagio.findById(req.params.id).populate('company', 'name email profilePhoto');
         if (!estagio) {
             return res.status(404).json({ message: 'Estágio não encontrado' });
         }
@@ -304,6 +304,7 @@ const deletarEstagio = async (req, res) => {
 
 // Função para normalizar strings removendo acentos e convertendo para lowercase
 const normalizeString = (str) => {
+    if (typeof str !== 'string') return '';
     return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
 };
 
@@ -469,13 +470,13 @@ const calcularPontuacaoRecomendacao = (usuario, estagio) => {
     }
     
     // 2. Correspondência de área com formação acadêmica (peso: 25%)
-    if (usuario.formacaoAcademica && estagio.area) {
-        const similaridadeArea = calcularSimilaridade(usuario.formacaoAcademica, estagio.area);
+    if (usuario.formacaoAcademica && estagio.habilitacoesMinimas) {
+        const similaridadeArea = calcularSimilaridade(usuario.formacaoAcademica, estagio.habilitacoesMinimas);
         pontuacao += similaridadeArea * 25;
     }
     
     // 3. Competências técnicas (peso: 25%)
-    if (usuario.competenciasTecnicas && usuario.competenciasTecnicas.length > 0 && estagio.competenciasEssenciais) {
+    if (usuario.competenciasTecnicas && Array.isArray(usuario.competenciasTecnicas) && usuario.competenciasTecnicas.length > 0) {
         const competenciasUsuario = usuario.competenciasTecnicas.join(' ');
         const similaridadeCompetencias = calcularSimilaridade(competenciasUsuario, estagio.competenciasEssenciais);
         pontuacao += similaridadeCompetencias * 25;

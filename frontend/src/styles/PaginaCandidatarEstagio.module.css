@@ -1,16 +1,25 @@
 .background {
   background-color: #F2F2F2;
-  min-height: 200vh; /* para que tenga altura mínima */
-  padding: 2rem 17%;
-  transition: margin-left 0.3s ease;
+  margin-left: 20%;
+  margin-right: 20%;
+  margin-top: 2rem;
+  margin-bottom: 5%;
 }
 
-.heading {
-  margin-left: 10%;
-  text-align: left;
-  font-weight: bold;
-  font-size: 35px;
-  margin-top: 30px;
+.formContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.sidebar {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  background-color: white;
+  border-radius: 0.5rem;
+  padding: 2rem;
+  height: 80%;
+  margin-bottom: 3rem;
+  margin-top: 1rem;
 }
 
 .bigbox {
@@ -18,13 +27,15 @@
   background-color: white;
   width: 100%;
   border-radius: 0.5rem;
+  align-items: flex-start;
+  min-height: 900px; /* ajuste conforme necessário */
 }
 
 .formrow {
   display: flex;
   flex-direction: row;
-  margin-top: 10px;
-  gap: 150px;
+  justify-content: space-between;
+  gap: 4rem;
 }
 
 .textarea {
@@ -101,6 +112,7 @@
   color: #2c3e50;
   transition: all 0.3s ease;
   outline: none;
+  width: 100%;
 }
 
 .input:focus,
