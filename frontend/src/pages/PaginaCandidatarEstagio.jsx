@@ -17,6 +17,29 @@ function PaginaCandidatarEstagio() {
     const [success, setSuccess] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [fieldErrors, setFieldErrors] = useState({});
+    
+    // Função para verificar se é empresa
+    const isCompany = () => {
+        const token = localStorage.getItem('token');
+        if (!token) return false;
+        
+        try {
+            const payload = JSON.parse(atob(token.split('.')[1]));
+            return payload.role === 'company';
+        } catch (error) {
+            return false;
+        }
+    };
+
+    // Redirecionar empresas para a página inicial
+    useEffect(() => {
+        if (isCompany()) {
+            alert('Empresas não podem candidatar-se aos estágios. Apenas estudantes podem candidatar-se.');
+            navigate('/home');
+            return;
+        }
+    }, [navigate]);
+
     const [Warnings, setWarnings] = useState({
         name: false,
         morada: false,
