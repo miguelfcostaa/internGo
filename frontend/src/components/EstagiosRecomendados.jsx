@@ -1,9 +1,9 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import useEstagiosRecomendados from '../hooks/useEstagiosRecomendados';
-import '../styles/EstagiosRecomendados.css';
+import styles from '../styles/EstagiosRecomendados.module.css';
 
-const EstagiosRecomendados = ({ limite = 5, showTitle = true, showViewMore = false }) => {
+const EstagiosRecomendados = ({ limite = 5, showTitle = true, showViewMore = false, layoutType = "horizontal" }) => {
   const navigate = useNavigate();
   const { estagiosRecomendados, loading, error, criterios, recarregar } = useEstagiosRecomendados(limite);
 
@@ -13,6 +13,24 @@ const EstagiosRecomendados = ({ limite = 5, showTitle = true, showViewMore = fal
 
   const formatarPontuacao = (pontuacao) => {
     return Math.round(pontuacao);
+  };
+
+  const formatarArea = (area) => {
+    // Debug: ver o que estamos recebendo
+    console.log('Área recebida:', area, 'Tipo:', typeof area);
+    
+    if (!area) return '';
+    
+    // Se for array, juntar com espaços
+    if (Array.isArray(area)) {
+      return area.join(' ');
+    }
+    
+    // Converter para string se necessário
+    const areaString = String(area);
+    
+    // Adicionar espaços antes de letras maiúsculas que não estão no início
+    return areaString.replace(/([a-z])([A-Z])/g, '$1 $2');
   };
 
   const getCorPontuacao = (pontuacao) => {
@@ -27,9 +45,9 @@ const EstagiosRecomendados = ({ limite = 5, showTitle = true, showViewMore = fal
 
   if (loading) {
     return (
-      <div className="estagios-recomendados">
+      <div className={styles.estagiosRecomendados}>
         {showTitle && <h2>Estágios Recomendados</h2>}
-        <div className="loading-spinner">
+        <div className={styles.loadingSpinner}>
           <p>Carregando recomendações...</p>
         </div>
       </div>
@@ -38,11 +56,11 @@ const EstagiosRecomendados = ({ limite = 5, showTitle = true, showViewMore = fal
 
   if (error) {
     return (
-      <div className="estagios-recomendados">
+      <div className={styles.estagiosRecomendados}>
         {showTitle && <h2>Estágios Recomendados</h2>}
-        <div className="error-message">
+        <div className={styles.errorMessage}>
           <p>Erro ao carregar recomendações: {error}</p>
-          <button onClick={recarregar} className="btn-recarregar">
+          <button onClick={recarregar} className={styles.btnRecarregar}>
             Tentar Novamente
           </button>
         </div>
@@ -52,9 +70,9 @@ const EstagiosRecomendados = ({ limite = 5, showTitle = true, showViewMore = fal
 
   if (estagiosRecomendados.length === 0) {
     return (
-      <div className="estagios-recomendados">
+      <div className={styles.estagiosRecomendados}>
         {showTitle && <h2>Estágios Recomendados</h2>}
-        <div className="no-recommendations">
+        <div className={styles.noRecommendations}>
           <p>Complete o seu perfil para receber recomendações personalizadas!</p>
           <ul>
             <li>Adicione o seu curso</li>
@@ -64,7 +82,7 @@ const EstagiosRecomendados = ({ limite = 5, showTitle = true, showViewMore = fal
           </ul>
           <button 
             onClick={() => navigate('/edit-profile')} 
-            className="btn-completar-perfil"
+            className={styles.btnCompletarPerfil}
           >
             Completar Perfil
           </button>
@@ -74,9 +92,9 @@ const EstagiosRecomendados = ({ limite = 5, showTitle = true, showViewMore = fal
   }
 
   return (
-    <div className="estagios-recomendados">
+    <div className={styles.estagiosRecomendados}>
       {showTitle && (
-        <div className="section-header">
+        <div className={styles.sectionHeader}>
           <h2>Estágios Recomendados para si</h2>
         </div>
       )}
@@ -84,70 +102,83 @@ const EstagiosRecomendados = ({ limite = 5, showTitle = true, showViewMore = fal
    
 
       <div
-      className="recommendations-grid"
-      style={{
-        display: "flex",
-        flexDirection: "row",
-        overflowX: "auto",
-        gap: "1rem",
-        padding: "1rem 0",
-      }}
-    >
+        className={layoutType === "grid" ? styles.gridLayout : styles.recommendationsGrid}
+        style={
+          layoutType === "horizontal" 
+            ? {
+                display: "flex",
+                flexDirection: "row",
+                overflowX: "auto",
+                gap: "1rem",
+                padding: "1rem 0",
+              }
+            : {}
+        }
+      >
 
         {estagiosRecomendados.map((estagio) => (
-             <div
-          key={estagio._id}
-          className="recommendation-card"
-          style={{
-            flexShrink: 0,
-            minWidth: "300px",  // Ajusta el ancho mínimo que quieras para cada card
-            boxSizing: "border-box",
-          }}
-        >
-            <div className="card-header">
-              <div className="pontuacao-badge" style={{ backgroundColor: getCorPontuacao(estagio.pontuacaoRecomendacao) }}>
+          <div
+            key={estagio._id}
+            className={styles.recommendationCard}
+            style={
+              layoutType === "horizontal" 
+                ? {
+                    flexShrink: 0,
+                    minWidth: "300px",
+                    boxSizing: "border-box",
+                  }
+                : {}
+            }
+          >
+            <div className={styles.cardHeader}>
+              <div className={styles.pontuacaoBadge} style={{ backgroundColor: getCorPontuacao(estagio.pontuacaoRecomendacao) }}>
                 {formatarPontuacao(estagio.pontuacaoRecomendacao)}% match
               </div>
             </div>
             
-            <div className="card-content">
-              <h3 className="estagio-title">{estagio.title}</h3>
-              <p className="company-name">
+            <div className={styles.cardContent}>
+              <h3 className={styles.estagioTitle}>{estagio.title}</h3>
+              <p className={styles.companyName}>
                 <strong>{estagio.company?.name}</strong>
               </p>
               
-              <div className="estagio-details">
-                <div className="detail-item">
-                  <span className="detail-label">Área:</span>
-                  <span className="detail-value">{estagio.area}</span>
+              <div className={styles.estagioDetails}>
+                <div className={styles.detailItem}>
+                  <span className={styles.detailLabel}>Área:</span>
+                  <span className={styles.detailValue}>{formatarArea(estagio.area)}</span>
                 </div>
                 
-                <div className="detail-item">
-                  <span className="detail-label">Localização:</span>
-                  <span className="detail-value">{estagio.localizacao}</span>
+                <div className={styles.detailItem}>
+                  <span className={styles.detailLabel}>Localização:</span>
+                  <span className={styles.detailValue}>{estagio.localizacao}</span>
                 </div>
                 
-                <div className="detail-item">
-                  <span className="detail-label">Tipo:</span>
-                  <span className="detail-value">{estagio.tipoEstagio}</span>
+                <div className={styles.detailItem}>
+                  <span className={styles.detailLabel}>Tipo:</span>
+                  <span className={styles.detailValue}>{estagio.tipoEstagio}</span>
                 </div>
                 
-                <div className="detail-item">
-                  <span className="detail-label">Duração:</span>
-                  <span className="detail-value">{estagio.duracao} meses</span>
+                <div className={styles.detailItem}>
+                  <span className={styles.detailLabel}>Duração:</span>
+                  <span className={styles.detailValue}>{estagio.duracao} meses</span>
                 </div>
                 
-                <div className="detail-item">
-                  <span className="detail-label">Prazo:</span>
-                  <span className="detail-value">{formatarData(estagio.prazoCandidatura)}</span>
+                <div className={styles.detailItem}>
+                  <span className={styles.detailLabel}>Data Limite:</span>
+                  <span className={styles.detailValue}>{formatarData(estagio.prazoCandidatura)}</span>
+                </div>
+
+                <div className={styles.detailItem}>
+                  <span className={styles.detailLabel}>Data de Início:</span>
+                  <span className={styles.detailValue}>{formatarData(estagio.dataInicio)}</span>
                 </div>
               </div>
             </div>
             
-            <div className="card-footer">
+            <div className={styles.cardFooter}>
               <button 
                 onClick={() => handleVerEstagio(estagio._id)}
-                className="btn-ver-estagio"
+                className={styles.btnVerEstagio}
               >
                 Ver Detalhes
               </button>
@@ -157,10 +188,10 @@ const EstagiosRecomendados = ({ limite = 5, showTitle = true, showViewMore = fal
       </div>
       
       {showViewMore && estagiosRecomendados.length > 0 && (
-        <div className="view-more-section">
+        <div className={styles.viewMoreSection}>
           <button 
             onClick={() => navigate('/recomendacoes')}
-            className="btn-ver-mais"
+            className={styles.btnVerMais}
           >
             Ver Mais Recomendações
           </button>

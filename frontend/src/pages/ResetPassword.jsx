@@ -4,11 +4,7 @@ import styles from "../styles/ResetPassword.module.css";
 import ButtonSubmit from "../components/ButtonSubmit";
 import PasswordCriteriaTooltip from "../components/PasswordCriteria"; 
 import { isPasswordCriterionMet } from "../utils/registerUserUtils";
-import { 
-  validateRequired, 
-  validatePassword, 
-  validatePasswordMatch 
-} from "../utils/validationUtils";
+import { validateRequired, validatePassword, validatePasswordMatch } from "../utils/validationUtils";
 
 const PasswordReset = () => {
   const [searchParams] = useSearchParams();

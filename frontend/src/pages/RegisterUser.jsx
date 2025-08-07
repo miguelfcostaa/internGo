@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { signupUser } from "../services/apiService";
-import PasswordCriteriaTooltip from "../components/PasswordCriteria"; // asegúrate que exista este componente
-import ButtonSubmit from "../components/ButtonSubmit"; // botón personalizado, si no tienes puedes usar uno normal
-import { validateForm, isPasswordCriterionMet } from "../utils/registerUserUtils"; // función para validar contraseña
+import PasswordCriteriaTooltip from "../components/PasswordCriteria";
+import ButtonSubmit from "../components/ButtonSubmit"; 
+import { validateForm, isPasswordCriterionMet } from "../utils/registerUserUtils"; 
 import "bootstrap/dist/css/bootstrap.min.css";
-import styles from "../styles/RegisterUser.module.css"; // CSS Module
+import styles from "../styles/RegisterUser.module.css"; 
 
 function RegisterUser() {
   const navigate = useNavigate();

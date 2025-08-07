@@ -45,7 +45,7 @@ function App() {
           <Route path='/criar-estagio/' element={<ProtectedRoute requiredRole="company"><CriarEstagio /></ProtectedRoute>}></Route>  {/*  Rota da Criar Estágio Page */}
           <Route path='/estagio/:id/editar' element={<ProtectedRoute requiredRole="company"><EditarEstagio /></ProtectedRoute>}></Route>  {/* Rota para editar um estágio específico */}
           <Route path='/estagio/:id' element={<PaginaEstagio />}></Route>   {/*  Rota info completa de estagio page */}
-          <Route path='/candidatar-estagio/:id' element={<PaginaCandidatarEstagio/>}></Route>   {/*  Rota info completa de estagio page */}
+          <Route path='/candidatar-estagio/:id' element={<ProtectedRoute><PaginaCandidatarEstagio/></ProtectedRoute>}></Route>   {/*  Rota info completa de estagio page */}
           <Route path='/recomendacoes/:id' element={<ProtectedRoute requiredRole="user"><PaginaRecomendacoes /></ProtectedRoute>}></Route>   {/*  Rota de recomendações */}
           <Route path='/ver-candidatura/:id' element={<VerCandidatura />}></Route>     
           <Route path='*' element={<NotFound />}> </Route>  {/* Rota 404 para páginas não encontradas */}

@@ -108,6 +108,20 @@ router.post('/candidatar/:estagioId', verifyToken, async (req, res) => {
         const estagioId = req.params.estagioId;
         const userId = req.user.id;
 
+        // Verificar se o usuário é uma empresa - EMPRESAS NÃO PODEM CANDIDATAR-SE
+        if (req.user.role === 'company') {
+            return res.status(403).json({ 
+                message: 'Empresas não podem candidatar-se aos estágios. Apenas estudantes podem candidatar-se.' 
+            });
+        }
+
+        // Verificar se o usuário é um estudante
+        if (req.user.role !== 'user') {
+            return res.status(403).json({ 
+                message: 'Apenas estudantes podem candidatar-se aos estágios.' 
+            });
+        }
+
         // Verifica se já existe candidatura
         const existe = await Candidatura.findOne({ user: userId, estagio: estagioId });
         if (existe) {

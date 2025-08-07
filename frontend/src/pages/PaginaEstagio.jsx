@@ -13,6 +13,19 @@ function PaginaEstagio() {
     const { estagio, loading } = useEstagios(id);
     console.log(estagio);
 
+    // Função para verificar se o usuário é uma empresa
+    const isCompany = () => {
+        const token = localStorage.getItem('token');
+        if (!token) return false;
+        
+        try {
+            const payload = JSON.parse(atob(token.split('.')[1]));
+            return payload.role === 'company';
+        } catch (error) {
+            return false;
+        }
+    };
+
     useEffect(() => {
         if (loading) {
             return;
@@ -24,6 +37,11 @@ function PaginaEstagio() {
     }, [estagio, loading, navigate]);
 
     const handleCandidatar = () => {
+        // Verificar se é empresa antes de navegar
+        if (isCompany()) {
+            alert('Empresas não podem candidatar-se aos estágios. Apenas estudantes podem candidatar-se.');
+            return;
+        }
         navigate("/candidatar-estagio/" + id);
         window.scrollTo(0, 0);
     };
@@ -154,9 +172,12 @@ function PaginaEstagio() {
                                 </ul>
                             </p>
                         </div>
-                        <button className={Styles.customButton} onClick={handleCandidatar}>
-                            Candidatar-se
-                        </button>
+                        {/* Renderizar o botão apenas se o usuário não for uma empresa */}
+                        {!isCompany() && (
+                            <button className={Styles.customButton} onClick={handleCandidatar}>
+                                Candidatar-se
+                            </button>
+                        )}
                     </div>
                 </div>
             </div>

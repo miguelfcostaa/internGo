@@ -6,15 +6,31 @@ import styles from "../styles/Estagio.module.css";
 function Estagio({ NomeEmpresa, NomeEstagio, TotalVagas, Ativas, Area, Inicio, TipoEstagio, Duracao, Localizacao, idEstagio, profilePhoto }) {
     const navigate = useNavigate();
     
+    // Função para verificar se o usuário é uma empresa
+    const isCompany = () => {
+        const token = localStorage.getItem('token');
+        if (!token) return false;
+        
+        try {
+            const payload = JSON.parse(atob(token.split('.')[1]));
+            return payload.role === 'company';
+        } catch (error) {
+            return false;
+        }
+    };
+    
     const handleCandidatarClick = () => {
         const token = localStorage.getItem('token');
         
         if (!token) {
             // Se não estiver logado, redireciona para login
             navigate('/login');
+        } else if (isCompany()) {
+            // Se for empresa, mostrar mensagem de erro
+            alert('Empresas não podem candidatar-se aos estágios. Apenas estudantes podem candidatar-se.');
+            return;
         } else {
-            // Se estiver logado, implementar lógica de candidatura
-            // Por agora, pode mostrar um alert ou navegar para página de candidatura
+            // Se estiver logado como estudante, navegar para página do estágio
             navigate(`/estagio/${idEstagio}`);
         }
     };
@@ -85,9 +101,19 @@ function Estagio({ NomeEmpresa, NomeEstagio, TotalVagas, Ativas, Area, Inicio, T
             </div>
             <div className={styles.applyContainer}>
                 <p>{Localizacao}</p>
-                <button className="btn btn-primary" onClick={handleCandidatarClick}>
-                    Candidatar-me
-                </button>
+                {!isCompany() && (
+                    <button className="btn btn-primary" onClick={handleCandidatarClick}>
+                        Candidatar-me
+                    </button>
+                )}
+                {isCompany() && (
+                    <button 
+                        className="btn btn-secondary" 
+                        onClick={() => navigate(`/estagio/${idEstagio}`)}
+                    >
+                        Ver Detalhes
+                    </button>
+                )}
             </div>
             
         </div>
