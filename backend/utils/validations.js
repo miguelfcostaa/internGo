@@ -330,7 +330,7 @@ function validateCriarEstagio(Estagio, data) {
     // Todos os campos obrigatórios são precisos
     if (!data.title || !data.area || !data.dataInicio || !data.tipoEstagio || !data.duracao ||
         !data.numeroVagas || !data.localizacao || !data.prazoCandidatura || !data.descricao ||
-        !data.beneficios || !data.habilitacoesMinimas) {
+        !data.beneficios || !data.habilitacoesMinimas || !data.horaFim || !data.horaInicio) {
         errors.general = 'Todos os campos obrigatórios devem ser preenchidos.';
         return errors;
     }
