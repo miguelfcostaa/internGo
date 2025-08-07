@@ -210,30 +210,44 @@ const CriacaoEstagio = () => {
 			{step === 1 && (
 			<Form>
 				<Row className={style.mb3}>
-				<Col md={6} className={style.leftColumn}>
-					<Form.Group className={`${style.mb3} d-flex flex-column`}>
-					<Form.Label className={style.formLabel}>
-						Título do Estágio <RequiredFieldTooltip />
-					</Form.Label>
-					<Form.Control
-						className={`${style.formControl} ${formData.title.length > 60 ? "is-invalid" : ""} `}
-						type="text"
-						name="title"
-						value={formData.title}
-						onChange={handleChange}
-						placeholder="Ex: Estágio em Desenvolvimento de Software"
-					/>
-					<div className="d-flex justify-content-between">
-						{formData.title.length > 60 && (
-							<span className={style.charterror}>Máximo de 60 caracteres ultrapassado!</span>
-						)}
-						<small className={` ${formData.title.length > 60 ? "text-danger" : "text-muted"}`}>
-							{formData.title.length}/60 caracteres
-						</small>
-					</div>
+				<div className={style.flexRow}>
+					<Form.Group className={`${style.mb3} d-flex flex-column ${style.width100}`}>
+						<Form.Label className={style.formLabel}>
+							Título do Estágio <RequiredFieldTooltip />
+						</Form.Label>
+						<Form.Control
+							className={`${style.formControl} ${formData.title.length > 60 ? "is-invalid" : ""} `}
+							type="text"
+							name="title"
+							value={formData.title}
+							onChange={handleChange}
+							placeholder="Ex: Estágio em Desenvolvimento de Software"
+						/>
+						<div className="d-flex justify-content-between">
+							{formData.title.length > 60 && (
+								<span className={style.charterror}>Máximo de 60 caracteres ultrapassado!</span>
+							)}
+							<small className={` ${formData.title.length > 60 ? "text-danger" : "text-muted"}`}>
+								{formData.title.length}/60 caracteres
+							</small>
+						</div>
 					</Form.Group>
 
-					<Form.Group className={`${style.mb3} d-flex flex-column`} style={{ width: "80%" }}>  
+					<Form.Group className={`${style.mb3} d-flex flex-column ${style.width100}`}>
+						<Form.Label className={style.formLabel}>
+							Mês de Início <RequiredFieldTooltip />
+						</Form.Label>
+						<Form.Control
+							className={style.smallDate}
+							type="month"
+							name="dataInicio"
+							value={formData.dataInicio}
+							onChange={handleChange}
+						/>
+					</Form.Group>
+				</div>
+				<div className={style.flexRow}>
+					<Form.Group className={`${style.mb3} d-flex flex-column ${style.width100}`} >  
 						<Form.Label className={style.formLabel}>
 							Área de Atuação <RequiredFieldTooltip />
 						</Form.Label>
@@ -255,73 +269,11 @@ const CriacaoEstagio = () => {
 						</div>
 					</Form.Group>
 
-					<Form.Group className={`${style.mb3} ${style.inlineField}`}>
-					<Form.Label
-						className={`${style.formLabel} mb-0`}
-						style={{ minWidth: "160px" }}
-					>
-						Número de Vagas <RequiredFieldTooltip />
-					</Form.Label>
-					<Form.Control
-						className={style.smallInput}
-						type="number"
-						name="numeroVagas"
-						value={formData.numeroVagas}
-						onChange={handleChange}
-						placeholder="1"
-						min="1"
-					/>
-					</Form.Group>
-
-					<Form.Group className={`${style.mb3} d-flex flex-column`}>
-					<Form.Label className={style.formLabel}>
-						Localização <RequiredFieldTooltip />
-					</Form.Label>
-					<Form.Control
-						className={`${style.formControl} ${formData.localizacao.length > 40 ? "is-invalid" : ""}`}
-						type="text"
-						name="localizacao"
-						value={formData.localizacao}
-						onChange={handleChange}
-						placeholder="Ex: Funchal"
-					/>
-					<div className="d-flex justify-content-between">
-						{formData.localizacao.length > 40 && (
-							<span className={style.charterror}>Máximo de 40 caracteres ultrapassado!</span>
-						)}
-						<small className={` ${formData.localizacao.length > 40 ? "text-danger" : "text-muted"}`}>
-							{formData.localizacao.length}/40 caracteres
-						</small>
-					</div>
-					</Form.Group>
-				</Col>
-
-				<Col md={6} className={style.rightColumn}>
-					<div className={style.rightColumnContainer}>
-					<Form.Group className={`${style.mb3} ${style.inlineField}`}>
+					<Form.Group className={`${style.mb3} d-flex flex-column ${style.width100}`}>
 						<Form.Label
-						className={style.formLabel}
-						style={{ minWidth: "140px" }}
+							className={`${style.formLabel}`}
 						>
-						Mês de Início <RequiredFieldTooltip />
-						</Form.Label>
-						<Form.Control
-						className={style.smallDate}
-						type="month"
-						name="dataInicio"
-						value={formData.dataInicio}
-						onChange={handleChange}
-						/>
-					</Form.Group>
-
-					<Form.Group
-						className={`${style.mb3} d-flex align-items-center`}
-					>
-						<Form.Label
-						className={`${style.formLabel} mb-0 me-3`}
-						style={{ minWidth: "120px" }}
-						>
-						Tipo de Estágio <RequiredFieldTooltip />
+							Tipo de Estágio <RequiredFieldTooltip />
 						</Form.Label>
 						<div className={style.radioGroup}>
 						<Form.Check
@@ -353,45 +305,75 @@ const CriacaoEstagio = () => {
 						/>
 						</div>
 					</Form.Group>
+				</div>
 
-					<Form.Group
-						className={`${style.mb3}`}
-						style={{
-						display: "flex",
-						alignItems: "center",
-						gap: "12px",
-						}}
+				<div className={style.flexRow}>
+					<Form.Group className={`${style.mb3} d-flex flex-column ${style.width100}`}>
+					<Form.Label
+						className={`${style.formLabel}`}
 					>
+						Número de Vagas <RequiredFieldTooltip />
+					</Form.Label>
+					<Form.Control
+						className={style.smallInput}
+						type="number"
+						name="numeroVagas"
+						value={formData.numeroVagas}
+						onChange={handleChange}
+						placeholder="1"
+						min="1"
+						style={{ maxWidth: "80px" }}
+					/>
+					</Form.Group>
+					<Form.Group className={`${style.mb3} d-flex flex-column ${style.width100}`}>
 						<Form.Label
-						className={style.formLabel}
-						style={{ minWidth: "140px", marginBottom: 0 }}
+							className={style.formLabel}
 						>
 						Duração do Estágio <RequiredFieldTooltip />
 						</Form.Label>
-						<Form.Control
-							className={`${style.formControl}  `}
-							type="number"
-							name="duracao"
-							value={formData.duracao}
-							onChange={handleChange}
-							placeholder="Ex: 1"
-							defaultValue={1}
-							min="1"
-							max="12"
-							style={{ width: "80px" }}
-						/>
-						Mes(es)
+						<div className="d-flex align-items-center gap-3">
+							<Form.Control
+								className={style.formControl}
+								type="number"
+								name="duracao"
+								value={formData.duracao}
+								onChange={handleChange}
+								placeholder="Ex: 1"
+								defaultValue={1}
+								min="1"
+								max="12"
+								style={{ width: "80px" }}
+							/>
+							<span>Meses</span>
+						</div>
 					</Form.Group>
-
-					<Form.Group
-					 className={`${style.mb3} prazoGroup`}
-					  style={{ alignItems: "center" }}
-					 >
-						<Form.Label
-						className={style.formLabel}
-						style={{ marginBottom: "0.25rem" }}
-						>
-						Prazo Limite de Candidatura <RequiredFieldTooltip />
+					
+				</div>
+				<div className={style.flexRow}>
+					<Form.Group className={`${style.mb3} d-flex flex-column ${style.width100}`}>
+					<Form.Label className={style.formLabel}>
+						Localização <RequiredFieldTooltip />
+					</Form.Label>
+					<Form.Control
+						className={`${style.formControl} ${formData.localizacao.length > 40 ? "is-invalid" : ""}`}
+						type="text"
+						name="localizacao"
+						value={formData.localizacao}
+						onChange={handleChange}
+						placeholder="Ex: Funchal"
+					/>
+					<div className="d-flex justify-content-between">
+						{formData.localizacao.length > 40 && (
+							<span className={style.charterror}>Máximo de 40 caracteres ultrapassado!</span>
+						)}
+						<small className={` ${formData.localizacao.length > 40 ? "text-danger" : "text-muted"}`}>
+							{formData.localizacao.length}/40 caracteres
+						</small>
+					</div>
+					</Form.Group>
+					<Form.Group className={`${style.mb3} d-flex flex-column ${style.width100}`}>
+						<Form.Label className={style.formLabel}>
+							Prazo Limite de Candidatura <RequiredFieldTooltip />
 						</Form.Label>
 						<Form.Control
 							className={style.smallDate}
@@ -402,8 +384,7 @@ const CriacaoEstagio = () => {
 							onChange={handleChange}
 						/>
 					</Form.Group>
-					</div>
-				</Col>
+				</div>
 				</Row>
 				<div
 				className={`${style.dFlex} ${style.justifyContentBetween} ${style.mt4}`}
