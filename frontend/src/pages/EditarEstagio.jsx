@@ -7,308 +7,270 @@ import RequiredFieldTooltip from "../components/RequiredFieldTooltip.jsx";
 import TagInput from "../components/TagInput.jsx";
 
 const STEPS = {
-  BASICO: 1,
-  DETALHES: 2,
-  REQUISITOS: 3,
-  CONFIRMAR: 4,
+    BASICO: 1,
+    DETALHES: 2,
+    REQUISITOS: 3,
+    CONFIRMAR: 4,
 };
 
-const EditarEstagio = () => {
-  const navigate = useNavigate();
-  const { id } = useParams();
-  const [step, setStep] = useState(1);
-  const [loading, setLoading] = useState(false);
-  const [loadingData, setLoadingData] = useState(true);
-  const [loadingDelete, setLoadingDelete] = useState(false);
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [formData, setFormData] = useState({
-    titulo: "",
-    area: [],
-    vagas: "",
-    localizacao: "",
-    dataInicio: "",
-    tipo: "",
-    duracao: "",
-    prazo: "",
-    descricao: "",
-    beneficios: [],
-    horaInicio: "",
-    horaFim: "",
-    habilitacoes: "",
-    cursosPreferenciais: [],
-    competenciasTecnicas: [],
-    competenciasPessoais: [],
-    idiomas: [],
-    outrosRequisitos: "",
-  });
-  //limite de cratcteres
-  const [Warnings, setWarnings] = useState({
-    titulo: false,
-    area: false,
-    vagas: false,
-    localizacao: false,
-    inicio: false,
-    tipo: false,
-    duracao: false,
-    prazo: false,
-    descricao: false,
-    beneficios: false,
-    horaInicio: false,
-    horaFim: false,
-    habilitacoes: false,
-    competenciasTecnicas: false,
-    competenciasPessoais: false,
-    idiomas: false,
-    outrosRequisitos: false,
-  });
+    const EditarEstagio = () => {
+    const navigate = useNavigate();
+    const { id } = useParams();
+    const [step, setStep] = useState(1);
+    const [loading, setLoading] = useState(false);
+    const [loadingData, setLoadingData] = useState(true);
+    const [loadingDelete, setLoadingDelete] = useState(false);    
+    const [fieldErrors, setFieldErrors] = useState({});
+    const [error, setError] = useState("");
+    const [success, setSuccess] = useState("");
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [formData, setFormData] = useState({
+        title: "",
+        area: [],
+        numeroVagas: 0,
+        localizacao: "",
+        dataInicio: "",
+        tipoEstagio: "",
+        duracao: 0,
+        prazoCandidatura: "",
+        descricao: "",
+        beneficios: [],
+        horaInicio: "",
+        horaFim: "",
+        habilitacoesMinimas: "",
+        cursosPreferenciais: [],
+        competenciasTecnicas: [],
+        competenciasPessoais: [],
+        idiomas: [],
+        observacoes: "",
+    });
 
-  useEffect(() => {
-    const carregarEstagio = async () => {
-      try {
-        setLoadingData(true);
+    //limite de cratcteres
+    const [Warnings, setWarnings] = useState({
+        titulo: false,
+        area: false,
+        vagas: false,
+        localizacao: false,
+        inicio: false,
+        tipoEstagio: false,
+        duracao: false,
+        prazoCandidatura: false,
+        descricao: false,
+        beneficios: false,
+        horaInicio: false,
+        horaFim: false,
+        habilitacoes: false,
+        competenciasTecnicas: false,
+        competenciasPessoais: false,
+        idiomas: false,
+        outrosRequisitos: false,
+    });
+
+    useEffect(() => {
+        const carregarEstagio = async () => {
+        try {
+            setLoadingData(true);
+            const response = await fetch(`http://localhost:5000/api/estagios/${id}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error("Erro ao carregar dados do estágio");
+            }
+
+            const estagio = await response.json();
+            setFormData({
+                title: estagio.title,
+                area: estagio.area,
+                numeroVagas: estagio.numeroVagas,
+                localizacao: estagio.localizacao,
+                dataInicio: estagio.dataInicio,
+                tipoEstagio: estagio.tipoEstagio,
+                duracao: estagio.duracao,
+                prazoCandidatura: estagio.prazoCandidatura ? estagio.prazoCandidatura.slice(0, 10) : "",
+                descricao: estagio.descricao,
+                beneficios: estagio.beneficios,
+                horaInicio: estagio.horaInicio,
+                horaFim: estagio.horaFim,
+                habilitacoesMinimas: estagio.habilitacoesMinimas,
+                cursosPreferenciais: estagio.cursosPreferenciais,
+                competenciasTecnicas: estagio.competenciasTecnicas,
+                competenciasPessoais: estagio.competenciasPessoais,
+                idiomas: estagio.idiomas,
+                observacoes: estagio.observacoes,
+            });
+
+
+        } catch (error) {
+            console.error("Erro ao carregar estágio:", error);
+            setError("Erro ao carregar dados do estágio. Tente novamente.");
+        } finally {
+            setLoadingData(false);
+        }
+        };
+
+        if (id) {
+            carregarEstagio();
+        }
+    }, [id]);
+
+    // Limites específicos para cada campo
+    const fieldLimits = {
+        titulo: 60,
+        localizacao: 40,
+        area: 30,
+        descricao: 500,
+        beneficios: 300,
+        competenciasTecnicas: 300,
+        cursosPreferenciais: 200,
+        competenciasPessoais: 200,
+        idiomas: 150,
+        outrosRequisitos: 150,
+    };
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        const limit = fieldLimits[name];
+        
+        // Se o campo tem limite específico, aplica a validação
+        if (limit && value.length > limit) {
+            return; // Não permite ultrapassar o limite
+        }
+        
+        // Atualiza o valor
+        setFormData((prev) => ({ ...prev, [name]: value }));
+        
+        // Atualiza os warnings se necessário
+        if (limit) {
+            setWarnings((prev) => ({ ...prev, [name]: value.length === limit }));
+        }
+    };
+
+    const handleNext = async () => {
+        if (step < STEPS.CONFIRMAR) {
+            setStep(step + 1);
+        } else if (step === STEPS.CONFIRMAR) {
+            await handleAtualizarEstagio();
+        }
+    };
+
+    const handleAtualizarEstagio = async () => {
+        setLoading(true);
+        setError("");
+        setSuccess("");
+        setFieldErrors({});
+
+        try {
+            const request = await fetch(`http://localhost:5000/api/estagios/${id}`, {
+                method: "PUT",
+                headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+                },
+                body: JSON.stringify(formData),
+            });
+
+            const response = await request.json();
+			if (request.ok) {
+				setSuccess(true);
+				setTimeout(() => {
+					navigate(`/profile/${id}`);
+				}, 2000);
+				setFormData({});
+				setFieldErrors({});
+			} else {
+				if (response.message && typeof response.message === 'object') {
+                    setFieldErrors(response.message);
+                } else if (typeof response.message === 'string') {
+                    setFieldErrors({ general: response.message });
+                }
+			}	
+		} catch (error) {
+            console.error("Erro ao publicar estágio:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleBack = () => {
+        if (step > STEPS.BASICO) setStep(step - 1);
+    };
+
+    const handleCancel = () => {
+        navigate(-1);
+    };
+
+    const handleDeleteEstagio = async () => {
+        setLoadingDelete(true);
+        setError("");
+
+        try {
         const response = await fetch(`http://localhost:5000/api/estagios/${id}`, {
-          method: "GET",
-          headers: {
+            method: "DELETE",
+            headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
+            },
         });
 
         if (!response.ok) {
-          throw new Error("Erro ao carregar dados do estágio");
+            const errorData = await response.json();
+            throw new Error(errorData.message || "Erro ao deletar estágio");
         }
 
-        const estagio = await response.json();
+        setSuccess("Estágio deletado com sucesso!");
+        setShowDeleteModal(false);
 
-        setFormData({
-          titulo: estagio.title,
-          area: estagio.area,
-          vagas: estagio.numeroVagas?.toString(),
-          localizacao: estagio.localizacao,
-          dataInicio: estagio.dataInicio,
-          tipo: estagio.tipoEstagio,
-          duracao: estagio.duracao ? `${estagio.duracao} ${estagio.duracao === 1 ? "Mês" : "Meses"}` : "",
-          prazo: estagio.prazoCandidatura,
-          descricao: estagio.descricao,
-          beneficios: estagio.beneficios,
-          horaInicio: estagio.horaInicio,
-          horaFim: estagio.horaFim,
-          habilitacoes: estagio.habilitacoesMinimas,
-          cursosPreferenciais: estagio.cursosPreferenciais,
-          competenciasTecnicas: estagio.competenciasEssenciais,
-          competenciasPessoais: estagio.competenciasPessoais,
-          idiomas: estagio.idiomas,
-          outrosRequisitos: estagio.observacoes,
-        });
-      } catch (error) {
-        console.error("Erro ao carregar estágio:", error);
-        setError("Erro ao carregar dados do estágio. Tente novamente.");
-      } finally {
-        setLoadingData(false);
-      }
+        setTimeout(() => {
+            const userToken = localStorage.getItem("token");
+            if (userToken) {
+            const payload = JSON.parse(atob(userToken.split(".")[1]));
+            const userId = payload.id;
+            navigate(`/estagios-criados/${userId}`);
+            } else {
+            navigate("/profile");
+            }
+        }, 1500);
+        } catch (error) {
+        console.error("Erro ao deletar estágio:", error);
+        setError(error.message || "Erro ao deletar estágio. Tente novamente.");
+        setShowDeleteModal(false);
+        } finally {
+        setLoadingDelete(false);
+        }
     };
 
-    if (id) {
-      carregarEstagio();
+    if (loadingData) {
+        return (
+        <Container className="mt-5">
+            <p>Carregando dados do estágio...</p>
+        </Container>
+        );
     }
-  }, [id]);
-
-  // Limites específicos para cada campo
-  const fieldLimits = {
-    titulo: 60,
-    localizacao: 40,
-    area: 30,
-    descricao: 500,
-    beneficios: 300,
-    competenciasTecnicas: 300,
-    cursosPreferenciais: 200,
-    competenciasPessoais: 200,
-    idiomas: 150,
-    outrosRequisitos: 150,
-  };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    const limit = fieldLimits[name];
-    
-    // Se o campo tem limite específico, aplica a validação
-    if (limit && value.length > limit) {
-      return; // Não permite ultrapassar o limite
-    }
-    
-    // Atualiza o valor
-    setFormData((prev) => ({ ...prev, [name]: value }));
-    
-    // Atualiza os warnings se necessário
-    if (limit) {
-      setWarnings((prev) => ({ ...prev, [name]: value.length === limit }));
-    }
-  };
-
-  const handleNext = async () => {
-    if (step < STEPS.CONFIRMAR) {
-      setStep(step + 1);
-    } else if (step === STEPS.CONFIRMAR) {
-      await handleAtualizarEstagio();
-    }
-  };
-
-  const handleAtualizarEstagio = async () => {
-    setLoading(true);
-    setError("");
-    setSuccess("");
-
-    try {
-      const camposObrigatorios = {
-        titulo: "Título do estágio",
-        area: "Área de atuação",
-        vagas: "Número de vagas",
-        localizacao: "Localização",
-        dataInicio: "Data de início",
-        tipo: "Tipo de estágio",
-        duracao: "Duração do estágio",
-        prazo: "Prazo limite de candidatura",
-        descricao: "Descrição do estágio",
-        beneficios: "Benefícios oferecidos",
-      };
-
-      const camposFaltando = [];
-      for (const [campo, nome] of Object.entries(camposObrigatorios)) {
-        const valor = formData[campo];
-        if (!valor || (typeof valor === 'string' && valor.trim() === "") || (typeof valor !== 'string' && valor === "")) {
-          camposFaltando.push(nome);
-        }
-      }
-
-      if (camposFaltando.length > 0) {
-        throw new Error(`Por favor, preencha os seguintes campos obrigatórios: ${camposFaltando.join(", ")}`);
-      }
-
-      const estagioData = {
-        title: formData.titulo,
-        area: formData.area || [],
-        dataInicio: formData.dataInicio,
-        tipoEstagio: formData.tipo,
-        duracao: parseInt(formData.duracao.split(" ")[0]),
-        numeroVagas: parseInt(formData.vagas),
-        localizacao: formData.localizacao,
-        prazoCandidatura: formData.prazo,
-        descricao: formData.descricao,
-        beneficios: formData.beneficios,
-        habilitacoesMinimas: formData.habilitacoes || "",
-        cursosPreferenciais: formData.cursosPreferenciais || [],
-        competenciasEssenciais: formData.competenciasTecnicas || [],
-        competenciasPessoais: formData.competenciasPessoais || [],
-        idiomas: formData.idiomas || [],
-        observacoes: formData.outrosRequisitos || "",
-      };
-
-      const response = await fetch(`http://localhost:5000/api/estagios/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        body: JSON.stringify(estagioData),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Erro ao atualizar estágio");
-      }
-
-      setSuccess("Estágio atualizado com sucesso!");
-
-      const userToken = localStorage.getItem("token");
-      if (userToken) {
-        const payload = JSON.parse(atob(userToken.split(".")[1]));
-        const userId = payload.id;
-        navigate(`/estagios-criados/${userId}`);
-      } else {
-        navigate("/profile");
-      }
-    } catch (error) {
-      console.error("Erro ao atualizar estágio:", error);
-      setError(error.message || "Erro ao atualizar estágio. Tente novamente.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleBack = () => {
-    if (step > STEPS.BASICO) setStep(step - 1);
-  };
-
-  const handleCancel = () => {
-    navigate(-1);
-  };
-
-  const handleDeleteEstagio = async () => {
-    setLoadingDelete(true);
-    setError("");
-
-    try {
-      const response = await fetch(`http://localhost:5000/api/estagios/${id}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Erro ao deletar estágio");
-      }
-
-      setSuccess("Estágio deletado com sucesso!");
-      setShowDeleteModal(false);
-
-      setTimeout(() => {
-        const userToken = localStorage.getItem("token");
-        if (userToken) {
-          const payload = JSON.parse(atob(userToken.split(".")[1]));
-          const userId = payload.id;
-          navigate(`/estagios-criados/${userId}`);
-        } else {
-          navigate("/profile");
-        }
-      }, 1500);
-    } catch (error) {
-      console.error("Erro ao deletar estágio:", error);
-      setError(error.message || "Erro ao deletar estágio. Tente novamente.");
-      setShowDeleteModal(false);
-    } finally {
-      setLoadingDelete(false);
-    }
-  };
-
-  if (loadingData) {
     return (
-      <Container className="mt-5">
-        <p>Carregando dados do estágio...</p>
-      </Container>
-    );
-  }
-  return (
     <>
-      <NavBar />
-      {error && (
-        <div className={`${style.container} ${style.mt4}`}>
-          <Alert variant="danger" dismissible onClose={() => setError("")}>
-            {error}
-          </Alert>
-        </div>
-      )}
-      {success && (
-        <div className={`${style.container} ${style.mt4}`}>
-          <Alert variant="success" dismissible onClose={() => setSuccess("")}>
-            {success}
-          </Alert>
-        </div>
-      )}
+        <NavBar />
+        {Object.keys(fieldErrors).length > 0 && (
+            <div className={`alert ${style.alertDanger}`}>
+                <ul className="mb-0">
+                    {Object.values(fieldErrors).map((error, index) => (
+                        <span key={index}>{error} <br /></span>
+                    ))}
+                </ul>
+            </div>
+        )}
+        {success && (
+            <div className={`alert ${style.alertSuccess}`}>
+                <ul className="mb-0">
+                    <span>Estágio atualizado com sucesso!</span>
+                </ul>
+            </div>
+        )}
+
 
       <Container className="mt-5">
         <div className={`${style.container} ${style.mt4}`}>
@@ -342,18 +304,18 @@ const EditarEstagio = () => {
                 </Form.Label>
                 <Form.Control
                   type="text"
-                  name="titulo"
-                  value={formData.titulo}
+                  name="title"
+                  value={formData.title}
                   onChange={handleChange}
                   placeholder="Ex: Estágio em Desenvolvimento Web"
-                  className={`${style.input} ${formData.titulo.length > 60 ? "is-invalid" : ""}`}
+                  className={`${style.input} ${formData.title.length > 60 ? "is-invalid" : ""}`}
                 />
                 <div className="d-flex justify-content-between">
-                  {formData.titulo.length > 60 && (
+                  {formData.title.length > 60 && (
                     <span className={style.charterror}>Máximo de 60 caracteres ultrapassado!</span>
                   )}
-                  <small className={`ms-auto ${formData.titulo.length > 60 ? "text-danger" : "text-muted"}`}>
-                    {formData.titulo.length}/60 caracteres
+                  <small className={`ms-auto ${formData.title.length > 60 ? "text-danger" : "text-muted"}`}>
+                    {formData.title.length}/60 caracteres
                   </small>
                 </div>
               </Form.Group>
@@ -389,8 +351,8 @@ const EditarEstagio = () => {
                     </Form.Label>
                     <Form.Control
                       type="number"
-                      name="vagas"
-                      value={formData.vagas}
+                      name="numeroVagas"
+                      value={formData.numeroVagas}
                       onChange={handleChange}
                       min="1"
                       placeholder="1"
@@ -447,12 +409,11 @@ const EditarEstagio = () => {
                       Tipo de Estágio <RequiredFieldTooltip />
                     </Form.Label>
                     <Form.Select
-                      name="tipo"
-                      value={formData.tipo}
+                      name="tipoEstagio"
+                      value={formData.tipoEstagio}
                       onChange={handleChange}
                       className={style.select}
                     >
-                      <option value="">Selecione o tipo</option>
                       <option value="Presencial">Presencial</option>
                       <option value="Remoto">Remoto</option>
                       <option value="Híbrido">Híbrido</option>
@@ -472,17 +433,21 @@ const EditarEstagio = () => {
                     <Form.Label className={`${style.label} fw-bold`}>
                       Duração do Estágio <RequiredFieldTooltip />
                     </Form.Label>
-                    <Form.Select
-                      name="duracao"
-                      value={formData.duracao}
-                      onChange={handleChange}
-                      className={style.select}
-                    >
-                      <option value="">Selecione a duração</option>
-                      <option value="1 Mês">1 Mês</option>
-                      <option value="2 Meses">2 Meses</option>
-                      <option value="3 Meses">3 Meses</option>
-                    </Form.Select>
+                    <div style={{ display: "flex", alignItems: "center", gap: '1rem' }}>
+                        <Form.Control
+                            className={style.input}
+                            type="number"
+                            name="duracao"
+                            value={formData.duracao}
+                            onChange={handleChange}
+                            placeholder="Ex: 1"
+                            defaultValue={1}
+                            min="1"
+                            max="12"
+                            style={{ width: "80px" }}
+                        />
+                        Mes(es)
+                    </div>
                   </Form.Group>
                 </Col>
 
@@ -494,8 +459,8 @@ const EditarEstagio = () => {
                     </Form.Label>
                     <Form.Control
                       type="date"
-                      name="prazo"
-                      value={formData.prazo}
+                      name="prazoCandidatura"
+                      value={formData.prazoCandidatura}
                       onChange={handleChange}
                       className={style.input}
                     />
@@ -505,7 +470,7 @@ const EditarEstagio = () => {
 
               {/* Descrição do Estágio */}
               <Form.Group className="mb-3">
-                <Form.Label className={style.label}>
+                <Form.Label className={`${style.label} fw-bold`}>
                   Descrição do Estágio <RequiredFieldTooltip />
                 </Form.Label>
                 <Form.Control
@@ -583,8 +548,8 @@ const EditarEstagio = () => {
                 </Form.Label>
                 <Form.Select
                   className={`${style.formSelect} w-100`}
-                  name="habilitacoes"
-                  value={formData.habilitacoes || ""}
+                  name="habilitacoesMinimas"
+                  value={formData.habilitacoesMinimas || ""}
                   onChange={handleChange}
                 >
                   <option value="">Selecione o nível de habilitação</option>
@@ -612,12 +577,12 @@ const EditarEstagio = () => {
                   placeholder="Escreva as competências técnicas essenciais (Ex: Programação, Design Gráfico, Marketing Digital)"
                 />
                 <div className="d-flex justify-content-between">
-                  {formData.competenciasTecnicas.length > 300 && (
-                    <span className={style.charterror}>Máximo de 300 caracteres ultrapassado!</span>
-                  )}
-                  <small className={`ms-auto ${formData.competenciasTecnicas.length > 300 ? "text-danger" : "text-muted"}`}>
-                    {formData.competenciasTecnicas.length}/300 caracteres
-                  </small>
+                    {Array.isArray(formData.competenciasTecnicas) && formData.competenciasTecnicas.length > 300 && (
+                        <span className={style.charterror}>Máximo de 300 caracteres ultrapassado!</span>
+                    )}
+                    <small className={`ms-auto ${Array.isArray(formData.competenciasTecnicas) && formData.competenciasTecnicas.length > 300 ? "text-danger" : "text-muted"}`}>
+                        {Array.isArray(formData.competenciasTecnicas) ? formData.competenciasTecnicas.length : 0}/300 caracteres
+                    </small>
                 </div>
               </Form.Group>
 
@@ -677,14 +642,14 @@ const EditarEstagio = () => {
                       value={formData.outrosRequisitos}
                       onChange={handleChange}
                       placeholder="Requisitos adicionais..."
-                      className={`${style.input} ${formData.outrosRequisitos.length > 150 ? "is-invalid" : ""}`}
+                      className={`${style.input} ${Array.isArray(formData.outrosRequisitos) && formData.outrosRequisitos.length > 150 ? "is-invalid" : ""}`}
                     />
                     <div className="d-flex justify-content-between">
-                      {formData.outrosRequisitos.length > 150 && (
+                      {Array.isArray(formData.outrosRequisitos) && formData.outrosRequisitos.length > 150 && (
                         <span className={style.charterror}>Máximo de 150 caracteres ultrapassado!</span>
                       )}
-                      <small className={`ms-auto ${formData.outrosRequisitos.length > 150 ? "text-danger" : "text-muted"}`}>
-                        {formData.outrosRequisitos.length}/150 caracteres
+                      <small className={`ms-auto ${Array.isArray(formData.outrosRequisitos) && formData.outrosRequisitos.length > 150 ? "text-danger" : "text-muted"}`}>
+                        {Array.isArray(formData.outrosRequisitos) ? formData.outrosRequisitos.length : 0}/150 caracteres
                       </small>
                     </div>
                   </Form.Group>
@@ -701,24 +666,24 @@ const EditarEstagio = () => {
                 style={{ display: "flex", flexWrap: "wrap", gap: "1.5rem", textAlign: "left" }}
               >
                 <div style={{ flex: "1 1 45%" }}>
-                  <p><strong>Título:</strong> {formData.titulo || <span style={{ color: "#aaa" }}> Não especificado.</span>}</p>
+                  <p><strong>Título:</strong> {formData.title || <span style={{ color: "#aaa" }}> Não especificado.</span>}</p>
                   <p><strong>Área:</strong> {formData.area ?  formData.area.join(", ") : <span style={{ color: "#aaa" }}> Não especificado.</span>}</p>
-                  <p><strong>Vagas:</strong> {formData.vagas || <span style={{ color: "#aaa" }}> Não especificado.</span>}</p>
+                  <p><strong>Vagas:</strong> {formData.numeroVagas || <span style={{ color: "#aaa" }}> Não especificado.</span>}</p>
                   <p><strong>Localização:</strong> {formData.localizacao || <span style={{ color: "#aaa" }}> Não especificado.</span>}</p>
-                  <p><strong>Tipo:</strong> {formData.tipo || <span style={{ color: "#aaa" }}> Não especificado.</span>}</p>
+                  <p><strong>Tipo:</strong> {formData.tipoEstagio || <span style={{ color: "#aaa" }}> Não especificado.</span>}</p>
                   <p><strong>Duração:</strong> {formData.duracao || <span style={{ color: "#aaa" }}> Não especificado.</span>}</p>
                   <p><strong>Início:</strong> {formData.dataInicio || <span style={{ color: "#aaa" }}> Não especificado.</span>}</p>
-                  <p><strong>Prazo de Candidatura:</strong> {formData.prazo || <span style={{ color: "#aaa" }}> Não especificado.</span>}</p>
+                  <p><strong>Prazo de Candidatura:</strong> {formData.prazoCandidatura || <span style={{ color: "#aaa" }}> Não especificado.</span>}</p>
                 </div>
                 <div style={{ flex: "1 1 45%" }}>
                   <p><strong>Descrição:</strong> {formData.descricao || <span style={{ color: "#aaa" }}> Não especificado.</span>}</p>
                   <p><strong>Benefícios:</strong> {formData.beneficios ? formData.beneficios.join(", ") : <span style={{ color: "#aaa" }}> Não especificado.</span>}</p>
                   <p><strong>Cursos Preferenciais:</strong> {formData.cursosPreferenciais ? formData.cursosPreferenciais.join(", ") : <span style={{ color: "#aaa" }}> Não especificado.</span>}</p>
-                  <p><strong>Habilitações Mínimas:</strong> {formData.habilitacoes || <span style={{ color: "#aaa" }}> Não especificado.</span>}</p>
+                  <p><strong>Habilitações Mínimas:</strong> {formData.habilitacoesMinimas || <span style={{ color: "#aaa" }}> Não especificado.</span>}</p>
                   <p><strong>Competências Técnicas:</strong> {formData.competenciasTecnicas ? formData.competenciasTecnicas.join(", ") : <span style={{ color: "#aaa" }}> Não especificado.</span>}</p>
                   <p><strong>Competências Pessoais:</strong> {formData.competenciasPessoais ? formData.competenciasPessoais.join(", ") : <span style={{ color: "#aaa" }}> Não especificado.</span>}</p>
                   <p><strong>Idiomas:</strong> {formData.idiomas ? formData.idiomas.join(", ") : <span style={{ color: "#aaa" }}> Não especificado.</span>}</p>
-                  <p><strong>Outros Requisitos:</strong> {formData.outrosRequisitos || <span style={{ color: "#aaa" }}> Não especificado.</span>}</p>
+                  <p><strong>Outros Requisitos:</strong> {formData.observacoes || <span style={{ color: "#aaa" }}> Não especificado.</span>}</p>
                 </div>
               </div>
             </div>
