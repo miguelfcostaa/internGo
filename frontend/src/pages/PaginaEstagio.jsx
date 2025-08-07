@@ -62,36 +62,42 @@ function PaginaEstagio() {
     return (
         <>
             <NavBar />
-            <div style={{ margin: "2rem 17% 2rem 23%" }}>
+            <div style={{ marginLeft: "20%", marginTop: "2rem", marginBottom: "1rem" }}>
                 <ButtonVoltar />
             </div>
             <div className={Styles.background}>
-
-            {/* Encabezado */}
-            <div className={Styles.headerBox}>
-                <div className={Styles.headerContent}></div>
-                <div className={Styles.logoTitle}>
-                    <img src={acin} className={Styles.acin} alt="Logo Empresa" />
-                    <div className={Styles.titleTexts}>
-                        <h4 className={Styles.heading}>{estagio.company.name}</h4>
-                        <h4 className={Styles.heading}>{estagio.title}</h4>
+                <div className={Styles.headerBox}>
+                    <div className={Styles.headerContent}></div>
+                    <div className={Styles.logoTitle}>
+                        <img 
+                            src={`http://localhost:5000${estagio.company.profilePhoto}`} 
+                            alt=" " 
+                            width={120} 
+                            height={120}
+                            style={{
+                                borderRadius: '50%',
+                                objectFit: 'cover',
+                                backgroundColor: 'rgb(185, 185, 185, 0.40)', 
+                            }}
+                        />
+                        <div className={Styles.titleTexts}>
+                            <h4 className={Styles.heading}>{estagio.company.name}</h4>
+                            <h4 className={Styles.heading}>{estagio.title}</h4>
+                        </div>
+                        <div className={Styles.contactInfo}>
+                            <strong>Email:</strong> {estagio.company.email} <br />
+                            <strong>Contacto:</strong>
+                        </div>
                     </div>
-                    <div className={Styles.contactInfo}>
-                        <strong>Email:</strong> {estagio.company.email} <br />
-                        <strong>Contacto:</strong>
-                    </div>
+                    <hr className={Styles.separator} />
                 </div>
-                <hr className={Styles.separator} />
-            </div>
 
-            {/* Contenido principal (columna izquierda + sidebar) */}
-            <div className={Styles.mainContent}>
-                {/* Columna izquierda */}
+                <div className={Styles.mainContent}>
                     <div className={Styles.leftColumn}>
                         <ul className={Styles.cleanList}>
                             <li>
                                 <strong>Área(s) de Atuação:</strong>
-                                <p>{estagio.area || <span style={{ color: '#888' }}>Não especificado..</span>}</p>
+                                <p>{estagio.area.join(', ') || <span style={{ color: '#888' }}>Não especificado..</span>}</p>
                             </li>
                             <li>
                                 <strong>Habilitações Académicas Mínimas:</strong>

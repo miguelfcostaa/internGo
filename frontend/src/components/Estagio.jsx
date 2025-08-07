@@ -44,7 +44,7 @@ function Estagio({ NomeEmpresa, NomeEstagio, TotalVagas, Ativas, Area, Inicio, T
             <div className={styles.logoContainer}>
                 <div style={{ width: "120px", height: "120px", display: "flex", alignSelf: "center" }}>
                     <img 
-                        src={profilePhoto ? `http://localhost:5000${profilePhoto}` : profilePhoto} 
+                        src={`http://localhost:5000${profilePhoto}`} 
                         alt=" " 
                         width={120} 
                         height={120}

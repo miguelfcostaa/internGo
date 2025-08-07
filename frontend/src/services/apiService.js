@@ -84,7 +84,6 @@ export const criarEstagio = async (estagioData) => {
 
     if (!res.ok) {
       
-      
     }
 
     return data;
@@ -103,11 +102,11 @@ export const obterEstagiosRecomendados = async (limite = 10) => {
     }
 
     const res = await fetch(`http://localhost:5000/api/estagios/recomendados?limite=${limite}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`
-      }
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        }
     });
     
     const data = await res.json();

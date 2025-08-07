@@ -122,7 +122,7 @@ const createAccentInsensitiveFilter = (fieldName, searchTerms) => {
 // Função para obter um estágio por ID
 const obterEstagioById = async (req, res) => {
     try {
-        const estagio = await Estagio.findById(req.params.id).populate('company', 'name email');
+        const estagio = await Estagio.findById(req.params.id).populate('company', 'name email profilePhoto');
         if (!estagio) {
             return res.status(404).json({ message: 'Estágio não encontrado' });
         }
