@@ -13,10 +13,11 @@ O sistema calcula uma pontuação de 0 a 100 para cada estágio baseado nos segu
 
 1. **Correspondência de Curso (30%)**
    - Compara o curso do utilizador com os `cursosPreferenciais` do estágio
-   - Utiliza algoritmo de similaridade de texto
+   - **Correspondência exata**: Se o curso do utilizador está exatamente na lista de cursos preferenciais, recebe 30 pontos
+   - **Similaridade de texto**: Se não há correspondência exata, utiliza algoritmo de similaridade baseado em palavras-chave comuns
 
 2. **Correspondência de Área (25%)**
-   - Compara a `formacaoAcademica` do utilizador com a `area` do estágio
+   - Compara a `formacaoAcademica` do utilizador com a `habilitacoesMinimas` do estágio
    - Identifica palavras-chave comuns
 
 3. **Competências Técnicas (25%)**

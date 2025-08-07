@@ -297,6 +297,7 @@ const deletarEstagio = async (req, res) => {
 
 // Função para normalizar strings removendo acentos e convertendo para lowercase
 const normalizeString = (str) => {
+    if(typeof str !== 'string') return '';
     return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
 };
 
@@ -445,6 +446,85 @@ const calcularSimilaridade = (texto1, texto2) => {
     return palavrasComuns.length / Math.max(palavras1.length, palavras2.length);
 };
 
+// Função para calcular similaridade de cursos (tratamento especial)
+const calcularSimilaridadeCursos = (cursoUsuario, cursosEstagio) => {
+    if (!cursoUsuario || !cursosEstagio) return 0;
+    
+    const cursoUsuarioLower = cursoUsuario.toLowerCase().trim();
+    
+    // Se cursosEstagio é um array, verificar se o curso do usuário está exatamente em um deles
+    if (Array.isArray(cursosEstagio)) {
+        const cursoEncontrado = cursosEstagio.some(curso => 
+            curso.toLowerCase().trim() === cursoUsuarioLower
+        );
+        
+        if (cursoEncontrado) {
+            return 1.0; // Correspondência total se encontrou o curso exato
+        }
+        
+        // Se não encontrou correspondência exata, usar similaridade normal
+        const cursosString = cursosEstagio.join(' ');
+        return calcularSimilaridade(cursoUsuario, cursosString);
+    }
+    
+    // Se é string, converter para array e aplicar a mesma lógica
+    const cursosArray = cursosEstagio.split(/[,;]/).map(c => c.trim());
+    return calcularSimilaridadeCursos(cursoUsuario, cursosArray);
+};
+
+// Função para extrair código postal de uma localização
+const extrairCodigoPostalDaLocalizacao = (localizacao) => {
+    if (!localizacao) return '';
+    
+    // Padrões para códigos postais portugueses (XXXX-XXX ou XXXX)
+    const padroes = [
+        /\b(\d{4}-\d{3})\b/g,  // Formato completo: 9350-200
+        /\b(\d{4})\b/g         // Formato abreviado: 9350
+    ];
+    
+    for (const padrao of padroes) {
+        const matches = localizacao.match(padrao);
+        if (matches && matches.length > 0) {
+            return matches[0]; // Retorna o primeiro código postal encontrado
+        }
+    }
+    
+    // Lista de códigos postais conhecidos por localização
+    const codigosPostaisPorLocalidade = {
+        'ribeira brava': '9350',
+        'funchal': '9000',
+        'lisboa': '1000',
+        'porto': '4000',
+        'coimbra': '3000',
+        'braga': '4700',
+        'faro': '8000',
+        'aveiro': '3800',
+        'viseu': '3500',
+        'santarém': '2000',
+        'leiria': '2400',
+        'castelo branco': '6000',
+        'bragança': '5300',
+        'vila real': '5000',
+        'viana do castelo': '4900',
+        'setúbal': '2900',
+        'évora': '7000',
+        'beja': '7800',
+        'portalegre': '7300',
+        'guarda': '6300'
+    };
+    
+    const localizacaoLower = localizacao.toLowerCase().trim();
+    
+    // Procurar por correspondência exata ou parcial
+    for (const [localidade, codigo] of Object.entries(codigosPostaisPorLocalidade)) {
+        if (localizacaoLower.includes(localidade) || localidade.includes(localizacaoLower)) {
+            return codigo;
+        }
+    }
+    
+    return '';
+};
+
 // Função para normalizar código postal (extrair os primeiros dígitos)
 const normalizarCodigoPostal = (codigoPostal) => {
     if (!codigoPostal) return '';
@@ -457,36 +537,51 @@ const calcularPontuacaoRecomendacao = (usuario, estagio) => {
     
     // 1. Correspondência de curso (peso: 30%)
     if (usuario.curso && estagio.cursosPreferenciais) {
-        const similaridadeCurso = calcularSimilaridade(usuario.curso, estagio.cursosPreferenciais);
+        const cursoUsuario = usuario.curso;
+        const cursosEstagio = estagio.cursosPreferenciais;
+        const similaridadeCurso = calcularSimilaridadeCursos(cursoUsuario, cursosEstagio);
         pontuacao += similaridadeCurso * 30;
     }
     
-    // 2. Correspondência de área com formação acadêmica (peso: 25%)
-    if (usuario.formacaoAcademica && estagio.area) {
-        const similaridadeArea = calcularSimilaridade(usuario.formacaoAcademica, estagio.area);
-        pontuacao += similaridadeArea * 25;
+    // 2. Correspondência de área com habilitações mínimas (peso: 25%)
+    if (usuario.formacaoAcademica && estagio.habilitacoesMinimas) {
+        const formacaoUsuario = usuario.formacaoAcademica;
+        const habilitacoesEstagio = Array.isArray(estagio.habilitacoesMinimas) 
+            ? estagio.habilitacoesMinimas.join(' ') 
+            : estagio.habilitacoesMinimas;
+        const similaridadeHabilitacoes = calcularSimilaridade(formacaoUsuario, habilitacoesEstagio);
+        pontuacao += similaridadeHabilitacoes * 25;
     }
     
     // 3. Competências técnicas (peso: 25%)
-    if (usuario.competenciasTecnicas && usuario.competenciasTecnicas.length > 0 && estagio.competenciasEssenciais) {
-        const competenciasUsuario = usuario.competenciasTecnicas.join(' ');
-        const similaridadeCompetencias = calcularSimilaridade(competenciasUsuario, estagio.competenciasEssenciais);
+    if (usuario.competenciasTecnicas && usuario.competenciasTecnicas.length > 0 && estagio.competenciasTecnicas) {
+        const competenciasUsuario = Array.isArray(usuario.competenciasTecnicas) 
+            ? usuario.competenciasTecnicas.join(' ') 
+            : usuario.competenciasTecnicas;
+        const competenciasEstagio = Array.isArray(estagio.competenciasTecnicas) 
+            ? estagio.competenciasTecnicas.join(' ') 
+            : estagio.competenciasTecnicas;
+        const similaridadeCompetencias = calcularSimilaridade(competenciasUsuario, competenciasEstagio);
         pontuacao += similaridadeCompetencias * 25;
     }
     
     // 4. Proximidade geográfica (peso: 15%)
     if (usuario.codigoPostal && estagio.localizacao) {
         const cpUsuario = normalizarCodigoPostal(usuario.codigoPostal);
-        const localizacaoEstagio = estagio.localizacao.toLowerCase();
+        const cpEstagio = extrairCodigoPostalDaLocalizacao(estagio.localizacao);
+        const cpEstagioNormalizado = normalizarCodigoPostal(cpEstagio);
         
-        // Verificar se a localização contém referência ao código postal
-        if (cpUsuario && localizacaoEstagio.includes(cpUsuario)) {
-            pontuacao += 15;
-        } else if (cpUsuario) {
-            // Bonificação menor para códigos postais próximos (diferença de 1 dígito)
-            const cpSimilar = cpUsuario.substring(0, 3);
-            if (localizacaoEstagio.includes(cpSimilar)) {
-                pontuacao += 7;
+        if (cpUsuario && cpEstagioNormalizado) {
+            if (cpUsuario === cpEstagioNormalizado) {
+                pontuacao += 15; // Correspondência exata de código postal
+            } else {
+                // Verificar proximidade (primeiros 3 dígitos)
+                const cpUsuarioParcial = cpUsuario.substring(0, 3);
+                const cpEstagioParcial = cpEstagioNormalizado.substring(0, 3);
+                
+                if (cpUsuarioParcial === cpEstagioParcial) {
+                    pontuacao += 7; // Correspondência parcial de código postal
+                }
             }
         }
     }
