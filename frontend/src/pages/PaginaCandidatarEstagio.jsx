@@ -139,7 +139,7 @@ function PaginaCandidatarEstagio() {
                 if (responseUser.ok) {
                     setSuccess(true);
                     setTimeout(() => {
-                        navigate(`/estagios/${id}`);
+                        navigate(`/profile/${user._id}`);
                     }, 2000);
                     setFormData({});
                     setFieldErrors({});

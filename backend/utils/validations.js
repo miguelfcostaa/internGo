@@ -261,8 +261,8 @@ async function validateCandidatura(data) {
     }
 
     // Valida Carta de Apresentação
-    if (data.cartaDeApresentacao && (data.cartaDeApresentacao.length < 10 || data.cartaDeApresentacao.length > 500)) {
-        errors.cartaDeApresentacao = 'Carta de Apresentação deve ter entre 10 e 500 caracteres.';
+    if (data.cartaDeApresentacao && (data.cartaDeApresentacao.length < 10 || data.cartaDeApresentacao.length > 2000)) {
+        errors.cartaDeApresentacao = 'Carta de Apresentação deve ter entre 10 e 2000 caracteres.';
     }
 
     return errors;
