@@ -1,0 +1,29 @@
+.background{
+    background-color: #F2F2F2;
+    height: 120vh;
+    padding-top: 2rem;
+    padding-right: 15%;
+    padding-left: 15%;
+}
+.table{
+    margin-top: 20px;
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    width: 100%;
+}
+.titulo {
+    margin-left: 21%;
+    text-align: center;
+    color: #273F4F;
+    font-weight: bold;
+}
+.flexRow {
+    display: flex;
+    flex-direction: row;
+}
+
+.flexColumn {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+}

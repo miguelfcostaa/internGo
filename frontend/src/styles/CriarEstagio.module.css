@@ -16,7 +16,7 @@ body {
   margin: 2rem auto;
   padding: 2rem 3rem;
   width: 90%;
-  background-color: white;
+  background-color: #fff;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   border-radius: 0.5rem;
   box-sizing: border-box;
@@ -60,15 +60,15 @@ body {
 }
 
 .smallInput {
-  width: 80px;
+  width: 100%;
   text-align: center;
   font-size: 0.95rem;
-  padding: 6px 8px;
 }
 
 .radioGroup {
   display: flex;
   gap: 10px;
+  height: 50px;
 }
 
 .fwBold {
@@ -223,12 +223,15 @@ button {
   min-width: 150px;
 }
 
-.rightColumnContainer {
+.width100 {
+  width: 100%;
+}
+
+.flexRow {
   display: flex;
-  flex-direction: column;
-  gap: 28px; 
-  margin-left: 10px; 
-  margin-top: 20px; 
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 4rem;
 }
 
 .row {
