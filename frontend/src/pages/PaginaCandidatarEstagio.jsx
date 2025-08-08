@@ -193,20 +193,6 @@ function PaginaCandidatarEstagio() {
     }, [user]);
 
 
-    const handleHabilitacoes = (habilitacoes) => {
-        const habilitacoesMap = {
-            "1": "Nível 1 - 4º ano do Ensino Básico",
-            "2": "Nível 2 - 6º ano do Ensino Básico",
-            "3": "Nível 3 - 9º ano do Ensino Básico",
-            "4": "Nível 4 - Ensino Secundário + Estágio Profissional",
-            "5": "Nível 5 - Cursos de Especialização Tecnológica (CET)",
-            "6": "Nível 6 - Licenciatura",
-            "7": "Nível 7 - Mestrado",
-            "8": "Nível 8 - Doutoramento"
-        };
-        return habilitacoesMap[habilitacoes] || habilitacoes;
-    };
-
     return (
         <>
             <NavBar />

@@ -10,6 +10,7 @@ function VerCandidatura() {
     const { id } = useParams();
     const [estado, setEstado] = useState("Pendente");
     const [candidatura, setCandidatura] = useState(null);
+    console.log("Candidatura:", candidatura);
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
     const [loading, setLoading] = useState(true);
@@ -74,12 +75,15 @@ function VerCandidatura() {
                     "Authorization": `Bearer ${localStorage.getItem("token")}`
                 }
             });
+
+            console.log("Resposta da API ao aceitar candidatura:", res);
             if (!res.ok) {
                 setError("Erro ao aceitar candidatura.");
             }
             const data = await res.json();
             setCandidatura(data);
             setSuccess("Candidatura aceita com sucesso!");
+            setEstado("Aceite");
         } catch (err) {
             setError("Erro ao aceitar candidatura. ");
         } finally {
@@ -246,8 +250,8 @@ function VerCandidatura() {
                             <ButtonVoltar style={{ marginTop: "1rem" }} />
                         </div>
                         <div className={style.buttonContainer}>
-                            <button className={style.acceptButton} onClick={() => handleAccept(candidatura.id)}>Aceitar Candidatura</button>
-                            <button className={style.rejectButton} onClick={() => handleReject(candidatura.id)}>Recusar Candidatura</button>
+                            <button className={style.acceptButton} onClick={() => handleAccept(candidatura._id)}>Aceitar Candidatura</button>
+                            <button className={style.rejectButton} onClick={() => handleReject(candidatura._id)}>Recusar Candidatura</button>
                         </div>
                     </>
                         

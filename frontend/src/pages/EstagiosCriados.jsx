@@ -119,7 +119,7 @@ const EstagiosCriados = () => {
                                             : ''}
                                         </td>
                                         <td>
-                                            <a className={styles.link} href={`/estagio/${estagio._id}`}>[Ver Candidaturas] </a>
+                                            <a className={styles.link} href={`/candidaturas/${estagio._id}`}>[Ver Candidaturas] </a>
                                             <Link className={styles.link} to={`/estagio/${estagio._id}/editar`}>[Editar] </Link>
                                             <span className={styles.link} onClick={() => alterarEstado(estagio._id)}>
                                                 [{estagio.status === 'Ativo' ? 'Desativar' : 'Ativar'}]
