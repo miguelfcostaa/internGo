@@ -27,6 +27,27 @@ router.get('/', verifyToken, async (req, res) => {
     }
 });
 
+// Rota para buscar candidaturas de um estágio específico
+router.get('/:candidaturaId', verifyToken, async (req, res) => {
+    try {
+        const candidatura = await Candidatura
+            .findById(req.params.candidaturaId)
+            .populate({
+                path: 'estagio',
+                populate: { path: 'company', select: 'name' }
+            })
+            .populate('user');
+
+        if (!candidatura) {
+            return res.status(404).json({ message: 'Candidatura não encontrada.' });
+        }
+
+        res.json(candidatura);
+    } catch (error) {
+        res.status(500).json({ message: 'Erro ao buscar candidatura', error });
+    }
+});
+
 // Rota para buscar todas as candidaturas a uma empresa 
 router.get('/empresa/:companyId', verifyToken, async (req, res) => {
     try {

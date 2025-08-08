@@ -96,22 +96,26 @@ function ProfileEstagiario() {
                             <div className={styles.infoContainerLeft}>
                                 <b>Nome:</b>
                                 <p>{userInfo.name}</p>
-                                <b>Idade:</b>
-                                <p>{userInfo.idade ? `${userInfo.idade} anos` : <span style={{ color: "#aaa" }}>Ex: 18</span>}</p>
+                                <b>Nº de telemóvel:</b>
+                                <p>{userInfo.telefone || <span style={{ color: "#aaa" }}> Não especificado. </span>}</p>
                                 <b>Morada:</b>
-                                <p>{userInfo.morada || <span style={{ color: "#aaa" }}>Ex: Rua das Flores, 123</span>}</p>
-                                <b>Nacionalidade:</b>
-                                <p>{userInfo.nacionalidade || <span style={{ color: "#aaa" }}>Ex: Portuguesa</span>}</p>
+                                <p>{userInfo.morada || <span style={{ color: "#aaa" }}> Não especificado. </span>}</p>
+                                <b>NIF:</b>
+                                <p>{userInfo.nif || <span style={{ color: "#aaa" }}> Não especificado. </span>}</p>
+                                <b>Universidade:</b>
+                                <p>{userInfo.universidade || <span style={{ color: "#aaa" }}> Não especificado. </span>}</p>
                             </div>
                             <div className={styles.infoContainerRight}>
                                 <b>Email:</b>
-                                <p>{userInfo.email || <span style={{ color: "#aaa" }}>Ex: exemplo@exemplo.com</span>}</p>
-                                <b>NIF:</b>
-                                <p>{userInfo.nif || <span style={{ color: "#aaa" }}>Ex: 123456789</span>}</p>
-                                <b>Nº de telemóvel:</b>
-                                <p>{userInfo.telefone || <span style={{ color: "#aaa" }}>9XX-XXX-XXX</span>}</p>
+                                <p>{userInfo.email || <span style={{ color: "#aaa" }}> Não especificado. </span>}</p>
+                                <b>Data de nascimento:</b>
+                                <p>{userInfo.dataNascimento || <span style={{ color: "#aaa" }}> Não especificado. </span>}</p>
+                                <b>Codigo Postal:</b>
+                                <p>{userInfo.codigoPostal || <span style={{ color: "#aaa" }}> Não especificado. </span>}</p>
                                 <b>Nº de CC:</b>
-                                <p>{userInfo.cc || <span style={{ color: "#aaa" }}>Ex: 12345678</span>}</p>
+                                <p>{userInfo.cc || <span style={{ color: "#aaa" }}> Não especificado. </span>}</p>
+                                <b>Curso:</b>
+                                <p>{userInfo.curso || <span style={{ color: "#aaa" }}> Não especificado. </span>}</p>
                             </div>
                         </div>
                     </div>

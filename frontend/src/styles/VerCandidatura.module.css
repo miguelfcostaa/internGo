@@ -1,16 +1,145 @@
 .background{
+    margin-top: 2rem;
+    margin-left: 20%;
+    margin-right: 20%;
+    margin-bottom: 5%;
     background-color: #F2F2F2;
-    height: 120vh;
-    padding-top: 2rem;
-    padding-right: 15%;
-    padding-left: 15%;
 }
+
+.estagioBox {
+    padding-bottom: 1rem;
+    background: #fff;
+    border-radius: 0.7rem;
+    box-shadow: 0 8px 24px rgba(39,63,79,0.08);
+    border-left: 6px solid #273F4F;
+    border: 1.5px solid #e3e7ed;
+    display: flex;
+    flex-direction: column;
+}
+.estagioBoxInner {
+    padding: 2% 6%;
+}
+.estagioTitle {
+    color: #273F4F;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #e3e7ed;
+    padding-bottom: 1rem;
+    font-size: 1.5rem;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+.estagioInfoRow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    font-size: 1rem;
+    justify-content: space-between;
+}
+
+.infoContainer { 
+    margin: 30px auto 40px auto;
+    display: flex;
+    gap: 2.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    align-items: stretch;
+}
+.infoBox {
+    flex: 1;
+
+    background: #f8fafc;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(39,63,79,0.10);
+    border: 1.5px solid #e3e7ed;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+}
+.infoBoxInner {
+    padding: 2rem 8% 2rem 8%;
+}
+
+.infoHeader {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    background-color: #f0f4f8;
+    border-bottom: 1px solid #e3e7ed;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+}
+
+.infoTitle {
+    color: #273F4F;
+    font-weight: 700;
+    font-size: 22px;
+    text-align: center;
+    letter-spacing: 0.2px;
+}
+
+.link {
+    cursor: pointer;
+    margin-bottom: 0.3rem;
+}
+
+.infoContent {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    font-size: 1rem;
+    gap: 1rem;
+}
+
+.infoRow {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.infoLabel {
+    font-weight: 700;
+    color: #273F4F;
+    min-width: 150px;
+    max-width: 200px;
+    width: 50%;
+    gap: 0.7rem;
+}
+.infoValue {
+    font-weight: 400;
+    color: #313030;
+    min-width: 150px;
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 50%;
+    gap: 0.7rem;
+}
+
+
+.cartaBox {
+    background: #fff;
+    border-radius: 0.7rem;
+    box-shadow: 0 8px 24px rgba(39,63,79,0.08);
+    border: 1.5px solid #e3e7ed;
+    display: flex;
+    flex-direction: column;
+}
+.cartaBoxInner {
+    padding: 3rem 8% 3rem 8%;
+}
+
 .heading{
     color: #273F4F;
     font-weight: bold;
     text-align: center;
     font-size: 30px;
-    margin-bottom: 40px;
+    margin-top: 2rem;
+    border-bottom: 1px solid #e3e7ed;
+    padding-bottom: 2rem;
 }
 .bigbox{
     box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1);
@@ -49,8 +178,12 @@
 }
 .carta{
     color: rgb(49, 48, 48);
-    text-align: left;
-}
+    text-align: justify;
+    font-family: Open Sans;
+    font-size: 16px;
+    line-height: 2rem;
+
+ }
 .bigboxcarta{
     font-family: Open Sans;
     font-size: 16px;
@@ -61,4 +194,75 @@
     padding-bottom: 20px;
     padding-top: 20px;
     line-height: 1.8;
+}
+
+.buttonContainer {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 0.5rem;
+}
+
+.acceptButton {
+    background-color: #4CAF50; /* Green */
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.rejectButton {
+    background-color: #f44336; /* Red */
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.alertDanger {
+  margin-top: 2rem;
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  animation: slideIn 0.3s ease;
+}
+
+.alertSuccess {
+  margin-top: 2rem;
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  animation: slideIn 0.3s ease;
+}
+
+.accepted {
+    background-color: #d4edda;
+    color: #155724;
+    padding: 10px 50px;
+    border: none;
+    border-radius: 5px;
+    cursor: not-allowed;
+    font-weight: bold;
+}
+
+.rejected {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: not-allowed;
+    font-weight: bold;
 }
