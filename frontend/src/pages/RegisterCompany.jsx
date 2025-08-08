@@ -1,19 +1,14 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { signupCompany } from "../services/apiService";
 import styles from '../styles/RegisterCompany.module.css';
 import ButtonSubmit from "../components/ButtonSubmit";
 import PasswordCriteriaTooltip from "../components/PasswordCriteria";  
 import { isPasswordCriterionMet } from "../utils/registerUserUtils"; 
 
 function RegisterCompany() {
-  const [done, setDone] = useState(false);
-  const [fieldErrors, setFieldErrors] = useState({});
-  
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
-  const [showPasswordCriteria, setShowPasswordCriteria] = useState(false);
-  
-  // Estado para armazenar os dados do formulário
+
   const [formData, setFormData] = useState({
     name: "",
     nif: "",
@@ -23,6 +18,11 @@ function RegisterCompany() {
     confirmPassword: ""
   });
 
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const [showPasswordCriteria, setShowPasswordCriteria] = useState(false);
+
   // Handler para atualizar os dados do formulário
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -30,91 +30,66 @@ function RegisterCompany() {
       ...prev,
       [name]: value
     }));
+
+    if (error) setError("");
+    if (success) setSuccess("");
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setFieldErrors({});
     setLoading(true);
-
-    // Validar passwords aquí si quieres (opcional)
-
-    // Armar data para enviar
-    const data = {
-      name: formData.name,
-      nif: formData.nif,
-      email: formData.email,
-      phone: formData.phone,
-      password: formData.password,
-      confirmPassword: formData.confirmPassword
-    };
+    setError("");
+    setSuccess("");
 
     try {
-      const response = await fetch("http://localhost:5000/api/companies/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(data)
+      await signupCompany(
+        formData.name,
+        formData.email,
+        formData.nif,
+        formData.phone,
+        formData.password,
+        formData.confirmPassword
+      );
+
+      setSuccess("Empresa criada com sucesso! Redirecionando para o login...");
+      setFormData({
+        name: "",
+        nif: "",
+        email: "",
+        phone: "",
+        password: "",
+        confirmPassword: ""
       });
 
-      const result = await response.json();
-
-      if (response.ok) {
-        setDone(true);
-        setFieldErrors({});
-        
-        // Limpar formulário
-        setFormData({
-          name: "",
-          nif: "",
-          email: "",
-          phone: "",
-          password: "",
-          confirmPassword: ""
-        });
-
-        // Redirecionar após 2 segundos
-        setTimeout(() => {
-          navigate("/login");
-        }, 2000);
-      } else {
-        if (result.message && typeof result.message === 'object') {
-          setFieldErrors(result.message);
-        } else if (typeof result.message === 'string') {
-          setFieldErrors({ general: result.message });
-        } else {
-          setFieldErrors({ general: "Erro desconhecido ao registar." });
-        }
-      }
-    } catch (error) {
-      console.error("Erro na requisição:", error);
-      setFieldErrors({ general: "Erro de conexão. Tente novamente." });
+      setTimeout(() => {
+        navigate("/login");
+      }, 2000);
+    } catch (err) {
+      handleError(err);
     } finally {
       setLoading(false);
     }
   };
+
+  const handleError = (err) => {
+    // O apiService.js já formata os erros em uma mensagem detalhada
+    setError(err.message || "Erro ao criar conta da empresa. Tente novamente.");
+  };
+
+  const renderAlert = (type, message, icon) => (
+    <div className={`alert alert-${type} d-flex align-items-center`} role="alert">
+      <i className={`bi ${icon} me-2`}></i>
+      {message}
+    </div>
+  );
 
   return (
     <div className="container-fluid page-with-background" style={{ height: '100vh', position: 'relative' }}>
   <div className={styles.registerContainer}>
     <h2 className={`text-center mb-3 ${styles.titleDark}`}>Registo - Empresa</h2>
 
-    {done && (
-      <div className={`alert ${styles.alertSuccess} text-success`}>
-        Empresa registada com sucesso! Redirecionando...
-      </div>
-    )}
-
-    {Object.keys(fieldErrors).length > 0 && (
-      <div className={`alert ${styles.alertDanger}`}>
-        <ul className="mb-0">
-          {Object.values(fieldErrors).map((error, index) => (
-            <li key={index}>{error}</li>
-          ))}
-        </ul>
-      </div>
-    )}
+    {error && renderAlert("danger", error, "bi-exclamation-triangle-fill")}
+    {success && renderAlert("success", success, "bi-check-circle-fill")}
 
     <form onSubmit={handleSubmit}>
       <div className="row">

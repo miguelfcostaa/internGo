@@ -74,7 +74,9 @@ const NavBar = () => {
         });
         const data = await response.json();
         if (response.ok) {
-            setUserInfo(data);
+            // Para usuário, a resposta vem direto. Para empresa, vem dentro de data.company
+            const userInfoData = role === 'company' ? data.company : data;
+            setUserInfo(userInfoData);
         } else {
             console.error('Error fetching info:', data.message);
         }
