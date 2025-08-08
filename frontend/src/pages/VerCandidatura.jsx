@@ -11,6 +11,7 @@ function VerCandidatura() {
     const { id } = useParams();
     const [estado, setEstado] = useState("Pendente");
     const [candidatura, setCandidatura] = useState(null);
+    console.log("Candidatura:", candidatura);
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
     const [loading, setLoading] = useState(true);
@@ -94,6 +95,7 @@ function VerCandidatura() {
                 window.location.href = '/profile';
             }, 2000);
             
+            setEstado("Aceite");
         } catch (err) {
             setError("Erro ao aceitar candidatura.");
         } finally {
