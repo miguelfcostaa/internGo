@@ -4,8 +4,8 @@ const handleApiError = (data, defaultMessage) => {
   
   let errorMessage = data.message || defaultMessage;
   
-  // Adicionar detalhes dos erros específicos
-  if (data.errors && Array.isArray(data.errors)) {
+  // Apenas adicionar detalhes se existirem arrays de erros específicos
+  if (data.errors && Array.isArray(data.errors) && data.errors.length > 0) {
     errorMessage += `\n\n❌ Problemas encontrados:\n• ${data.errors.join('\n• ')}`;
   }
   
@@ -89,7 +89,7 @@ export const signupUser = async (name, email, cc, telefone, password) => {
     
     // Se for erro de rede/conexão
     if (err.name === 'TypeError' && err.message.includes('fetch')) {
-      throw new Error("❌ Erro de conexão: Não foi possível conectar ao servidor. Verifique se o backend está rodando na porta 5000.");
+      throw new Error("❌ Erro de conexão: Não foi possível conectar ao servidor.");
     }
     
     // Re-throw outros erros
@@ -179,6 +179,52 @@ export const obterEstagiosRecomendados = async (limite = 10) => {
     return data;
   } catch (err) {
     console.error("Erro ao obter estágios recomendados:", err);
+    throw err;
+  }
+};
+
+// Função para registrar uma nova empresa
+export const signupCompany = async (name, email, nif, phone, password, confirmPassword) => {
+  const requestBody = { name, email, nif, phone, password, confirmPassword };
+  
+  console.log("Tentando registrar empresa:", { name, email, nif, phone }); // Debug
+  
+  try {
+    const res = await fetch("http://localhost:5000/api/auth/register-company", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(requestBody),
+    });
+    
+    console.log("Status da resposta:", res.status); // Debug
+    
+    // Tentar fazer parse do JSON independente do status
+    let errorData;
+    try {
+      errorData = await res.json();
+      console.log("Dados da resposta:", errorData); // Debug
+    } catch (parseError) {
+      console.error("Erro ao fazer parse do JSON:", parseError);
+      throw new Error(`Erro ${res.status}: Resposta inválida do servidor`);
+    }
+    
+    // Verificar se a resposta não é ok
+    if (!res.ok) {
+      throw handleApiError(errorData, `Erro ${res.status}: Falha ao registrar empresa`);
+    }
+    
+    return errorData;
+  } catch (err) {
+    console.error("Erro completo:", err);
+    
+    // Se for erro de rede/conexão
+    if (err.name === 'TypeError' && err.message.includes('fetch')) {
+      throw new Error("❌ Erro de conexão: Não foi possível conectar ao servidor. Verifique se o backend está rodando na porta 5000.");
+    }
+    
+    // Re-throw outros erros
     throw err;
   }
 };

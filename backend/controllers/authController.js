@@ -1,9 +1,10 @@
 const User = require('../models/User');
 const Company = require('../models/Company');
 const { sendPasswordResetEmail, generateResetToken } = require('../utils/emailService');
-const { validatePassword } = require('../utils/validations');
+const { validatePassword, validateCompanyInput } = require('../utils/validations');
 const AuthService = require('../services/authService');
 const UserService = require('../services/userService');
+const CompanyService = require('../services/companyService');
 
 // Registrar usuário
 const registerUser = async (req, res) => {
@@ -62,7 +63,89 @@ const registerUser = async (req, res) => {
   }
 };
 
-// Login de usuário
+// Registrar empresa
+const registerCompany = async (req, res) => {
+  try {
+    // Adicionar confirmPassword se não estiver presente (para compatibilidade)
+    if (!req.body.confirmPassword) {
+      req.body.confirmPassword = req.body.password;
+    }
+
+    // Validar dados usando validateCompanyInput
+    const validationErrors = await validateCompanyInput(Company, req.body);
+    
+    // Verificar se há erros de validação
+    if (Object.keys(validationErrors).length > 0) {
+      // Criar uma mensagem de erro única e limpa
+      let errorMessage = '';
+      
+      if (validationErrors.general) {
+        errorMessage = validationErrors.general;
+      } else {
+        // Juntar todos os erros em uma mensagem única
+        const errorMessages = [];
+        
+        if (validationErrors.name) {
+          errorMessages.push(validationErrors.name);
+        }
+        if (validationErrors.email) {
+          errorMessages.push(validationErrors.email);
+        }
+        if (validationErrors.phone) {
+          errorMessages.push(validationErrors.phone);
+        }
+        if (validationErrors.nif) {
+          errorMessages.push(validationErrors.nif);
+        }
+        if (validationErrors.password) {
+          errorMessages.push(validationErrors.password);
+        }
+        if (validationErrors.confirmPassword) {
+          errorMessages.push(validationErrors.confirmPassword);
+        }
+
+        errorMessage = errorMessages.join('\n• ');
+      }
+
+      return res.status(400).json({
+        success: false,
+        message: errorMessage
+      });
+    }
+
+    // Hash da password usando AuthService
+    const hashedPassword = await AuthService.hashPassword(req.body.password);
+    
+    // Criar empresa com dados sanitizados
+    const sanitizedData = CompanyService.sanitizeCompanyData(req.body);
+    const company = new Company({
+      ...sanitizedData,
+      password: hashedPassword
+    });
+    
+    const savedCompany = await company.save();
+    
+    // Gerar token
+    const token = AuthService.generateToken(savedCompany, 'company', '7d');
+    
+    // Resposta formatada
+    const response = AuthService.formatAuthSuccessResponse(
+      savedCompany,
+      token,
+      'Empresa registrada com sucesso'
+    );
+    
+    res.status(201).json(response);
+  } catch (error) {
+    console.error('Erro ao registrar empresa:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Erro interno do servidor ao registrar empresa'
+    });
+  }
+};
+
+// Login de usuário ou empresa
 const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -83,35 +166,61 @@ const loginUser = async (req, res) => {
       });
     }
 
-    // Encontrar usuário
+    // Procurar primeiro em usuários
     const user = await User.findOne({ email: email.toLowerCase() });
-    if (!user) {
-      return res.status(401).json({
-        success: false,
-        message: 'Credenciais inválidas'
-      });
+    if (user) {
+      // Verificar password usando AuthService
+      const isMatch = await AuthService.comparePassword(password, user.password);
+      if (!isMatch) {
+        return res.status(401).json({
+          success: false,
+          message: 'Credenciais inválidas'
+        });
+      }
+
+      // Gerar token JWT para usuário
+      const token = AuthService.generateToken(user, 'user', '7d');
+
+      // Resposta formatada
+      const response = AuthService.formatAuthSuccessResponse(
+        user,
+        token,
+        'Login realizado com sucesso'
+      );
+
+      return res.json(response);
     }
 
-    // Verificar password usando AuthService
-    const isMatch = await AuthService.comparePassword(password, user.password);
-    if (!isMatch) {
-      return res.status(401).json({
-        success: false,
-        message: 'Credenciais inválidas'
-      });
+    // Se não encontrou usuário, procurar em empresas
+    const company = await Company.findOne({ email: email.toLowerCase() });
+    if (company) {
+      // Verificar password usando AuthService
+      const isMatch = await AuthService.comparePassword(password, company.password);
+      if (!isMatch) {
+        return res.status(401).json({
+          success: false,
+          message: 'Credenciais inválidas'
+        });
+      }
+
+      // Gerar token JWT para empresa
+      const token = AuthService.generateToken(company, 'company', '7d');
+
+      // Resposta formatada
+      const response = AuthService.formatAuthSuccessResponse(
+        company,
+        token,
+        'Login realizado com sucesso'
+      );
+
+      return res.json(response);
     }
 
-    // Gerar token JWT usando AuthService
-    const token = AuthService.generateToken(user, 'user', '7d');
-
-    // Resposta formatada
-    const response = AuthService.formatAuthSuccessResponse(
-      user,
-      token,
-      'Login realizado com sucesso'
-    );
-
-    res.json(response);
+    // Se não encontrou nem usuário nem empresa
+    return res.status(401).json({
+      success: false,
+      message: 'Credenciais inválidas'
+    });
 
   } catch (error) {
     console.error('Erro no login:', error);
@@ -272,6 +381,7 @@ const resetPassword = async (req, res) => {
 
 module.exports = {
   registerUser,
+  registerCompany,
   loginUser,
   forgotPassword,
   resetPassword

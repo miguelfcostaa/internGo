@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { 
   registerUser,
+  registerCompany,
   loginUser, 
   forgotPassword, 
   resetPassword 
@@ -14,6 +15,9 @@ const { resetPasswordSmartLimiter } = require('../middleware/smartRateLimiting')
 
 // Rota para registo de usuário
 router.post('/register', registerUser);
+
+// Rota para registo de empresa
+router.post('/register-company', registerCompany);
 
 // Rota para login de usuário (com rate limiting específico)
 router.post('/login', loginLimiter, loginUser);

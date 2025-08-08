@@ -20,7 +20,6 @@ function VerCandidatura() {
         async function fetchCandidatura() {
         try {
             setLoading(true);
-            console.log("Buscando candidaturaId:", id);
             const res = await fetch(`http://localhost:5000/api/candidaturas/${id}`, {
             headers: {
                 "Content-Type": "application/json",

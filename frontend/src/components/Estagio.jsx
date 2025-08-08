@@ -102,14 +102,14 @@ function Estagio({ NomeEmpresa, NomeEstagio, TotalVagas, Ativas, Area, Inicio, T
             <div className={styles.applyContainer}>
                 <p>{Localizacao}</p>
                 {!isCompany() && (
-                    <button className="btn btn-primary" onClick={handleCandidatarClick}>
-                        Candidatar-me
+                    <button className="btn btn-secondary" onClick={handleCandidatarClick}>
+                        Ver Detalhes
                     </button>
                 )}
                 {isCompany() && (
                     <button 
                         className="btn btn-secondary" 
-                        onClick={() => navigate(`/estagio/${idEstagio}`)}
+                        onClick={handleCandidatarClick}
                     >
                         Ver Detalhes
                     </button>

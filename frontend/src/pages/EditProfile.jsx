@@ -6,17 +6,21 @@ import NavBar from "../components/NavBar";
 import EditableProfilePhoto from "../components/EditableProfilePhoto";
 import styles from "../styles/EditProfile.module.css"
 import useUser from "../hooks/useUser";
-import { getUserRoleFromToken } from "../utils/jwtUtils";
+import { getUserRoleFromToken, getUserIdFromToken } from "../utils/jwtUtils";
 
 
 function EditUserProfile() {
-    const { id } = useParams();
+    const { id: paramId } = useParams();
+    const role = getUserRoleFromToken();
+    
+    // Use ID from params if available, otherwise get from token (for own profile)
+    const id = paramId || getUserIdFromToken();
+    
     const [userInfo, setUserInfo]  = useUser(id);
     const [editMode, setEditMode] = useState(false);
     const [editedUserInfo, setEditedUserInfo] = useState(userInfo);
     const [editedCompanyInfo, setEditedCompanyInfo] = useState(userInfo);  
     const [fieldErrors, setFieldErrors] = useState({});
-    const role = getUserRoleFromToken();
     const competenciaRefs = useRef([]);
 
     useEffect(() => {
@@ -58,7 +62,6 @@ function EditUserProfile() {
                 const result = await response.json();
 
                 if (response.ok) {
-                    console.log("Perfil atualizado com sucesso:", result);
                     setEditMode(false);
                     setEditedUserInfo(result);
                     setUserInfo(result);
@@ -85,7 +88,6 @@ function EditUserProfile() {
                 const result = await response.json();
 
                 if (response.ok) {
-                    console.log("Perfil atualizado com sucesso:", result);
                     setEditMode(false);
                     setEditedCompanyInfo(result);
                     setUserInfo(result);
