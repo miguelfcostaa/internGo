@@ -1,16 +1,64 @@
 // Função para tratar erros de resposta da API
-// const handleErrors = (res) => {
-//   if (!res.ok) {
-//     throw new Error(`HTTP error! status: ${res.status}`);
-//   }
-// };
+const handleApiError = (data, defaultMessage) => {
+  console.log("Dados do erro recebidos:", data); // Para debug
+  
+  let errorMessage = data.message || defaultMessage;
+  
+  // Adicionar detalhes dos erros específicos
+  if (data.errors && Array.isArray(data.errors)) {
+    errorMessage += `\n\n❌ Problemas encontrados:\n• ${data.errors.join('\n• ')}`;
+  }
+  
+  // Adicionar sugestão se disponível
+  if (data.suggestion) {
+    errorMessage += `\n\n💡 Sugestão: ${data.suggestion}`;
+  }
+  
+  // Adicionar campos obrigatórios se disponível
+  if (data.required && Array.isArray(data.required)) {
+    errorMessage += `\n\n📋 Campos obrigatórios: ${data.required.join(', ')}`;
+  }
+  
+  return new Error(errorMessage);
+};
+
+// Função para obter token de autenticação
+const getAuthToken = () => {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    throw new Error("Token de autenticação não encontrado. Por favor, faça login novamente.");
+  }
+  return token;
+};
+
+// Função base para requisições autenticadas
+const authenticatedFetch = async (url, options = {}) => {
+  const token = getAuthToken();
+  
+  const defaultHeaders = {
+    "Content-Type": "application/json",
+    "Authorization": `Bearer ${token}`
+  };
+  
+  // Merge headers, mas não sobrescrever se for FormData
+  const headers = options.body instanceof FormData 
+    ? { "Authorization": `Bearer ${token}` }
+    : { ...defaultHeaders, ...options.headers };
+  
+  return fetch(url, {
+    ...options,
+    headers
+  });
+};
 
 // Função para registrar um novo usuário
 export const signupUser = async (name, email, cc, telefone, password) => {
   const requestBody = { name, email, cc, telefone, password };
   
+  console.log("Tentando registrar usuário:", { name, email, cc, telefone }); // Debug
+  
   try {
-    const res = await fetch("http://localhost:5000/api/users/register", {
+    const res = await fetch("http://localhost:5000/api/auth/register", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -18,21 +66,33 @@ export const signupUser = async (name, email, cc, telefone, password) => {
       body: JSON.stringify(requestBody),
     });
     
-    const data = await res.json();
+    console.log("Status da resposta:", res.status); // Debug
     
-    if (!res.ok) {
-      // Melhor tratamento de erro com mais detalhes
-      const errorMessage = data.message || 'Erro ao registrar usuário';
-      const suggestion = data.suggestion ? `\n\n ${data.suggestion}` : '';
-      const errorDetails = data.errors ? ` - ${data.errors.join(', ')}` : '';
-      const requiredFields = data.required ? ` - Campos obrigatórios: ${data.required.join(', ')}` : '';
-      
-      throw new Error(errorMessage + suggestion + errorDetails + requiredFields);
+    // Tentar fazer parse do JSON independente do status
+    let errorData;
+    try {
+      errorData = await res.json();
+      console.log("Dados da resposta:", errorData); // Debug
+    } catch (parseError) {
+      console.error("Erro ao fazer parse do JSON:", parseError);
+      throw new Error(`Erro ${res.status}: Resposta inválida do servidor`);
     }
     
-    return data;
+    // Verificar se a resposta não é ok
+    if (!res.ok) {
+      throw handleApiError(errorData, `Erro ${res.status}: Falha ao registrar usuário`);
+    }
+    
+    return errorData;
   } catch (err) {
-    console.error("Register error:", err);
+    console.error("Erro completo:", err);
+    
+    // Se for erro de rede/conexão
+    if (err.name === 'TypeError' && err.message.includes('fetch')) {
+      throw new Error("❌ Erro de conexão: Não foi possível conectar ao servidor. Verifique se o backend está rodando na porta 5000.");
+    }
+    
+    // Re-throw outros erros
     throw err;
   }
 };
@@ -42,7 +102,7 @@ export const loginUser = async (email, password) => {
   const requestBody = { email, password };
   
   try {
-    const res = await fetch("http://localhost:5000/api/users/login", {
+    const res = await fetch("http://localhost:5000/api/auth/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { 
+  registerUser,
   loginUser, 
   forgotPassword, 
   resetPassword 
@@ -11,10 +12,13 @@ const {
 } = require('../middleware/rateLimiting');
 const { resetPasswordSmartLimiter } = require('../middleware/smartRateLimiting');
 
-// Rota para login de usuário (APENAS rate limiting específico)
+// Rota para registo de usuário
+router.post('/register', registerUser);
+
+// Rota para login de usuário (com rate limiting específico)
 router.post('/login', loginLimiter, loginUser);
 
-// Rota para solicitar reset de password (APENAS rate limiting específico)
+// Rota para solicitar reset de password (com rate limiting específico)
 router.post('/forgot-password', forgotPasswordLimiter, forgotPassword);
 
 // Rota para redefinir password (com smart rate limiting)

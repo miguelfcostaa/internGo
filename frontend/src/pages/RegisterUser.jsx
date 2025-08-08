@@ -50,6 +50,7 @@ function RegisterUser() {
     }
 
     try {
+      
       await signupUser(
         formData.name,
         formData.email,
@@ -79,18 +80,13 @@ function RegisterUser() {
   };
 
   const handleError = (err) => {
-    if (err.response?.data) {
-      const errorData = err.response.data;
-      if (errorData.message) {
-        setError(errorData.message);
-      } else if (errorData.errors) {
-        const errorMessages = Object.values(errorData.errors).join(", ");
-        setError(errorMessages);
-      } else {
-        setError("Erro ao criar conta. Tente novamente.");
-      }
+    console.log("Erro capturado:", err); // Para debug
+    
+    // O apiService.js já formata os erros com mensagens detalhadas
+    if (err.message) {
+      setError(err.message);
     } else {
-      setError("Erro ao criar conta. Verifique sua conexão e tente novamente.");
+      setError("Erro ao criar conta. Tente novamente.");
     }
   };
 

@@ -1,44 +1,64 @@
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const Company = require('../models/Company');
 const { sendPasswordResetEmail, generateResetToken } = require('../utils/emailService');
-const { validateEmail, validatePassword } = require('../utils/validations');
+const { validatePassword } = require('../utils/validations');
+const AuthService = require('../services/authService');
+const UserService = require('../services/userService');
 
 // Registrar usuário
 const registerUser = async (req, res) => {
   try {
     const { name, email, cc, telefone, password } = req.body;
 
-    // Validar formato do email
-    if (!email || !validateEmail(email)) {
-      return res.status(400).json({ message: 'Formato de email inválido' });
+    // Validar dados usando UserService
+    const validation = UserService.validateRegistrationData(req.body);
+    if (!validation.isValid) {
+      return res.status(400).json({
+        success: false,
+        message: 'Dados inválidos',
+        errors: validation.errors
+      });
     }
 
     // Verificar se o usuário já existe
-    const existingUser = await User.findOne({ email });
+    const existingUser = await UserService.findExistingUser(email, cc, telefone);
     if (existingUser) {
-      return res.status(400).json({ message: 'Email já está em uso' });
+      return res.status(400).json({
+        success: false,
+        message: 'Já existe uma conta com este email, cartão de cidadão ou telefone'
+      });
     }
 
-    // Hash da password
-    const hashedPassword = await bcrypt.hash(password, 10);
+    // Hash da password usando AuthService
+    const hashedPassword = await AuthService.hashPassword(password);
 
-    // Criar usuário
+    // Criar usuário com dados sanitizados
+    const sanitizedData = UserService.sanitizeUserData(req.body);
     const user = new User({
-      name,
-      email,
-      cc,
-      telefone,
+      ...sanitizedData,
       password: hashedPassword
     });
 
-    await user.save();
+    const savedUser = await user.save();
 
-    res.status(201).json({ message: 'Usuário criado com sucesso' });
+    // Gerar token
+    const token = AuthService.generateToken(savedUser, 'user', '7d');
+
+    // Resposta formatada
+    const response = AuthService.formatAuthSuccessResponse(
+      savedUser,
+      token,
+      'Usuário criado com sucesso'
+    );
+
+    res.status(201).json(response);
+
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Erro interno do servidor' });
+    console.error('Erro ao registar usuário:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Erro interno do servidor'
+    });
   }
 };
 
@@ -47,42 +67,58 @@ const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // Validar formato do email
-    if (!email || !validateEmail(email)) {
-      return res.status(400).json({ message: 'Formato de email inválido' });
+    // Validar dados de entrada
+    if (!email || !password) {
+      return res.status(400).json({
+        success: false,
+        message: 'Email e password são obrigatórios'
+      });
+    }
+
+    // Validar formato do email usando AuthService
+    if (!AuthService.isValidEmail(email)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Formato de email inválido'
+      });
     }
 
     // Encontrar usuário
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email: email.toLowerCase() });
     if (!user) {
-      return res.status(400).json({ message: 'Credenciais inválidas' });
+      return res.status(401).json({
+        success: false,
+        message: 'Credenciais inválidas'
+      });
     }
 
-    // Verificar password
-    const isMatch = await bcrypt.compare(password, user.password);
+    // Verificar password usando AuthService
+    const isMatch = await AuthService.comparePassword(password, user.password);
     if (!isMatch) {
-      return res.status(400).json({ message: 'Credenciais inválidas' });
+      return res.status(401).json({
+        success: false,
+        message: 'Credenciais inválidas'
+      });
     }
 
-    // Gerar token JWT
-    const token = jwt.sign(
-      { userId: user._id, userType: 'user' },
-      process.env.JWT_SECRET,
-      { expiresIn: '7d' }
+    // Gerar token JWT usando AuthService
+    const token = AuthService.generateToken(user, 'user', '7d');
+
+    // Resposta formatada
+    const response = AuthService.formatAuthSuccessResponse(
+      user,
+      token,
+      'Login realizado com sucesso'
     );
 
-    res.json({
-      token,
-      user: {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-        type: 'user'
-      }
-    });
+    res.json(response);
+
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Erro interno do servidor' });
+    console.error('Erro no login:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Erro interno do servidor'
+    });
   }
 };
 
@@ -92,12 +128,18 @@ const forgotPassword = async (req, res) => {
     const { email } = req.body;
 
     if (!email) {
-      return res.status(400).json({ message: 'Email é obrigatório' });
+      return res.status(400).json({
+        success: false,
+        message: 'Email é obrigatório'
+      });
     }
 
-    // Validar formato do email
-    if (!validateEmail(email)) {
-      return res.status(400).json({ message: 'Formato de email inválido' });
+    // Validar formato do email usando AuthService
+    if (!AuthService.isValidEmail(email)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Formato de email inválido'
+      });
     }
 
     // Procurar o usuário pelo email (tanto User quanto Company)
@@ -112,6 +154,7 @@ const forgotPassword = async (req, res) => {
     if (!user) {
       // Por segurança, não revelamos se o email existe ou não
       return res.status(200).json({ 
+        success: true,
         message: 'Se o email existir na nossa base de dados, receberá um link de redefinição',
         emailFound: false
       });
@@ -121,7 +164,7 @@ const forgotPassword = async (req, res) => {
     const resetToken = generateResetToken();
     const resetExpires = new Date(Date.now() + 3600000); // 1 hora
 
-    // Salvar token no usuário (sem validação para evitar problemas com campos required)
+    // Salvar token no usuário
     if (userType === 'user') {
       await User.findByIdAndUpdate(user._id, {
         resetPasswordToken: resetToken,
@@ -138,6 +181,7 @@ const forgotPassword = async (req, res) => {
     await sendPasswordResetEmail(email, resetToken, userType);
 
     res.status(200).json({ 
+      success: true,
       message: 'Email de redefinição enviado com sucesso',
       emailFound: true
     });
@@ -145,6 +189,7 @@ const forgotPassword = async (req, res) => {
   } catch (error) {
     console.error('Erro no forgot password:', error);
     res.status(500).json({ 
+      success: false,
       message: 'Erro interno do servidor. Tente novamente mais tarde.' 
     });
   }
@@ -156,13 +201,19 @@ const resetPassword = async (req, res) => {
     const { token, newPassword } = req.body;
 
     if (!token || !newPassword) {
-      return res.status(400).json({ message: 'Token e nova password são obrigatórios' });
+      return res.status(400).json({
+        success: false,
+        message: 'Token e nova password são obrigatórios'
+      });
     }
 
-    // Validar nova senha
-    const passwordValidation = validatePassword(newPassword);
-    if (passwordValidation !== null) {
-      return res.status(400).json({ message: passwordValidation });
+    // Validar nova senha usando os critérios do validations.js
+    const passwordError = validatePassword(newPassword);
+    if (passwordError) {
+      return res.status(400).json({
+        success: false,
+        message: passwordError
+      });
     }
 
     // Encontrar usuário com token válido (tanto User quanto Company)
@@ -181,13 +232,16 @@ const resetPassword = async (req, res) => {
     }
 
     if (!user) {
-      return res.status(400).json({ message: 'Token inválido ou expirado' });
+      return res.status(400).json({
+        success: false,
+        message: 'Token inválido ou expirado'
+      });
     }
 
-    // Hash da nova password
-    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    // Hash da nova password usando AuthService
+    const hashedPassword = await AuthService.hashPassword(newPassword);
 
-    // Atualizar password e limpar token (sem validação para evitar problemas com campos required)
+    // Atualizar password e limpar token
     if (userType === 'user') {
       await User.findByIdAndUpdate(user._id, {
         password: hashedPassword,
@@ -202,11 +256,17 @@ const resetPassword = async (req, res) => {
       });
     }
 
-    res.status(200).json({ message: 'Password redefinida com sucesso' });
+    res.status(200).json({
+      success: true,
+      message: 'Password redefinida com sucesso'
+    });
 
   } catch (error) {
     console.error('Erro no reset password:', error);
-    res.status(500).json({ message: 'Erro interno do servidor' });
+    res.status(500).json({
+      success: false,
+      message: 'Erro interno do servidor'
+    });
   }
 };
 
