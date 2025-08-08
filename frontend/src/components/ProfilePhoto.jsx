@@ -12,7 +12,6 @@ const ProfilePhoto = ({ photoUrl, userName, size = 'medium' }) => {
                 alt={`Foto de perfil de ${userName || 'utilizador'}`}
                 className={styles.profilePhoto}
                 onError={(e) => {
-                    console.log('Erro ao carregar imagem:', displayPhoto);
                     e.target.src = defaultPhoto;
                 }}
             />

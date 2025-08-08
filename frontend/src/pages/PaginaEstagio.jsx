@@ -11,7 +11,6 @@ function PaginaEstagio() {
     const navigate = useNavigate();
     const { id } = useParams();
     const { estagio, loading } = useEstagios(id);
-    console.log(estagio);
 
     // Função para verificar se o usuário é uma empresa
     const isCompany = () => {

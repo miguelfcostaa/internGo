@@ -61,11 +61,9 @@ const EditableProfilePhoto = ({ userId, currentPhoto, onPhotoUpdate, isCompany =
                 handlePhotoUpdate(data.profilePhoto);
                 alert('Foto de perfil atualizada com sucesso!');
             } else {
-                console.error('Erro ao fazer upload:', data.message);
                 alert(data.message || 'Erro ao fazer upload da foto');
             }
         } catch (error) {
-            console.error('Erro ao fazer upload:', error);
             alert('Erro ao fazer upload da foto');
         } finally {
             setUploading(false);

@@ -80,8 +80,6 @@ function RegisterUser() {
   };
 
   const handleError = (err) => {
-    console.log("Erro capturado:", err); // Para debug
-    
     // O apiService.js já formata os erros com mensagens detalhadas
     if (err.message) {
       setError(err.message);

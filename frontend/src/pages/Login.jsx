@@ -81,8 +81,6 @@ function Login() {
                 setTimeout(() => {
                     navigate("/home");
                 }, 1000);
-                
-                console.log("Login successful:", result);
             } else {
                 console.error("Login failed:", result);
                 if (result.message && typeof result.message === 'object') {

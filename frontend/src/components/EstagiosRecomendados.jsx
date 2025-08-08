@@ -16,9 +16,6 @@ const EstagiosRecomendados = ({ limite = 5, showTitle = true, showViewMore = fal
   };
 
   const formatarArea = (area) => {
-    // Debug: ver o que estamos recebendo
-    console.log('Área recebida:', area, 'Tipo:', typeof area);
-    
     if (!area) return '';
     
     // Se for array, juntar com espaços

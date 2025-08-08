@@ -12,7 +12,6 @@ function PaginaCandidatarEstagio() {
 
     const { id } = useParams();
     const { estagio } = useEstagios(id);
-    console.log(estagio);
     const [user] = useUser();
     const [success, setSuccess] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
