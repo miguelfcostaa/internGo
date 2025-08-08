@@ -6,10 +6,12 @@ export default function useEstagiosByCompany(companyId) {
 
     const getEstagios = useCallback(async () => {
         if (!companyId) {
+            console.log("No companyId provided, skipping fetch");
             setLoading(false);
             return;
         }
         
+        console.log("Fetching estagios for company:", companyId);
         setLoading(true);
         try {
             const response = await fetch(`http://localhost:5000/api/estagios/company/${companyId}`, {
@@ -21,6 +23,7 @@ export default function useEstagiosByCompany(companyId) {
             });
 
             const data = await response.json();
+            console.log("Response from backend:", { status: response.status, data });
 
             if (response.ok) {
                 const estagiosComEmpresa = await Promise.all(
@@ -36,6 +39,7 @@ export default function useEstagiosByCompany(companyId) {
                         return { ...estagio, NomeEmpresa };
                     })
                 );
+                console.log("Processed estagios:", estagiosComEmpresa);
                 setEstagios(estagiosComEmpresa);
                 
                 // Se há estágios, pare o loading imediatamente

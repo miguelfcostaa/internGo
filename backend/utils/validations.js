@@ -440,15 +440,24 @@ function validateCriarEstagio(Estagio, data) {
     return errors;
 }
 
+// Validação para motivo de recusa
+const validateMotivoRecusa = (motivo) => {
+    if (motivo && motivo.length > 500) {
+        return "O motivo de recusa não pode ter mais de 500 caracteres";
+    }
+    return null;
+};
+
 module.exports = {
-    validateCriarEstagio,
-    validateCandidatura,
-    validateCompanyUpdate,
-    validateUserUpdate,
-    validateCompanyInput,
     validateName,
     validateEmail,
     validatePhoneNumber,
     validateNIF,
     validatePassword,
+    validateCompanyInput,
+    validateUserUpdate,
+    validateCandidatura,
+    validateCompanyUpdate,
+    validateCriarEstagio,
+    validateMotivoRecusa
 };

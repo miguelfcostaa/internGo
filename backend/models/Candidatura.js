@@ -8,7 +8,8 @@ const candidaturaSchema = new Schema({
     },
     estagio: { 
         type: Schema.Types.ObjectId, 
-        ref: 'Estagio', 
+        ref: 'Estagio',
+        required: true 
     },
     dataCandidatura: { 
         type: Date, 
@@ -16,7 +17,14 @@ const candidaturaSchema = new Schema({
     },
     status: { 
         type: String, 
-        default: 'Pendente' 
+        enum: ['pendente', 'aceite', 'recusada'],
+        default: 'pendente' 
+    },
+    dataResposta: {
+        type: Date
+    },
+    motivoRecusa: {
+        type: String
     }
 });
 

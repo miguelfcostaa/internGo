@@ -5,6 +5,7 @@ import style from "../styles/VerCandidatura.module.css";
 import { Link, useParams } from "react-router-dom";
 import ButtonVoltar from "../components/ButtonVoltar";
 import NotFound from "../pages/NotFound404";
+import { useCandidaturasContext } from "../contexts/CandidaturasContext";
 
 function VerCandidatura() {
     const { id } = useParams();
@@ -13,6 +14,7 @@ function VerCandidatura() {
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
     const [loading, setLoading] = useState(true);
+    const { triggerRefresh } = useCandidaturasContext();
 
     // Buscar dados da candidatura pelo id
     useEffect(() => {
@@ -66,21 +68,34 @@ function VerCandidatura() {
 
     const handleAccept = async (candidaturaId) => {
         try {
+            setLoading(true);
             const res = await fetch(`http://localhost:5000/api/candidaturas/${candidaturaId}/aceitar`, {
-                method: "POST",
+                method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${localStorage.getItem("token")}`
                 }
             });
-            if (!res.ok) {
-                setError("Erro ao aceitar candidatura.");
-            }
+            
             const data = await res.json();
-            setCandidatura(data);
+            
+            if (!res.ok) {
+                setError(data.message || "Erro ao aceitar candidatura.");
+                return;
+            }
+            
             setSuccess("Candidatura aceita com sucesso!");
+            
+            // Atualizar lista de candidaturas
+            triggerRefresh();
+            
+            // Redirecionar para o perfil da empresa após 2 segundos
+            setTimeout(() => {
+                window.location.href = '/profile';
+            }, 2000);
+            
         } catch (err) {
-            setError("Erro ao aceitar candidatura. ");
+            setError("Erro ao aceitar candidatura.");
         } finally {
             setLoading(false);
         }
@@ -88,20 +103,35 @@ function VerCandidatura() {
 
     const handleReject = async (candidaturaId) => {
         try {
+            setLoading(true);
             const res = await fetch(`http://localhost:5000/api/candidaturas/${candidaturaId}/recusar`, {
-                method: "POST",
+                method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${localStorage.getItem("token")}`
-                }
+                },
+                body: JSON.stringify({
+                    motivo: "Candidatura não adequada aos requisitos da vaga"
+                })
             });
-            if (!res.ok) {
-                setError("Erro ao recusar candidatura.");
-            }
+            
             const data = await res.json();
-            setCandidatura(data);
-            setEstado("Recusada");
+            
+            if (!res.ok) {
+                setError(data.message || "Erro ao recusar candidatura.");
+                return;
+            }
+            
             setSuccess("Candidatura recusada com sucesso!");
+            
+            // Atualizar lista de candidaturas
+            triggerRefresh();
+            
+            // Redirecionar para o perfil da empresa após 2 segundos
+            setTimeout(() => {
+                window.location.href = '/profile';
+            }, 2000);
+            
         } catch (err) {
             setError("Erro ao recusar candidatura.");
         } finally {
@@ -245,8 +275,8 @@ function VerCandidatura() {
                             <ButtonVoltar style={{ marginTop: "1rem" }} />
                         </div>
                         <div className={style.buttonContainer}>
-                            <button className={style.acceptButton} onClick={() => handleAccept(candidatura.id)}>Aceitar Candidatura</button>
-                            <button className={style.rejectButton} onClick={() => handleReject(candidatura.id)}>Recusar Candidatura</button>
+                            <button className={style.acceptButton} onClick={() => handleAccept(candidatura._id)}>Aceitar Candidatura</button>
+                            <button className={style.rejectButton} onClick={() => handleReject(candidatura._id)}>Recusar Candidatura</button>
                         </div>
                     </>
                         

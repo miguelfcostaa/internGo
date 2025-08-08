@@ -14,6 +14,7 @@ import EstagiosCriados from './pages/EstagiosCriados.jsx';
 import NotFound from './pages/NotFound404.jsx'; // Importando a página 404
 import ProtectedRoute from './components/ProtectedRoute.jsx';
 import { SearchProvider } from "./contexts/SearchContext.js";
+import { CandidaturasProvider } from "./contexts/CandidaturasContext.js";
 import CriarEstagio from './pages/CriarEstagio.jsx';
 import EditProfile from './pages/EditProfile.jsx';
 import PaginaEstagio from './pages/PaginaEstagio.jsx';
@@ -22,12 +23,13 @@ import PaginaRecomendacoes from './pages/PaginaRecomendacoes.jsx';
 import EditarEstagio from './pages/EditarEstagio.jsx';
 import ProfileEstagiario from './pages/ProfileEstagiario.jsx';
 import VerCandidatura from './pages/VerCandidatura.jsx';
+import CandidaturasEmpresa from './pages/CandidaturasEmpresa.jsx';
  
 function App() {
   return (
-        <SearchProvider>
- 
-    <Router>
+    <CandidaturasProvider>
+      <SearchProvider>
+        <Router>
       <div className="App" style={{ minHeight: '100vh', position: 'relative', paddingBottom: '70px' }}>
         <Routes>
           <Route path='/' element={<WelcomePage />}></Route>  {/*  Rota da Welcome Page */}
@@ -47,14 +49,15 @@ function App() {
           <Route path='/estagio/:id' element={<PaginaEstagio />}></Route>   {/*  Rota info completa de estagio page */}
           <Route path='/candidatar-estagio/:id' element={<ProtectedRoute><PaginaCandidatarEstagio/></ProtectedRoute>}></Route>   {/*  Rota info completa de estagio page */}
           <Route path='/recomendacoes/:id' element={<ProtectedRoute requiredRole="user"><PaginaRecomendacoes /></ProtectedRoute>}></Route>   {/*  Rota de recomendações */}
+          <Route path='/candidaturas-empresa/:id' element={<ProtectedRoute requiredRole="company"><CandidaturasEmpresa /></ProtectedRoute>}></Route>   {/*  Rota para histórico de candidaturas da empresa */}
           <Route path='/ver-candidatura/:id' element={<VerCandidatura />}></Route>     
           <Route path='*' element={<NotFound />}> </Route>  {/* Rota 404 para páginas não encontradas */}
           </Routes>
         <Footer />
       </div>
     </Router>
-        </SearchProvider>
- 
+      </SearchProvider>
+    </CandidaturasProvider>
   );
 }
  

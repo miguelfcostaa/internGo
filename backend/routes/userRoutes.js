@@ -7,7 +7,6 @@ const router = express.Router();
 
 // Rotas de utilizadores (autenticação está em authRoutes.js)
 router.get('/', verifyToken, userController.getAllUsers);
-router.get('/stats', verifyToken, userController.getUserStats); // Estatísticas (deve vir antes de /:id)
 router.get('/:id', userController.getUserById);
 router.put('/:id', verifyToken, userController.updateUser);
 

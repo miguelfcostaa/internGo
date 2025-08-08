@@ -1,11 +1,16 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
+import { useCandidaturasContext } from "../contexts/CandidaturasContext";
 
 export default function useCandidaturas(companyId) {
     const [candidaturas, setCandidaturas] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const { refreshTrigger, triggerRefresh } = useCandidaturasContext();
 
-    useEffect(() => {
-        if (companyId === null || companyId === undefined) return ;
-        const getCandidaturas = async () => {
+    const fetchCandidaturas = useCallback(async () => {
+        if (companyId === null || companyId === undefined) return;
+        
+        setLoading(true);
+        try {
             const response = await fetch(`http://localhost:5000/api/candidaturas/empresa/${companyId}`, {
                 method: "GET",
                 headers: {
@@ -17,14 +22,28 @@ export default function useCandidaturas(companyId) {
             const data = await response.json();
 
             if (response.ok) {
-                setCandidaturas(data);
+                // Filtrar apenas candidaturas pendentes para mostrar na empresa
+                const candidaturasPendentes = data.filter(candidatura => 
+                    candidatura.status === 'pendente'
+                );
+                setCandidaturas(candidaturasPendentes);
             } else {
                 console.error("Error fetching candidaturas:", response.statusText);
             }
-        };
-
-        getCandidaturas();
+        } catch (error) {
+            console.error("Error fetching candidaturas:", error);
+        } finally {
+            setLoading(false);
+        }
     }, [companyId]);
 
-    return candidaturas;
+    useEffect(() => {
+        fetchCandidaturas();
+    }, [fetchCandidaturas, refreshTrigger]);
+
+    const refreshCandidaturas = useCallback(() => {
+        fetchCandidaturas();
+    }, [fetchCandidaturas]);
+
+    return { candidaturas, loading, refreshCandidaturas, triggerRefresh };
 }

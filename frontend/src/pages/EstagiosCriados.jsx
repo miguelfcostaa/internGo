@@ -10,11 +10,13 @@ const EstagiosCriados = () => {
 
     const [userInfo, setUserInfo] = useState({});
     const [estagios, setEstagios] = useState([]);
-    const { estagios: estagiosByCompany, loading } = useEstagiosByCompany(userInfo._id);
+    const [companyId, setCompanyId] = useState(null);
+    const { estagios: estagiosByCompany, loading, reloadEstagios } = useEstagiosByCompany(companyId);
 
     const [highlightedId, setHighlightedId] = useState(null);
 
     useEffect(() => {
+        console.log("EstagiosByCompany updated:", estagiosByCompany);
         setEstagios(estagiosByCompany);
     }, [estagiosByCompany]);
 
@@ -29,6 +31,7 @@ const EstagiosCriados = () => {
         const data = await request.json();
         if (request.ok) {
             setUserInfo(data);
+            setCompanyId(id); // Definir o companyId após obter as informações
         } else {
             console.error("Error fetching company info:", data.message);
         }
@@ -39,6 +42,7 @@ const EstagiosCriados = () => {
         if (token) {
             const payload = JSON.parse(atob(token.split('.')[1]));
             const id = payload.id;
+            console.log("Company ID from token:", id);
             getUserInfo(id);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -64,6 +68,10 @@ const EstagiosCriados = () => {
                         : e
                 )
             );
+            // Recarregar os estágios para sincronizar com o servidor
+            if (reloadEstagios) {
+                await reloadEstagios();
+            }
             setHighlightedId(id);
             setTimeout(() => setHighlightedId(null), 2000);
         } else {

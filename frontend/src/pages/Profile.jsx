@@ -22,7 +22,7 @@ const ProfilePage = () => {
     const role = getUserRoleFromToken();
     const [nEstagios, setNEstagios] = useState(0);
     const candidaturasFeitas = useCandidaturasFeitas(id, role);
-    const candidaturas = useCandidaturas(role === 'company' ? userInfo?._id : null);
+    const { candidaturas, loading: candidaturasLoading, refreshCandidaturas } = useCandidaturas(role === 'company' ? userInfo?._id : null);
     const { estagios: estagiosByCompany, loading: estagiosLoading } = useEstagiosByCompany(userInfo?._id);
     const { estagiosRecomendados, loading: loadingRecomendados } = useEstagiosRecomendados(3, role === 'user'); // Máximo 3 para o perfil, só para users
 
@@ -148,14 +148,7 @@ const ProfilePage = () => {
                                             <td>{handleMesInicio(candidatura?.estagio?.dataInicio)}</td>
                                             <td>{candidatura?.estagio?.duracao === 1 ? `${candidatura?.estagio?.duracao} Mês` : `${candidatura?.estagio?.duracao} Meses`}</td>
                                             <td>{candidatura?.estagio?.tipoEstagio}</td>
-                                            <td className={styles.linkIcon} style={{ paddingRight: "2rem" }}>
-                                                <Link to={`/estagio/${candidatura?.estagio?._id}`} >
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#447D9B" className="bi bi-link" viewBox="0 0 16 16">
-                                                        <path d="M6.354 5.5H4a3 3 0 0 0 0 6h3a3 3 0 0 0 2.83-4H9q-.13 0-.25.031A2 2 0 0 1 7 10.5H4a2 2 0 1 1 0-4h1.535c.218-.376.495-.714.82-1z"/>
-                                                        <path d="M9 5.5a3 3 0 0 0-2.83 4h1.098A2 2 0 0 1 9 6.5h3a2 2 0 1 1 0 4h-1.535a4 4 0 0 1-.82 1H12a3 3 0 1 0 0-6z"/>
-                                                    </svg>
-                                                </Link>
-                                            </td>
+                                            <td>{candidatura?.status}</td>
                                         </tr>
                                     ))
                                 ) : (
@@ -272,18 +265,30 @@ const ProfilePage = () => {
                             </div>
                         </div>
                         <div className={styles.candidaturasContainer}> 
-                            <h2 className={styles.titulo}>
-                                    Candidaturas Recebidas
-                            </h2>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+                                <h2 className={styles.titulo}>
+                                        Candidaturas Pendentes
+                                </h2>
+                                <Link to={`/candidaturas-empresa/${userInfo._id}`} style={{ textDecoration: 'none', color: '#447D9B', fontSize: '0.9rem' }}>
+                                    Ver histórico completo →
+                                </Link>
+                            </div>
                             <div className={styles.candidaturasRecebidas + ' shadow'} style={{ maxHeight: '100%', overflowY: 'auto' }}>
-                                {candidaturas.length > 0 ? candidaturas.map((candidatura, index) => (
+                                {candidaturasLoading ? (
+                                    <div style={{textAlign: 'center', padding: '2rem', color: '#666'}}>
+                                        <p>Carregando candidaturas...</p>
+                                    </div>
+                                ) : candidaturas.length > 0 ? candidaturas.map((candidatura, index) => (
                                     <div key={index} className={styles.candidaturaItem}>
                                             <p><Link className={styles.verCandidatura} to={`/estagiario/${candidatura.user._id}`}>{candidatura.user.name}</Link></p>
                                             <p>{candidatura.estagio.title}</p>
                                             <p className={styles.verCandidatura}><Link to={`/ver-candidatura/${candidatura._id}`}>Ver candidatura</Link></p>
                                     </div>
                                 )) : (
-                                    <div style={{textAlign: 'left'}}>Nenhuma candidatura recebida.</div>
+                                    <div style={{textAlign: 'left', padding: '1rem', color: '#666'}}>
+                                        <p>📋 Nenhuma candidatura pendente</p>
+                                        <small>As candidaturas aceites/recusadas não aparecem aqui</small>
+                                    </div>
                                 )}
                             </div>
                         </div>
