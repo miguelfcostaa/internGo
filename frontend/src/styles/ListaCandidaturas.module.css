@@ -11,22 +11,6 @@
     background-color: white;
     width: 100%;
 }
-.tablehead{
-    height: 60px;
-    color: white;
-    font-size: 16px;
-    font-weight: bold;
-    background-color: #273F4F;
-}
-.tablerow{
-    height: 50px;
-    border-bottom: 1px solid #ccc;
-    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    font-size: 16px;
-}
-.tablerow:hover{
-    background-color: rgb(231, 231, 231);
-}
 .titulo {
     margin-left: 21%;
     text-align: center;

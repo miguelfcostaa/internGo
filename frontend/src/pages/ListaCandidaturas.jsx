@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import NavBar from "../components/NavBar";
-import style from "../styles/ListaCandidaturas.module.css"
+import styles from "../styles/ListaCandidaturas.module.css"
 import ButtonVoltar from "../components/ButtonVoltar";
 import ButtonGeral from "../components/ButtonGeral";
 
 
 function ListaCandidaturas(){
-    
+    {/*Pagina que aparece após clicar ver candidaturas na tabela dos estágios criados*/}
         const [candidatura, setcandidatura] = useState([{
             nome: "João Zé Manel José",
             nivelQnq: "Nível 6",
@@ -27,34 +27,34 @@ function ListaCandidaturas(){
     return(
         <>
             <NavBar/>
-            <div className={style.background}>
-                <div className={style.flexColumn}>
-                    <div className={style.flexRow}>
+            <div className={styles.background}>
+                <div className={styles.flexColumn}>
+                    <div className={styles.flexRow}>
                         <ButtonVoltar/>
-                        <h2 className={style.titulo}>
+                        <h2 className={styles.titulo}>
                                 Nome do Estágio
                         </h2>
                     </div>
                     <div>
                         <div>
-                            <table className={style.table}>
-                                <thead  className={style.tablehead}>
-                                    <tr className={style.tablerow}>
-                                        <td>Nome do Candidato</td>
-                                        <td>Nível QNQ</td>
-                                        <td>Curso</td>
-                                        <td>CV</td>
-                                        <td>ver detalhes</td>
+                            <table className="table table-hover shadow align-middle">
+                                <thead >
+                                    <tr>
+                                        <th style={{ backgroundColor: '#273F4F', color: 'white', padding: "1rem" }} scope="col">Nome do Candidato</th>
+                                        <th style={{ backgroundColor: '#273F4F', color: 'white', padding: "1rem"}} scope="col">Nível QNQ</th>
+                                        <th style={{ backgroundColor: '#273F4F', color: 'white', padding: "1rem" }} scope="col">Curso</th>
+                                        <th style={{ backgroundColor: '#273F4F', color: 'white', padding: "1rem" }} scope="col">CV</th>
+                                        <th style={{ backgroundColor: '#273F4F', color: 'white', padding: "1rem" }} scope="col">ver detalhes</th>
                                     </tr>
                                 </thead>
-                                <tbody className={style.tablebody}>
+                                <tbody className={styles.tablebody}>
                                     {candidatura.map((candidatura, index)=>(
-                                    <tr key={index} className={style.tablerow} >
+                                    <tr key={index} className={styles.tablerow} >
                                         <td>{candidatura.nome}</td>
                                         <td>{candidatura.nivelQnq}</td>
                                         <td>{candidatura.curso}</td>
                                         <td><a href="">{candidatura.cv}</a></td>
-                                        <td><Link className={style.link} to="">[ver candidatura] </Link></td>
+                                        <td><Link className={styles.link} to="'/ver-candidatura/:id'">[ver candidatura] </Link></td>{/*Deve abriar a pagina da candidatura com os restantes detalhes*/}
                                     </tr>
                                 ))}
                                 </tbody>
