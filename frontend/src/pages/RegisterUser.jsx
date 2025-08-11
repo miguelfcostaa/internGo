@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { signupUser } from "../services/apiService";
 import PasswordCriteriaTooltip from "../components/PasswordCriteria";
-import ButtonSubmit from "../components/ButtonSubmit"; 
-import { validateForm, isPasswordCriterionMet } from "../utils/registerUserUtils"; 
+import ButtonSubmit from "../components/ButtonSubmit";
+import { validateForm, isPasswordCriterionMet } from "../utils/registerUserUtils";
 import "bootstrap/dist/css/bootstrap.min.css";
-import styles from "../styles/RegisterUser.module.css"; 
+import styles from "../styles/RegisterUser.module.css";
 
 function RegisterUser() {
   const navigate = useNavigate();
@@ -23,8 +23,10 @@ function RegisterUser() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [showPasswordCriteria, setShowPasswordCriteria] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-    //handlers
+  //handlers
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -50,7 +52,7 @@ function RegisterUser() {
     }
 
     try {
-      
+
       await signupUser(
         formData.name,
         formData.email,
@@ -124,7 +126,7 @@ function RegisterUser() {
               <div className="mb-3">
                 <label className={`form-label ${styles.formLabel}`}>Email</label>
                 <input
-                  type="email"
+                  type="text"
                   name="email"
                   className={`form-control ${styles.formControl}`}
                   placeholder="exemplo@email.com"
@@ -134,7 +136,7 @@ function RegisterUser() {
                 />
               </div>
 
-              <div className="mb-3">
+              <div className="mb-3 position-relative">
                 <label className={`form-label d-flex align-items-center ${styles.formLabel}`}>
                   Palavra-passe
                   <div
@@ -151,7 +153,7 @@ function RegisterUser() {
                   </div>
                 </label>
                 <input
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   name="password"
                   className={`form-control ${styles.formControl}`}
                   placeholder="Insira a palavra-passe"
@@ -159,6 +161,14 @@ function RegisterUser() {
                   onChange={handleChange}
                   disabled={loading}
                 />
+                <i
+                  onClick={() => setShowPassword(!showPassword)}
+                  className={`${showPassword ? "bi bi-eye-slash" : "bi bi-eye"} ${styles.passwordToggleIcon}`}
+                  role="button"
+                  aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
+                  tabIndex={0}
+                  onKeyPress={(e) => { if (e.key === 'Enter') setShowPassword(!showPassword) }}
+                ></i>
               </div>
             </div>
 
@@ -192,10 +202,10 @@ function RegisterUser() {
                 />
               </div>
 
-              <div className="mb-3">
+              <div className="mb-3 position-relative">
                 <label className={`form-label ${styles.formLabel}`}>Confirmar palavra-passe</label>
                 <input
-                  type="password"
+                  type={showConfirmPassword ? "text" : "password"}
                   name="confirmPassword"
                   className={`form-control ${styles.formControl}`}
                   placeholder="Confirme a palavra-passe"
@@ -203,6 +213,14 @@ function RegisterUser() {
                   onChange={handleChange}
                   disabled={loading}
                 />
+                <i
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  className={`${showConfirmPassword ? "bi bi-eye-slash" : "bi bi-eye"} ${styles.passwordToggleIcon}`}
+                  role="button"
+                  aria-label={showConfirmPassword ? "Ocultar senha" : "Mostrar senha"}
+                  tabIndex={0}
+                  onKeyPress={(e) => { if (e.key === 'Enter') setShowConfirmPassword(!showConfirmPassword) }}
+                ></i>
               </div>
             </div>
           </div>

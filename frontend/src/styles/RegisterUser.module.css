@@ -85,8 +85,9 @@
 
 /* INPUT GROUP (TELEFONE) */
 .inputGroup {
-  display: flex;
-  width: 100%;
+  margin-bottom: 1.5rem;
+  text-align: left;
+  position: relative;  
 }
 
 .inputGroup .formSelect {
@@ -204,3 +205,30 @@
     transform: translateY(0);
   }
 }
+
+.inputField {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 2px solid #e1e8ed;
+  border-radius: 10px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background-color: #fff;
+  color: #2c3e50;
+  padding-right: 2.5rem;  /* espacio para el icono */
+}
+
+.passwordToggleIcon {
+  position: absolute;
+  top: 70%;          
+  right: 0.75rem; 
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #6c757d; 
+  font-size: 1.25rem;
+  user-select: none;
+}
+
+.passwordToggleIcon:hover {
+  color: #495057; 
+} 

@@ -2,13 +2,15 @@
 import React, { useState, useEffect } from "react";
 import NavBar from "../components/NavBar";
 import style from "../styles/VerCandidatura.module.css";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import ButtonVoltar from "../components/ButtonVoltar";
 import NotFound from "../pages/NotFound404";
 import { useCandidaturasContext } from "../contexts/CandidaturasContext";
+import { getUserIdFromToken } from "../utils/jwtUtils";
 
 function VerCandidatura() {
     const { id } = useParams();
+    const navigate = useNavigate();
     const [estado, setEstado] = useState("Pendente");
     const [candidatura, setCandidatura] = useState(null);
     console.log("Candidatura:", candidatura);
@@ -90,10 +92,13 @@ function VerCandidatura() {
             // Atualizar lista de candidaturas
             triggerRefresh();
             
-            // Redirecionar para o perfil da empresa após 2 segundos
-            setTimeout(() => {
-                window.location.href = `/profile/${candidatura.estagio.company._id}`;
-            }, 2000);
+            // Redirecionar para o perfil da empresa com o ID correto
+            const companyId = getUserIdFromToken();
+            if (companyId) {
+                navigate(`/profile/${companyId}`);
+            } else {
+                navigate('/profile');
+            }
             
             setEstado("Aceite");
         } catch (err) {
@@ -129,10 +134,13 @@ function VerCandidatura() {
             // Atualizar lista de candidaturas
             triggerRefresh();
             
-            // Redirecionar para o perfil da empresa após 2 segundos
-            setTimeout(() => {
-                window.location.href = '/profile';
-            }, 2000);
+            // Redirecionar para o perfil da empresa com o ID correto
+            const companyId = getUserIdFromToken();
+            if (companyId) {
+                navigate(`/profile/${companyId}`);
+            } else {
+                navigate('/profile');
+            }
             
         } catch (err) {
             setError("Erro ao recusar candidatura.");

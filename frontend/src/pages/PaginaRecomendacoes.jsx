@@ -4,26 +4,12 @@ import NavBar from '../components/NavBar';
 import EstagiosRecomendados from '../components/EstagiosRecomendados';
 import ButtonVoltar from '../components/ButtonVoltar';
 import useEstagiosRecomendados from '../hooks/useEstagiosRecomendados';
+import { getUserIdFromToken } from '../utils/jwtUtils';
 import '../styles/PaginaRecomendacoes.css';
 
 const PaginaRecomendacoes = () => {
   const navigate = useNavigate();
   const { estagiosRecomendados, loading, error } = useEstagiosRecomendados(20);
-
-  // Função para obter o ID do usuário do token
-  const getUserId = () => {
-    const token = localStorage.getItem('token');
-    if (!token) return null;
-    
-    try {
-      // Decodificar o payload do JWT (parte do meio)
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      return payload.id;
-    } catch (error) {
-      console.error('Erro ao decodificar token:', error);
-      return null;
-    }
-  };
 
   const calcularEstatisticas = () => {
     if (estagiosRecomendados.length === 0) return { total: 0, matchAlto: 0, matchMedio: 0 };
@@ -114,7 +100,7 @@ const PaginaRecomendacoes = () => {
               <p>Complete o seu perfil para receber recomendações personalizadas baseadas nas suas competências e interesses.</p>
               <button 
                 onClick={() => {
-                  const userId = getUserId();
+                  const userId = getUserIdFromToken();
                   if (userId) {
                     navigate(`/edit-profile/${userId}`);
                   } else {
@@ -146,7 +132,7 @@ const PaginaRecomendacoes = () => {
             <div className="cta-buttons">
               <button 
                 onClick={() => {
-                  const userId = getUserId();
+                  const userId = getUserIdFromToken();
                   if (userId) {
                     navigate(`/edit-profile/${userId}`);
                   } else {
