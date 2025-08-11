@@ -163,3 +163,27 @@
   font-weight: 600;
   animation: slideIn 0.3s ease;
 }
+.skillTag {
+  display: inline-flex;
+  align-items: center;
+  background-color: #6c7a89; /* azul grisáceo */
+  color: white; /* texto blanco */
+  border-radius: 10px;
+  padding: 6px 12px;
+  font-size: 14px;
+  margin: 4px 6px 4px 0;
+  user-select: none;
+}
+
+.skillTag svg {
+  fill: white; /* X blanca */
+  margin-left: 8px;
+  cursor: pointer;
+  width: 16px;
+  height: 16px;
+  transition: fill 0.2s;
+}
+
+.skillTag svg:hover {
+  fill: #ccc; /* cambio de color al pasar el mouse */
+}

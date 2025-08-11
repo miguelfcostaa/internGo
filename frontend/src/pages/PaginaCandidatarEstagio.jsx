@@ -8,362 +8,486 @@ import useEstagios from "../hooks/useEstagios.js";
 import { useNavigate } from "react-router-dom";
 
 function PaginaCandidatarEstagio() {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    const { id } = useParams();
-    const { estagio } = useEstagios(id);
-    const [user] = useUser();
-    const [success, setSuccess] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
-    const [fieldErrors, setFieldErrors] = useState({});
-    
-    // Função para verificar se é empresa
-    const isCompany = () => {
-        const token = localStorage.getItem('token');
-        if (!token) return false;
-        
-        try {
-            const payload = JSON.parse(atob(token.split('.')[1]));
-            return payload.role === 'company';
-        } catch (error) {
-            return false;
-        }
-    };
+  const { id } = useParams();
+  const { estagio } = useEstagios(id);
+  const [user] = useUser();
+  const [success, setSuccess] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [fieldErrors, setFieldErrors] = useState({});
+  const [cvFile, setCvFile] = useState(null);
 
-    // Redirecionar empresas para a página inicial
-    useEffect(() => {
-        if (isCompany()) {
-            alert('Empresas não podem candidatar-se aos estágios. Apenas estudantes podem candidatar-se.');
-            navigate('/home');
-            return;
-        }
-    }, [navigate]);
+  // Função para verificar se é empresa
+  const isCompany = () => {
+    const token = localStorage.getItem("token");
+    if (!token) return false;
 
-    const [Warnings, setWarnings] = useState({
-        name: false,
-        morada: false,
-        universidade: false,
-        curso: false,
-        carta: false,
-    });
-    const [formData, setFormData] = useState({
-        name: '',
-        telefone: '',
-        email: '',
-        morada: '',
-        codigoPostal: '',
-        dataNascimento: '',
-        nif: '',
-        competenciasTecnicas: [],
-        formacaoAcademica: '',
-        cc: '',
-        universidade: '',
-        curso: '',
-        cv: '',
-        cartaDeApresentacao: ''
-    });
-
-    const [inputValue, setInputValue] = useState(''); //utilizado no input
-
-    const messageMaxChat = "Atingiu o maximo de caracteres permitido";
-
-    const handleChange = (maxChars = 10000) => (e) => {
-        const { name, value } = e.target;
-        if (value.length <= maxChars) {
-            setFormData((prev) => ({ ...prev, [name]: value }));
-            setWarnings((prev) => ({ ...prev, [name]: value.length === maxChars }));
-        }
-    };
-    function onChange(newSkills) {
-        setFormData((prev) => ({ ...prev, competenciasTecnicas: newSkills }));
+    try {
+      const payload = JSON.parse(atob(token.split(".")[1]));
+      return payload.role === "company";
+    } catch (error) {
+      return false;
     }
+  };
 
-    //cria o input competencias tecnicas que adiciona uma a uma e permite deletar skills
-    const handleKeyDown = (e) => {
-        const value = e.target.value;
-        if (e.key === "Enter" || e.key === ",") {
-            e.preventDefault();
-            addSkill(value)
-            setInputValue('');
-        }
+  // Redirecionar empresas para a página inicial
+  useEffect(() => {
+    if (isCompany()) {
+      alert(
+        "Empresas não podem candidatar-se aos estágios. Apenas estudantes podem candidatar-se."
+      );
+      navigate("/home");
+      return;
     }
+  }, [navigate]);
 
-    const addSkill = (value) => {
-        const trimmed = value.trim();
-        if (trimmed && !formData.competenciasTecnicas.includes(trimmed)) {
-            const newSkills = [...formData.competenciasTecnicas, trimmed];
-            setFormData((prev) => ({ ...prev, competenciasTecnicas: newSkills }));
-        }
+  const [Warnings, setWarnings] = useState({
+    name: false,
+    morada: false,
+    universidade: false,
+    curso: false,
+    carta: false,
+  });
+  const [formData, setFormData] = useState({
+    name: "",
+    telefone: "",
+    email: "",
+    morada: "",
+    codigoPostal: "",
+    dataNascimento: "",
+    nif: "",
+    competenciasTecnicas: [],
+    formacaoAcademica: "",
+    cc: "",
+    universidade: "",
+    curso: "",
+    cv: "",
+    cartaDeApresentacao: "",
+  });
+
+  const [inputValue, setInputValue] = useState(""); //utilizado no input
+
+  const messageMaxChat = "Atingiu o maximo de caracteres permitido";
+
+  const handleChange =
+    (maxChars = 10000) =>
+    (e) => {
+      const { name, value } = e.target;
+      if (value.length <= maxChars) {
+        setFormData((prev) => ({ ...prev, [name]: value }));
+        setWarnings((prev) => ({ ...prev, [name]: value.length === maxChars }));
+      }
     };
+  function onChange(newSkills) {
+    setFormData((prev) => ({ ...prev, competenciasTecnicas: newSkills }));
+  }
 
-    const removeSkill = (index) => {
-        const newSkills = formData.competenciasTecnicas.filter((_, i) => i !== index);
-        setFormData((prev) => ({ ...prev, competenciasTecnicas: newSkills }));
-    };
-
-    const handlesSubmit = async (e) => {
-        e.preventDefault();
-        setIsLoading(true);
-        setSuccess(false);
-        setFieldErrors({});
-        try {
-            const request = await fetch(`http://localhost:5000/api/candidaturas/candidatar/${id}`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${localStorage.getItem('token')}`
-                },
-                body: JSON.stringify({
-                    ...formData,
-                    estagio: id,
-                    user: user._id
-                })
-            });
-
-            const response = await request.json();
-            if (request.ok) {
-                const responseUser = await fetch(`http://localhost:5000/api/users/${user._id}`, {
-                    method: "PUT",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${localStorage.getItem("token")}`
-                    },
-                    body: JSON.stringify({
-                        ...formData,
-                    }),
-                });
-
-                const updatedUser = await responseUser.json();
-
-                if (responseUser.ok) {
-                    setSuccess(true);
-                    setTimeout(() => {
-                        navigate(`/profile/${user._id}`);
-                    }, 2000);
-                    setFormData({});
-                    setFieldErrors({});
-                } else {
-                    if (updatedUser.message && typeof updatedUser.message === 'object') {
-                        setFieldErrors(updatedUser.message);
-                    } else if (typeof updatedUser.message === 'string') {
-                        setFieldErrors({ general: updatedUser.message });
-                    }
-                }
-            }
-            else {
-                if (response.message && typeof response.message === 'object') {
-                    setFieldErrors(response.message);
-                } else if (typeof response.message === 'string') {
-                    setFieldErrors({ general: response.message });
-                }
-            }
-        } catch (err) {
-            setFieldErrors({ general: "Erro inesperado ao submeter candidatura." });
-        } finally {
-            setIsLoading(false);
-        }
+  //cria o input competencias tecnicas que adiciona uma a uma e permite deletar skills
+  const handleKeyDown = (e) => {
+    const value = e.target.value;
+    if (e.key === "Enter" || e.key === ",") {
+      e.preventDefault();
+      addSkill(value);
+      setInputValue("");
     }
-    function handleMesInicio(dataInicio) {
-        if (!dataInicio) return null;
-        const mes = new Date(dataInicio).toLocaleString('pt-PT', { month: 'long' });
-        return mes.charAt(0).toUpperCase() + mes.slice(1);
+  };
+
+  const addSkill = (value) => {
+    const trimmed = value.trim();
+    if (trimmed && !formData.competenciasTecnicas.includes(trimmed)) {
+      const newSkills = [...formData.competenciasTecnicas, trimmed];
+      setFormData((prev) => ({ ...prev, competenciasTecnicas: newSkills }));
     }
+  };
 
+  const removeSkill = (index) => {
+    const newSkills = formData.competenciasTecnicas.filter(
+      (_, i) => i !== index
+    );
+    setFormData((prev) => ({ ...prev, competenciasTecnicas: newSkills }));
+  };
 
-    useEffect(() => {
-        if (user && user._id) {
-            setFormData({
-                name: user.name || '',
-                telefone: user.telefone || '',
-                email: user.email || '',
-                morada: user.morada || '',
-                codigoPostal: user.codigoPostal || '',
-                dataNascimento: user.dataNascimento || '',
-                nif: user.nif || '',
-                competenciasTecnicas: user.competenciasTecnicas || [],
-                formacaoAcademica: user.formacaoAcademica || '',
-                cc: user.cc || '',
-                universidade: user.universidade || '',
-                curso: user.curso || '',
-                cv: user.cv || '',
-                cartaDeApresentacao: ''
-            });
+  const handlesSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setSuccess(false);
+    setFieldErrors({});
+
+    try {
+      const formDataToSend = new FormData();
+      formDataToSend.append("cv", cvFile);
+      formDataToSend.append("name", formData.name);
+      formDataToSend.append("telefone", formData.telefone);
+      formDataToSend.append("email", formData.email);
+      formDataToSend.append("morada", formData.morada);
+      formDataToSend.append("codigoPostal", formData.codigoPostal);
+      formDataToSend.append("dataNascimento", formData.dataNascimento);
+      formDataToSend.append("nif", formData.nif);
+      formDataToSend.append("formacaoAcademica", formData.formacaoAcademica);
+      formDataToSend.append("cc", formData.cc);
+      formDataToSend.append("universidade", formData.universidade);
+      formDataToSend.append("curso", formData.curso);
+      formDataToSend.append(
+        "cartaDeApresentacao",
+        formData.cartaDeApresentacao
+      );
+      formDataToSend.append(
+        "competenciasTecnicas",
+        JSON.stringify(formData.competenciasTecnicas)
+      );
+
+      formDataToSend.append("estagio", id);
+      formDataToSend.append("user", user._id);
+
+      const request = await fetch(
+        `http://localhost:5000/api/candidaturas/candidatar/${id}`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          body: formDataToSend,
         }
-    }, [user]);
+      );
 
+      const response = await request.json();
+      if (request.ok) {
+        const responseUser = await fetch(
+          `http://localhost:5000/api/users/${user._id}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+            body: JSON.stringify({
+              name: formData.name,
+              telefone: formData.telefone,
+              email: formData.email,
+              morada: formData.morada,
+              codigoPostal: formData.codigoPostal,
+              dataNascimento: formData.dataNascimento,
+              nif: formData.nif,
+              competenciasTecnicas: formData.competenciasTecnicas,
+              formacaoAcademica: formData.formacaoAcademica,
+              cc: formData.cc,
+              universidade: formData.universidade,
+              curso: formData.curso,
+              cartaDeApresentacao: formData.cartaDeApresentacao
+            }),
+          }
+        );
 
-    return (
-        <>
-            <NavBar />
-            <div className={style.background}>
-                <ButtonVoltar />
-                <div className={style.formcontainer}>
-                    <div className={style.sidebar}>
-                        {estagio ? (
-                            <>
-                                <h3 style={{ textAlign: 'left' }}>Detalhes do Estágio - {estagio.title}</h3>
-                                <div style={{ marginTop: '2rem', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', textAlign: 'justify', fontSize: '1rem' }}>
-                                    <p><strong>Descrição:</strong> {estagio.descricao || <span style={{ color: '#888' }}>Não especificado.</span>}</p>
-                                    <p><strong>Benefícios:</strong> {estagio.beneficios ? estagio.beneficios.join(', ') : <span style={{ color: '#888' }}>Não especificado.</span>}</p>
-                                    <p><strong>Competências Técnicas:</strong> {estagio.competenciasTecnicas ? estagio.competenciasTecnicas.join(', ') : <span style={{ color: '#888' }}>Não especificado.</span>}</p>
-                                    <p><strong>Competências Pessoais:</strong> {estagio.competenciasPessoais ? estagio.competenciasPessoais.join(', ') : <span style={{ color: '#888' }}>Não especificado.</span>}</p>
-                                    <p><strong>Cursos Preferenciais:</strong> {estagio.cursosPreferenciais ? estagio.cursosPreferenciais.join(', ') : <span style={{ color: '#888' }}>Não especificado.</span>}</p>
-                                    <p><strong>Observações:</strong> {estagio.observacoes || <span style={{ color: '#888' }}>Não especificado.</span>}</p>
-                                </div>
-                            </>
-                        ) : (
-                            <p style={{ textAlign:'left', color: '#888', marginTop: '2rem' }}>Informações não disponíveis.</p>
-                        )}
-                    </div>
-                    <div style={{ marginTop: "1rem", textAlign: "left", marginBottom: "10px", fontSize: '1.1rem' }}>
-                        Prencha os campos abaixo para se candidatar ao Estágio.
-                    </div>
-                    <div className={style.bigbox}>
-                        <form onSubmit={handlesSubmit}>
-                            <div style={{ paddingRight: "10%", paddingLeft: "10%", marginTop: "20px" }}>
-                                <div style={{ display: "flex", flexDirection: "column" }}>
-                                    <div className={style.formrow}>
-                                        <label className={style.labelcoluna}>Nome completo:
-                                            <input
-                                                type="text"
-                                                placeholder="Escreva aqui o seu nome completo"
-                                                name="name"
-                                                value={formData.name}
-                                                className={style.input}
-                                                onChange={handleChange(100)}
-                                            />
-                                            {/*Mensagem qquando o limite de caracteres é atingindo*/}
-                                            {Warnings["name"] && (
-                                                <span className={style.charterror}>
-                                                    {messageMaxChat}
-                                                </span>
-                                            )}
-                                        </label>
-                                        <label className={style.labelcoluna}>Email:
-                                            <input
-                                                type="text"
-                                                placeholder="Escreva aqui o seu email"
-                                                name="email"
-                                                value={formData.email}
-                                                className={style.input}
-                                                onChange={handleChange()}
-                                            />
-                                        </label>
-                                    </div>
-                                    <div className={style.formrow}>
-                                        <label className={style.labelcoluna}>Nº de telemóvel:
-                                            <input
-                                                type="text"
-                                                placeholder="Escreva aqui o seu número de telemóvel" name="telefone"
-                                                value={formData.telefone}
-                                                className={style.input}
-                                                onChange={handleChange()}
-                                            />
-                                        </label>
-                                        <label className={style.labelcoluna}>Data de nascimento:
-                                            <input
-                                                type="text"
-                                                placeholder="AAAA-MM-DD"
-                                                name="dataNascimento"
-                                                value={formData.dataNascimento?.slice(0, 10)}
-                                                className={style.inputdate}
-                                                onChange={handleChange()}
-                                            />
-                                        </label>
-                                    </div>
-                                    <div className={style.formrow}>
-                                        <label className={style.labelcoluna}>Morada:
-                                            <input
-                                                type="text"
-                                                placeholder="Escreva aqui a sua morada"
-                                                name="morada"
-                                                value={formData.morada}
-                                                className={style.input}
-                                                onChange={handleChange(100)}
-                                            />
-                                            {Warnings["morada"] && (
-                                                <span className={style.charterror}>
-                                                    {messageMaxChat}
-                                                </span>
-                                            )}
-                                        </label>
-                                        <label className={style.labelcoluna}>Código postal:
-                                            <input
-                                                type="text"
-                                                placeholder="Escreva aqui o seu código postal"
-                                                name="codigoPostal"
-                                                value={formData.codigoPostal}
-                                                className={style.input}
-                                                onChange={handleChange()}
-                                            />
-                                        </label>
-                                    </div>
-                                    <div className={style.formrow}>
-                                        <label className={style.labelcoluna}>NIF:
-                                            <input
-                                                type="text"
-                                                placeholder=""
-                                                name="nif"
-                                                value={formData.nif}
-                                                className={style.input}
-                                                onChange={handleChange()}
-                                            />
-                                        </label>
-                                        <label className={style.labelcoluna}>Nº do CC:
-                                            <input
-                                                type="text"
-                                                placeholder="Escreva aqui o seu número do Cartão de Cidadão"
-                                                name="cc"
-                                                value={formData.cc}
-                                                className={style.input}
-                                                onChange={handleChange()}
-                                            />
-                                        </label>
-                                    </div>
-                                    <div className={style.formrow}>
-                                        <label className={style.labelcoluna}>Universidade/Entidade Formadora:
-                                            <input
-                                                type="text"
-                                                placeholder="Ex: Universidade de Lisboa"
-                                                name="universidade"
-                                                value={formData.universidade}
-                                                className={style.input}
-                                                onChange={handleChange(100)}
-                                            />
-                                            {Warnings["universidade"] && (
-                                                <span className={style.charterror}>
-                                                    {messageMaxChat}
-                                                </span>
-                                            )}
-                                        </label>
-                                        <label className={style.labelcoluna}>Curso:
-                                            <input
-                                                type="text"
-                                                placeholder="Ex: Engenharia Informática"
-                                                name="curso"
-                                                value={formData.curso}
-                                                className={style.input}
-                                                onChange={handleChange(100)}
-                                            />
-                                            {Warnings["curso"] && (
-                                                <span className={style.charterror}>
-                                                    {messageMaxChat}
-                                                </span>
-                                            )}
-                                        </label>
-                                    </div>
-                                    <div className={style.formrow}>
-                                        <div style={{ display: 'flex', flexDirection: 'column', width: '100%', marginTop: '10px' }}>
-                                            <label className={style.labelcoluna}>Competências Técnicas:</label>
-                                            <input
-                                                type="text"
-                                                placeholder="Ex: Trabalho em Equipa, Design Gráfico..."
-                                                name="competenciasTecnicas"
-                                                value={inputValue}
-                                                className={style.input}
-                                                onChange={(e) => setInputValue(e.target.value)}
-                                                onKeyDown={handleKeyDown}
-                                            />
+        const updatedUser = await responseUser.json();
+
+        if (responseUser.ok) {
+          setSuccess(true);
+          setTimeout(() => {
+            navigate(`/profile/${user._id}`);
+          }, 2000);
+          setFormData({});
+          setFieldErrors({});
+        } else {
+          if (updatedUser.message && typeof updatedUser.message === "object") {
+            setFieldErrors(updatedUser.message);
+          } else if (typeof updatedUser.message === "string") {
+            setFieldErrors({ general: updatedUser.message });
+          }
+        }
+      } else {
+        if (response.message && typeof response.message === "object") {
+          setFieldErrors(response.message);
+        } else if (typeof response.message === "string") {
+          setFieldErrors({ general: response.message });
+        }
+      }
+    } catch (err) {
+      setFieldErrors({ general: "Erro inesperado ao submeter candidatura." });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (user && user._id) {
+      setFormData({
+        name: user.name || "",
+        telefone: user.telefone || "",
+        email: user.email || "",
+        morada: user.morada || "",
+        codigoPostal: user.codigoPostal || "",
+        dataNascimento: user.dataNascimento || "",
+        nif: user.nif || "",
+        competenciasTecnicas: user.competenciasTecnicas || [],
+        formacaoAcademica: user.formacaoAcademica || "",
+        cc: user.cc || "",
+        universidade: user.universidade || "",
+        curso: user.curso || "",
+        cv: user.cv || "",
+        cartaDeApresentacao: "",
+      });
+    }
+  }, [user]);
+
+  return (
+    <>
+      <NavBar />
+      <div className={style.background}>
+        <ButtonVoltar />
+        <div className={style.formcontainer}>
+          <div className={style.sidebar}>
+            {estagio ? (
+              <>
+                <h3 style={{ textAlign: "left" }}>
+                  Detalhes do Estágio - {estagio.title}
+                </h3>
+                <div
+                  style={{
+                    marginTop: "2rem",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "space-between",
+                    textAlign: "justify",
+                    fontSize: "1rem",
+                  }}
+                >
+                  <p>
+                    <strong>Descrição:</strong>{" "}
+                    {estagio.descricao || (
+                      <span style={{ color: "#888" }}>Não especificado.</span>
+                    )}
+                  </p>
+                  <p>
+                    <strong>Benefícios:</strong>{" "}
+                    {estagio.beneficios ? (
+                      estagio.beneficios.join(", ")
+                    ) : (
+                      <span style={{ color: "#888" }}>Não especificado.</span>
+                    )}
+                  </p>
+                  <p>
+                    <strong>Competências Técnicas:</strong>{" "}
+                    {estagio.competenciasTecnicas ? (
+                      estagio.competenciasTecnicas.join(", ")
+                    ) : (
+                      <span style={{ color: "#888" }}>Não especificado.</span>
+                    )}
+                  </p>
+                  <p>
+                    <strong>Competências Pessoais:</strong>{" "}
+                    {estagio.competenciasPessoais ? (
+                      estagio.competenciasPessoais.join(", ")
+                    ) : (
+                      <span style={{ color: "#888" }}>Não especificado.</span>
+                    )}
+                  </p>
+                  <p>
+                    <strong>Cursos Preferenciais:</strong>{" "}
+                    {estagio.cursosPreferenciais ? (
+                      estagio.cursosPreferenciais.join(", ")
+                    ) : (
+                      <span style={{ color: "#888" }}>Não especificado.</span>
+                    )}
+                  </p>
+                  <p>
+                    <strong>Observações:</strong>{" "}
+                    {estagio.observacoes || (
+                      <span style={{ color: "#888" }}>Não especificado.</span>
+                    )}
+                  </p>
+                </div>
+              </>
+            ) : (
+              <p
+                style={{ textAlign: "left", color: "#888", marginTop: "2rem" }}
+              >
+                Informações não disponíveis.
+              </p>
+            )}
+          </div>
+          <div
+            style={{
+              marginTop: "1rem",
+              textAlign: "left",
+              marginBottom: "10px",
+              fontSize: "1.1rem",
+            }}
+          >
+            Prencha os campos abaixo para se candidatar ao Estágio.
+          </div>
+          <div className={style.bigbox}>
+            <form onSubmit={handlesSubmit}>
+              <div
+                style={{
+                  paddingRight: "10%",
+                  paddingLeft: "10%",
+                  marginTop: "20px",
+                }}
+              >
+                <div style={{ display: "flex", flexDirection: "column" }}>
+                  <div className={style.formrow}>
+                    <label className={style.labelcoluna}>
+                      Nome completo:
+                      <input
+                        type="text"
+                        placeholder="Escreva aqui o seu nome completo"
+                        name="name"
+                        value={formData.name}
+                        className={style.input}
+                        onChange={handleChange(100)}
+                      />
+                      {/*Mensagem qquando o limite de caracteres é atingindo*/}
+                      {Warnings["name"] && (
+                        <span className={style.charterror}>
+                          {messageMaxChat}
+                        </span>
+                      )}
+                    </label>
+                    <label className={style.labelcoluna}>
+                      Email:
+                      <input
+                        type="text"
+                        placeholder="Escreva aqui o seu email"
+                        name="email"
+                        value={formData.email}
+                        className={style.input}
+                        onChange={handleChange()}
+                      />
+                    </label>
+                  </div>
+                  <div className={style.formrow}>
+                    <label className={style.labelcoluna}>
+                      Nº de telemóvel:
+                      <input
+                        type="text"
+                        placeholder="Escreva aqui o seu número de telemóvel"
+                        name="telefone"
+                        value={formData.telefone}
+                        className={style.input}
+                        onChange={handleChange()}
+                      />
+                    </label>
+                    <label className={style.labelcoluna}>
+                      Data de nascimento:
+                      <input
+                        type="text"
+                        placeholder="AAAA-MM-DD"
+                        name="dataNascimento"
+                        value={formData.dataNascimento?.slice(0, 10)}
+                        className={style.inputdate}
+                        onChange={handleChange()}
+                      />
+                    </label>
+                  </div>
+                  <div className={style.formrow}>
+                    <label className={style.labelcoluna}>
+                      Morada:
+                      <input
+                        type="text"
+                        placeholder="Escreva aqui a sua morada"
+                        name="morada"
+                        value={formData.morada}
+                        className={style.input}
+                        onChange={handleChange(100)}
+                      />
+                      {Warnings["morada"] && (
+                        <span className={style.charterror}>
+                          {messageMaxChat}
+                        </span>
+                      )}
+                    </label>
+                    <label className={style.labelcoluna}>
+                      Código postal:
+                      <input
+                        type="text"
+                        placeholder="Escreva aqui o seu código postal"
+                        name="codigoPostal"
+                        value={formData.codigoPostal}
+                        className={style.input}
+                        onChange={handleChange()}
+                      />
+                    </label>
+                  </div>
+                  <div className={style.formrow}>
+                    <label className={style.labelcoluna}>
+                      NIF:
+                      <input
+                        type="text"
+                        placeholder=""
+                        name="nif"
+                        value={formData.nif}
+                        className={style.input}
+                        onChange={handleChange()}
+                      />
+                    </label>
+                    <label className={style.labelcoluna}>
+                      Nº do CC:
+                      <input
+                        type="text"
+                        placeholder="Escreva aqui o seu número do Cartão de Cidadão"
+                        name="cc"
+                        value={formData.cc}
+                        className={style.input}
+                        onChange={handleChange()}
+                      />
+                    </label>
+                  </div>
+                  <div className={style.formrow}>
+                    <label className={style.labelcoluna}>
+                      Universidade/Entidade Formadora:
+                      <input
+                        type="text"
+                        placeholder="Ex: Universidade de Lisboa"
+                        name="universidade"
+                        value={formData.universidade}
+                        className={style.input}
+                        onChange={handleChange(100)}
+                      />
+                      {Warnings["universidade"] && (
+                        <span className={style.charterror}>
+                          {messageMaxChat}
+                        </span>
+                      )}
+                    </label>
+                    <label className={style.labelcoluna}>
+                      Curso:
+                      <input
+                        type="text"
+                        placeholder="Ex: Engenharia Informática"
+                        name="curso"
+                        value={formData.curso}
+                        className={style.input}
+                        onChange={handleChange(100)}
+                      />
+                      {Warnings["curso"] && (
+                        <span className={style.charterror}>
+                          {messageMaxChat}
+                        </span>
+                      )}
+                    </label>
+                  </div>
+                  <div className={style.formrow}>
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        width: "100%",
+                        marginTop: "10px",
+                      }}
+                    >
+                      <label className={style.labelcoluna}>
+                        Competências Técnicas:
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="Ex: Trabalho em Equipa, Design Gráfico..."
+                        name="competenciasTecnicas"
+                        value={inputValue}
+                        className={style.input}
+                        onChange={(e) => setInputValue(e.target.value)}
+                        onKeyDown={handleKeyDown}
+                      />
 
                                             {formData.competenciasTecnicas && formData.competenciasTecnicas.length > 0 ? (
                                                 <div style={{
@@ -376,20 +500,7 @@ function PaginaCandidatarEstagio() {
                                                     gap: '8px',
                                                 }}>
                                                     {formData.competenciasTecnicas.map((skill, i) => (
-                                                        <div
-                                                            key={i}
-                                                            style={{
-                                                                display: "flex",
-                                                                alignItems: 'center',
-                                                                background: '#e6e6e6ff',
-                                                                borderRadius: '8px',
-                                                                gap: '8px',
-                                                                paddingTop: '8px',
-                                                                paddingBottom: '8px',
-                                                                paddingLeft: '12px',
-                                                                paddingRight: '12px',
-                                                            }}
-                                                        >
+                                                        <div key={i} className={style.skillTag}>
                                                             {skill}
                                                             <svg
                                                                 xmlns="http://www.w3.org/2000/svg"
@@ -455,31 +566,36 @@ function PaginaCandidatarEstagio() {
                                     </span>
                                 )}
 
-                                <div>
-                                    {Object.keys(fieldErrors).length > 0 && (
-                                        <div className={`alert ${style.alertDanger}`}>
-                                            <ul className="mb-0">
-                                                {Object.values(fieldErrors).map((error, index) => (
-                                                    <li key={index}>{error}</li>
-                                                ))}
-                                            </ul>
-                                        </div>
-                                    )}
-                                    {success && (
-                                        <div className={`alert ${style.alertSuccess}`}>
-                                            <ul className="mb-0">
-                                                <li>Candidatura enviada com sucesso!</li>
-                                            </ul>
-                                        </div>
-                                    )}
-                                </div>
-                            </div>
-                            <input type="submit" value={isLoading ? "A enviar..." : "Candidatar"} className={style.submit} disabled={isLoading} />
-                        </form>
+                <div>
+                  {Object.keys(fieldErrors).length > 0 && (
+                    <div className={`alert ${style.alertDanger}`}>
+                      <ul className="mb-0">
+                        {Object.values(fieldErrors).map((error, index) => (
+                          <li key={index}>{error}</li>
+                        ))}
+                      </ul>
                     </div>
+                  )}
+                  {success && (
+                    <div className={`alert ${style.alertSuccess}`}>
+                      <ul className="mb-0">
+                        <li>Candidatura enviada com sucesso!</li>
+                      </ul>
+                    </div>
+                  )}
                 </div>
-            </div>
-        </>
-    )
+              </div>
+              <input
+                type="submit"
+                value={isLoading ? "A enviar..." : "Candidatar"}
+                className={style.submit}
+                disabled={isLoading}
+              />
+            </form>
+          </div>
+        </div>
+      </div>
+    </>
+  );
 }
 export default PaginaCandidatarEstagio;

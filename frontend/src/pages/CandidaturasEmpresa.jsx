@@ -13,7 +13,7 @@ const CandidaturasEmpresa = () => {
 
     // Função para formatar o mês
     const handleMesInicio = (mes) => {
-        if (!mes) return '';  
+        if (!mes) return '';
         const meses = [
             "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
             "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
@@ -25,14 +25,14 @@ const CandidaturasEmpresa = () => {
     // Função para obter cor do status
     const getStatusColor = (status) => {
         switch (status) {
-            case 'Aceite':
-                return '#4CAF50'; // Verde
-            case 'Recusada':
-                return '#f44336'; // Vermelho
-            case 'Pendente':
-                return '#FF9800'; // Laranja
-            default:
-                return '#9E9E9E'; // Cinza
+        case 'Aceite':
+            return '#81C784'; // Verde más suave
+        case 'Recusada':
+            return '#E57373'; // Rojo más claro
+        case 'Pendente':
+            return '#FFB74D'; // Naranja más suave
+        default:
+            return '#BDBDBD'; // Gris más claro
         }
     };
 
@@ -54,7 +54,7 @@ const CandidaturasEmpresa = () => {
                             <h1 style={{ alignSelf: 'center', color: '#273F4F' }}>
                                 Histórico de Candidaturas
                             </h1>
-                        </div>                        
+                        </div>
                     </div>
 
                     {loading ? (
@@ -91,7 +91,7 @@ const CandidaturasEmpresa = () => {
                             {/* Tabela de candidaturas com scroll no corpo */}
                             <div className="card">
                                 <div style={{ maxHeight: '450px', overflowY: 'auto' }}>
-                                    <table className="table table-hover align-middle" style={{ marginBottom: '0'}}>
+                                    <table className="table table-hover align-middle" style={{ marginBottom: '0' }}>
                                         <thead>
                                             <tr>
                                                 <th style={{ backgroundColor: '#273F4F', color: 'white' }} scope="col">Status</th>
@@ -104,29 +104,45 @@ const CandidaturasEmpresa = () => {
                                         <tbody>
                                             {candidaturas.map((candidatura) => (
                                                 <tr key={candidatura._id} >
-                                                    <td style={{ backgroundColor: candidatura.status === 'Aceite' ? '#d4edda' : candidatura.status === 'Recusada' ? '#f8d7da' : '#fff3cd', padding: "0.8rem" }}>
+                                                    <td style={{ padding: "0.8rem" }}>
+                                                        <span
+                                                            style={{
+                                                                backgroundColor: getStatusColor(candidatura.status),
+                                                                color: '#fff',
+                                                                padding: '0.4rem 1rem',
+                                                                borderRadius: '12px',
+                                                                fontWeight: '500',
+                                                                fontSize: '0.9rem',
+                                                                display: 'inline-block',
+                                                                minWidth: '90px',
+                                                                textAlign: 'center',
+                                                                whiteSpace: 'nowrap',
+                                                
+                                                            }}
+                                                        >
                                                         {candidatura.status.charAt(0).toUpperCase() + candidatura.status.slice(1)}
+                                                        </span>
                                                     </td>
                                                     <td>{candidatura.user?.name || 'N/A'}</td>
                                                     <td style={{ maxWidth: "200px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                                                         {candidatura.estagio?.title || 'N/A'}
                                                     </td>
                                                     <td>
-                                                        {candidatura.dataCandidatura 
+                                                        {candidatura.dataCandidatura
                                                             ? new Date(candidatura.dataCandidatura).toLocaleDateString('pt-PT')
                                                             : 'N/A'
                                                         }
                                                     </td>
                                                     <td>
                                                         {candidatura.status === 'Pendente' ? (
-                                                            <a 
+                                                            <a
                                                                 href={`/ver-candidatura/${candidatura._id}`}
                                                                 style={{ textDecoration: 'none', color: '#447D9B', fontSize: '0.9rem' }}
                                                             >
                                                                 Ver candidatura
                                                             </a>
                                                         ) : (
-                                                            <a 
+                                                            <a
                                                                 href={`/estagiario/${candidatura.user._id}`}
                                                                 style={{ textDecoration: 'none', color: '#447D9B', fontSize: '0.9rem' }}
                                                             >
