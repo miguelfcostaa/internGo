@@ -76,18 +76,19 @@ function Home() {
     );
   };
 
+  // Função customizada para setEstagios que sempre aplica o filtro de candidaturas
+  const setEstagiosWithFilter = (estagiosList) => {
+    const filteredEstagios = filterEstagiosAlreadyApplied(estagiosList);
+    setEstagios(filteredEstagios);
+  };
+
   useEffect(() => {
     getUserInfo();
-    loadAllEstagios();
   }, []);
 
-  // Effect para aplicar filtro quando candidaturas ou estágios mudarem
   useEffect(() => {
-    if (allEstagios.length > 0) {
-      const estagiosFiltrados = filterEstagiosAlreadyApplied(allEstagios);
-      setEstagios(estagiosFiltrados);
-    }
-  }, [allEstagios, candidaturasFeitas, userRole]);
+    loadAllEstagios();
+  }, []);
 
   useEffect(() => {
     if (query && allEstagios.length > 0) {
@@ -98,24 +99,28 @@ function Home() {
             estagio.company.name &&
             estagio.company.name.toLowerCase().includes(query.toLowerCase()))
       );
-
-      // Aplicar filtro de candidaturas também na busca
-      const estagiosFiltrados = filterEstagiosAlreadyApplied(filteredEstagios);
-      setEstagios(estagiosFiltrados);
+      setEstagiosWithFilter(filteredEstagios);
       setSearchTag(query);
     } else if (!query && allEstagios.length > 0) {
-      const estagiosFiltrados = filterEstagiosAlreadyApplied(allEstagios);
-      setEstagios(estagiosFiltrados);
+      setEstagiosWithFilter(allEstagios);
       setSearchTag(null);
     }
-  }, [query, allEstagios, candidaturasFeitas, userRole]);
+  }, [query, allEstagios]);
+
+  // Aplicar filtro de candidaturas sempre que as candidaturas mudarem
+  useEffect(() => {
+    if (estagios.length > 0) {
+      const filteredEstagios = filterEstagiosAlreadyApplied(estagios);
+      // Só atualiza se houver diferença (evitar loop infinito)
+      if (filteredEstagios.length !== estagios.length) {
+        setEstagios(filteredEstagios);
+      }
+    }
+  }, [candidaturasFeitas, userRole]);
 
   const handleRemoveSearchTag = () => {
     setSearchTag(null);
-    if (allEstagios.length > 0) {
-      const estagiosFiltrados = filterEstagiosAlreadyApplied(allEstagios);
-      setEstagios(estagiosFiltrados);
-    }
+    setEstagios(allEstagios);
     setQuery("");
   };
 
