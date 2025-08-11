@@ -568,7 +568,8 @@ const STEPS = {
               {/* Competências Técnicas */}
               <Form.Group className="mb-3">
                 <Form.Label className={`${style.label} fw-bold`}>
-                  Competências Técnicas</Form.Label>
+                  Competências Técnicas <RequiredFieldTooltip />
+                  </Form.Label>
                 <TagInput
                   value={formData.competenciasTecnicas}
                   onChange={(tags) =>
