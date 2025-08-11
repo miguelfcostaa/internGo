@@ -170,19 +170,13 @@ function RegisterCompany() {
           </div>
 
           <div className="mb-3">
-            <label className={`form-label ${styles.formLabel}`}>phone</label>
+            <label className={`form-label ${styles.formLabel}`}>Telefone</label>
             <div className={`input-group ${styles.inputGroup}`}>
-              <select className={`form-select ${styles.formSelect}`} name="prefix" disabled={loading}>
-                <option value="+351">+351</option>
-                <option value="+55">+55</option>
-                <option value="+1">+1</option>
-                <option value="+58">+58</option>
-              </select>
               <input
                 type="text"
                 name="phone"
                 className={`form-control ${styles.formControl}`}
-                placeholder="9 dígitos (ex: 123456789)"
+                placeholder="Insira o telefone (ex: 912345678)"
                 maxLength="9"
                 value={formData.phone}
                 onChange={handleChange}

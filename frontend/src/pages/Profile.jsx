@@ -286,8 +286,8 @@ const ProfilePage = () => {
                                     </div>
                                 )) : (
                                     <div style={{textAlign: 'left', padding: '1rem', color: '#666'}}>
-                                        <p>📋 Nenhuma candidatura pendente</p>
-                                        <small>As candidaturas aceites/recusadas não aparecem aqui</small>
+                                        <p>📋 Nenhuma candidatura pendente. </p>
+                                        <small>Todas as candidaturas recebidas aparecem aqui. </small>
                                     </div>
                                 )}
                             </div>
