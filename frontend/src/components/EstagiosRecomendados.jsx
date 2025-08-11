@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import useEstagiosRecomendados from '../hooks/useEstagiosRecomendados';
+import { getUserIdFromToken } from '../utils/jwtUtils';
 import styles from '../styles/EstagiosRecomendados.module.css';
 
 const EstagiosRecomendados = ({ limite = 5, showTitle = true, showViewMore = false, layoutType = "horizontal" }) => {
@@ -76,9 +77,15 @@ const EstagiosRecomendados = ({ limite = 5, showTitle = true, showViewMore = fal
             <li>Indique a sua formação académica</li>
             <li>Liste as suas competências técnicas</li>
             <li>Complete a sua morada com código postal</li>
-          </ul>
-          <button 
-            onClick={() => navigate('/edit-profile')} 
+          </ul>          <button 
+            onClick={() => {
+              const userId = getUserIdFromToken();
+              if (userId) {
+                navigate(`/edit-profile/${userId}`);
+              } else {
+                navigate('/login');
+              }
+            }} 
             className={styles.btnCompletarPerfil}
           >
             Completar Perfil
@@ -187,7 +194,12 @@ const EstagiosRecomendados = ({ limite = 5, showTitle = true, showViewMore = fal
       {showViewMore && estagiosRecomendados.length > 0 && (
         <div className={styles.viewMoreSection}>
           <button 
-            onClick={() => navigate('/recomendacoes')}
+            onClick={() => {
+              const userId = getUserIdFromToken();
+              if (userId) {
+                navigate(`/recomendacoes/${userId}`);
+              }
+            }}
             className={styles.btnVerMais}
           >
             Ver Mais Recomendações

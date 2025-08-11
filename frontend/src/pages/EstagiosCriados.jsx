@@ -16,7 +16,6 @@ const EstagiosCriados = () => {
     const [highlightedId, setHighlightedId] = useState(null);
 
     useEffect(() => {
-        console.log("EstagiosByCompany updated:", estagiosByCompany);
         setEstagios(estagiosByCompany);
     }, [estagiosByCompany]);
 
