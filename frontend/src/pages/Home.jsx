@@ -107,20 +107,27 @@ function Home() {
     }
   }, [query, allEstagios]);
 
-  // Aplicar filtro de candidaturas sempre que as candidaturas mudarem
+  // Re-aplicar filtro quando candidaturas ou role do usuário mudarem
   useEffect(() => {
-    if (estagios.length > 0) {
-      const filteredEstagios = filterEstagiosAlreadyApplied(estagios);
-      // Só atualiza se houver diferença (evitar loop infinito)
-      if (filteredEstagios.length !== estagios.length) {
-        setEstagios(filteredEstagios);
-      }
+    if (allEstagios.length > 0 && !query) {
+      // Se não há busca ativa, re-aplicar filtro nos estágios completos
+      setEstagiosWithFilter(allEstagios);
+    } else if (allEstagios.length > 0 && query) {
+      // Se há busca ativa, re-aplicar filtro nos resultados da busca
+      const filteredEstagios = allEstagios.filter(
+        (estagio) =>
+          estagio.title.toLowerCase().includes(query.toLowerCase()) ||
+          (estagio.company &&
+            estagio.company.name &&
+            estagio.company.name.toLowerCase().includes(query.toLowerCase()))
+      );
+      setEstagiosWithFilter(filteredEstagios);
     }
   }, [candidaturasFeitas, userRole]);
 
   const handleRemoveSearchTag = () => {
     setSearchTag(null);
-    setEstagios(allEstagios);
+    setEstagiosWithFilter(allEstagios);
     setQuery("");
   };
 
@@ -130,7 +137,7 @@ function Home() {
       <div className={styles.background}>
         <div className={styles.flex}>
           <Filters
-            setEstagios={setEstagios}
+            setEstagios={setEstagiosWithFilter}
             searchTag={searchTag}
             setSearchTag={setSearchTag}
             onRemoveSearchTag={handleRemoveSearchTag}
