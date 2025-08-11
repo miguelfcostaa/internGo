@@ -11,12 +11,13 @@ function Login() {
     const [loading, setLoading] = useState(false);
     const [rememberMe, setRememberMe] = useState(false);
     const [savedEmail, setSavedEmail] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
 
     // Carregar email salvo quando o componente montar
     useEffect(() => {
         const savedEmailFromStorage = localStorage.getItem('savedEmail');
         const isRememberMeEnabled = localStorage.getItem('rememberMe') === 'true';
-        
+
         if (savedEmailFromStorage && isRememberMeEnabled) {
             setSavedEmail(savedEmailFromStorage);
             setRememberMe(true);
@@ -27,7 +28,7 @@ function Login() {
     const handleRememberMeChange = (event) => {
         const isChecked = event.target.checked;
         setRememberMe(isChecked);
-        
+
         if (!isChecked) {
             // Se desmarcar, remover email salvo
             localStorage.removeItem('savedEmail');
@@ -70,13 +71,13 @@ function Login() {
                 setDone(true);
                 setFieldErrors({});
                 localStorage.setItem("token", result.token);
-                
+
                 // Salvar email se "manter-me logado" estiver marcado
                 if (rememberMe) {
                     localStorage.setItem('savedEmail', data.email);
                     localStorage.setItem('rememberMe', 'true');
                 }
-                
+
                 // Simular um pequeno delay para mostrar o loading
                 setTimeout(() => {
                     navigate("/home");
@@ -111,10 +112,10 @@ function Login() {
                 <form method="POST" onSubmit={handleLogin}>
                     <div className={styles.inputGroup}>
                         <label htmlFor="email" className={styles.inputLabel}>Email</label>
-                        <input 
-                            type="email" 
+                        <input
+                            type="email"
                             className={styles.inputField}
-                            name="email" 
+                            name="email"
                             placeholder="Digite seu email"
                             value={savedEmail}
                             onChange={(e) => setSavedEmail(e.target.value)}
@@ -124,19 +125,27 @@ function Login() {
 
                     <div className={styles.inputGroup}>
                         <label htmlFor="password" className={styles.inputLabel}>Palavra-passe</label>
-                        <input 
-                            type="password" 
+                        <input
+                            type={showPassword ? "text" : "password"}
                             className={styles.inputField}
-                            name="password" 
+                            name="password"
                             placeholder="Digite sua palavra-passe"
                             disabled={loading}
                         />
+                        <i
+                            onClick={() => setShowPassword(!showPassword)}
+                            className={`${showPassword ? "bi bi-eye-slash" : "bi bi-eye"} ${styles.passwordToggleIcon}`}
+                            role="button"
+                            aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
+                            tabIndex={0}
+                            onKeyPress={(e) => { if (e.key === 'Enter') setShowPassword(!showPassword) }}
+                        ></i>
                     </div>
 
                     <div className={styles.checkboxContainer}>
                         <label className={styles.checkbox}>
-                            <input 
-                                type="checkbox" 
+                            <input
+                                type="checkbox"
                                 id="remember"
                                 checked={rememberMe}
                                 onChange={handleRememberMeChange}
@@ -157,11 +166,11 @@ function Login() {
                         variant="primary"
                     />
                 </form>
-                
+
                 <div className={styles.alertContainer}>
                     {done ? (
-                        <div className={styles.alertSuccess}> 
-                            Login efetuado com sucesso! 
+                        <div className={styles.alertSuccess}>
+                            Login efetuado com sucesso!
                         </div>
                     ) : Object.values(fieldErrors).length !== 0 ? (
                         <div className={styles.alertError}>
@@ -173,9 +182,9 @@ function Login() {
                         </div>
                     ) : null}
                 </div>
-                    
+
                 <Link to="/forgot-password" className={styles.forgotPasswordLink}>
-                
+
                     Esqueceu a palavra-passe?
                 </Link>
             </div>
