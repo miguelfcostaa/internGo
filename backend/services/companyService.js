@@ -86,43 +86,43 @@ class CompanyService {
         // Validar apenas campos que foram fornecidos (update parcial)
         if (name !== undefined) {
             if (!name?.trim()) {
-                errors.push('Nome da empresa não pode estar vazio');
+                errors.push('Nome da empresa não pode estar vazio.');
             } else if (name.trim().length < 2) {
-                errors.push('Nome da empresa deve ter pelo menos 2 caracteres');
+                errors.push('Nome da empresa deve ter pelo menos 2 caracteres.');
             }
         }
         
         if (email !== undefined) {
             if (!email?.trim()) {
-                errors.push('Email não pode estar vazio');
+                errors.push('Email não pode estar vazio.');
             } else if (!this.isValidEmail(email)) {
-                errors.push('Formato de email inválido');
+                errors.push('Formato de email inválido.');
             }
         }
         
         if (nif !== undefined) {
             if (!nif?.trim()) {
-                errors.push('NIF não pode estar vazio');
+                errors.push('NIF não pode estar vazio.');
             } else if (!this.isValidNIF(nif)) {
-                errors.push('NIF deve ter exatamente 9 dígitos numéricos');
+                errors.push('NIF deve ter exatamente 9 dígitos numéricos.');
             }
         }
         
         if (phone !== undefined) {
             if (!phone?.trim()) {
-                errors.push('Telefone não pode estar vazio');
+                errors.push('Telefone não pode estar vazio.');
             } else if (!this.isValidPhone(phone)) {
-                errors.push('Telefone deve ter formato válido (9 dígitos começando por 9)');
+                errors.push('Telefone deve ter formato válido (9 dígitos começando por 9).');
             }
         }
         
         // Campos opcionais podem ser vazios
         if (morada !== undefined && morada?.trim().length > 0 && morada.trim().length < 5) {
-            errors.push('Morada deve ter pelo menos 5 caracteres');
+            errors.push('Morada deve ter pelo menos 5 caracteres.');
         }
         
         if (codigoPostal !== undefined && codigoPostal?.trim().length > 0 && !/^\d{4}-\d{3}$/.test(codigoPostal)) {
-            errors.push('Código postal deve ter formato XXXX-XXX');
+            errors.push('Código postal deve ter formato XXXX-XXX.');
         }
 
         return {

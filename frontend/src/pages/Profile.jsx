@@ -497,9 +497,9 @@ const ProfilePage = () => {
                         color: "#666",
                       }}
                     >
-                      <p>📋 Nenhuma candidatura pendente</p>
+                      <p>📋 Nenhuma candidatura pendente. </p>
                       <small>
-                        As candidaturas aceites/recusadas não aparecem aqui
+                        Todas as candidaturas recebidas aparecem aqui .{" "}
                       </small>
                     </div>
                   )}
