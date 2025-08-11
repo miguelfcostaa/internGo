@@ -19,7 +19,6 @@ const ProfilePage = () => {
 
   const { id } = useParams();
   const [userInfo, setUserInfo] = useUser(id);
-  console.log("User Info:", userInfo);
   const role = getUserRoleFromToken();
   const [nEstagios, setNEstagios] = useState(0);
   const candidaturasFeitas = useCandidaturasFeitas(id, role);
@@ -28,7 +27,6 @@ const ProfilePage = () => {
     loading: candidaturasLoading,
     refreshCandidaturas,
   } = useCandidaturas(userInfo?._id);
-  console.log("Candidaturas:", candidaturas);
 
   const { estagios: estagiosByCompany, loading: estagiosLoading } =
     useEstagiosByCompany(userInfo?._id);
@@ -328,10 +326,10 @@ const ProfilePage = () => {
                                 estagio.pontuacaoRecomendacao
                               ),
                               color: "white",
-                              padding: "4px 8px",
-                              borderRadius: "12px",
-                              fontSize: "0.8rem",
-                              fontWeight: "bold",
+                              padding: "4px 10px",
+                              borderRadius: "8px",
+                              fontSize: "0.95rem",
+                              fontWeight: "500",
                             }}
                           >
                             {formatarPontuacao(estagio.pontuacaoRecomendacao)}%
