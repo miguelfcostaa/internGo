@@ -19,6 +19,7 @@ const ProfilePage = () => {
 
   const { id } = useParams();
   const [userInfo, setUserInfo] = useUser(id);
+  console.log("User Info:", userInfo);
   const role = getUserRoleFromToken();
   const [nEstagios, setNEstagios] = useState(0);
   const candidaturasFeitas = useCandidaturasFeitas(id, role);
@@ -26,7 +27,9 @@ const ProfilePage = () => {
     candidaturas,
     loading: candidaturasLoading,
     refreshCandidaturas,
-  } = useCandidaturas(role === "company" ? userInfo?._id : null);
+  } = useCandidaturas(userInfo?._id);
+  console.log("Candidaturas:", candidaturas);
+
   const { estagios: estagiosByCompany, loading: estagiosLoading } =
     useEstagiosByCompany(userInfo?._id);
   const { estagiosRecomendados, loading: loadingRecomendados } =
