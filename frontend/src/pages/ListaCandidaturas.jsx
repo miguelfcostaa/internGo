@@ -67,7 +67,7 @@ function ListaCandidaturas() {
                                         candidaturas.map((candidatura, index) => (
                                             <tr key={candidatura._id || index} className={styles.tablerow}>
                                                 <td style={{ backgroundColor: candidatura.status === 'Aceite' ? '#d4edda' : candidatura.status === 'Rejeitada' ? '#f8d7da' : '#fff3cd', padding: "1rem" }}>
-                                                    {candidatura.status}
+                                                    {candidatura.status.charAt(0).toUpperCase() + candidatura.status.slice(1)}
                                                 </td>
                                                 <td>{candidatura.user.name || <span style={{ color: "#aaa" }}> Não especificado. </span>}</td>
                                                 <td>{candidatura.user.email || <span style={{ color: "#aaa" }}> Não especificado. </span>}</td>

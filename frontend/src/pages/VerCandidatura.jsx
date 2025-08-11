@@ -153,6 +153,22 @@ function VerCandidatura() {
         <>
             <NavBar />
             <div className={style.background}>
+                <ButtonVoltar style={{ marginBottom: '0.5rem'}} />
+                {error ? (
+                    <div className={`alert ${style.alertDanger}`}>
+                        <ul className="mb-0">
+                            <li>{error}</li>
+                        </ul>
+                    </div>
+                ) : success ? (
+                    <div className={`alert ${style.alertSuccess}`}>
+                        <ul className="mb-0">
+                            <li>{success}</li>
+                        </ul>
+                    </div>
+                ) : null}
+
+                
                 {/* Bloco do Estágio */}
                 <div className={style.estagioBox}>
                     <div className={style.estagioBoxInner}>
@@ -281,9 +297,6 @@ function VerCandidatura() {
 
                 {estado === "Pendente" ? (
                     <>
-                        <div className={style.flexRow}>
-                            <ButtonVoltar style={{ marginTop: "1rem" }} />
-                        </div>
                         <div className={style.buttonContainer}>
                             <button className={style.acceptButton} onClick={() => handleAccept(candidatura._id)}>Aceitar Candidatura</button>
                             <button className={style.rejectButton} onClick={() => handleReject(candidatura._id)}>Recusar Candidatura</button>
@@ -292,18 +305,12 @@ function VerCandidatura() {
                         
                 ) : (estado === "Aceite") ? (
                     <>
-                        <div className={style.flexRow}>
-                            <ButtonVoltar style={{ marginTop: "1rem" }} />
-                        </div>
                         <div className={style.buttonContainer}>
                             <span className={style.accepted} disabled>Candidatura Aceite!</span>
                         </div>
                     </>
                 ) : (estado === "Recusada") ? (
                     <>
-                        <div className={style.flexRow}>
-                            <ButtonVoltar style={{ marginTop: "1rem" }} />
-                        </div>
                         <div className={style.buttonContainer}>
                             <span className={style.rejected} disabled>Candidatura Recusada!</span>
                         </div>

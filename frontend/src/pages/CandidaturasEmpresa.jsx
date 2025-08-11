@@ -25,11 +25,11 @@ const CandidaturasEmpresa = () => {
     // Função para obter cor do status
     const getStatusColor = (status) => {
         switch (status) {
-            case 'aceite':
+            case 'Aceite':
                 return '#4CAF50'; // Verde
-            case 'recusada':
+            case 'Recusada':
                 return '#f44336'; // Vermelho
-            case 'pendente':
+            case 'Pendente':
                 return '#FF9800'; // Laranja
             default:
                 return '#9E9E9E'; // Cinza
@@ -38,9 +38,9 @@ const CandidaturasEmpresa = () => {
 
     // Agrupar candidaturas por status
     const candidaturasPorStatus = {
-        pendente: candidaturas.filter(c => c.status === 'pendente'),
-        aceite: candidaturas.filter(c => c.status === 'aceite'),
-        recusada: candidaturas.filter(c => c.status === 'recusada')
+        pendente: candidaturas.filter(c => c.status === 'Pendente'),
+        aceite: candidaturas.filter(c => c.status === 'Aceite'),
+        recusada: candidaturas.filter(c => c.status === 'Recusada')
     };
 
     return (
@@ -50,9 +50,11 @@ const CandidaturasEmpresa = () => {
                 <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '2rem' }}>
                     <div style={{ display: 'flex', alignItems: 'center', marginBottom: '2rem' }}>
                         <ButtonVoltar />
-                        <h1 style={{ marginLeft: '1rem', color: '#273F4F' }}>
-                            Histórico de Candidaturas
-                        </h1>
+                        <div style={{ flex: 1, textAlign: 'center' }}>
+                            <h1 style={{ alignSelf: 'center', color: '#273F4F' }}>
+                                Histórico de Candidaturas
+                            </h1>
+                        </div>                        
                     </div>
 
                     {loading ? (
@@ -86,74 +88,57 @@ const CandidaturasEmpresa = () => {
                                 </div>
                             </div>
 
-                            {/* Tabela de candidaturas */}
+                            {/* Tabela de candidaturas com scroll no corpo */}
                             <div className="card">
-                                <table className="table table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th style={{ backgroundColor: '#273F4F', color: 'white' }} scope="col">Status</th>
-                                            <th style={{ backgroundColor: '#273F4F', color: 'white' }} scope="col">Candidato</th>
-                                            <th style={{ backgroundColor: '#273F4F', color: 'white' }} scope="col">Estágio</th>
-                                            <th style={{ backgroundColor: '#273F4F', color: 'white' }} scope="col">Data da Candidatura</th>
-                                            <th style={{ backgroundColor: '#273F4F', color: 'white' }} scope="col">Data de Resposta</th>
-                                            <th style={{ backgroundColor: '#273F4F', color: 'white' }} scope="col">Ações</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {candidaturas.map((candidatura) => (
-                                            <tr key={candidatura._id}>
-                                                <td>
-                                                    <span 
-                                                        style={{ 
-                                                            backgroundColor: getStatusColor(candidatura.status),
-                                                            color: 'white',
-                                                            padding: '4px 12px',
-                                                            borderRadius: '12px',
-                                                            fontSize: '0.8rem',
-                                                            fontWeight: 'bold',
-                                                            textTransform: 'capitalize'
-                                                        }}
-                                                    >
-                                                        {candidatura.status}
-                                                    </span>
-                                                </td>
-                                                <td>{candidatura.user?.name || 'N/A'}</td>
-                                                <td style={{ maxWidth: "200px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                                                    {candidatura.estagio?.title || 'N/A'}
-                                                </td>
-                                                <td>
-                                                    {candidatura.createdAt 
-                                                        ? new Date(candidatura.createdAt).toLocaleDateString('pt-PT')
-                                                        : 'N/A'
-                                                    }
-                                                </td>
-                                                <td>
-                                                    {candidatura.dataResposta 
-                                                        ? new Date(candidatura.dataResposta).toLocaleDateString('pt-PT')
-                                                        : candidatura.status === 'pendente' ? 'Aguardando' : 'N/A'
-                                                    }
-                                                </td>
-                                                <td>
-                                                    {candidatura.status === 'pendente' ? (
-                                                        <a 
-                                                            href={`/ver-candidatura/${candidatura._id}`}
-                                                            style={{ textDecoration: 'none', color: '#447D9B', fontSize: '0.9rem' }}
-                                                        >
-                                                            Ver candidatura
-                                                        </a>
-                                                    ) : (
-                                                        <a 
-                                                            href={`/estagiario/${candidatura.user._id}`}
-                                                            style={{ textDecoration: 'none', color: '#447D9B', fontSize: '0.9rem' }}
-                                                        >
-                                                            Ver perfil
-                                                        </a>
-                                                    )}
-                                                </td>
+                                <div style={{ maxHeight: '450px', overflowY: 'auto' }}>
+                                    <table className="table table-hover align-middle" style={{ marginBottom: '0'}}>
+                                        <thead>
+                                            <tr>
+                                                <th style={{ backgroundColor: '#273F4F', color: 'white' }} scope="col">Status</th>
+                                                <th style={{ backgroundColor: '#273F4F', color: 'white' }} scope="col">Candidato</th>
+                                                <th style={{ backgroundColor: '#273F4F', color: 'white' }} scope="col">Estágio</th>
+                                                <th style={{ backgroundColor: '#273F4F', color: 'white' }} scope="col">Data da Candidatura</th>
+                                                <th style={{ backgroundColor: '#273F4F', color: 'white' }} scope="col">Ações</th>
                                             </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
+                                        </thead>
+                                        <tbody>
+                                            {candidaturas.map((candidatura) => (
+                                                <tr key={candidatura._id} >
+                                                    <td style={{ backgroundColor: candidatura.status === 'Aceite' ? '#d4edda' : candidatura.status === 'Recusada' ? '#f8d7da' : '#fff3cd', padding: "0.8rem" }}>
+                                                        {candidatura.status.charAt(0).toUpperCase() + candidatura.status.slice(1)}
+                                                    </td>
+                                                    <td>{candidatura.user?.name || 'N/A'}</td>
+                                                    <td style={{ maxWidth: "200px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                                                        {candidatura.estagio?.title || 'N/A'}
+                                                    </td>
+                                                    <td>
+                                                        {candidatura.dataCandidatura 
+                                                            ? new Date(candidatura.dataCandidatura).toLocaleDateString('pt-PT')
+                                                            : 'N/A'
+                                                        }
+                                                    </td>
+                                                    <td>
+                                                        {candidatura.status === 'Pendente' ? (
+                                                            <a 
+                                                                href={`/ver-candidatura/${candidatura._id}`}
+                                                                style={{ textDecoration: 'none', color: '#447D9B', fontSize: '0.9rem' }}
+                                                            >
+                                                                Ver candidatura
+                                                            </a>
+                                                        ) : (
+                                                            <a 
+                                                                href={`/estagiario/${candidatura.user._id}`}
+                                                                style={{ textDecoration: 'none', color: '#447D9B', fontSize: '0.9rem' }}
+                                                            >
+                                                                Ver perfil
+                                                            </a>
+                                                        )}
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     )}
