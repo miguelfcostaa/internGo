@@ -371,31 +371,18 @@ function PaginaCandidatarEstagio() {
                                                     display: 'flex',
                                                     flexDirection: 'row',
                                                     flexWrap: 'wrap',
-                                                    backgroundColor: '#f9f9f9',
+                                                    backgroundColor: '#fff',
                                                     paddingTop: '8px',
                                                     gap: '8px',
                                                 }}>
                                                     {formData.competenciasTecnicas.map((skill, i) => (
-                                                        <div
-                                                            key={i}
-                                                            style={{
-                                                                display: "flex",
-                                                                alignItems: 'center',
-                                                                background: '#e6e6e6ff',
-                                                                borderRadius: '8px',
-                                                                gap: '8px',
-                                                                paddingTop: '8px',
-                                                                paddingBottom: '8px',
-                                                                paddingLeft: '12px',
-                                                                paddingRight: '12px',
-                                                            }}
-                                                        >
+                                                        <div key={i} className={style.skillTag}>
                                                             {skill}
                                                             <svg
                                                                 xmlns="http://www.w3.org/2000/svg"
                                                                 width="22"
                                                                 height="22"
-                                                                fill="red"
+                                                                fill="white"
                                                                 className="bi bi-x"
                                                                 viewBox="0 0 16 16"
                                                                 onClick={() => removeSkill(i)}
