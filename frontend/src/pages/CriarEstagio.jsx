@@ -1,13 +1,6 @@
 import React, { use, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-	Container,
-	Row,
-	Col,
-	Form,
-	Button,
-	Card,
-} from "react-bootstrap";
+import { Container, Row, Col, Form, Button, Card } from "react-bootstrap";
 import NavBar from "../components/NavBar";
 import style from "../styles/CriarEstagio.module.css";
 import RequiredFieldTooltip from "../components/RequiredFieldTooltip.jsx";
@@ -15,818 +8,1053 @@ import TagInput from "../components/TagInput.jsx";
 import useUser from "../hooks/useUser.js";
 
 const CriacaoEstagio = () => {
-	const navigate = useNavigate();
-	const [id, setId] = useState("");
-	const [step, setStep] = useState(1);
-	const [loading, setLoading] = useState(false);
-	const [fieldErrors, setFieldErrors] = useState({});
-	const [success, setSuccess] = useState("");
-	const [formData, setFormData] = useState({
-			title: "",
-			area: [],
-			numeroVagas: 0,
-			localizacao: "",
-			dataInicio: "",
-			tipoEstagio: "",
-			duracao: 0,
-			prazoCandidatura: "",
-			descricao: "",
-			beneficios: [],
-			horaInicio: "",
-			horaFim: "",
-			habilitacoesMinimas: "",
-			cursosPreferenciais: [],
-			competenciasTecnicas: [],
-			competenciasPessoais: [],
-			idiomas: [],
-			observacoes: "",
-	});
-	const fieldLimits = {
-		title: 60,
-		localizacao: 40,
-		area: 30,
-		descricao: 500,
-		beneficios: 300,
-		competenciasTecnicas: 300,
-		cursosPreferenciais: 200,
-		competenciasPessoais: 200,
-		idiomas: 150,
-		observacoes: 150,
-	};
+  const navigate = useNavigate();
+  const [id, setId] = useState("");
+  const [step, setStep] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const [fieldErrors, setFieldErrors] = useState({});
+  const [success, setSuccess] = useState("");
+  const [formData, setFormData] = useState({
+    title: "",
+    area: [],
+    numeroVagas: 0,
+    localizacao: "",
+    dataInicio: "",
+    tipoEstagio: "",
+    duracao: 0,
+    prazoCandidatura: "",
+    descricao: "",
+    beneficios: [],
+    horaInicio: "",
+    horaFim: "",
+    habilitacoesMinimas: "",
+    cursosPreferenciais: [],
+    competenciasTecnicas: [],
+    competenciasPessoais: [],
+    idiomas: [],
+    observacoes: "",
+  });
+  const fieldLimits = {
+    title: 60,
+    localizacao: 40,
+    area: 30,
+    descricao: 500,
+    beneficios: 300,
+    competenciasTecnicas: 300,
+    cursosPreferenciais: 200,
+    competenciasPessoais: 200,
+    idiomas: 150,
+    observacoes: 150,
+  };
 
-	useEffect(() => {
-			const token = localStorage.getItem('token');
-			if (token) {
-				const payload = JSON.parse(atob(token.split('.')[1]));
-				const id = payload.id;
-				setId(id);
-			}
-			// eslint-disable-next-line react-hooks/exhaustive-deps
-		}, []);
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      const payload = JSON.parse(atob(token.split(".")[1]));
+      const id = payload.id;
+      setId(id);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-	const handleChange = (e) => {
-		// Verificar se o evento existe
-		if (!e || !e.target) {
-			console.error('Evento inválido no handleChange:', e);
-			return;
-		}
-		
-		const { name, value } = e.target;
-		
-		// Verificar se name existe
-		if (!name) {
-			console.error('Campo sem atributo name:', e.target);
-			return;
-		}
-		
-		const limit = fieldLimits[name];
-		
-		// Se o campo tem limite específico, aplica a validação
-		if (limit && value.length > limit) {
-			return; // Não permite ultrapassar o limite
-		}
-		
-		// Atualiza o valor
-		setFormData((prev) => ({ ...prev, [name]: value }));
-	};
-
-	const handleNext = async () => {
-		if (step < 4) {
-			setStep(step + 1);
-		} else if (step === 4) {
-			// Publicar estágio			
-			handlePublicarEstagio();
-		}
-	};
-
-	const handlePublicarEstagio = async () => {
-		setLoading(true);
-        setSuccess(false);
-        setFieldErrors({});
-		try {
-		
-			const request = await fetch("http://localhost:5000/api/estagios/create", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-					"Authorization": `Bearer ${localStorage.getItem("token")}`
-				},
-				body: JSON.stringify(formData),
-			});
-
-			const response = await request.json();
-			if (request.ok) {
-				setSuccess(true);
-				setTimeout(() => {
-					navigate(`/profile/${id}`);
-				}, 2000);
-				setFormData({});
-				setFieldErrors({});
-			} else {
-				if (response.message && typeof response.message === 'object') {
-                    setFieldErrors(response.message);
-                } else if (typeof response.message === 'string') {
-                    setFieldErrors({ general: response.message });
-                }
-			}	
-		} catch (error) {
-            console.error("Erro ao publicar estágio:", error);
-        } finally {
-            setLoading(false);
-        }
-	};
-
-	const handleBack = () => {
-		if (step > 1) setStep(step - 1);
-	};
- 
-	// Função para formatar o mês, que vem como //YYYY-MM e retorna o nome do mes e o ano
-    const handleMesInicio = (mes) => { 
-		if (!mes) return "";
-        const meses = [
-            "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
-            "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
-        ];
-        const [ano, mesIndex] = mes.split("-");
-        return `${meses[parseInt(mesIndex) - 1]} de ${ano}`;
+  const handleChange = (e) => {
+    // Verificar se o evento existe
+    if (!e || !e.target) {
+      console.error("Evento inválido no handleChange:", e);
+      return;
     }
 
-	return (
-		<div style={{ backgroundColor: "#f5f5f5", minHeight: "100vh", paddingBottom: "2rem" }}>
-		<NavBar />
-		<h6 className={style.titulo}>Publicar Novo Estágio na sua Empresa</h6>
+    const { name, value } = e.target;
 
-		{Object.keys(fieldErrors).length > 0 && (
-			<div className={`alert ${style.alertDanger}`}>
-				<ul className="mb-0">
-					{Object.values(fieldErrors).map((error, index) => (
-						<span key={index}>{error} <br /></span>
-					))}
-				</ul>
-			</div>
-		)}
-		{success && (
-			<div className={`alert ${style.alertSuccess}`}>
-				<ul className="mb-0">
-					<span>Estágio criado com sucesso!</span>
-				</ul>
-			</div>
-		)}
+    // Verificar se name existe
+    if (!name) {
+      console.error("Campo sem atributo name:", e.target);
+      return;
+    }
 
-		{/* BARRA DE ETAPAS */}
-		<div className={step === 4 ? style.reviewContainer : `${style.container} ${style.mt4}`}>
-			<div className={`${style.mb4} ${style.borderBottom} ${style.pb2}`}>
-			<span className={step === 1 ? style.fwBold : style.textMuted}>
-				1. Informações Básicas
-			</span>{" "}
-			&gt;
-			<span
-				className={`${step === 2 ? style.fwBold : style.textMuted} ${
-				style.mx2
-				}`}
-			>
-				2. Detalhes do Estágio
-			</span>{" "}
-			&gt;
-			<span
-				className={`${step === 3 ? style.fwBold : style.textMuted} ${
-				style.mx2
-				}`}
-			>
-				3. Requisitos
-			</span>{" "}
-			&gt;
-			<span
-				className={`${step === 4 ? style.fwBold : style.textMuted} ${
-				style.mx2
-				}`}
-			>
-				4. Revisão
-			</span>
-			</div>
+    const limit = fieldLimits[name];
 
-			{/* FORMULÁRIOS POR ETAPA */}
-			{/* Paso 1 */}
-			{step === 1 && (
-			<Form>
-				<Row className={style.mb3}>
-				<div className={style.flexRow}>
-					<Form.Group className={`${style.mb3} d-flex flex-column ${style.width100}`}>
-						<Form.Label className={style.formLabel}>
-							Título do Estágio <RequiredFieldTooltip />
-						</Form.Label>
-						<Form.Control
-							className={`${style.formControl} ${formData.title.length > 60 ? "is-invalid" : ""} `}
-							type="text"
-							name="title"
-							value={formData.title}
-							onChange={handleChange}
-							placeholder="Ex: Estágio em Desenvolvimento de Software"
-						/>
-						<div className="d-flex justify-content-between">
-							{formData.title.length > 60 && (
-								<span className={style.charterror}>Máximo de 60 caracteres ultrapassado!</span>
-							)}
-							<small className={` ${formData.title.length > 60 ? "text-danger" : "text-muted"}`}>
-								{formData.title.length}/60 caracteres
-							</small>
-						</div>
-					</Form.Group>
+    // Se o campo tem limite específico, aplica a validação
+    if (limit && value.length > limit) {
+      return; // Não permite ultrapassar o limite
+    }
 
-					<Form.Group className={`${style.mb3} d-flex flex-column ${style.width100}`}>
-						<Form.Label className={style.formLabel}>
-							Mês de Início <RequiredFieldTooltip />
-						</Form.Label>
-						<Form.Control
-							className={style.smallDate}
-							type="month"
-							name="dataInicio"
-							value={formData.dataInicio}
-							onChange={handleChange}
-						/>
-					</Form.Group>
-				</div>
-				<div className={style.flexRow}>
-					<Form.Group className={`${style.mb3} d-flex flex-column ${style.width100}`} >  
-						<Form.Label className={style.formLabel}>
-							Área de Atuação <RequiredFieldTooltip />
-						</Form.Label>
-						<TagInput
-							value={formData.area}
-							onChange={(tags) =>
-								setFormData((prev) => ({ ...prev, area: tags }))
-							}
-							placeholder="Escreva áreas de atuação"
-						/>
-						
-						<div className="d-flex justify-content-between">
-							{formData.area.length > 30 && (
-								<span className={style.charterror}>Máximo de 30 caracteres ultrapassado!</span>
-							)}
-							<small className={` ${formData.area.length > 30 ? "text-danger" : "text-muted"}`}>
-								{formData.area.length}/30 caracteres
-							</small>
-						</div>
-					</Form.Group>
+    // Atualiza o valor
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
 
-					<Form.Group className={`${style.mb3} d-flex flex-column ${style.width100}`}>
-						<Form.Label
-							className={`${style.formLabel}`}
-						>
-							Tipo de Estágio <RequiredFieldTooltip />
-						</Form.Label>
-						<div className={style.radioGroup}>
-						<Form.Check
-							inline
-							label="Presencial"
-							type="radio"
-							name="tipoEstagio"
-							value="Presencial"
-							checked={formData.tipoEstagio === "Presencial"}
-							onChange={handleChange}
-						/>
-						<Form.Check
-							inline
-							label="Remoto"
-							type="radio"
-							name="tipoEstagio"
-							value="Remoto"
-							checked={formData.tipoEstagio === "Remoto"}
-							onChange={handleChange}
-						/>
-						<Form.Check
-							inline
-							label="Híbrido"
-							type="radio"
-							name="tipoEstagio"
-							value="Híbrido"
-							checked={formData.tipoEstagio === "Híbrido"}
-							onChange={handleChange}
-						/>
-						</div>
-					</Form.Group>
-				</div>
+  const handleNext = async () => {
+    if (step < 4) {
+      setStep(step + 1);
+    } else if (step === 4) {
+      // Publicar estágio
+      handlePublicarEstagio();
+    }
+  };
 
-				<div className={style.flexRow}>
-					<Form.Group className={`${style.mb3} d-flex flex-column ${style.width100}`}>
-					<Form.Label
-						className={`${style.formLabel}`}
-					>
-						Número de Vagas <RequiredFieldTooltip />
-					</Form.Label>
-					<Form.Control
-						className={style.smallInput}
-						type="number"
-						name="numeroVagas"
-						value={formData.numeroVagas}
-						onChange={handleChange}
-						placeholder="1"
-						min="1"
-						style={{ maxWidth: "80px" }}
-					/>
-					</Form.Group>
-					<Form.Group className={`${style.mb3} d-flex flex-column ${style.width100}`}>
-						<Form.Label
-							className={style.formLabel}
-						>
-						Duração do Estágio <RequiredFieldTooltip />
-						</Form.Label>
-						<div className="d-flex align-items-center gap-3">
-							<Form.Control
-								className={style.formControl}
-								type="number"
-								name="duracao"
-								value={formData.duracao}
-								onChange={handleChange}
-								placeholder="Ex: 1"
-								defaultValue={1}
-								min="1"
-								max="12"
-								style={{ width: "80px" }}
-							/>
-							<span>Meses</span>
-						</div>
-					</Form.Group>
-					
-				</div>
-				<div className={style.flexRow}>
-					<Form.Group className={`${style.mb3} d-flex flex-column ${style.width100}`}>
-					<Form.Label className={style.formLabel}>
-						Localização <RequiredFieldTooltip />
-					</Form.Label>
-					<Form.Control
-						className={`${style.formControl} ${formData.localizacao.length > 40 ? "is-invalid" : ""}`}
-						type="text"
-						name="localizacao"
-						value={formData.localizacao}
-						onChange={handleChange}
-						placeholder="Ex: Funchal"
-					/>
-					<div className="d-flex justify-content-between">
-						{formData.localizacao.length > 40 && (
-							<span className={style.charterror}>Máximo de 40 caracteres ultrapassado!</span>
-						)}
-						<small className={` ${formData.localizacao.length > 40 ? "text-danger" : "text-muted"}`}>
-							{formData.localizacao.length}/40 caracteres
-						</small>
-					</div>
-					</Form.Group>
-					<Form.Group className={`${style.mb3} d-flex flex-column ${style.width100}`}>
-						<Form.Label className={style.formLabel}>
-							Prazo Limite de Candidatura <RequiredFieldTooltip />
-						</Form.Label>
-						<Form.Control
-							className={style.smallDate}
-							style={{ width: "180px" }}
-							type="date"
-							name="prazoCandidatura"
-							value={formData.prazoCandidatura}
-							onChange={handleChange}
-						/>
-					</Form.Group>
-				</div>
-				</Row>
-				<div
-				className={`${style.dFlex} ${style.justifyContentBetween} ${style.mt4}`}
-				>
-				<Button
-					variant="secondary"
-					className={style.btnSecondary}
-					onClick={() => navigate("/profile/:id")}
-				>
-					Cancelar
-				</Button>
-				<Button
-					variant="primary"
-					className={style.btnPrimary}
-					onClick={handleNext}
-				>
-					Próximo passo
-				</Button>
-				</div>
-			</Form>
-			)}
+  const handlePublicarEstagio = async () => {
+    setLoading(true);
+    setSuccess(false);
+    setFieldErrors({});
+    try {
+      const request = await fetch("http://localhost:5000/api/estagios/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify(formData),
+      });
 
-			{/* Paso 2*/}
+      const response = await request.json();
+      if (request.ok) {
+        setSuccess(true);
+        // Sinalizar que um estágio foi criado
+        localStorage.setItem("estagioUpdated", "true");
+        setTimeout(() => {
+          navigate(`/profile/${id}`);
+        }, 2000);
+        setFormData({});
+        setFieldErrors({});
+      } else {
+        if (response.message && typeof response.message === "object") {
+          setFieldErrors(response.message);
+        } else if (typeof response.message === "string") {
+          setFieldErrors({ general: response.message });
+        }
+      }
+    } catch (error) {
+      console.error("Erro ao publicar estágio:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-			{step === 2 && (
-			<Form>
-				<Row className={style.mb3}>
-				<Col md={12}>
-					<Form.Group className={style.mb3}>
-					<Form.Label className={style.formLabel}>
-						Descrição do Estágio <RequiredFieldTooltip />
-					</Form.Label>
-					<Form.Control
-						as="textarea"
-						rows={4}
-						className={`${style.formControl} w-100 ${formData.descricao.length > 500 ? "is-invalid" : ""}`}
-						placeholder="Descreva brevemente as atividades do estágio"
-						name="descricao"
-						value={formData.descricao}
-						onChange={handleChange}
-					/>
-					<div className="d-flex justify-content-between">
-						{formData.descricao.length > 500 && (
-							<span className={style.charterror}>Máximo de 500 caracteres ultrapassado!</span>
-						)}
-						<small className={`ms-auto ${formData.descricao.length > 500 ? "text-danger" : "text-muted"}`}>
-							{formData.descricao.length}/500 caracteres
-						</small>
-					</div>
-					</Form.Group>
+  const handleBack = () => {
+    if (step > 1) setStep(step - 1);
+  };
 
-					<Form.Group className={style.mb3}>
-					<Form.Label className={style.formLabel}>
-						Benefícios Oferecidos <RequiredFieldTooltip />
-					</Form.Label>
-					<TagInput
-							value={formData.beneficios}
-							onChange={(tags) =>
-							setFormData((prev) => ({ ...prev, beneficios: tags }))
-						}
-						placeholder="Escreva os benefícios oferecidos (Ex: Vale transporte, Vale refeição, Seguro de saúde)"
-					/>
-					<div className="d-flex justify-content-between">
-						{formData.beneficios.length > 300 && (
-							<span className={style.charterror}>Máximo de 300 caracteres ultrapassado!</span>
-						)}
-						<small className={`ms-auto ${formData.beneficios.length > 300 ? "text-danger" : "text-muted"}`}>
-							{formData.beneficios.length}/300 caracteres
-						</small>
-					</div>
-					</Form.Group>
+  // Função para formatar o mês, que vem como //YYYY-MM e retorna o nome do mes e o ano
+  const handleMesInicio = (mes) => {
+    if (!mes) return "";
+    const meses = [
+      "Janeiro",
+      "Fevereiro",
+      "Março",
+      "Abril",
+      "Maio",
+      "Junho",
+      "Julho",
+      "Agosto",
+      "Setembro",
+      "Outubro",
+      "Novembro",
+      "Dezembro",
+    ];
+    const [ano, mesIndex] = mes.split("-");
+    return `${meses[parseInt(mesIndex) - 1]} de ${ano}`;
+  };
 
-					<Form.Group className={style.mb3}>
-					<Form.Label className={style.formLabel}>
-						Cursos Preferenciais <RequiredFieldTooltip />
-					</Form.Label>
-					<TagInput
-						value={formData.cursosPreferenciais}
-						onChange={(tags) =>
-							setFormData((prev) => ({ ...prev, cursosPreferenciais: tags }))
-						}
-						placeholder="Escreva os cursos preferenciais (Ex: Engenharia Informática, Ciências da Computação)"
-					/>
-					<div className="d-flex justify-content-between">
-						{formData.cursosPreferenciais.length > 200 && (
-							<span className={style.charterror}>Máximo de 200 caracteres ultrapassado!</span>
-						)}
-						<small className={`ms-auto ${formData.cursosPreferenciais.length > 200 ? "text-danger" : "text-muted"}`}>
-							{formData.cursosPreferenciais.length}/200 caracteres
-						</small>
-					</div>
-					</Form.Group>
+  return (
+    <div
+      style={{
+        backgroundColor: "#f5f5f5",
+        minHeight: "100vh",
+        paddingBottom: "2rem",
+      }}
+    >
+      <NavBar />
+      <h6 className={style.titulo}>Publicar Novo Estágio na sua Empresa</h6>
 
-					<Form.Group
-					className={`${style.mb3} d-flex align-items-center`}
-					>
-					<Form.Label className={`${style.formLabel} me-3`}>
-						Horário de Estágio <RequiredFieldTooltip />
-					</Form.Label>
-					<div className="d-flex align-items-center gap-2">
-						<Form.Control
-							type="text"
-							name="horaInicio"
-							value={formData.horaInicio}
-							placeholder="00:00"
-							onChange={handleChange}
-							style={{ width: "70px" }}
-							required
-						/>
-						<span> até</span>
-						<Form.Control
-							type="text"
-							name="horaFim"
-							placeholder="00:00"
-							value={formData.horaFim}
-							onChange={handleChange}
-							style={{ width: "70px" }}
-							required
-						/>
-					</div>
-					</Form.Group>
-				</Col>
-				</Row>
+      {Object.keys(fieldErrors).length > 0 && (
+        <div className={`alert ${style.alertDanger}`}>
+          <ul className="mb-0">
+            {Object.values(fieldErrors).map((error, index) => (
+              <span key={index}>
+                {error} <br />
+              </span>
+            ))}
+          </ul>
+        </div>
+      )}
+      {success && (
+        <div className={`alert ${style.alertSuccess}`}>
+          <ul className="mb-0">
+            <span>Estágio criado com sucesso!</span>
+          </ul>
+        </div>
+      )}
 
-				<div
-				className={`${style.dFlex} ${style.justifyContentBetween} ${style.mt4}`}
-				>
-				<Button
-					variant="secondary"
-					className={style.btnSecondary}
-					onClick={handleBack}
-				>
-					Voltar
-				</Button>
-				<Button
-					variant="primary"
-					className={style.btnPrimary}
-					onClick={handleNext}
-				>
-					Próximo passo
-				</Button>
-				</div>
-			</Form>
-			)}
+      {/* BARRA DE ETAPAS */}
+      <div
+        className={
+          step === 4 ? style.reviewContainer : `${style.container} ${style.mt4}`
+        }
+      >
+        <div className={`${style.mb4} ${style.borderBottom} ${style.pb2}`}>
+          <span className={step === 1 ? style.fwBold : style.textMuted}>
+            1. Informações Básicas
+          </span>{" "}
+          &gt;
+          <span
+            className={`${step === 2 ? style.fwBold : style.textMuted} ${
+              style.mx2
+            }`}
+          >
+            2. Detalhes do Estágio
+          </span>{" "}
+          &gt;
+          <span
+            className={`${step === 3 ? style.fwBold : style.textMuted} ${
+              style.mx2
+            }`}
+          >
+            3. Requisitos
+          </span>{" "}
+          &gt;
+          <span
+            className={`${step === 4 ? style.fwBold : style.textMuted} ${
+              style.mx2
+            }`}
+          >
+            4. Revisão
+          </span>
+        </div>
 
-			{/* Paso 3*/}
-			{step === 3 && (
-			<Form>
-				<Row className={style.mb3}>
-				<Col md={12}>
-					<Form.Group className={style.mb3}>
-						<Form.Label className={style.formLabel}>
-							Habilitações Académicas Mínimas <RequiredFieldTooltip />
-						</Form.Label>
-						<Form.Select
-							className="w-100"
-							name="habilitacoesMinimas"
-							value={formData.habilitacoesMinimas || ""}
-							onChange={handleChange}
-						>
-							<option value="">Selecione o nível de habilitação</option>
-							<option value="1">Nível 1 - 4º ano do Ensino Básico</option>
-							<option value="2">Nível 2 - 6º ano do Ensino Básico</option>
-							<option value="3">Nível 3 - 9º ano do Ensino Básico</option>
-							<option value="4">Nível 4 - Ensino Secundário + Estágio Profissional</option>
-							<option value="5">Nível 5 - Cursos de Especialização Tecnológica (CET)</option>
-							<option value="6">Nível 6 - Licenciatura</option>
-							<option value="7">Nível 7 - Mestrado</option>
-							<option value="8">Nível 8 - Doutoramento</option>
-						</Form.Select>
-					</Form.Group>
+        {/* FORMULÁRIOS POR ETAPA */}
+        {/* Paso 1 */}
+        {step === 1 && (
+          <Form>
+            <Row className={style.mb3}>
+              <div className={style.flexRow}>
+                <Form.Group
+                  className={`${style.mb3} d-flex flex-column ${style.width100}`}
+                >
+                  <Form.Label className={style.formLabel}>
+                    Título do Estágio <RequiredFieldTooltip />
+                  </Form.Label>
+                  <Form.Control
+                    className={`${style.formControl} ${
+                      formData.title.length > 60 ? "is-invalid" : ""
+                    } `}
+                    type="text"
+                    name="title"
+                    value={formData.title}
+                    onChange={handleChange}
+                    placeholder="Ex: Estágio em Desenvolvimento de Software"
+                  />
+                  <div className="d-flex justify-content-between">
+                    {formData.title.length > 60 && (
+                      <span className={style.charterror}>
+                        Máximo de 60 caracteres ultrapassado!
+                      </span>
+                    )}
+                    <small
+                      className={` ${
+                        formData.title.length > 60
+                          ? "text-danger"
+                          : "text-muted"
+                      }`}
+                    >
+                      {formData.title.length}/60 caracteres
+                    </small>
+                  </div>
+                </Form.Group>
 
-					<Form.Group className={style.mb3}>
-					<Form.Label className={style.formLabel}>
-						Competências Técnicas Essenciais <RequiredFieldTooltip />
-					</Form.Label>
-					<TagInput
-						value={formData.competenciasTecnicas}
-						onChange={(tags) =>
-							setFormData((prev) => ({ ...prev, competenciasTecnicas: tags }))
-						}
-						placeholder="Escreva as competências técnicas essenciais (Ex: Programação, Design Gráfico, Marketing Digital)"
-					/>
-					<div className="d-flex justify-content-between">
-						{formData.competenciasTecnicas.length > 300 && (
-							<span className={style.charterror}>Máximo de 300 caracteres ultrapassado!</span>
-						)}
-						<small className={`ms-auto ${formData.competenciasTecnicas.length > 300 ? "text-danger" : "text-muted"}`}>
-							{formData.competenciasTecnicas.length}/300 caracteres
-						</small>
-					</div>
-					</Form.Group>
+                <Form.Group
+                  className={`${style.mb3} d-flex flex-column ${style.width100}`}
+                >
+                  <Form.Label className={style.formLabel}>
+                    Mês de Início <RequiredFieldTooltip />
+                  </Form.Label>
+                  <Form.Control
+                    className={style.smallDate}
+                    type="month"
+                    name="dataInicio"
+                    value={formData.dataInicio}
+                    onChange={handleChange}
+                  />
+                </Form.Group>
+              </div>
+              <div className={style.flexRow}>
+                <Form.Group
+                  className={`${style.mb3} d-flex flex-column ${style.width100}`}
+                >
+                  <Form.Label className={style.formLabel}>
+                    Área de Atuação <RequiredFieldTooltip />
+                  </Form.Label>
+                  <TagInput
+                    value={formData.area}
+                    onChange={(tags) =>
+                      setFormData((prev) => ({ ...prev, area: tags }))
+                    }
+                    placeholder="Escreva áreas de atuação"
+                  />
 
-					<Form.Group className={style.mb3}>
-					<Form.Label className={style.formLabel}>
-						Competências Pessoais (Soft Skills)
-					</Form.Label>
-					<TagInput
-						value={formData.competenciasPessoais}
-						onChange={(tags) =>
-						setFormData((prev) => ({ ...prev, competenciasPessoais: tags }))
-						}
-						placeholder="Escreva as competências pessoais (Ex: Trabalho em equipe, Comunicação, Resolução de problemas)"
-					/>
-					<div className="d-flex justify-content-between">
-						{formData.competenciasPessoais.length > 200 && (
-							<span className={style.charterror}>Máximo de 200 caracteres ultrapassado!</span>
-						)}
-						<small className={`ms-auto ${formData.competenciasPessoais.length > 200 ? "text-danger" : "text-muted"}`}>
-							{formData.competenciasPessoais.length}/200 caracteres
-						</small>
-					</div>
-					</Form.Group>
+                  <div className="d-flex justify-content-between">
+                    {formData.area.length > 30 && (
+                      <span className={style.charterror}>
+                        Máximo de 30 caracteres ultrapassado!
+                      </span>
+                    )}
+                    <small
+                      className={` ${
+                        formData.area.length > 30 ? "text-danger" : "text-muted"
+                      }`}
+                    >
+                      {formData.area.length}/30 caracteres
+                    </small>
+                  </div>
+                </Form.Group>
 
-					<Form.Group className={style.mb3}>
-					<Form.Label className={style.formLabel}>Idiomas</Form.Label>
-					<TagInput
-						value={formData.idiomas}
-						onChange={(tags) =>
-						setFormData((prev) => ({ ...prev, idiomas: tags }))
-						}
-						placeholder="Escreva os idiomas (Ex: Inglês, Português, Espanhol)"
-					/>
-					<div className="d-flex justify-content-between">
-						{formData.idiomas.length > 150 && (
-							<span className={style.charterror}>Máximo de 150 caracteres ultrapassado!</span>
-						)}
-						<small className={`ms-auto ${formData.idiomas.length > 150 ? "text-danger" : "text-muted"}`}>
-							{formData.idiomas.length}/150 caracteres
-						</small>
-					</div>
-					</Form.Group>
+                <Form.Group
+                  className={`${style.mb3} d-flex flex-column ${style.width100}`}
+                >
+                  <Form.Label className={`${style.formLabel}`}>
+                    Tipo de Estágio <RequiredFieldTooltip />
+                  </Form.Label>
+                  <div className={style.radioGroup}>
+                    <Form.Check
+                      inline
+                      label="Presencial"
+                      type="radio"
+                      name="tipoEstagio"
+                      value="Presencial"
+                      checked={formData.tipoEstagio === "Presencial"}
+                      onChange={handleChange}
+                    />
+                    <Form.Check
+                      inline
+                      label="Remoto"
+                      type="radio"
+                      name="tipoEstagio"
+                      value="Remoto"
+                      checked={formData.tipoEstagio === "Remoto"}
+                      onChange={handleChange}
+                    />
+                    <Form.Check
+                      inline
+                      label="Híbrido"
+                      type="radio"
+                      name="tipoEstagio"
+                      value="Híbrido"
+                      checked={formData.tipoEstagio === "Híbrido"}
+                      onChange={handleChange}
+                    />
+                  </div>
+                </Form.Group>
+              </div>
 
-					<Form.Group className={style.mb3}>
-					<Form.Label className={style.formLabel}>
-						 Observações:
-					</Form.Label>
-					<Form.Control
-						as="textarea"
-						rows={3}
-						className={`w-100 ${formData.observacoes.length > 150 ? "is-invalid" : ""}`}
-						placeholder="Ex: Algum requisito adicional não coberto acima"
-						name="observacoes"
-						value={formData.observacoes || ""}
-						onChange={handleChange}
-					/>
-					<div className="d-flex justify-content-between">
-						{formData.observacoes.length > 150 && (
-							<span className={style.charterror}>Máximo de 150 caracteres ultrapassado!</span>
-						)}
-						<small className={`ms-auto ${formData.observacoes.length > 150 ? "text-danger" : "text-muted"}`}>
-							{formData.observacoes.length}/150 caracteres
-						</small>
-					</div>
-					</Form.Group>
-				</Col>
-				</Row>
+              <div className={style.flexRow}>
+                <Form.Group
+                  className={`${style.mb3} d-flex flex-column ${style.width100}`}
+                >
+                  <Form.Label className={`${style.formLabel}`}>
+                    Número de Vagas <RequiredFieldTooltip />
+                  </Form.Label>
+                  <Form.Control
+                    className={style.smallInput}
+                    type="number"
+                    name="numeroVagas"
+                    value={formData.numeroVagas}
+                    onChange={handleChange}
+                    placeholder="1"
+                    min="1"
+                    style={{ maxWidth: "80px" }}
+                  />
+                </Form.Group>
+                <Form.Group
+                  className={`${style.mb3} d-flex flex-column ${style.width100}`}
+                >
+                  <Form.Label className={style.formLabel}>
+                    Duração do Estágio <RequiredFieldTooltip />
+                  </Form.Label>
+                  <div className="d-flex align-items-center gap-3">
+                    <Form.Control
+                      className={style.formControl}
+                      type="number"
+                      name="duracao"
+                      value={formData.duracao}
+                      onChange={handleChange}
+                      placeholder="Ex: 1"
+                      defaultValue={1}
+                      min="1"
+                      max="12"
+                      style={{ width: "80px" }}
+                    />
+                    <span>Meses</span>
+                  </div>
+                </Form.Group>
+              </div>
+              <div className={style.flexRow}>
+                <Form.Group
+                  className={`${style.mb3} d-flex flex-column ${style.width100}`}
+                >
+                  <Form.Label className={style.formLabel}>
+                    Localização <RequiredFieldTooltip />
+                  </Form.Label>
+                  <Form.Control
+                    className={`${style.formControl} ${
+                      formData.localizacao.length > 40 ? "is-invalid" : ""
+                    }`}
+                    type="text"
+                    name="localizacao"
+                    value={formData.localizacao}
+                    onChange={handleChange}
+                    placeholder="Ex: Funchal"
+                  />
+                  <div className="d-flex justify-content-between">
+                    {formData.localizacao.length > 40 && (
+                      <span className={style.charterror}>
+                        Máximo de 40 caracteres ultrapassado!
+                      </span>
+                    )}
+                    <small
+                      className={` ${
+                        formData.localizacao.length > 40
+                          ? "text-danger"
+                          : "text-muted"
+                      }`}
+                    >
+                      {formData.localizacao.length}/40 caracteres
+                    </small>
+                  </div>
+                </Form.Group>
+                <Form.Group
+                  className={`${style.mb3} d-flex flex-column ${style.width100}`}
+                >
+                  <Form.Label className={style.formLabel}>
+                    Prazo Limite de Candidatura <RequiredFieldTooltip />
+                  </Form.Label>
+                  <Form.Control
+                    className={style.smallDate}
+                    style={{ width: "180px" }}
+                    type="date"
+                    name="prazoCandidatura"
+                    value={formData.prazoCandidatura}
+                    onChange={handleChange}
+                  />
+                </Form.Group>
+              </div>
+            </Row>
+            <div
+              className={`${style.dFlex} ${style.justifyContentBetween} ${style.mt4}`}
+            >
+              <Button
+                variant="secondary"
+                className={style.btnSecondary}
+                onClick={() => navigate(`/profile/${id}`)}
+              >
+                Cancelar
+              </Button>
+              <Button
+                variant="primary"
+                className={style.btnPrimary}
+                onClick={handleNext}
+              >
+                Próximo passo
+              </Button>
+            </div>
+          </Form>
+        )}
 
-				<div
-				className={`${style.dFlex} ${style.justifyContentBetween} ${style.mt4}`}
-				>
-				<Button
-					variant="secondary"
-					className={style.btnSecondary}
-					onClick={handleBack}
-				>
-					Voltar
-				</Button>
-				<Button
-					variant="primary"
-					className={style.btnPrimary}
-					onClick={handleNext}
-				>
-					Próximo passo
-				</Button>
-				</div>
-			</Form>
-			)}
+        {/* Paso 2*/}
 
-			{/* Paso 4 */}
+        {step === 2 && (
+          <Form>
+            <Row className={style.mb3}>
+              <Col md={12}>
+                <Form.Group className={style.mb3}>
+                  <Form.Label className={style.formLabel}>
+                    Descrição do Estágio <RequiredFieldTooltip />
+                  </Form.Label>
+                  <Form.Control
+                    as="textarea"
+                    rows={4}
+                    className={`${style.formControl} w-100 ${
+                      formData.descricao.length > 500 ? "is-invalid" : ""
+                    }`}
+                    placeholder="Descreva brevemente as atividades do estágio"
+                    name="descricao"
+                    value={formData.descricao}
+                    onChange={handleChange}
+                  />
+                  <div className="d-flex justify-content-between">
+                    {formData.descricao.length > 500 && (
+                      <span className={style.charterror}>
+                        Máximo de 500 caracteres ultrapassado!
+                      </span>
+                    )}
+                    <small
+                      className={`ms-auto ${
+                        formData.descricao.length > 500
+                          ? "text-danger"
+                          : "text-muted"
+                      }`}
+                    >
+                      {formData.descricao.length}/500 caracteres
+                    </small>
+                  </div>
+                </Form.Group>
 
-			{step === 4 && (
-			<Container fluid className="p-0 text-start">
-				<p className="fw-bold text-secondary text-start mb-3">
-				Revise o Seu Anúncio de Estágio na Empresa <br />
-				<span className="fw-normal text-muted">
-					Por favor, verifique todos os detalhes antes de publicar. Esta é
-					a versão final que os candidatos verão.
-				</span>
-				</p>
+                <Form.Group className={style.mb3}>
+                  <Form.Label className={style.formLabel}>
+                    Benefícios Oferecidos <RequiredFieldTooltip />
+                  </Form.Label>
+                  <TagInput
+                    value={formData.beneficios}
+                    onChange={(tags) =>
+                      setFormData((prev) => ({ ...prev, beneficios: tags }))
+                    }
+                    placeholder="Escreva os benefícios oferecidos (Ex: Vale transporte, Vale refeição, Seguro de saúde)"
+                  />
+                  <div className="d-flex justify-content-between">
+                    {formData.beneficios.length > 300 && (
+                      <span className={style.charterror}>
+                        Máximo de 300 caracteres ultrapassado!
+                      </span>
+                    )}
+                    <small
+                      className={`ms-auto ${
+                        formData.beneficios.length > 300
+                          ? "text-danger"
+                          : "text-muted"
+                      }`}
+                    >
+                      {formData.beneficios.length}/300 caracteres
+                    </small>
+                  </div>
+                </Form.Group>
 
-				<Row className="mb-4">
-				<Col md={6}>
-					<Card className="shadow-sm h-100">
-					<Card.Body>
-						<h6 className="fw-bold text-dark mb-3">
-						1. Informações Básicas{" "}
-						<span
-							className="text-primary"
-							style={{ cursor: "pointer" }}
-							onClick={() => setStep(1)}
-						>
-							[ Editar ]
-						</span>
-						</h6>
-						<p>
-						<strong className="text-secondary">Título:</strong>{" "}
-						{formData.title || <span style={{ color: "#aaa" }}> Não especificado.</span>}
-						</p>
-						<p>
-						<strong className="text-secondary">Áreas:</strong>{" "}
-						{formData.area?.length > 0 ?  formData.area.join(", ") : <span style={{ color: "#aaa" }}> Não especificado.</span>}
-						</p>
-						<p>
-						<strong className="text-secondary">Vagas:</strong>{" "}
-						{formData.numeroVagas || <span style={{ color: "#aaa" }}> Não especificado.</span>}
-						</p>
-						<p>
-						<strong className="text-secondary">Localização:</strong>{" "}
-						{formData.localizacao || <span style={{ color: "#aaa" }}> Não especificado.</span>}
-						</p>
-						<p>
-						<strong className="text-secondary">Tipo:</strong>{" "}
-						{formData.tipoEstagio || <span style={{ color: "#aaa" }}> Não especificado.</span>}
-						</p>
-						<p>
-						<strong className="text-secondary">Mês de Início:</strong>{" "}
-						{handleMesInicio(formData.dataInicio) || <span style={{ color: "#aaa" }}> Não especificado.</span>}
-						</p>
-						<p>
-						<strong className="text-secondary">Duração:</strong>{" "}
-						{formData.duracao || <span style={{ color: "#aaa" }}> Não especificado.</span>}
-						</p>
-						<p>
-						<strong className="text-secondary">
-							Prazo Candidaturas:
-						</strong>{" "}
-						{formData.prazoCandidatura || <span style={{ color: "#aaa" }}> Não especificado.</span>}
-						</p>
-					</Card.Body>
-					</Card>
-				</Col>
+                <Form.Group className={style.mb3}>
+                  <Form.Label className={style.formLabel}>
+                    Cursos Preferenciais <RequiredFieldTooltip />
+                  </Form.Label>
+                  <TagInput
+                    value={formData.cursosPreferenciais}
+                    onChange={(tags) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        cursosPreferenciais: tags,
+                      }))
+                    }
+                    placeholder="Escreva os cursos preferenciais (Ex: Engenharia Informática, Ciências da Computação)"
+                  />
+                  <div className="d-flex justify-content-between">
+                    {formData.cursosPreferenciais.length > 200 && (
+                      <span className={style.charterror}>
+                        Máximo de 200 caracteres ultrapassado!
+                      </span>
+                    )}
+                    <small
+                      className={`ms-auto ${
+                        formData.cursosPreferenciais.length > 200
+                          ? "text-danger"
+                          : "text-muted"
+                      }`}
+                    >
+                      {formData.cursosPreferenciais.length}/200 caracteres
+                    </small>
+                  </div>
+                </Form.Group>
 
-				<Col md={6}>
-					<Card className="shadow-sm h-100">
-					<Card.Body>
-						<h6 className="fw-bold text-dark mb-3">
-						2. Detalhes do Estágio{" "}
-						<span
-							className="text-primary"
-							style={{ cursor: "pointer" }}
-							onClick={() => setStep(2)}
-						>
-							[ Editar ]
-						</span>
-						</h6>
-						<p>
-						<strong className="text-secondary">Descrição:</strong>{" "}
-						{formData.descricao || <span style={{ color: "#aaa" }}> Não especificado.</span>}
-						</p>
-						<p>
-						<strong className="text-secondary">Benefícios Oferecidos:</strong>{" "}
-						{formData.beneficios?.length > 0 ?  formData.beneficios.join(", ") : <span style={{ color: "#aaa" }}> Não especificado.</span>}
-						</p>
-						<p>
-						<strong className="text-secondary">Competências Pessoais:</strong>{" "}
-						{formData.competenciasPessoais?.length > 0 ?  formData.competenciasPessoais.join(", ") : <span style={{ color: "#aaa" }}> Não especificado.</span>}
-						</p>
-						<p>
-						<strong className="text-secondary">Cursos Preferenciais:</strong>{" "}
-						{formData.cursosPreferenciais?.length > 0 ?  formData.cursosPreferenciais.join(", ") : <span style={{ color: "#aaa" }}> Não especificado.</span>}
-						</p>
-						<p>
-						<strong className="text-secondary">Horário do Estágio:</strong>{" "}
-						{(formData.horaInicio && formData.horaFim) 
-							? `${formData.horaInicio} até ${formData.horaFim}` 
-							: <span style={{ color: "#aaa" }}> Não especificado.</span>}
-						</p>
-						
-					</Card.Body>
-					</Card>
-				</Col>
-				</Row>
-				<Card className="shadow-sm mb-4">
-					<Card.Body>
-						<h6 className="fw-bold text-dark mb-3">
-							3. Requisitos do Candidato{" "}
-							<span
-								className="text-primary"
-								style={{ cursor: "pointer" }}
-								onClick={() => setStep(3)}
-							>
-								[ Editar ]
-							</span>
-						</h6>
-						<p>
-							<strong className="text-secondary">Habilitações Académicas:</strong>{" "}
-							{formData.habilitacoesMinimas || <span style={{ color: "#aaa" }}> Não especificado.</span>}
-						</p>
-						<p>
-							<strong className="text-secondary">Competências Técnicas Essenciais:</strong>{" "}
-							{formData.competenciasTecnicas?.length > 0 ?  formData.competenciasTecnicas.join(", ") : <span style={{ color: "#aaa" }}> Não especificado.</span>}
-						</p>
-						<p>
-							<strong className="text-secondary">Competências Pessoais:</strong>{" "}
-							{formData.competenciasPessoais?.length > 0 ?  formData.competenciasPessoais.join(", ") : <span style={{ color: "#aaa" }}> Não especificado.</span>}
-						</p>
-						<p>
-							<strong className="text-secondary">Idiomas:</strong>{" "}
-							{formData.idiomas?.length > 0 ?  formData.idiomas.join(", ") : <span style={{ color: "#aaa" }}> Não especificado.</span>}
-						</p>
-						<p>
-							<strong className="text-secondary">Observações:</strong>{" "}
-							{formData.observacoes || <span style={{ color: "#aaa" }}> Não especificado.</span>}
-						</p>
-					</Card.Body>
-				</Card>
+                <Form.Group
+                  className={`${style.mb3} d-flex align-items-center`}
+                >
+                  <Form.Label className={`${style.formLabel} me-3`}>
+                    Horário de Estágio <RequiredFieldTooltip />
+                  </Form.Label>
+                  <div className="d-flex align-items-center gap-2">
+                    <Form.Control
+                      type="text"
+                      name="horaInicio"
+                      value={formData.horaInicio}
+                      placeholder="00:00"
+                      onChange={handleChange}
+                      style={{ width: "70px" }}
+                      required
+                    />
+                    <span> até</span>
+                    <Form.Control
+                      type="text"
+                      name="horaFim"
+                      placeholder="00:00"
+                      value={formData.horaFim}
+                      onChange={handleChange}
+                      style={{ width: "70px" }}
+                      required
+                    />
+                  </div>
+                </Form.Group>
+              </Col>
+            </Row>
 
-				<div
-					className={`${style.dFlex} ${style.justifyContentBetween} ${style.mt4}`}
-				>
-					<Button
-						variant="secondary"
-						className={style.btnSecondary}
-						onClick={handleBack}
-					>
-						Voltar
-					</Button>
-					<Button
-						variant="primary"
-						className={style.btnPrimary}
-						onClick={() => { handleNext();}}
-						disabled={loading}
-					>
-						{loading ? "Publicando..." : "Publicar Estágio"}
-					</Button>
-				</div>
-			</Container>
-			)}
-		</div>
-		</div>
-	);
+            <div
+              className={`${style.dFlex} ${style.justifyContentBetween} ${style.mt4}`}
+            >
+              <Button
+                variant="secondary"
+                className={style.btnSecondary}
+                onClick={handleBack}
+              >
+                Voltar
+              </Button>
+              <Button
+                variant="primary"
+                className={style.btnPrimary}
+                onClick={handleNext}
+              >
+                Próximo passo
+              </Button>
+            </div>
+          </Form>
+        )}
+
+        {/* Paso 3*/}
+        {step === 3 && (
+          <Form>
+            <Row className={style.mb3}>
+              <Col md={12}>
+                <Form.Group className={style.mb3}>
+                  <Form.Label className={style.formLabel}>
+                    Habilitações Académicas Mínimas <RequiredFieldTooltip />
+                  </Form.Label>
+                  <Form.Select
+                    className="w-100"
+                    name="habilitacoesMinimas"
+                    value={formData.habilitacoesMinimas || ""}
+                    onChange={handleChange}
+                  >
+                    <option value="">Selecione o nível de habilitação</option>
+                    <option value="1">Nível 1 - 4º ano do Ensino Básico</option>
+                    <option value="2">Nível 2 - 6º ano do Ensino Básico</option>
+                    <option value="3">Nível 3 - 9º ano do Ensino Básico</option>
+                    <option value="4">
+                      Nível 4 - Ensino Secundário + Estágio Profissional
+                    </option>
+                    <option value="5">
+                      Nível 5 - Cursos de Especialização Tecnológica (CET)
+                    </option>
+                    <option value="6">Nível 6 - Licenciatura</option>
+                    <option value="7">Nível 7 - Mestrado</option>
+                    <option value="8">Nível 8 - Doutoramento</option>
+                  </Form.Select>
+                </Form.Group>
+
+                <Form.Group className={style.mb3}>
+                  <Form.Label className={style.formLabel}>
+                    Competências Técnicas Essenciais <RequiredFieldTooltip />
+                  </Form.Label>
+                  <TagInput
+                    value={formData.competenciasTecnicas}
+                    onChange={(tags) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        competenciasTecnicas: tags,
+                      }))
+                    }
+                    placeholder="Escreva as competências técnicas essenciais (Ex: Programação, Design Gráfico, Marketing Digital)"
+                  />
+                  <div className="d-flex justify-content-between">
+                    {formData.competenciasTecnicas.length > 300 && (
+                      <span className={style.charterror}>
+                        Máximo de 300 caracteres ultrapassado!
+                      </span>
+                    )}
+                    <small
+                      className={`ms-auto ${
+                        formData.competenciasTecnicas.length > 300
+                          ? "text-danger"
+                          : "text-muted"
+                      }`}
+                    >
+                      {formData.competenciasTecnicas.length}/300 caracteres
+                    </small>
+                  </div>
+                </Form.Group>
+
+                <Form.Group className={style.mb3}>
+                  <Form.Label className={style.formLabel}>
+                    Competências Pessoais (Soft Skills)
+                  </Form.Label>
+                  <TagInput
+                    value={formData.competenciasPessoais}
+                    onChange={(tags) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        competenciasPessoais: tags,
+                      }))
+                    }
+                    placeholder="Escreva as competências pessoais (Ex: Trabalho em equipe, Comunicação, Resolução de problemas)"
+                  />
+                  <div className="d-flex justify-content-between">
+                    {formData.competenciasPessoais.length > 200 && (
+                      <span className={style.charterror}>
+                        Máximo de 200 caracteres ultrapassado!
+                      </span>
+                    )}
+                    <small
+                      className={`ms-auto ${
+                        formData.competenciasPessoais.length > 200
+                          ? "text-danger"
+                          : "text-muted"
+                      }`}
+                    >
+                      {formData.competenciasPessoais.length}/200 caracteres
+                    </small>
+                  </div>
+                </Form.Group>
+
+                <Form.Group className={style.mb3}>
+                  <Form.Label className={style.formLabel}>Idiomas</Form.Label>
+                  <TagInput
+                    value={formData.idiomas}
+                    onChange={(tags) =>
+                      setFormData((prev) => ({ ...prev, idiomas: tags }))
+                    }
+                    placeholder="Escreva os idiomas (Ex: Inglês, Português, Espanhol)"
+                  />
+                  <div className="d-flex justify-content-between">
+                    {formData.idiomas.length > 150 && (
+                      <span className={style.charterror}>
+                        Máximo de 150 caracteres ultrapassado!
+                      </span>
+                    )}
+                    <small
+                      className={`ms-auto ${
+                        formData.idiomas.length > 150
+                          ? "text-danger"
+                          : "text-muted"
+                      }`}
+                    >
+                      {formData.idiomas.length}/150 caracteres
+                    </small>
+                  </div>
+                </Form.Group>
+
+                <Form.Group className={style.mb3}>
+                  <Form.Label className={style.formLabel}>
+                    Observações:
+                  </Form.Label>
+                  <Form.Control
+                    as="textarea"
+                    rows={3}
+                    className={`w-100 ${
+                      formData.observacoes.length > 150 ? "is-invalid" : ""
+                    }`}
+                    placeholder="Ex: Algum requisito adicional não coberto acima"
+                    name="observacoes"
+                    value={formData.observacoes || ""}
+                    onChange={handleChange}
+                  />
+                  <div className="d-flex justify-content-between">
+                    {formData.observacoes.length > 150 && (
+                      <span className={style.charterror}>
+                        Máximo de 150 caracteres ultrapassado!
+                      </span>
+                    )}
+                    <small
+                      className={`ms-auto ${
+                        formData.observacoes.length > 150
+                          ? "text-danger"
+                          : "text-muted"
+                      }`}
+                    >
+                      {formData.observacoes.length}/150 caracteres
+                    </small>
+                  </div>
+                </Form.Group>
+              </Col>
+            </Row>
+
+            <div
+              className={`${style.dFlex} ${style.justifyContentBetween} ${style.mt4}`}
+            >
+              <Button
+                variant="secondary"
+                className={style.btnSecondary}
+                onClick={handleBack}
+              >
+                Voltar
+              </Button>
+              <Button
+                variant="primary"
+                className={style.btnPrimary}
+                onClick={handleNext}
+              >
+                Próximo passo
+              </Button>
+            </div>
+          </Form>
+        )}
+
+        {/* Paso 4 */}
+
+        {step === 4 && (
+          <Container fluid className="p-0 text-start">
+            <p className="fw-bold text-secondary text-start mb-3">
+              Revise o Seu Anúncio de Estágio na Empresa <br />
+              <span className="fw-normal text-muted">
+                Por favor, verifique todos os detalhes antes de publicar. Esta é
+                a versão final que os candidatos verão.
+              </span>
+            </p>
+
+            <Row className="mb-4">
+              <Col md={6}>
+                <Card className="shadow-sm h-100">
+                  <Card.Body>
+                    <h6 className="fw-bold text-dark mb-3">
+                      1. Informações Básicas{" "}
+                      <span
+                        className="text-primary"
+                        style={{ cursor: "pointer" }}
+                        onClick={() => setStep(1)}
+                      >
+                        [ Editar ]
+                      </span>
+                    </h6>
+                    <p>
+                      <strong className="text-secondary">Título:</strong>{" "}
+                      {formData.title || (
+                        <span style={{ color: "#aaa" }}>
+                          {" "}
+                          Não especificado.
+                        </span>
+                      )}
+                    </p>
+                    <p>
+                      <strong className="text-secondary">Áreas:</strong>{" "}
+                      {formData.area?.length > 0 ? (
+                        formData.area.join(", ")
+                      ) : (
+                        <span style={{ color: "#aaa" }}>
+                          {" "}
+                          Não especificado.
+                        </span>
+                      )}
+                    </p>
+                    <p>
+                      <strong className="text-secondary">Vagas:</strong>{" "}
+                      {formData.numeroVagas || (
+                        <span style={{ color: "#aaa" }}>
+                          {" "}
+                          Não especificado.
+                        </span>
+                      )}
+                    </p>
+                    <p>
+                      <strong className="text-secondary">Localização:</strong>{" "}
+                      {formData.localizacao || (
+                        <span style={{ color: "#aaa" }}>
+                          {" "}
+                          Não especificado.
+                        </span>
+                      )}
+                    </p>
+                    <p>
+                      <strong className="text-secondary">Tipo:</strong>{" "}
+                      {formData.tipoEstagio || (
+                        <span style={{ color: "#aaa" }}>
+                          {" "}
+                          Não especificado.
+                        </span>
+                      )}
+                    </p>
+                    <p>
+                      <strong className="text-secondary">Mês de Início:</strong>{" "}
+                      {handleMesInicio(formData.dataInicio) || (
+                        <span style={{ color: "#aaa" }}>
+                          {" "}
+                          Não especificado.
+                        </span>
+                      )}
+                    </p>
+                    <p>
+                      <strong className="text-secondary">Duração:</strong>{" "}
+                      {formData.duracao || (
+                        <span style={{ color: "#aaa" }}>
+                          {" "}
+                          Não especificado.
+                        </span>
+                      )}
+                    </p>
+                    <p>
+                      <strong className="text-secondary">
+                        Prazo Candidaturas:
+                      </strong>{" "}
+                      {formData.prazoCandidatura || (
+                        <span style={{ color: "#aaa" }}>
+                          {" "}
+                          Não especificado.
+                        </span>
+                      )}
+                    </p>
+                  </Card.Body>
+                </Card>
+              </Col>
+
+              <Col md={6}>
+                <Card className="shadow-sm h-100">
+                  <Card.Body>
+                    <h6 className="fw-bold text-dark mb-3">
+                      2. Detalhes do Estágio{" "}
+                      <span
+                        className="text-primary"
+                        style={{ cursor: "pointer" }}
+                        onClick={() => setStep(2)}
+                      >
+                        [ Editar ]
+                      </span>
+                    </h6>
+                    <p>
+                      <strong className="text-secondary">Descrição:</strong>{" "}
+                      {formData.descricao || (
+                        <span style={{ color: "#aaa" }}>
+                          {" "}
+                          Não especificado.
+                        </span>
+                      )}
+                    </p>
+                    <p>
+                      <strong className="text-secondary">
+                        Benefícios Oferecidos:
+                      </strong>{" "}
+                      {formData.beneficios?.length > 0 ? (
+                        formData.beneficios.join(", ")
+                      ) : (
+                        <span style={{ color: "#aaa" }}>
+                          {" "}
+                          Não especificado.
+                        </span>
+                      )}
+                    </p>
+                    <p>
+                      <strong className="text-secondary">
+                        Competências Pessoais:
+                      </strong>{" "}
+                      {formData.competenciasPessoais?.length > 0 ? (
+                        formData.competenciasPessoais.join(", ")
+                      ) : (
+                        <span style={{ color: "#aaa" }}>
+                          {" "}
+                          Não especificado.
+                        </span>
+                      )}
+                    </p>
+                    <p>
+                      <strong className="text-secondary">
+                        Cursos Preferenciais:
+                      </strong>{" "}
+                      {formData.cursosPreferenciais?.length > 0 ? (
+                        formData.cursosPreferenciais.join(", ")
+                      ) : (
+                        <span style={{ color: "#aaa" }}>
+                          {" "}
+                          Não especificado.
+                        </span>
+                      )}
+                    </p>
+                    <p>
+                      <strong className="text-secondary">
+                        Horário do Estágio:
+                      </strong>{" "}
+                      {formData.horaInicio && formData.horaFim ? (
+                        `${formData.horaInicio} até ${formData.horaFim}`
+                      ) : (
+                        <span style={{ color: "#aaa" }}>
+                          {" "}
+                          Não especificado.
+                        </span>
+                      )}
+                    </p>
+                  </Card.Body>
+                </Card>
+              </Col>
+            </Row>
+            <Card className="shadow-sm mb-4">
+              <Card.Body>
+                <h6 className="fw-bold text-dark mb-3">
+                  3. Requisitos do Candidato{" "}
+                  <span
+                    className="text-primary"
+                    style={{ cursor: "pointer" }}
+                    onClick={() => setStep(3)}
+                  >
+                    [ Editar ]
+                  </span>
+                </h6>
+                <p>
+                  <strong className="text-secondary">
+                    Habilitações Académicas:
+                  </strong>{" "}
+                  {formData.habilitacoesMinimas || (
+                    <span style={{ color: "#aaa" }}> Não especificado.</span>
+                  )}
+                </p>
+                <p>
+                  <strong className="text-secondary">
+                    Competências Técnicas Essenciais:
+                  </strong>{" "}
+                  {formData.competenciasTecnicas?.length > 0 ? (
+                    formData.competenciasTecnicas.join(", ")
+                  ) : (
+                    <span style={{ color: "#aaa" }}> Não especificado.</span>
+                  )}
+                </p>
+                <p>
+                  <strong className="text-secondary">
+                    Competências Pessoais:
+                  </strong>{" "}
+                  {formData.competenciasPessoais?.length > 0 ? (
+                    formData.competenciasPessoais.join(", ")
+                  ) : (
+                    <span style={{ color: "#aaa" }}> Não especificado.</span>
+                  )}
+                </p>
+                <p>
+                  <strong className="text-secondary">Idiomas:</strong>{" "}
+                  {formData.idiomas?.length > 0 ? (
+                    formData.idiomas.join(", ")
+                  ) : (
+                    <span style={{ color: "#aaa" }}> Não especificado.</span>
+                  )}
+                </p>
+                <p>
+                  <strong className="text-secondary">Observações:</strong>{" "}
+                  {formData.observacoes || (
+                    <span style={{ color: "#aaa" }}> Não especificado.</span>
+                  )}
+                </p>
+              </Card.Body>
+            </Card>
+
+            <div
+              className={`${style.dFlex} ${style.justifyContentBetween} ${style.mt4}`}
+            >
+              <Button
+                variant="secondary"
+                className={style.btnSecondary}
+                onClick={handleBack}
+              >
+                Voltar
+              </Button>
+              <Button
+                variant="primary"
+                className={style.btnPrimary}
+                onClick={() => {
+                  handleNext();
+                }}
+                disabled={loading}
+              >
+                {loading ? "Publicando..." : "Publicar Estágio"}
+              </Button>
+            </div>
+          </Container>
+        )}
+      </div>
+    </div>
+  );
 };
 
 export default CriacaoEstagio;

@@ -28,8 +28,11 @@ const ProfilePage = () => {
     refreshCandidaturas,
   } = useCandidaturas(userInfo?._id);
 
-  const { estagios: estagiosByCompany, loading: estagiosLoading } =
-    useEstagiosByCompany(userInfo?._id);
+  const {
+    estagios: estagiosByCompany,
+    loading: estagiosLoading,
+    reloadEstagios,
+  } = useEstagiosByCompany(userInfo?._id);
   const { estagiosRecomendados, loading: loadingRecomendados } =
     useEstagiosRecomendados(3, role === "user"); // Máximo 3 para o perfil, só para users
 
@@ -43,6 +46,40 @@ const ProfilePage = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Recarregar estágios quando a página fica visível novamente
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (!document.hidden && reloadEstagios) {
+        reloadEstagios();
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    // Também escutar eventos de foco na janela
+    const handleFocus = () => {
+      if (reloadEstagios) {
+        reloadEstagios();
+      }
+    };
+
+    window.addEventListener("focus", handleFocus);
+
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      window.removeEventListener("focus", handleFocus);
+    };
+  }, [reloadEstagios]);
+
+  // Verificar se estágios foram atualizados e recarregar
+  useEffect(() => {
+    const estagioUpdated = localStorage.getItem("estagioUpdated");
+    if (estagioUpdated === "true" && reloadEstagios) {
+      localStorage.removeItem("estagioUpdated");
+      reloadEstagios();
+    }
+  }, [reloadEstagios]);
 
   const getNumberOfEstagios = async (id) => {
     const request = await fetch(
