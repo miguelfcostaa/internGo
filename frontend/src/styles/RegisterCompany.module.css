@@ -205,3 +205,17 @@
   }
 }
 
+.passwordToggleIcon {
+  position: absolute;
+  top: 70%;         
+  right: 0.75rem; 
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #6c757d; 
+  font-size: 1.25rem;
+  user-select: none;
+}
+
+.passwordToggleIcon:hover {
+  color: #495057; 
+}

@@ -18,6 +18,8 @@ const PasswordReset = () => {
   const [isSuccess, setIsSuccess] = useState(false);
   const [token, setToken] = useState("");
   const [showPasswordCriteria, setShowPasswordCriteria] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   
 
@@ -157,7 +159,7 @@ const PasswordReset = () => {
             </div>
           </label>
           <input
-            type="password"
+            type={showPassword ? "text" : "password"}
             id="password"
             name="password"
             value={formData.password}
@@ -166,10 +168,18 @@ const PasswordReset = () => {
             disabled={isLoading}
             className={styles.passwordInput}
           />
+          <i
+            onClick={() => setShowPassword(!showPassword)}
+            className={`${showPassword ? "bi bi-eye-slash" : "bi bi-eye"} ${styles.passwordToggleIcon}`}
+            role="button"
+            aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
+            tabIndex={0}
+            onKeyPress={(e) => { if (e.key === 'Enter') setShowPassword(!showPassword) }}
+          ></i>
 
           <label htmlFor="confirmPassword" className={styles.label}>Confirmar Palavra-passe</label>
           <input
-            type="password"
+            type={showConfirmPassword ? "text" : "password"}
             id="confirmPassword"
             name="confirmPassword"
             value={formData.confirmPassword}
@@ -178,6 +188,14 @@ const PasswordReset = () => {
             disabled={isLoading}
             className={styles.passwordInput}
           />
+          <i
+            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+            className={`${showConfirmPassword ? "bi bi-eye-slash" : "bi bi-eye"} ${styles.passwordToggleIcon}`}
+            role="button"
+            aria-label={showConfirmPassword ? "Ocultar senha" : "Mostrar senha"}
+            tabIndex={0}
+            onKeyPress={(e) => { if (e.key === 'Enter') setShowConfirmPassword(!showConfirmPassword) }}
+          ></i>
 
           <ButtonSubmit
             text="Redefinir Palavra-passe"

@@ -22,6 +22,8 @@ function RegisterCompany() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [showPasswordCriteria, setShowPasswordCriteria] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   // Handler para atualizar os dados do formulário
   const handleChange = (e) => {
@@ -121,7 +123,7 @@ function RegisterCompany() {
             />
           </div>
 
-          <div className="mb-3">
+          <div className="mb-3 position-relative">
             <label className={`form-label d-flex align-items-center ${styles.formLabel}`}>
               Palavra-passe
               <div
@@ -143,15 +145,23 @@ function RegisterCompany() {
               </div>
             </label>
             <input
-              type="password"
-              name="password"
-              className={`form-control ${styles.formControl}`}
-              placeholder="Insira a palavra-passe"
-              value={formData.password}
-              onChange={handleChange}
-              disabled={loading}
-            />
-          </div>
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  className={`form-control ${styles.formControl}`}
+                  placeholder="Insira a palavra-passe"
+                  value={formData.password}
+                  onChange={handleChange}
+                  disabled={loading}
+                />
+                <i
+                  onClick={() => setShowPassword(!showPassword)}
+                  className={`${showPassword ? "bi bi-eye-slash" : "bi bi-eye"} ${styles.passwordToggleIcon}`}
+                  role="button"
+                  aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
+                  tabIndex={0}
+                  onKeyPress={(e) => { if (e.key === 'Enter') setShowPassword(!showPassword) }}
+                ></i>
+              </div>
         </div>
 
         {/* Columna Derecha */}
@@ -170,19 +180,13 @@ function RegisterCompany() {
           </div>
 
           <div className="mb-3">
-            <label className={`form-label ${styles.formLabel}`}>phone</label>
+            <label className={`form-label ${styles.formLabel}`}>Telefone</label>
             <div className={`input-group ${styles.inputGroup}`}>
-              <select className={`form-select ${styles.formSelect}`} name="prefix" disabled={loading}>
-                <option value="+351">+351</option>
-                <option value="+55">+55</option>
-                <option value="+1">+1</option>
-                <option value="+58">+58</option>
-              </select>
               <input
                 type="text"
                 name="phone"
                 className={`form-control ${styles.formControl}`}
-                placeholder="9 dígitos (ex: 123456789)"
+                placeholder="Insira o telefone (ex: 912345678)"
                 maxLength="9"
                 value={formData.phone}
                 onChange={handleChange}
@@ -191,20 +195,28 @@ function RegisterCompany() {
             </div>
           </div>
 
-          <div className="mb-3">
+          <div className="mb-3 position-relative">
             <label className={`form-label ${styles.formLabel}`}>Confirmar palavra-passe</label>
             <input
-              type="password"
+              type={showConfirmPassword ? "text" : "password"}
               name="confirmPassword"
               className={`form-control ${styles.formControl}`}
               placeholder="Confirme a palavra-passe"
               value={formData.confirmPassword}
-              onChange={handleChange}
-              disabled={loading}
-            />
+                  onChange={handleChange}
+                  disabled={loading}
+                />
+                <i
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  className={`${showConfirmPassword ? "bi bi-eye-slash" : "bi bi-eye"} ${styles.passwordToggleIcon}`}
+                  role="button"
+                  aria-label={showConfirmPassword ? "Ocultar senha" : "Mostrar senha"}
+                  tabIndex={0}
+                  onKeyPress={(e) => { if (e.key === 'Enter') setShowConfirmPassword(!showConfirmPassword) }}
+                ></i>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
 
       <ButtonSubmit
         text="Criar Conta"
