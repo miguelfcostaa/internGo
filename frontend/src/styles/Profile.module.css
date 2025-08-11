@@ -12,6 +12,7 @@
     flex-direction: row;
     gap: 3rem;  
     justify-content: space-between;
+    max-height: 300px;
 }
 
 .userInfo {

@@ -16,7 +16,7 @@ function EditUserProfile() {
     // Use ID from params if available, otherwise get from token (for own profile)
     const id = paramId || getUserIdFromToken();
     
-    const [userInfo, setUserInfo]  = useUser(id);
+    const [userInfo, setUserInfo, refreshUser]  = useUser(id);
     const [editMode, setEditMode] = useState(false);
     const [editedUserInfo, setEditedUserInfo] = useState(userInfo);
     const [editedCompanyInfo, setEditedCompanyInfo] = useState(userInfo);  
@@ -63,8 +63,8 @@ function EditUserProfile() {
 
                 if (response.ok) {
                     setEditMode(false);
-                    setEditedUserInfo(result);
-                    setUserInfo(result);
+                    setEditedUserInfo(prev => ({ ...prev, ...result }));
+                    await refreshUser();
                 } else {
                     if (result.message && typeof result.message === 'object') {
                         setFieldErrors(result.message);
@@ -89,8 +89,8 @@ function EditUserProfile() {
 
                 if (response.ok) {
                     setEditMode(false);
-                    setEditedCompanyInfo(result);
-                    setUserInfo(result);
+                    setEditedCompanyInfo(prev => ({ ...prev, ...result }));
+                    await refreshUser();
                 } else {
                     if (result.message && typeof result.message === 'object') {
                         setFieldErrors(result.message);

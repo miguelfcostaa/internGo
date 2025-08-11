@@ -59,9 +59,10 @@ class CompanyController {
             // Validar dados de atualização
             const validation = CompanyService.validateUpdateData(req.body, companyId);
             if (!validation.isValid) {
+                console.log('Validation errors:', validation.errors);
                 return res.status(400).json({
                     success: false,
-                    message: 'Dados inválidos para atualização',
+                    message: JSON.stringify(validation.errors).replace(/"/g, '').replace(/\[/g, '').replace(/\]/g, ''),
                     errors: validation.errors
                 });
             }

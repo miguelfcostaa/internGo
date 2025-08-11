@@ -63,7 +63,7 @@ const STEPS = {
         competenciasTecnicas: false,
         competenciasPessoais: false,
         idiomas: false,
-        outrosRequisitos: false,
+        observacoes: false,
     });
 
     useEffect(() => {
@@ -129,7 +129,7 @@ const STEPS = {
         cursosPreferenciais: 200,
         competenciasPessoais: 200,
         idiomas: 150,
-        outrosRequisitos: 150,
+        observacoes: 150,
     };
 
     const handleChange = (e) => {
@@ -635,21 +635,21 @@ const STEPS = {
                 <Col md={6}>
                   <Form.Group className="mb-3">
                     <Form.Label className={`${style.label} fw-bold`}>
-                      Outros Requisitos</Form.Label>
+                      Observações</Form.Label>
                     <Form.Control
                       type="text"
-                      name="outrosRequisitos"
-                      value={formData.outrosRequisitos}
+                      name="observacoes"
+                      value={formData.observacoes}
                       onChange={handleChange}
                       placeholder="Requisitos adicionais..."
-                      className={`${style.input} ${Array.isArray(formData.outrosRequisitos) && formData.outrosRequisitos.length > 150 ? "is-invalid" : ""}`}
+                      className={`${style.input} ${formData.observacoes.length > 150 ? "is-invalid" : ""}`}
                     />
                     <div className="d-flex justify-content-between">
-                      {Array.isArray(formData.outrosRequisitos) && formData.outrosRequisitos.length > 150 && (
+                      {formData.observacoes.length > 150 && (
                         <span className={style.charterror}>Máximo de 150 caracteres ultrapassado!</span>
                       )}
-                      <small className={`ms-auto ${Array.isArray(formData.outrosRequisitos) && formData.outrosRequisitos.length > 150 ? "text-danger" : "text-muted"}`}>
-                        {Array.isArray(formData.outrosRequisitos) ? formData.outrosRequisitos.length : 0}/150 caracteres
+                      <small className={`ms-auto ${formData.observacoes.length > 150 ? "text-danger" : "text-muted"}`}>
+                        {formData.observacoes.length}/150 caracteres
                       </small>
                     </div>
                   </Form.Group>
@@ -683,7 +683,7 @@ const STEPS = {
                   <p><strong>Competências Técnicas:</strong> {formData.competenciasTecnicas ? formData.competenciasTecnicas.join(", ") : <span style={{ color: "#aaa" }}> Não especificado.</span>}</p>
                   <p><strong>Competências Pessoais:</strong> {formData.competenciasPessoais ? formData.competenciasPessoais.join(", ") : <span style={{ color: "#aaa" }}> Não especificado.</span>}</p>
                   <p><strong>Idiomas:</strong> {formData.idiomas ? formData.idiomas.join(", ") : <span style={{ color: "#aaa" }}> Não especificado.</span>}</p>
-                  <p><strong>Outros Requisitos:</strong> {formData.observacoes || <span style={{ color: "#aaa" }}> Não especificado.</span>}</p>
+                  <p><strong>Observações:</strong> {formData.observacoes || <span style={{ color: "#aaa" }}> Não especificado.</span>}</p>
                 </div>
               </div>
             </div>
