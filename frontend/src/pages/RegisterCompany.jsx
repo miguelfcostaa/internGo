@@ -111,7 +111,7 @@ function RegisterCompany() {
           <div className="mb-3">
             <label className={`form-label ${styles.formLabel}`}>Email da empresa</label>
             <input
-              type="email"
+              type="text"
               name="email"
               className={`form-control ${styles.formControl}`}
               placeholder="exemplo@empresa.com"
