@@ -134,7 +134,7 @@ const ProfilePage = () => {
                                     <th style={{ backgroundColor: '#273F4F', color: 'white' }} scope="col">Mês de Inicio</th>
                                     <th style={{ backgroundColor: '#273F4F', color: 'white' }} scope="col">Duração</th>
                                     <th style={{ backgroundColor: '#273F4F', color: 'white' }} scope="col">Tipo de Estágio</th>
-                                    <th style={{ backgroundColor: '#273F4F', color: 'white', paddingRight: "2rem" }} scope="col">#</th>
+                                    <th style={{ backgroundColor: '#273F4F', color: 'white'}} scope="col">#</th>
                                 </tr>
                             </thead>
                            <tbody>

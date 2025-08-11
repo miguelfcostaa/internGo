@@ -215,14 +215,14 @@ const aceitarCandidatura = async (req, res) => {
         }
 
         // Verificar se a candidatura já foi processada
-        if (candidatura.status !== 'pendente') {
+        if (candidatura.status !== 'Pendente') {
             return res.status(400).json({ 
                 message: `Esta candidatura já foi ${candidatura.status}.` 
             });
         }
 
         // Aceitar a candidatura
-        candidatura.status = 'aceite';
+        candidatura.status = 'Aceite';
         candidatura.dataResposta = new Date();
         await candidatura.save();
 
@@ -297,14 +297,14 @@ const recusarCandidatura = async (req, res) => {
         }
 
         // Verificar se a candidatura já foi processada
-        if (candidatura.status !== 'pendente') {
+        if (candidatura.status !== 'Pendente') {
             return res.status(400).json({ 
                 message: `Esta candidatura já foi ${candidatura.status}.` 
             });
         }
 
         // Recusar a candidatura
-        candidatura.status = 'recusada';
+        candidatura.status = 'Recusada';
         candidatura.dataResposta = new Date();
         if (motivo) {
             candidatura.motivoRecusa = motivo;

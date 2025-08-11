@@ -17,8 +17,8 @@ const candidaturaSchema = new Schema({
     },
     status: { 
         type: String, 
-        enum: ['pendente', 'aceite', 'recusada'],
-        default: 'pendente' 
+        enum: ['Pendente', 'Aceite', 'Recusada'],
+        default: 'Pendente' 
     },
     dataResposta: {
         type: Date
