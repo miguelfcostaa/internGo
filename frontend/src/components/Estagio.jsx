@@ -19,20 +19,11 @@ function Estagio({ NomeEmpresa, NomeEstagio, TotalVagas, Ativas, Area, Inicio, T
         }
     };
     
-    const handleCandidatarClick = () => {
-        const token = localStorage.getItem('token');
-        
-        if (!token) {
-            // Se não estiver logado, redireciona para login
-            navigate('/login');
-        } else if (isCompany()) {
-            // Se for empresa, mostrar mensagem de erro
-            alert('Empresas não podem candidatar-se aos estágios. Apenas estudantes podem candidatar-se.');
-            return;
-        } else {
-            // Se estiver logado como estudante, navegar para página do estágio
-            navigate(`/estagio/${idEstagio}`);
-        }
+    const handleVerDetalhesClick = (e) => {
+        // Prevenir que o clique no botão acione também o clique do container
+        e.stopPropagation();
+        // Qualquer um pode ver detalhes (empresa ou estudante)
+        navigate(`/estagio/${idEstagio}`);
     };
     
     // Função para formatar o mês, que vem como //YYYY-MM e retorna o nome do mes e o ano
@@ -101,19 +92,12 @@ function Estagio({ NomeEmpresa, NomeEstagio, TotalVagas, Ativas, Area, Inicio, T
             </div>
             <div className={styles.applyContainer}>
                 <p>{Localizacao}</p>
-                {!isCompany() && (
-                    <button className="btn btn-secondary" onClick={handleCandidatarClick}>
-                        Ver Detalhes
-                    </button>
-                )}
-                {isCompany() && (
-                    <button 
-                        className="btn btn-secondary" 
-                        onClick={handleCandidatarClick}
-                    >
-                        Ver Detalhes
-                    </button>
-                )}
+                <button 
+                    className="btn btn-secondary" 
+                    onClick={handleVerDetalhesClick}
+                >
+                    Ver Detalhes
+                </button>
             </div>
             
         </div>
