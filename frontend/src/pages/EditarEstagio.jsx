@@ -47,7 +47,7 @@ const STEPS = {
 
     //limite de cratcteres
     const [Warnings, setWarnings] = useState({
-        titulo: false,
+        title: false,
         area: false,
         vagas: false,
         localizacao: false,
@@ -120,7 +120,7 @@ const STEPS = {
 
     // Limites específicos para cada campo
     const fieldLimits = {
-        titulo: 60,
+        title: 60,
         localizacao: 40,
         area: 30,
         descricao: 500,
