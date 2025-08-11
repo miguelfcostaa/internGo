@@ -325,7 +325,8 @@ function validateCriarEstagio(Estagio, data) {
     // Todos os campos obrigatórios são precisos
     if (!data.title || !data.area || !data.dataInicio || !data.tipoEstagio || !data.duracao ||
         !data.numeroVagas || !data.localizacao || !data.prazoCandidatura || !data.descricao ||
-        !data.beneficios || !data.habilitacoesMinimas || !data.horaFim || !data.horaInicio) {
+        !data.beneficios || !data.habilitacoesMinimas || !data.competenciasTecnicas || 
+        !data.horaFim || !data.horaInicio) {
         errors.general = 'Todos os campos obrigatórios devem ser preenchidos.';
         return errors;
     }
@@ -398,6 +399,11 @@ function validateCriarEstagio(Estagio, data) {
     // Validação das habilitações mínimas
     if (data.habilitacoesMinimas && !["1", "2", "3", "4", "5", "6", "7", "8"].includes(data.habilitacoesMinimas)) {
         errors.habilitacoesMinimas = 'O nível de habilitação é inválido.';
+    }
+
+    // Validação das competências técnicas (obrigatório)
+    if (data.competenciasTecnicas && (!Array.isArray(data.competenciasTecnicas) || data.competenciasTecnicas.length === 0)) {
+        errors.competenciasTecnicas = 'Deve indicar pelo menos uma competência técnica.';
     }
 
     // Validação de campos opcionais com limite de caracteres
