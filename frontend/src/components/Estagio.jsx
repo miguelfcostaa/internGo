@@ -37,6 +37,8 @@ function Estagio({ NomeEmpresa, NomeEstagio, TotalVagas, Ativas, Area, Inicio, T
     }
 
     return (
+        <div className={styles.estagioCard}>
+
         <div 
             className="container bg-white p-4 rounded shadow" 
             style={{ 
@@ -47,7 +49,7 @@ function Estagio({ NomeEmpresa, NomeEstagio, TotalVagas, Ativas, Area, Inicio, T
                 cursor: "pointer",
             }}
             onClick={() => navigate(`/estagio/${idEstagio}`)}
-        >
+            >
             <div className={styles.logoContainer}>
                 <div style={{ width: "120px", height: "120px", display: "flex", alignSelf: "center" }}>
                     <img 
@@ -100,6 +102,7 @@ function Estagio({ NomeEmpresa, NomeEstagio, TotalVagas, Ativas, Area, Inicio, T
                 </button>
             </div>
             
+        </div>
         </div>
     )
 }
