@@ -22,6 +22,8 @@ function RegisterCompany() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [showPasswordCriteria, setShowPasswordCriteria] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   // Handler para atualizar os dados do formulário
   const handleChange = (e) => {
@@ -121,7 +123,7 @@ function RegisterCompany() {
             />
           </div>
 
-          <div className="mb-3">
+          <div className="mb-3 position-relative">
             <label className={`form-label d-flex align-items-center ${styles.formLabel}`}>
               Palavra-passe
               <div
@@ -143,15 +145,23 @@ function RegisterCompany() {
               </div>
             </label>
             <input
-              type="password"
-              name="password"
-              className={`form-control ${styles.formControl}`}
-              placeholder="Insira a palavra-passe"
-              value={formData.password}
-              onChange={handleChange}
-              disabled={loading}
-            />
-          </div>
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  className={`form-control ${styles.formControl}`}
+                  placeholder="Insira a palavra-passe"
+                  value={formData.password}
+                  onChange={handleChange}
+                  disabled={loading}
+                />
+                <i
+                  onClick={() => setShowPassword(!showPassword)}
+                  className={`${showPassword ? "bi bi-eye-slash" : "bi bi-eye"} ${styles.passwordToggleIcon}`}
+                  role="button"
+                  aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
+                  tabIndex={0}
+                  onKeyPress={(e) => { if (e.key === 'Enter') setShowPassword(!showPassword) }}
+                ></i>
+              </div>
         </div>
 
         {/* Columna Derecha */}
@@ -191,20 +201,28 @@ function RegisterCompany() {
             </div>
           </div>
 
-          <div className="mb-3">
+          <div className="mb-3 position-relative">
             <label className={`form-label ${styles.formLabel}`}>Confirmar palavra-passe</label>
             <input
-              type="password"
+              type={showConfirmPassword ? "text" : "password"}
               name="confirmPassword"
               className={`form-control ${styles.formControl}`}
               placeholder="Confirme a palavra-passe"
               value={formData.confirmPassword}
-              onChange={handleChange}
-              disabled={loading}
-            />
+                  onChange={handleChange}
+                  disabled={loading}
+                />
+                <i
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  className={`${showConfirmPassword ? "bi bi-eye-slash" : "bi bi-eye"} ${styles.passwordToggleIcon}`}
+                  role="button"
+                  aria-label={showConfirmPassword ? "Ocultar senha" : "Mostrar senha"}
+                  tabIndex={0}
+                  onKeyPress={(e) => { if (e.key === 'Enter') setShowConfirmPassword(!showConfirmPassword) }}
+                ></i>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
 
       <ButtonSubmit
         text="Criar Conta"
