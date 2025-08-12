@@ -5,6 +5,7 @@ import styles from '../styles/RegisterCompany.module.css';
 import ButtonSubmit from "../components/ButtonSubmit";
 import PasswordCriteriaTooltip from "../components/PasswordCriteria";  
 import { isPasswordCriterionMet } from "../utils/registerUserUtils"; 
+import exclamation from "../assets/svgs/exclamation.svg";
 
 function RegisterCompany() {
   const navigate = useNavigate();
@@ -136,7 +137,7 @@ function RegisterCompany() {
                   position: 'relative'
                 }}
               >
-                ⓘ
+                <img src={exclamation} alt="Criterios" />
                 <PasswordCriteriaTooltip
                   password={formData.password}
                   isVisible={showPasswordCriteria}

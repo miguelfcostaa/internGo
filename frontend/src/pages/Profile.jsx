@@ -273,7 +273,8 @@ const ProfilePage = () => {
                 <h2 className={styles.titulo}>Estágios Recomendados</h2>
                 {estagiosRecomendados.length > 0 && (
                   <Link
-                    to="/recomendacoes/:id"
+                    to="/recomendacoes"
+                    onClick={() => window.scrollTo(0, 0)}
                     style={{
                       textDecoration: "none",
                       color: "#447D9B",

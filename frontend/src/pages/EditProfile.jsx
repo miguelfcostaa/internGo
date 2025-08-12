@@ -7,6 +7,7 @@ import EditableProfilePhoto from "../components/EditableProfilePhoto";
 import styles from "../styles/EditProfile.module.css"
 import useUser from "../hooks/useUser";
 import { getUserRoleFromToken, getUserIdFromToken } from "../utils/jwtUtils";
+import RequiredFieldTooltip from "../components/RequiredFieldTooltip.jsx";
 
 
 function EditUserProfile() {
@@ -196,20 +197,22 @@ function EditUserProfile() {
                         </div>
                         <div className={styles.infoContainer}>
                             <div className={styles.infoContainerLeft}>
-                                <b>Nome:</b>
+                                <b>Nome: {editMode ? <RequiredFieldTooltip /> : null}</b>
                                 <p>
                                     {editMode ? (
+                                        <>
                                         <input
                                             name="name"
                                             value={editedUserInfo.name || ""}
                                             onChange={handleChange}
                                             className={styles.invisibleInput}
                                         />
+                                        </>
                                     ) : (
                                         userInfo.name
                                     )}
                                 </p>
-                                <b>Nº de telemóvel:</b>
+                                <b>Nº de telemóvel: {editMode ? <RequiredFieldTooltip /> : null}</b>
                                 <p>
                                     {editMode ? (
                                         <input
@@ -268,7 +271,7 @@ function EditUserProfile() {
                                 </p>
                             </div>
                             <div className={styles.infoContainerRight}>
-                                <b>Email:</b>
+                                <b>Email: {editMode ? <RequiredFieldTooltip /> : null}</b>
                                 <p>
                                     {editMode ? (
                                         <input
@@ -309,7 +312,7 @@ function EditUserProfile() {
                                         userInfo.codigoPostal || <span style={{ color: "#aaa" }}>Ex: 1234-567</span>
                                     )}
                                 </p>
-                                <b>Nº de CC:</b>
+                                <b>Nº de CC:  {editMode ? <RequiredFieldTooltip /> : null}</b>
                                 <p>
                                     {editMode ? (
                                         <input
