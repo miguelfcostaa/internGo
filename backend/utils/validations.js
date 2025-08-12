@@ -360,17 +360,23 @@ function validateCriarEstagio(Estagio, data) {
   // Validação da duração
   if (
     data.duracao &&
-    (isNaN(data.duracao) || data.duracao <= 0 || data.duracao > 12)
+    (isNaN(data.duracao) || 
+     !Number.isInteger(Number(data.duracao)) || 
+     data.duracao <= 0 || 
+     data.duracao > 12)
   ) {
-    errors.duracao = "A duração deve ser um número entre 1 e 12 meses.";
+    errors.duracao = "A duração deve ser um número inteiro entre 1 e 12 meses.";
   }
 
   // Validação do número de vagas
   if (
     data.numeroVagas &&
-    (isNaN(data.numeroVagas) || data.numeroVagas < 1 || data.numeroVagas > 100)
+    (isNaN(data.numeroVagas) || 
+     !Number.isInteger(Number(data.numeroVagas)) || 
+     data.numeroVagas < 1 || 
+     data.numeroVagas > 100)
   ) {
-    errors.numeroVagas = "O número de vagas deve ser um número entre 1 e 100.";
+    errors.numeroVagas = "O número de vagas deve ser um número inteiro entre 1 e 100.";
   }
 
   // Validação da localização
