@@ -35,9 +35,8 @@ const getCandidaturaById = async (req, res) => {
       return res.status(404).json({ message: "Candidatura não encontrada." });
     }
 
-    // Adicionar o nome do arquivo do CV à resposta
+    // O CV agora já está no documento da candidatura
     const candidaturaResponse = candidatura.toObject();
-    candidaturaResponse.cv = candidatura.user.cv;
 
     res.json(candidaturaResponse);
   } catch (error) {
@@ -165,15 +164,27 @@ const createCandidatura = async (req, res) => {
     if (req.file) {
       // Extrair apenas o nome do arquivo do caminho completo
       cvPath = req.file.filename;
-      
-      // Atualizar o CV do usuário
-      await User.findByIdAndUpdate(userId, { cv: cvPath });
+    }
+
+    // Verificar se as competências técnicas são um array
+    let competenciasTecnicas = [];
+    try {
+      if (typeof req.body.competenciasTecnicas === 'string') {
+        competenciasTecnicas = JSON.parse(req.body.competenciasTecnicas);
+      } else if (Array.isArray(req.body.competenciasTecnicas)) {
+        competenciasTecnicas = req.body.competenciasTecnicas;
+      }
+    } catch (error) {
+      // Silenciosamente falha e mantém o array vazio em caso de erro
     }
 
     // Criar candidatura
     const novaCandidatura = new Candidatura({
       user: userId,
       estagio: estagioId,
+      competenciasTecnicas: competenciasTecnicas,
+      cv: cvPath,
+      cartaApresentacao: req.body.cartaApresentacao
     });
 
     await novaCandidatura.save();
@@ -194,7 +205,7 @@ const createCandidatura = async (req, res) => {
   } catch (error) {
     res.status(500).json({
       message: "Erro ao criar candidatura",
-      error: error.message,
+      error: error.message
     });
   }
 };

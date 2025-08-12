@@ -235,89 +235,20 @@ const validateUserUpdate = async (User, data) => {
 async function validateCandidatura(data, file) {
   const errors = {};
 
+  // Validar apenas os campos específicos da candidatura
   if (!file) {
     errors.cv = "CV é obrigatório.";
   }
-  if (
-    !data.name ||
-    !data.email ||
-    !data.nif ||
-    !data.telefone ||
-    !data.morada ||
-    !data.codigoPostal ||
-    !data.dataNascimento ||
-    !data.cc ||
-    !data.universidade ||
-    !data.curso ||
-    !data.cartaDeApresentacao
-  ) {
-    errors.general = "Todos os campos são obrigatórios.";
-    return errors;
+
+  if (!data.competenciasTecnicas) {
+    errors.competenciasTecnicas = "Competências técnicas são obrigatórias.";
   }
 
-  // Valida Nome
-  if (!validateName(data.name)) {
-    errors.name = "Nome deve ter entre 3 e 50 caracteres.";
+  if (!data.cartaApresentacao) {
+    errors.cartaApresentacao = "Carta de apresentação é obrigatória.";
+  } else if (data.cartaApresentacao.length < 20 || data.cartaApresentacao.length > 500) {
+    errors.cartaApresentacao = "Carta de apresentação deve ter entre 20 e 500 caracteres.";
   }
-
-  // Valida Email
-  if (!validateEmail(data.email)) {
-    errors.email = "Email deve ter formato válido.";
-  }
-
-  // Valida NIF
-  if (data.nif && data.nif.length !== 9) {
-    errors.nif = "NIF deve ter exatamente 9 dígitos.";
-  }
-
-  // Valida Telefone
-  if (data.telefone && data.telefone.length !== 9) {
-    errors.telefone = "Número de telefone deve conter no minimo 9 digitos.";
-  }
-
-  // Valida Morada
-  if (data.morada && (data.morada.length < 3 || data.morada.length > 100)) {
-    errors.morada = "Morada deve ter entre 3 e 100 caracteres.";
-  }
-
-  // Valida Código Postal fomato: "1234-567"
-  if (data.codigoPostal && !/^\d{4}-\d{3}$/.test(data.codigoPostal)) {
-    errors.codigoPostal = "Código Postal deve ter o formato XXXX-XXX.";
-  }
-
-  // Valida Data de Nascimento
-  if (data.dataNascimento && isNaN(new Date(data.dataNascimento).getTime())) {
-    errors.dataNascimento = "Data de Nascimento deve ter um formato válido.";
-  }
-
-  // Valida Cartão de Cidadão
-  if (data.cc && (data.cc.length !== 8 || !/^\d{8}$/.test(data.cc))) {
-    errors.cc = "Cartão de Cidadão deve ter exatamente 8 dígitos.";
-  }
-
-  // Valida Universidade
-  if (
-    data.universidade &&
-    (data.universidade.length < 3 || data.universidade.length > 50)
-  ) {
-    errors.universidade = "Universidade deve ter entre 3 e 50 caracteres.";
-  }
-
-  // Valida Curso
-  if (data.curso && (data.curso.length < 3 || data.curso.length > 50)) {
-    errors.curso = "Curso deve ter entre 3 e 50 caracteres.";
-  }
-
-  // Valida Carta de Apresentação
-  if (
-    data.cartaDeApresentacao &&
-    (data.cartaDeApresentacao.length < 10 ||
-      data.cartaDeApresentacao.length > 2000)
-  ) {
-    errors.cartaDeApresentacao =
-      "Carta de Apresentação deve ter entre 10 e 2000 caracteres.";
-  }
-  // Valida CV
 
   return errors;
 }

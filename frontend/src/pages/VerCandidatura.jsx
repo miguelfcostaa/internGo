@@ -13,7 +13,6 @@ function VerCandidatura() {
     const navigate = useNavigate();
     const [estado, setEstado] = useState("Pendente");
     const [candidatura, setCandidatura] = useState(null);
-    console.log("Candidatura:", candidatura);
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
     const [loading, setLoading] = useState(true);
@@ -89,10 +88,8 @@ function VerCandidatura() {
             
             setSuccess("Candidatura aceita com sucesso!");
             
-            // Atualizar lista de candidaturas
             triggerRefresh();
             
-            // Redirecionar para o perfil da empresa com o ID correto
             const companyId = getUserIdFromToken();
             if (companyId) {
                 navigate(`/profile/${companyId}`);
@@ -129,12 +126,12 @@ function VerCandidatura() {
                 return;
             }
             
-            setSuccess("Candidatura recusada com sucesso!");
-            
-            // Atualizar lista de candidaturas
+            setTimeout(() => {
+                setSuccess("Candidatura recusada com sucesso!");
+            }, 2000);
+
             triggerRefresh();
             
-            // Redirecionar para o perfil da empresa com o ID correto
             const companyId = getUserIdFromToken();
             if (companyId) {
                 navigate(`/profile/${companyId}`);
@@ -258,12 +255,12 @@ function VerCandidatura() {
                             </div>
                             <div className={style.infoRow}>
                                 <div className={style.infoLabel}><span>Competências Técnicas:</span></div>
-                                <div className={style.infoValue}><span>{Array.isArray(candidatura.user.competenciasTecnicas) ? candidatura.user.competenciasTecnicas.join(", ") : <span style={{ color: "#aaa" }}> Não especificado. </span>}</span></div>
+                                <div className={style.infoValue}><span>{candidatura.competenciasTecnicas.length > 0 ? candidatura.competenciasTecnicas.join(", ") : <span style={{ color: "#aaa" }}> Não especificado. </span>}</span></div>
                             </div>
                             <div className={style.infoRow}>
-                                <div className={style.infoLabel}><span>CV:</span></div>
+                                <div className={style.infoLabel}><span>CV da Candidatura:</span></div>
                                 <div className={style.infoValue}>
-                                    {candidatura.user.cv ? (
+                                    {candidatura.cv ? (
                                         <a 
                                             href={`http://localhost:5000/uploads/cv/${candidatura.cv}`}
                                             target="_blank"
@@ -275,6 +272,11 @@ function VerCandidatura() {
                                                 display: 'flex',
                                                 alignItems: 'center',
                                                 gap: '8px'
+                                            }}
+                                            onClick={(e) => {
+                                                if (!candidatura.cv) {
+                                                    e.preventDefault();
+                                                }
                                             }}
                                         >
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-file-earmark-pdf" viewBox="0 0 16 16">
@@ -298,7 +300,7 @@ function VerCandidatura() {
                 <div className={style.cartaBox}>
                     <h1 className={style.heading}>Carta de Apresentação</h1>
                     <div className={style.cartaBoxInner}>
-                        <div className={style.carta} style={{ whiteSpace: "pre-line" }}>{candidatura.user.cartaDeApresentacao}</div>
+                        <div className={style.carta} style={{ whiteSpace: "pre-line" }}>{candidatura.cartaApresentacao || <span style={{ color: "#aaa" }}> Não especificado. </span>}</div>
                     </div>
                 </div>
 

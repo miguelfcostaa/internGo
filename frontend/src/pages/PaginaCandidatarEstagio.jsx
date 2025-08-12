@@ -79,9 +79,6 @@ function PaginaCandidatarEstagio() {
         setWarnings((prev) => ({ ...prev, [name]: value.length === maxChars }));
       }
     };
-  function onChange(newSkills) {
-    setFormData((prev) => ({ ...prev, competenciasTecnicas: newSkills }));
-  }
 
   //cria o input competencias tecnicas que adiciona uma a uma e permite deletar skills
   const handleKeyDown = (e) => {
@@ -116,26 +113,10 @@ function PaginaCandidatarEstagio() {
 
     try {
       const formDataToSend = new FormData();
+
       formDataToSend.append("cv", cvFile);
-      formDataToSend.append("name", formData.name);
-      formDataToSend.append("telefone", formData.telefone);
-      formDataToSend.append("email", formData.email);
-      formDataToSend.append("morada", formData.morada);
-      formDataToSend.append("codigoPostal", formData.codigoPostal);
-      formDataToSend.append("dataNascimento", formData.dataNascimento);
-      formDataToSend.append("nif", formData.nif);
-      formDataToSend.append("formacaoAcademica", formData.formacaoAcademica);
-      formDataToSend.append("cc", formData.cc);
-      formDataToSend.append("universidade", formData.universidade);
-      formDataToSend.append("curso", formData.curso);
-      formDataToSend.append(
-        "cartaDeApresentacao",
-        formData.cartaDeApresentacao
-      );
-      formDataToSend.append(
-        "competenciasTecnicas",
-        JSON.stringify(formData.competenciasTecnicas)
-      );
+      formDataToSend.append("cartaApresentacao", formData.cartaDeApresentacao);
+      formDataToSend.append("competenciasTecnicas", JSON.stringify(formData.competenciasTecnicas));
 
       formDataToSend.append("estagio", id);
       formDataToSend.append("user", user._id);
@@ -174,7 +155,6 @@ function PaginaCandidatarEstagio() {
               cc: formData.cc,
               universidade: formData.universidade,
               curso: formData.curso,
-              cartaDeApresentacao: formData.cartaDeApresentacao
             }),
           }
         );
@@ -492,82 +472,84 @@ function PaginaCandidatarEstagio() {
                         onKeyDown={handleKeyDown}
                       />
 
-                                            {formData.competenciasTecnicas && formData.competenciasTecnicas.length > 0 ? (
-                                                <div style={{
-                                                    overflowY: 'auto',
-                                                    display: 'flex',
-                                                    flexDirection: 'row',
-                                                    flexWrap: 'wrap',
-                                                    backgroundColor: '#f9f9f9',
-                                                    paddingTop: '8px',
-                                                    gap: '8px',
-                                                }}>
-                                                    {formData.competenciasTecnicas.map((skill, i) => (
-                                                        <div key={i} className={style.skillTag}>
-                                                            {skill}
-                                                            <svg
-                                                                xmlns="http://www.w3.org/2000/svg"
-                                                                width="22"
-                                                                height="22"
-                                                                fill="red"
-                                                                className="bi bi-x"
-                                                                viewBox="0 0 16 16"
-                                                                onClick={() => removeSkill(i)}
-                                                                style={{ cursor: 'pointer' }}
-                                                            >
-                                                                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
-                                                            </svg>
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            ) : null}
-                                        </div>
-                                        <label className={style.labelcoluna}>Formação Académica:
-                                            <select
-                                                name="formacaoAcademica"
-                                                className={style.select}
-                                                onChange={handleChange()}
-                                                value={formData.formacaoAcademica}
-                                            >
-                                                <option value="">Escolha o seu nível de habilitação</option>
-                                                <option value="1">Nível 1 - 4º Ano do Ensino Básico</option>
-                                                <option value="2">Nível 2 - 6º Ano do Ensino Básico</option>
-                                                <option value="3">Nível 3 - 9º Ano do Ensino Básico</option>
-                                                <option value="4">Nível 4 - Ensino Secundário + Estágio Profissional</option>
-                                                <option value="5">Nível 5 - Cursos de Especialização Tecnólogica (CET)</option>
-                                                <option value="6">Nível 6 - Licenciatura</option>
-                                                <option value="7">Nível 7 - Mestrado</option>
-                                                <option value="8">Nível 8 - Doutoramento</option>
-                                            </select>
-                                        </label>
-                                    </div>
-                                    <div className={style.formrow}>
-                                        <label className={style.labelcoluna}>Adicione o seu CV:
-                                            <input
-                                                type="file"
-                                                name="cv"
-                                                className={style.inputfile}
-                                                style={{ marginTop: '0px', marginBottom: '0px' }}
-                                            />
-                                        </label>
-                                    </div>
-                                </div>
-                                <label className={style.labelcoluna}>Escreva a sua carta de Apresentação:
-                                    <textarea
-                                        className={style.textarea}
-                                        rows="6"
-                                        cols="50"
-                                        name="cartaDeApresentacao"
-                                        value={formData.cartaDeApresentacao}
-                                        onChange={handleChange()}
-                                        placeholder="Escreva aqui a sua carta de apresentação..."
-                                    />
-                                </label>
-                                {Warnings["cartaDeApresentacao"] && (
-                                    <span className={style.charterror}>
-                                        {messageMaxChat}
-                                    </span>
-                                )}
+                      {formData.competenciasTecnicas && formData.competenciasTecnicas.length > 0 ? (
+                          <div style={{
+                              overflowY: 'auto',
+                              display: 'flex',
+                              flexDirection: 'row',
+                              flexWrap: 'wrap',
+                              backgroundColor: '#f9f9f9',
+                              paddingTop: '8px',
+                              gap: '8px',
+                          }}>
+                              {formData.competenciasTecnicas.map((skill, i) => (
+                                  <div key={i} className={style.skillTag}>
+                                      {skill}
+                                      <svg
+                                          xmlns="http://www.w3.org/2000/svg"
+                                          width="22"
+                                          height="22"
+                                          fill="red"
+                                          className="bi bi-x"
+                                          viewBox="0 0 16 16"
+                                          onClick={() => removeSkill(i)}
+                                          style={{ cursor: 'pointer' }}
+                                      >
+                                          <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+                                      </svg>
+                                  </div>
+                              ))}
+                          </div>
+                      ) : null}
+                    </div>
+                      <label className={style.labelcoluna}>Formação Académica:
+                        <select
+                          name="formacaoAcademica"
+                          className={style.select}
+                          onChange={handleChange()}
+                          value={formData.formacaoAcademica}
+                        >
+                                <option value="">Escolha o seu nível de habilitação</option>
+                                <option value="1">Nível 1 - 4º Ano do Ensino Básico</option>
+                                <option value="2">Nível 2 - 6º Ano do Ensino Básico</option>
+                                <option value="3">Nível 3 - 9º Ano do Ensino Básico</option>
+                                <option value="4">Nível 4 - Ensino Secundário + Estágio Profissional</option>
+                                <option value="5">Nível 5 - Cursos de Especialização Tecnólogica (CET)</option>
+                                <option value="6">Nível 6 - Licenciatura</option>
+                                <option value="7">Nível 7 - Mestrado</option>
+                                <option value="8">Nível 8 - Doutoramento</option>
+                            </select>
+                        </label>
+                    </div>
+                    <div className={style.formrow}>
+                        <label className={style.labelcoluna}>Adicione o seu CV:
+                            <input
+                                type="file"
+                                name="cv"
+                                accept=".pdf,.doc,.docx"
+                                className={style.inputfile}
+                                style={{ marginTop: '0px', marginBottom: '0px' }}
+                                onChange={(e) => setCvFile(e.target.files[0])}
+                            />
+                        </label>
+                    </div>
+                </div>
+                <label className={style.labelcoluna}>Escreva a sua carta de Apresentação:
+                    <textarea
+                        className={style.textarea}
+                        rows="6"
+                        cols="50"
+                        name="cartaDeApresentacao"
+                        value={formData.cartaDeApresentacao}
+                        onChange={handleChange()}
+                        placeholder="Escreva aqui a sua carta de apresentação..."
+                    />
+                </label>
+                {Warnings["cartaDeApresentacao"] && (
+                    <span className={style.charterror}>
+                        {messageMaxChat}
+                    </span>
+                )}
 
                 <div>
                   {Object.keys(fieldErrors).length > 0 && (

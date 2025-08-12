@@ -25,6 +25,18 @@ const candidaturaSchema = new Schema({
     },
     motivoRecusa: {
         type: String
+    },
+    competenciasTecnicas: {
+        type: Array,
+        required: true
+    },
+    cv: {
+        type: String,
+        required: true
+    },
+    cartaApresentacao: {
+        type: String,
+        required: true
     }
 });
 

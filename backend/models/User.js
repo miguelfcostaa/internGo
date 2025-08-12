@@ -80,12 +80,6 @@ const userSchema = new mongoose.Schema({
     curso: { // Curso do utilizador
         type: String,
     },
-    cv: { // Curriculum Vitae do utilizador
-        type: String,
-    },
-    cartaDeApresentacao: { // Carta de apresentação do utilizador
-        type: String,
-    },
     profilePhoto: { // Foto de perfil do usuário
         type: String,
         default: null
