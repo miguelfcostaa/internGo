@@ -240,7 +240,7 @@ function PaginaCandidatarEstagio() {
             {estagio ? (
               <>
                 <h3 style={{ textAlign: "left" }}>
-                  Detalhes do Estágio - {estagio.title}
+                  Detalhes do Estágio - <b>{estagio.title}</b> - <b>{estagio.company.name}</b>
                 </h3>
                 <div
                   style={{
@@ -336,6 +336,7 @@ function PaginaCandidatarEstagio() {
                         value={formData.name}
                         className={style.input}
                         onChange={handleChange(100)}
+                        disabled
                       />
                       {/*Mensagem qquando o limite de caracteres é atingindo*/}
                       {Warnings["name"] && (
@@ -353,6 +354,7 @@ function PaginaCandidatarEstagio() {
                         value={formData.email}
                         className={style.input}
                         onChange={handleChange()}
+                        disabled
                       />
                     </label>
                   </div>
@@ -366,6 +368,7 @@ function PaginaCandidatarEstagio() {
                         value={formData.telefone}
                         className={style.input}
                         onChange={handleChange()}
+                        disabled
                       />
                     </label>
                     <label className={style.labelcoluna}>
