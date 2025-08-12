@@ -174,8 +174,8 @@ const ProfilePage = () => {
                   />
                 </div>
                 <div className={styles.userInfoRight}>
-                  <p>{userInfo.name}</p>
-                  <p>{userInfo.email}</p>
+                  <p>{userInfo?.name ? `${userInfo.name.split(" ")[0]} ${userInfo.name.split(" ")[userInfo.name.split(" ").length - 1]}` : 'Loading...'}</p>
+                  <p>{userInfo?.email || 'Loading...'}</p>
                 </div>
               </div>
             </div>

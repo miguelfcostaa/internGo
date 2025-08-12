@@ -128,14 +128,14 @@ const NavBar = () => {
                         />
                         <button type='submit'  className="search-button" aria-label="Buscar"></button>
                         <svg 
-                        className='search-icon' 
-                        xmlns="http://www.w3.org/2000/svg" 
-                        width="18" 
-                        height="18" 
-                        fill="#7c7c7cff" 
-                        viewBox="0 0 16 16"
+                            className='search-icon' 
+                            xmlns="http://www.w3.org/2000/svg" 
+                            width="18" 
+                            height="18" 
+                            fill="#7c7c7cff" 
+                            viewBox="0 0 16 16"
                         >
-                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
                         </svg>
                     </form>
                     
@@ -145,7 +145,9 @@ const NavBar = () => {
                         style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}
                         onClick={() => setShowDropdown(prev => !prev)}
                         >
-                            <span style={{ fontSize: '1.4rem', marginRight: 8 }}>{userInfo.name}</span>
+                            <span style={{ fontSize: '1.4rem', marginRight: 8 }}>
+                                {userInfo?.name ? `${userInfo.name.split(" ")[0]} ${userInfo.name.split(" ")[userInfo.name.split(" ").length - 1]}` : 'Loading...'}
+                            </span>
                             <svg 
                                 xmlns="http://www.w3.org/2000/svg" 
                                 width="16" 
@@ -192,11 +194,11 @@ const NavBar = () => {
                                 setShowDropdown(false);
                                 }}
                                 style={{
-                                padding: '10px 15px',
-                                cursor: 'pointer',
-                                color: '#000',
-                                textAlign: 'right',
-                                whiteSpace: 'nowrap',
+                                    padding: '10px 15px',
+                                    cursor: 'pointer',
+                                    color: '#000',
+                                    textAlign: 'right',
+                                    whiteSpace: 'nowrap',
                                 }}
                             >
                                 Logout

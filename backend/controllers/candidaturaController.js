@@ -117,8 +117,12 @@ const getCandidaturasByEstagio = async (req, res) => {
 // Criar candidatura
 const createCandidatura = async (req, res) => {
   try {
-    // Validar dados de entrada
-    const errors = await validations.validateCandidatura(req.body, req.file);
+
+    if (!req.body.dataNascimento || !req.body.morada || !req.body.codigoPostal || !req.body.nif || !req.body.cc || !req.body.universidade || !req.body.curso || !req.body.formacaoAcademica || !req.body.competenciasTecnicas || !req.file || !req.body.cartaApresentacao) {
+      return res.status(400).json({ message: "Todos os campos obrigatórios devem ser preenchidos." });
+    }
+
+    const errors = await validations.validateCandidatura(req.body, req.file, User);
     if (Object.keys(errors).length > 0) {
       return res.status(400).json({ message: errors });
     }
@@ -126,7 +130,6 @@ const createCandidatura = async (req, res) => {
     const estagioId = req.params.estagioId;
     const userId = req.user.id;
 
-    // Verificar se o usuário é uma empresa
     if (req.user.role === "company") {
       return res.status(403).json({
         message:
@@ -134,14 +137,12 @@ const createCandidatura = async (req, res) => {
       });
     }
 
-    // Verificar se o usuário é um estudante
     if (req.user.role !== "user") {
       return res.status(403).json({
         message: "Apenas estudantes podem candidatar-se aos estágios.",
       });
     }
 
-    // Verificar se já existe candidatura
     const candidaturaExistente = await Candidatura.findOne({
       user: userId,
       estagio: estagioId,
@@ -153,20 +154,16 @@ const createCandidatura = async (req, res) => {
         .json({ message: "Já se candidatou a este estágio." });
     }
 
-    // Verificar se o estágio existe
     const estagio = await Estagio.findById(estagioId);
     if (!estagio) {
       return res.status(404).json({ message: "Estágio não encontrado." });
     }
 
-    // Verificar o cv
     let cvPath = null;
     if (req.file) {
-      // Extrair apenas o nome do arquivo do caminho completo
       cvPath = req.file.filename;
     }
 
-    // Verificar se as competências técnicas são um array
     let competenciasTecnicas = [];
     try {
       if (typeof req.body.competenciasTecnicas === 'string') {
@@ -203,9 +200,11 @@ const createCandidatura = async (req, res) => {
       candidatura: candidaturaCompleta,
     });
   } catch (error) {
+    console.error('Erro detalhado:', error);
     res.status(500).json({
       message: "Erro ao criar candidatura",
-      error: error.message
+      error: error.message,
+      stack: error.stack
     });
   }
 };

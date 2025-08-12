@@ -232,8 +232,13 @@ const validateUserUpdate = async (User, data) => {
   return errors;
 };
 
-async function validateCandidatura(data, file) {
+async function validateCandidatura(data, file, User) {
   const errors = {};
+
+  const verificaCamposUser = await validateUserUpdate(User, data);
+  if (Object.keys(verificaCamposUser).length > 0) {
+    return verificaCamposUser; // Retorna erros de validação do usuário
+  }
 
   // Validar apenas os campos específicos da candidatura
   if (!file) {

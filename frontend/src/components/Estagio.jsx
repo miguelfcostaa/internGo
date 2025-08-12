@@ -40,13 +40,14 @@ function Estagio({ NomeEmpresa, NomeEstagio, TotalVagas, Ativas, Area, Inicio, T
         <div className={styles.estagioCard}>
 
         <div 
-            className="container bg-white p-4 rounded shadow" 
+            className="container bg-white p-4 rounded" 
             style={{ 
                 display: "flex", 
                 flexDirection: "row", 
                 justifyContent: "space-between",
                 gap: "4rem",
                 cursor: "pointer",
+                boxShadow: "0 4px 4px rgba(0, 0, 0, 0.2)",
             }}
             onClick={() => navigate(`/estagio/${idEstagio}`)}
             >
