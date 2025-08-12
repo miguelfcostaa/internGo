@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Estagio from "../components/Estagio";
 import NavBar from "../components/NavBar";
 import styles from "../styles/Home.module.css";
@@ -11,6 +11,7 @@ function Home() {
   const [estagios, setEstagios] = useState([]);
   const { query, setQuery } = useSearch();
   const [searchTag, setSearchTag] = useState(null);
+  const [filtersActive, setFiltersActive] = useState(false); // Flag para controlar se filtros estão ativos
 
   // Obter informações do usuário logado
   const [user, setUser] = useState(null);
@@ -77,7 +78,10 @@ function Home() {
   };
 
   // Função customizada para setEstagios que sempre aplica o filtro de candidaturas
-  const setEstagiosWithFilter = (estagiosList) => {
+  const setEstagiosWithFilter = (estagiosList, fromFilters = false) => {
+    if (fromFilters) {
+      setFiltersActive(true);
+    }
     const filteredEstagios = filterEstagiosAlreadyApplied(estagiosList);
     setEstagios(filteredEstagios);
   };
@@ -91,28 +95,32 @@ function Home() {
   }, []);
 
   useEffect(() => {
-    if (query && allEstagios.length > 0) {
-      const filteredEstagios = allEstagios.filter(
-        (estagio) =>
-          estagio.title.toLowerCase().includes(query.toLowerCase()) ||
-          (estagio.company &&
-            estagio.company.name &&
-            estagio.company.name.toLowerCase().includes(query.toLowerCase()))
-      );
-      setEstagiosWithFilter(filteredEstagios);
-      setSearchTag(query);
-    } else if (!query && allEstagios.length > 0) {
-      setEstagiosWithFilter(allEstagios);
-      setSearchTag(null);
+    // Só aplicar se não há filtros ativos
+    if (!filtersActive) {
+      if (query && allEstagios.length > 0) {
+        const filteredEstagios = allEstagios.filter(
+          (estagio) =>
+            estagio.title.toLowerCase().includes(query.toLowerCase()) ||
+            (estagio.company &&
+              estagio.company.name &&
+              estagio.company.name.toLowerCase().includes(query.toLowerCase()))
+        );
+        setEstagiosWithFilter(filteredEstagios);
+        setSearchTag(query);
+      } else if (!query && allEstagios.length > 0) {
+        setEstagiosWithFilter(allEstagios);
+        setSearchTag(null);
+      }
     }
-  }, [query, allEstagios]);
+  }, [query, allEstagios, filtersActive]);
 
   // Re-aplicar filtro quando candidaturas ou role do usuário mudarem
   useEffect(() => {
-    if (allEstagios.length > 0 && !query) {
+    // Só aplicar se não há filtros ativos
+    if (!filtersActive && allEstagios.length > 0 && !query) {
       // Se não há busca ativa, re-aplicar filtro nos estágios completos
       setEstagiosWithFilter(allEstagios);
-    } else if (allEstagios.length > 0 && query) {
+    } else if (!filtersActive && allEstagios.length > 0 && query) {
       // Se há busca ativa, re-aplicar filtro nos resultados da busca
       const filteredEstagios = allEstagios.filter(
         (estagio) =>
@@ -123,10 +131,15 @@ function Home() {
       );
       setEstagiosWithFilter(filteredEstagios);
     }
-  }, [candidaturasFeitas, userRole]);
+  }, [candidaturasFeitas, userRole, filtersActive, allEstagios, query]);
+
+  const handleFiltersChange = (hasActiveFilters) => {
+    setFiltersActive(hasActiveFilters);
+  };
 
   const handleRemoveSearchTag = () => {
     setSearchTag(null);
+    setFiltersActive(false); // Reset filtros quando remover search tag
     setEstagiosWithFilter(allEstagios);
     setQuery("");
   };
@@ -137,10 +150,11 @@ function Home() {
       <div className={styles.background}>
         <div className={styles.flex}>
           <Filters
-            setEstagios={setEstagiosWithFilter}
+            setEstagios={(estagios) => setEstagiosWithFilter(estagios, true)}
             searchTag={searchTag}
             setSearchTag={setSearchTag}
             onRemoveSearchTag={handleRemoveSearchTag}
+            onFiltersChange={handleFiltersChange}
           />
           <div className={styles.estagiosContainer}>
             {estagios.length > 0 ? (
