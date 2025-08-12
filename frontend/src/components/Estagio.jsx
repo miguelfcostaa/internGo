@@ -82,12 +82,12 @@ function Estagio({ NomeEmpresa, NomeEstagio, TotalVagas, Ativas, Area, Inicio, T
                 </div>
                 <div className={styles.estagioInfo}>
                     <div className={styles.estagioInfoLeft}>
-                        <div><span className={styles.estagioInfoLabel}>Vagas Total: </span> {TotalVagas}</div>
+                        <div><span className={styles.estagioInfoLabel}>Vagas Totais: </span> {TotalVagas}</div>
                         <div><span className={styles.estagioInfoLabel}>Area: </span> {Area.join(", ")}</div>
                         <div><span className={styles.estagioInfoLabel}>Tipo de Estágio: </span> {TipoEstagio}</div>
                     </div>
                     <div className={styles.estagioInfoRight}>
-                        <div><span className={styles.estagioInfoLabel}>Inicio: </span> {handleMesInicio(Inicio)}</div>
+                        <div><span className={styles.estagioInfoLabel}>Início: </span> {handleMesInicio(Inicio)}</div>
                         <div><span className={styles.estagioInfoLabel}>Duração: </span> {Duracao} mês</div>
                     </div>
                 </div>
