@@ -174,8 +174,8 @@ const ProfilePage = () => {
                   />
                 </div>
                 <div className={styles.userInfoRight}>
-                  <p>{userInfo.name}</p>
-                  <p>{userInfo.email}</p>
+                  <p>{userInfo?.name ? `${userInfo.name.split(" ")[0]} ${userInfo.name.split(" ")[userInfo.name.split(" ").length - 1]}` : 'Loading...'}</p>
+                  <p>{userInfo?.email || 'Loading...'}</p>
                 </div>
               </div>
             </div>
@@ -273,7 +273,8 @@ const ProfilePage = () => {
                 <h2 className={styles.titulo}>Estágios Recomendados</h2>
                 {estagiosRecomendados.length > 0 && (
                   <Link
-                    to="/recomendacoes/:id"
+                    to="/recomendacoes"
+                    onClick={() => window.scrollTo(0, 0)}
                     style={{
                       textDecoration: "none",
                       color: "#447D9B",

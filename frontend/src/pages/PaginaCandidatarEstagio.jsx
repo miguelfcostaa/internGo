@@ -6,6 +6,7 @@ import style from "../styles/PaginaCandidatarEstagio.module.css";
 import useUser from "../hooks/useUser.js";
 import useEstagios from "../hooks/useEstagios.js";
 import { useNavigate } from "react-router-dom";
+import RequiredFieldTooltip from "../components/RequiredFieldTooltip.jsx";
 
 function PaginaCandidatarEstagio() {
   const navigate = useNavigate();
@@ -112,12 +113,31 @@ function PaginaCandidatarEstagio() {
     setFieldErrors({});
 
     try {
+      
+
       const formDataToSend = new FormData();
 
+      // Dados pessoais
+      formDataToSend.append("name", formData.name);
+      formDataToSend.append("email", formData.email);
+      formDataToSend.append("telefone", formData.telefone);
+      formDataToSend.append("dataNascimento", formData.dataNascimento);
+      formDataToSend.append("morada", formData.morada);
+      formDataToSend.append("codigoPostal", formData.codigoPostal);
+      formDataToSend.append("nif", formData.nif);
+      formDataToSend.append("cc", formData.cc);
+
+      // Dados académicos
+      formDataToSend.append("universidade", formData.universidade);
+      formDataToSend.append("curso", formData.curso);
+      formDataToSend.append("formacaoAcademica", formData.formacaoAcademica);
+      
+      // Competências e documentos
+      formDataToSend.append("competenciasTecnicas", JSON.stringify(formData.competenciasTecnicas));
       formDataToSend.append("cv", cvFile);
       formDataToSend.append("cartaApresentacao", formData.cartaDeApresentacao);
-      formDataToSend.append("competenciasTecnicas", JSON.stringify(formData.competenciasTecnicas));
-
+      
+      // Dados da candidatura
       formDataToSend.append("estagio", id);
       formDataToSend.append("user", user._id);
 
@@ -162,20 +182,20 @@ function PaginaCandidatarEstagio() {
         const updatedUser = await responseUser.json();
 
         if (responseUser.ok) {
-          setSuccess(true);
-          setTimeout(() => {
-            navigate(`/profile/${user._id}`);
-          }, 2000);
-          setFormData({});
-          setFieldErrors({});
-        } else {
+        setSuccess(true);
+        setTimeout(() => {
+          navigate(`/profile/${user._id}`);
+        }, 2000);
+        setFormData({});
+        setFieldErrors({});
+      } else {
           if (updatedUser.message && typeof updatedUser.message === "object") {
             setFieldErrors(updatedUser.message);
           } else if (typeof updatedUser.message === "string") {
             setFieldErrors({ general: updatedUser.message });
           }
-        }
-      } else {
+          }
+        } else {
         if (response.message && typeof response.message === "object") {
           setFieldErrors(response.message);
         } else if (typeof response.message === "string") {
@@ -204,8 +224,6 @@ function PaginaCandidatarEstagio() {
         cc: user.cc || "",
         universidade: user.universidade || "",
         curso: user.curso || "",
-        cv: user.cv || "",
-        cartaDeApresentacao: "",
       });
     }
   }, [user]);
@@ -308,7 +326,7 @@ function PaginaCandidatarEstagio() {
                 <div style={{ display: "flex", flexDirection: "column" }}>
                   <div className={style.formrow}>
                     <label className={style.labelcoluna}>
-                      Nome completo:
+                      Nome completo: 
                       <input
                         type="text"
                         placeholder="Escreva aqui o seu nome completo"
@@ -326,7 +344,7 @@ function PaginaCandidatarEstagio() {
                       )}
                     </label>
                     <label className={style.labelcoluna}>
-                      Email:
+                      Email:  
                       <input
                         type="text"
                         placeholder="Escreva aqui o seu email"
@@ -340,7 +358,7 @@ function PaginaCandidatarEstagio() {
                   </div>
                   <div className={style.formrow}>
                     <label className={style.labelcoluna}>
-                      Nº de telemóvel:
+                      Nº de telemóvel: 
                       <input
                         type="text"
                         placeholder="Escreva aqui o seu número de telemóvel"
@@ -352,7 +370,7 @@ function PaginaCandidatarEstagio() {
                       />
                     </label>
                     <label className={style.labelcoluna}>
-                      Data de nascimento:
+                      <span>Data de nascimento: <RequiredFieldTooltip /></span>
                       <input
                         type="text"
                         placeholder="AAAA-MM-DD"
@@ -365,7 +383,7 @@ function PaginaCandidatarEstagio() {
                   </div>
                   <div className={style.formrow}>
                     <label className={style.labelcoluna}>
-                      Morada:
+                     <span>Morada: <RequiredFieldTooltip /></span>
                       <input
                         type="text"
                         placeholder="Escreva aqui a sua morada"
@@ -381,7 +399,7 @@ function PaginaCandidatarEstagio() {
                       )}
                     </label>
                     <label className={style.labelcoluna}>
-                      Código postal:
+                      <span>Código Postal: <RequiredFieldTooltip /></span>
                       <input
                         type="text"
                         placeholder="Escreva aqui o seu código postal"
@@ -394,7 +412,7 @@ function PaginaCandidatarEstagio() {
                   </div>
                   <div className={style.formrow}>
                     <label className={style.labelcoluna}>
-                      NIF:
+                      <span>NIF: <RequiredFieldTooltip /></span>
                       <input
                         type="text"
                         placeholder=""
@@ -405,7 +423,7 @@ function PaginaCandidatarEstagio() {
                       />
                     </label>
                     <label className={style.labelcoluna}>
-                      Nº do CC:
+                      <span>Nº do Cartão de Cidadão: <RequiredFieldTooltip /></span>
                       <input
                         type="text"
                         placeholder="Escreva aqui o seu número do Cartão de Cidadão"
@@ -418,7 +436,7 @@ function PaginaCandidatarEstagio() {
                   </div>
                   <div className={style.formrow}>
                     <label className={style.labelcoluna}>
-                      Universidade/Entidade Formadora:
+                      <span>Universidade: <RequiredFieldTooltip /></span>
                       <input
                         type="text"
                         placeholder="Ex: Universidade de Lisboa"
@@ -434,7 +452,7 @@ function PaginaCandidatarEstagio() {
                       )}
                     </label>
                     <label className={style.labelcoluna}>
-                      Curso:
+                      <span>Curso: <RequiredFieldTooltip /></span>
                       <input
                         type="text"
                         placeholder="Ex: Engenharia Informática"
@@ -460,7 +478,7 @@ function PaginaCandidatarEstagio() {
                       }}
                     >
                       <label className={style.labelcoluna}>
-                        Competências Técnicas:
+                        <span>Competências Técnicas: <RequiredFieldTooltip /></span>
                       </label>
                       <input
                         type="text"
@@ -502,7 +520,8 @@ function PaginaCandidatarEstagio() {
                           </div>
                       ) : null}
                     </div>
-                      <label className={style.labelcoluna}>Formação Académica:
+                      <label className={style.labelcoluna}>
+                        <span>Formação Académica: <RequiredFieldTooltip /></span>
                         <select
                           name="formacaoAcademica"
                           className={style.select}
@@ -522,7 +541,8 @@ function PaginaCandidatarEstagio() {
                         </label>
                     </div>
                     <div className={style.formrow}>
-                        <label className={style.labelcoluna}>Adicione o seu CV:
+                        <label className={style.labelcoluna}>
+                          <span>Adicione o seu CV: <RequiredFieldTooltip /></span>
                             <input
                                 type="file"
                                 name="cv"
@@ -534,7 +554,8 @@ function PaginaCandidatarEstagio() {
                         </label>
                     </div>
                 </div>
-                <label className={style.labelcoluna}>Escreva a sua carta de Apresentação:
+                <label className={style.labelcoluna}>
+                  <span>Escreva a sua carta de Apresentação: <RequiredFieldTooltip /></span>
                     <textarea
                         className={style.textarea}
                         rows="6"
@@ -556,7 +577,7 @@ function PaginaCandidatarEstagio() {
                     <div className={`alert ${style.alertDanger}`}>
                       <ul className="mb-0">
                         {Object.values(fieldErrors).map((error, index) => (
-                          <li key={index}>{error}</li>
+                          <span key={index}>{error} <br /></span> 
                         ))}
                       </ul>
                     </div>

@@ -6,6 +6,7 @@ import ButtonSubmit from "../components/ButtonSubmit";
 import { validateForm, isPasswordCriterionMet } from "../utils/registerUserUtils";
 import "bootstrap/dist/css/bootstrap.min.css";
 import styles from "../styles/RegisterUser.module.css";
+import exclamation from "../assets/svgs/exclamation.svg"; 
 
 function RegisterUser() {
   const navigate = useNavigate();
@@ -144,7 +145,7 @@ function RegisterUser() {
                     onClick={() => setShowPasswordCriteria(!showPasswordCriteria)}
                     style={{ cursor: "pointer", fontSize: "16px", color: "#007bff", position: "relative" }}
                   >
-                    ⓘ
+                    <img src={exclamation} alt="Criterios" />
                     <PasswordCriteriaTooltip
                       password={formData.password}
                       isVisible={showPasswordCriteria}
