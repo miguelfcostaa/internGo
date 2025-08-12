@@ -174,7 +174,11 @@ const NavBar = () => {
                 onClick={() => setShowDropdown((prev) => !prev)}
               >
                 <span style={{ fontSize: "1.4rem", marginRight: 8 }}>
-                  {userInfo?.name ? `${userInfo.name.split(" ")[0]} ${userInfo.name.split(" ")[userInfo.name.split(" ").length - 1]}` : 'Loading...'}
+                  {userInfo?.name ? (
+                    userInfo.name.includes(" ") 
+                      ? `${userInfo.name.split(" ")[0]} ${userInfo.name.split(" ")[userInfo.name.split(" ").length - 1]}`
+                      : userInfo.name
+                  ) : 'Loading...'}
                 </span>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
