@@ -56,34 +56,53 @@ function Home() {
   };
 
   // Função para filtrar estágios, removendo aqueles já candidatados pelo usuário
-  const filterEstagiosAlreadyApplied = (estagiosList) => {
+  const filterEstagiosAlreadyApplied = (
+    estagiosList,
+    currentUserRole = userRole,
+    currentCandidaturas = candidaturasFeitas
+  ) => {
     // Se não for estudante ou não tiver candidaturas, retorna todos os estágios
     if (
-      userRole !== "user" ||
-      !candidaturasFeitas ||
-      candidaturasFeitas.length === 0
+      currentUserRole !== "user" ||
+      !currentCandidaturas ||
+      currentCandidaturas.length === 0
     ) {
       return estagiosList;
     }
 
     // Obter lista de IDs dos estágios já candidatados
-    const estagiosJaCandidatados = candidaturasFeitas.map(
-      (candidatura) => candidatura.estagio._id
-    );
+    const estagiosJaCandidatados = currentCandidaturas
+      .filter((candidatura) => candidatura.estagio && candidatura.estagio._id)
+      .map((candidatura) => candidatura.estagio._id);
 
     // Filtrar estágios removendo os já candidatados
-    return estagiosList.filter(
+    const filtered = estagiosList.filter(
       (estagio) => !estagiosJaCandidatados.includes(estagio._id)
     );
+
+    return filtered;
   };
 
   // Função customizada para setEstagios que sempre aplica o filtro de candidaturas
-  const setEstagiosWithFilter = (estagiosList, fromFilters = false) => {
+  const setEstagiosWithFilter = (
+    estagiosList,
+    fromFilters = false,
+    currentUserRole = userRole,
+    currentCandidaturas = candidaturasFeitas
+  ) => {
     if (fromFilters) {
       setFiltersActive(true);
+      // Se vem dos filtros, os estágios já foram filtrados no componente Filters
+      setEstagios(estagiosList);
+    } else {
+      // Se não vem dos filtros, aplicar o filtro de candidaturas aqui
+      const filteredEstagios = filterEstagiosAlreadyApplied(
+        estagiosList,
+        currentUserRole,
+        currentCandidaturas
+      );
+      setEstagios(filteredEstagios);
     }
-    const filteredEstagios = filterEstagiosAlreadyApplied(estagiosList);
-    setEstagios(filteredEstagios);
   };
 
   useEffect(() => {
@@ -95,53 +114,58 @@ function Home() {
   }, []);
 
   useEffect(() => {
-    // Só aplicar se não há filtros ativos
-    if (!filtersActive) {
-      if (query && allEstagios.length > 0) {
-        const filteredEstagios = allEstagios.filter(
-          (estagio) =>
-            estagio.title.toLowerCase().includes(query.toLowerCase()) ||
-            (estagio.company &&
-              estagio.company.name &&
-              estagio.company.name.toLowerCase().includes(query.toLowerCase()))
-        );
-        setEstagiosWithFilter(filteredEstagios);
-        setSearchTag(query);
-      } else if (!query && allEstagios.length > 0) {
-        setEstagiosWithFilter(allEstagios);
-        setSearchTag(null);
-      }
+    if (query && allEstagios.length > 0) {
+      // Busca sempre funciona, independente dos filtros
+      const filteredEstagios = allEstagios.filter((estagio) => {
+        const titleMatch = estagio.title
+          .toLowerCase()
+          .includes(query.toLowerCase());
+        const companyMatch =
+          estagio.company &&
+          estagio.company.name &&
+          estagio.company.name.toLowerCase().includes(query.toLowerCase());
+        return titleMatch || companyMatch;
+      });
+      setEstagiosWithFilter(
+        filteredEstagios,
+        false,
+        userRole,
+        candidaturasFeitas
+      );
+      setSearchTag(query);
+      setFiltersActive(false); // Reset filtros quando busca é feita
+    } else if (!query && allEstagios.length > 0 && !filtersActive) {
+      // SEMPRE aplicar filtro de candidaturas quando não há busca e não há filtros
+      setEstagiosWithFilter(allEstagios, false, userRole, candidaturasFeitas);
+      setSearchTag(null);
     }
-  }, [query, allEstagios, filtersActive]);
+  }, [query, allEstagios, filtersActive, candidaturasFeitas, userRole]);
 
   // Re-aplicar filtro quando candidaturas ou role do usuário mudarem
   useEffect(() => {
-    // Só aplicar se não há filtros ativos
+    // SEMPRE aplicar o filtro quando há mudanças nas candidaturas ou userRole
+    // e não há busca ativa e não há filtros ativos
     if (!filtersActive && allEstagios.length > 0 && !query) {
-      // Se não há busca ativa, re-aplicar filtro nos estágios completos
-      setEstagiosWithFilter(allEstagios);
-    } else if (!filtersActive && allEstagios.length > 0 && query) {
-      // Se há busca ativa, re-aplicar filtro nos resultados da busca
-      const filteredEstagios = allEstagios.filter(
-        (estagio) =>
-          estagio.title.toLowerCase().includes(query.toLowerCase()) ||
-          (estagio.company &&
-            estagio.company.name &&
-            estagio.company.name.toLowerCase().includes(query.toLowerCase()))
-      );
-      setEstagiosWithFilter(filteredEstagios);
+      setEstagiosWithFilter(allEstagios, false, userRole, candidaturasFeitas);
     }
   }, [candidaturasFeitas, userRole, filtersActive, allEstagios, query]);
 
   const handleFiltersChange = (hasActiveFilters) => {
     setFiltersActive(hasActiveFilters);
+
+    // Se os filtros foram removidos, reaplicar estágios com filtro de candidaturas
+    if (!hasActiveFilters && allEstagios.length > 0 && !query) {
+      setEstagiosWithFilter(allEstagios, false, userRole, candidaturasFeitas);
+    }
   };
 
   const handleRemoveSearchTag = () => {
     setSearchTag(null);
-    setFiltersActive(false); // Reset filtros quando remover search tag
-    setEstagiosWithFilter(allEstagios);
     setQuery("");
+    // Não resetar filtros quando remover search tag, apenas limpar a busca
+    if (!filtersActive) {
+      setEstagiosWithFilter(allEstagios, false, userRole, candidaturasFeitas);
+    }
   };
 
   return (
@@ -155,6 +179,8 @@ function Home() {
             setSearchTag={setSearchTag}
             onRemoveSearchTag={handleRemoveSearchTag}
             onFiltersChange={handleFiltersChange}
+            userRole={userRole}
+            candidaturasFeitas={candidaturasFeitas}
           />
           <div className={styles.estagiosContainer}>
             {estagios.length > 0 ? (

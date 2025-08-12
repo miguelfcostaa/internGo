@@ -208,7 +208,7 @@ const ProfilePage = () => {
                       style={{ backgroundColor: "#273F4F", color: "white" }}
                       scope="col"
                     >
-                      Mês de Inicio
+                      Mês de Início
                     </th>
                     <th
                       style={{ backgroundColor: "#273F4F", color: "white" }}
