@@ -20,7 +20,11 @@ export default function useCandidaturasFeitas(userId, role) {
 
                 if (response.ok) {
                     const data = await response.json();
-                    setCandidaturasFeitas(data);
+                    // Filtrar candidaturas que tenham estágios válidos
+                    const validCandidaturas = data.filter(candidatura => 
+                        candidatura.estagio && candidatura.estagio._id
+                    );
+                    setCandidaturasFeitas(validCandidaturas);
                 } else if (response.status === 404) {
                     // Nenhuma candidatura — silenciar
                     setCandidaturasFeitas([]);

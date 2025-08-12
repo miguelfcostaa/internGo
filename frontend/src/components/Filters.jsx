@@ -7,6 +7,8 @@ const Filters = ({
   setSearchTag,
   onRemoveSearchTag,
   onFiltersChange,
+  userRole,
+  candidaturasFeitas,
 }) => {
   const [filterDefinitions, setFilterDefinitions] = useState([]);
   const [selected, setSelected] = useState({
@@ -44,6 +46,27 @@ const Filters = ({
   };
 
   const totalSelected = Object.values(selected).flat().length;
+
+  // Função para filtrar estágios já candidatados (só para users)
+  const filterEstagiosAlreadyApplied = (estagiosList) => {
+    if (
+      userRole !== "user" ||
+      !candidaturasFeitas ||
+      candidaturasFeitas.length === 0
+    ) {
+      return estagiosList;
+    }
+
+    const estagiosJaCandidatados = candidaturasFeitas
+      .filter((candidatura) => candidatura.estagio && candidatura.estagio._id)
+      .map((candidatura) => candidatura.estagio._id);
+
+    const filtered = estagiosList.filter(
+      (estagio) => !estagiosJaCandidatados.includes(estagio._id)
+    );
+
+    return filtered;
+  };
 
   // Função para buscar opções de filtro dinâmicas
   const getFilterOptions = async () => {
@@ -158,7 +181,9 @@ const Filters = ({
       const data = await response.json();
 
       if (response.ok) {
-        setEstagios(data);
+        // Aplicar filtro de candidaturas antes de passar para o pai
+        const filteredData = filterEstagiosAlreadyApplied(data);
+        setEstagios(filteredData);
       } else {
         console.error("Error response from estagios:", data);
       }
@@ -181,10 +206,9 @@ const Filters = ({
       onFiltersChange(hasActiveFilters);
     }
 
+    // Só buscar estágios quando há filtros ativos
+    // Quando não há filtros, deixar o Home gerenciar
     if (hasActiveFilters) {
-      getEstagios();
-    } else {
-      // Se não há filtros selecionados, buscar todos os estágios
       getEstagios();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

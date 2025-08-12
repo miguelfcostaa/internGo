@@ -12,25 +12,11 @@ router.get("/:id", userController.getUserById);
 router.put("/:id", verifyToken, userController.updateUser);
 
 // Rotas de gestão de fotos de perfil
-router.post(
-  "/:id/profile-photo",
-  verifyToken,
-  upload.single("profilePhoto"),
-  userController.uploadProfilePhoto
-);
-router.delete(
-  "/:id/profile-photo",
-  verifyToken,
-  userController.deleteUserProfilePhoto
-);
+router.post("/:id/profile-photo", verifyToken, upload.single("profilePhoto"), userController.uploadProfilePhoto);
+router.delete("/:id/profile-photo", verifyToken, userController.deleteUserProfilePhoto);
 
 // Rotas de gestão de CV
-router.post(
-  "/:id/cv",
-  verifyToken,
-  uploadCv.single("cv"),
-  userController.uploadCv
-);
+router.post("/:id/cv", verifyToken, uploadCv.single("cv"), userController.uploadCv);
 router.delete("/:id/cv", verifyToken, userController.deleteUserCv);
 
 module.exports = router;
